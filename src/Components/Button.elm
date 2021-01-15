@@ -26,6 +26,7 @@ import Css
         , px
         , rem
         , solid
+        , zero
         )
 import Html.Styled as Html exposing (Attribute, Html, button, styled)
 import Resources.Colors as Colors
@@ -71,7 +72,7 @@ withChildren children (Button options) =
 
 asHtml : Button msg -> Html msg
 asHtml (Button options) =
-    styled button styles options.attributes options.children
+    styled button (styles options.variant) options.attributes options.children
 
 
 base : List Style
@@ -87,7 +88,7 @@ primary : List Style
 primary =
     [ backgroundColor Colors.blueDeep
     , color Colors.white
-    , border none
+    , border zero
     , hover
         [ backgroundColor Colors.blueNordea
         ]
@@ -109,7 +110,7 @@ tertiary : List Style
 tertiary =
     [ backgroundColor Colors.transparent
     , color Colors.blueDeep
-    , border none
+    , border zero
     , hover
         [ color Colors.blueNordea
         ]
@@ -119,7 +120,7 @@ tertiary =
 styles : Variant -> List Style
 styles variant =
     base
-        ++ (case options.variant of
+        ++ (case variant of
                 Primary ->
                     primary
 
