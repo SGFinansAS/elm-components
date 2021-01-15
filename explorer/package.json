@@ -1,0 +1,9 @@
+{
+  "name": "explorer",
+  "scripts": {
+    "start": "elm-live src/Explorer.elm --open --dir=public --start-page=index.html -- --output=public/explorer.js --debug"
+  },
+  "devDependencies": {
+    "elm-live": "^4.0.2"
+  }
+}
