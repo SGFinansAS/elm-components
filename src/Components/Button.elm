@@ -19,6 +19,7 @@ import Css
         , cursor
         , em
         , fontSize
+        , hover
         , none
         , padding2
         , pointer
@@ -58,6 +59,9 @@ primary =
     [ backgroundColor Colors.blueDeep
     , color Colors.white
     , border none
+    , hover
+        [ backgroundColor Colors.blueNordea
+        ]
     ]
 
 
@@ -66,6 +70,9 @@ secondary =
     [ backgroundColor Colors.white
     , color Colors.blueDeep
     , border3 (px 2) solid Colors.blueDeep
+    , hover
+        [ backgroundColor Colors.blueHaas
+        ]
     ]
 
 
@@ -74,6 +81,9 @@ tertiary =
     [ backgroundColor Colors.transparent
     , color Colors.blueDeep
     , border none
+    , hover
+        [ color Colors.blueNordea
+        ]
     ]
 
 
