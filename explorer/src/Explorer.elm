@@ -1,6 +1,6 @@
 module Explorer exposing (main)
 
-import Html.Styled as Html
+import Button
 import UIExplorer
     exposing
         ( UIExplorerProgram
@@ -14,10 +14,5 @@ main : UIExplorerProgram {} () {}
 main =
     explore
         defaultConfig
-        [ styledStoriesOf
-            "Button"
-            [ ( "Primary", \_ -> Html.text "Welcome to you explorer.", {} )
-            , ( "Secondary", \_ -> Html.text "Welcome to you explorer.", {} )
-            , ( "Tertiary", \_ -> Html.text "Welcome to you explorer.", {} )
-            ]
+        [ Button.stories
         ]
