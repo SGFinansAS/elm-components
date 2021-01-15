@@ -23,10 +23,10 @@ module Resources.Colors exposing
     , yellowDark
     )
 
-import Css exposing (Color, hex)
+import Css exposing (Color, ColorValue, NonMixable, hex)
 
 
-transparent : Color
+transparent : ColorValue NonMixable
 transparent =
     Css.transparent
 
@@ -90,7 +90,7 @@ grayLight =
 
 grayWarm : Color
 grayWarm =
-    "#F4F2F1"
+    hex "#F4F2F1"
 
 
 
@@ -128,29 +128,29 @@ blueCloud =
 
 green : Color
 green =
-    "#40BFA3"
+    hex "#40BFA3"
 
 
 greenDark : Color
 greenDark =
-    "#0D8268"
+    hex "#0D8268"
 
 
 red : Color
 red =
-    "#3FC6161"
+    hex "#3FC6161"
 
 
 redDark : Color
 redDark =
-    "#E70404"
+    hex "#E70404"
 
 
 yellow : Color
 yellow =
-    "#FFE183"
+    hex "#FFE183"
 
 
 yellowDark : Color
 yellowDark =
-    "#FFCF3D"
+    hex "#FFCF3D"
