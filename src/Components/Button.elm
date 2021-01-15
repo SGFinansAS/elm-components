@@ -45,6 +45,35 @@ type Button msg
         }
 
 
+new : Button msg
+new =
+    Button
+        { variant = Primary
+        , children = []
+        , attributes = []
+        }
+
+
+withVariant : Variant -> Button msg -> Button msg
+withVariant variant (Button options) =
+    Button { options | variant = variant }
+
+
+withAttributes : List (Attribute msg) -> Button msg -> Button msg
+withAttributes attributes (Button options) =
+    Button { options | attributes = attributes }
+
+
+withChildren : List (Html msg) -> Button msg -> Button msg
+withChildren children (Button options) =
+    Button { options | children = children }
+
+
+asHtml : Button msg -> Html msg
+asHtml (Button options) =
+    styled button styles options.attributes options.children
+
+
 base : List Style
 base =
     [ fontSize (rem 1)
@@ -100,32 +129,3 @@ styles variant =
                 Tertiary ->
                     tertiary
            )
-
-
-new : Button msg
-new =
-    Button
-        { variant = Primary
-        , children = []
-        , attributes = []
-        }
-
-
-withVariant : Variant -> Button msg -> Button msg
-withVariant variant (Button options) =
-    Button { options | variant = variant }
-
-
-withAttributes : List (Attribute msg) -> Button msg -> Button msg
-withAttributes attributes (Button options) =
-    Button { options | attributes = attributes }
-
-
-withChildren : List (Html msg) -> Button msg -> Button msg
-withChildren children (Button options) =
-    Button { options | children = children }
-
-
-asHtml : Button msg -> Html msg
-asHtml (Button options) =
-    styled button styles options.attributes options.children
