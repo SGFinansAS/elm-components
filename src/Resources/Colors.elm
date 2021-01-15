@@ -17,12 +17,18 @@ module Resources.Colors exposing
     , greenDark
     , red
     , redDark
+    , transparent
     , white
     , yellow
     , yellowDark
     )
 
 import Css exposing (Color, hex)
+
+
+transparent : Color
+transparent =
+    Css.transparent
 
 
 
