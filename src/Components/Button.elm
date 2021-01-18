@@ -19,13 +19,17 @@ import Css
         , boxSizing
         , color
         , cursor
+        , disabled
         , em
         , fontSize
         , height
         , hover
         , none
+        , num
+        , opacity
         , padding2
         , pointer
+        , pointerEvents
         , px
         , rem
         , solid
@@ -84,6 +88,11 @@ base =
     , padding2 (em 0.5) (em 2)
     , borderRadius (em 2)
     , cursor pointer
+    , boxSizing borderBox
+    , disabled
+        [ opacity (num 0.3)
+        , pointerEvents none
+        ]
     ]
 
 
