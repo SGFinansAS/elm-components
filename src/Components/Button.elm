@@ -14,7 +14,9 @@ import Css
         , backgroundColor
         , border
         , border3
+        , borderBox
         , borderRadius
+        , boxSizing
         , color
         , cursor
         , em
@@ -27,7 +29,6 @@ import Css
         , px
         , rem
         , solid
-        , zero
         )
 import Html.Styled as Html exposing (Attribute, Html, button, styled)
 import Resources.Colors as Colors
@@ -86,49 +87,34 @@ base =
     ]
 
 
-primary : List Style
-primary =
-    [ backgroundColor Colors.blueDeep
-    , color Colors.white
-    , border zero
-    , hover
-        [ backgroundColor Colors.blueNordea
-        ]
-    ]
-
-
-secondary : List Style
-secondary =
-    [ backgroundColor Colors.white
-    , color Colors.blueDeep
-    , border3 (em 0.125) solid Colors.blueDeep
-    , hover
-        [ backgroundColor Colors.blueHaas
-        ]
-    ]
-
-
-tertiary : List Style
-tertiary =
-    [ backgroundColor Colors.transparent
-    , color Colors.blueDeep
-    , border zero
-    , hover
-        [ color Colors.blueNordea
-        ]
-    ]
-
-
 styles : Variant -> List Style
 styles variant =
     base
         ++ (case variant of
                 Primary ->
-                    primary
+                    [ backgroundColor Colors.blueDeep
+                    , color Colors.white
+                    , border3 (em 0.125) solid Colors.transparent
+                    , hover
+                        [ backgroundColor Colors.blueNordea
+                        ]
+                    ]
 
                 Secondary ->
-                    secondary
+                    [ backgroundColor Colors.white
+                    , color Colors.blueDeep
+                    , border3 (em 0.125) solid Colors.blueDeep
+                    , hover
+                        [ backgroundColor Colors.blueHaas
+                        ]
+                    ]
 
                 Tertiary ->
-                    tertiary
+                    [ backgroundColor Colors.transparent
+                    , color Colors.blueDeep
+                    , border3 (em 0.125) solid Colors.transparent
+                    , hover
+                        [ color Colors.blueNordea
+                        ]
+                    ]
            )
