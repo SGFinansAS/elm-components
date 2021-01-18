@@ -1,18 +1,15 @@
 module Explorer exposing (main)
 
-import Button
+import Html as Html exposing (Html)
+import Stories.Button as Button
 import UIExplorer
     exposing
         ( UIExplorerProgram
         , defaultConfig
         , explore
         )
-import UIExplorer.Styled exposing (styledStoriesOf)
 
 
 main : UIExplorerProgram {} () {}
 main =
-    explore
-        defaultConfig
-        [ Button.stories
-        ]
+    explore defaultConfig [ Button.stories ]

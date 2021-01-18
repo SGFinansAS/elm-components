@@ -1,11 +1,9 @@
 module Components.Button exposing
-    ( Button
-    , Variant(..)
-    , asHtml
-    , new
-    , withAttributes
-    , withChildren
-    , withVariant
+    ( Model
+    , primary
+    , secondary
+    , tertiary
+    , view
     )
 
 import Css
@@ -38,51 +36,60 @@ import Html.Styled as Html exposing (Attribute, Html, button, styled)
 import Resources.Colors as Colors
 
 
+
+-- MODEL
+
+
 type Variant
     = Primary
     | Secondary
     | Tertiary
 
 
-type Button msg
-    = Button
-        { variant : Variant
-        , attributes : List (Attribute msg)
-        , children : List (Html msg)
-        }
+type Model
+    = Model { variant : Variant }
 
 
-new : Button msg
-new =
-    Button
-        { variant = Primary
-        , children = []
-        , attributes = []
-        }
+init : Variant -> Model
+init variant =
+    Model { variant = variant }
 
 
-withVariant : Variant -> Button msg -> Button msg
-withVariant variant (Button options) =
-    Button { options | variant = variant }
+primary : Model
+primary =
+    init Primary
 
 
-withAttributes : List (Attribute msg) -> Button msg -> Button msg
-withAttributes attributes (Button options) =
-    Button { options | attributes = attributes }
+secondary : Model
+secondary =
+    init Secondary
 
 
-withChildren : List (Html msg) -> Button msg -> Button msg
-withChildren children (Button options) =
-    Button { options | children = children }
+tertiary : Model
+tertiary =
+    init Tertiary
 
 
-asHtml : Button msg -> Html msg
-asHtml (Button options) =
-    styled button (styles options.variant) options.attributes options.children
+
+-- VIEW
 
 
-base : List Style
-base =
+view : List (Attribute msg) -> List (Html msg) -> Model -> Html msg
+view attributes children model =
+    styled button (styles model) attributes children
+
+
+
+-- STYLES
+
+
+styles : Model -> List Style
+styles (Model model) =
+    baseStyles ++ variantStyles model.variant
+
+
+baseStyles : List Style
+baseStyles =
     [ fontSize (rem 1)
     , height (em 2.5)
     , padding2 (em 0.5) (em 2)
@@ -96,34 +103,32 @@ base =
     ]
 
 
-styles : Variant -> List Style
-styles variant =
-    base
-        ++ (case variant of
-                Primary ->
-                    [ backgroundColor Colors.blueDeep
-                    , color Colors.white
-                    , border3 (em 0.125) solid Colors.transparent
-                    , hover
-                        [ backgroundColor Colors.blueNordea
-                        ]
-                    ]
+variantStyles : Variant -> List Style
+variantStyles variant =
+    case variant of
+        Primary ->
+            [ backgroundColor Colors.blueDeep
+            , color Colors.white
+            , border3 (em 0.125) solid Colors.transparent
+            , hover
+                [ backgroundColor Colors.blueNordea
+                ]
+            ]
 
-                Secondary ->
-                    [ backgroundColor Colors.white
-                    , color Colors.blueDeep
-                    , border3 (em 0.125) solid Colors.blueDeep
-                    , hover
-                        [ backgroundColor Colors.blueHaas
-                        ]
-                    ]
+        Secondary ->
+            [ backgroundColor Colors.white
+            , color Colors.blueDeep
+            , border3 (em 0.125) solid Colors.blueDeep
+            , hover
+                [ backgroundColor Colors.blueHaas
+                ]
+            ]
 
-                Tertiary ->
-                    [ backgroundColor Colors.transparent
-                    , color Colors.blueDeep
-                    , border3 (em 0.125) solid Colors.transparent
-                    , hover
-                        [ color Colors.blueNordea
-                        ]
-                    ]
-           )
+        Tertiary ->
+            [ backgroundColor Colors.transparent
+            , color Colors.blueDeep
+            , border3 (em 0.125) solid Colors.transparent
+            , hover
+                [ color Colors.blueNordea
+                ]
+            ]
