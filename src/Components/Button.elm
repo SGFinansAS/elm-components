@@ -19,6 +19,7 @@ import Css
         , cursor
         , em
         , fontSize
+        , height
         , hover
         , none
         , padding2
@@ -78,6 +79,7 @@ asHtml (Button options) =
 base : List Style
 base =
     [ fontSize (rem 1)
+    , height (em 2.5)
     , padding2 (em 0.5) (em 2)
     , borderRadius (em 2)
     , cursor pointer
