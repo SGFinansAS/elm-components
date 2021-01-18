@@ -1,7 +1,7 @@
 module Stories.Button exposing (stories)
 
 import Components.Button as Button
-import Html.Styled as Html exposing (Html)
+import Html.Styled as Html exposing (text)
 import UIExplorer exposing (UI)
 import UIExplorer.Styled exposing (StyledStory, styledStoriesOf)
 
@@ -11,15 +11,15 @@ stories =
     styledStoriesOf
         "Button"
         [ ( "Primary"
-          , \_ -> Button.primary |> Button.view [] [ Html.text "Click me" ]
+          , \_ -> Button.primary |> Button.view [] [ text "Click me" ]
           , {}
           )
         , ( "Secondary"
-          , \_ -> Button.secondary |> Button.view [] [ Html.text "Click me" ]
+          , \_ -> Button.secondary |> Button.view [] [ text "Click me" ]
           , {}
           )
         , ( "Tertiary"
-          , \_ -> Button.tertiary |> Button.view [] [ Html.text "Click me" ]
+          , \_ -> Button.tertiary |> Button.view [] [ text "Click me" ]
           , {}
           )
         ]
