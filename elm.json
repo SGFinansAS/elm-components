@@ -1,6 +1,6 @@
 {
     "type": "package",
-    "name": "elm-components",
+    "name": "SGFinansAS/elm-components",
     "summary": "Component library for Nordea design system",
     "license": "MIT",
     "version": "0.1.0",
