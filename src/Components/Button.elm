@@ -1,5 +1,5 @@
 module Components.Button exposing
-    ( Model
+    ( Config
     , primary
     , secondary
     , tertiary
@@ -35,7 +35,7 @@ import Resources.Colors as Colors
 
 
 
--- MODEL
+-- CONFIG
 
 
 type Variant
@@ -44,46 +44,46 @@ type Variant
     | Tertiary
 
 
-type Model
-    = Model { variant : Variant }
+type Config
+    = Config { variant : Variant }
 
 
-init : Variant -> Model
-init variant =
-    Model { variant = variant }
+config : Variant -> Config
+config variant =
+    Config { variant = variant }
 
 
-primary : Model
+primary : Config
 primary =
-    init Primary
+    config Primary
 
 
-secondary : Model
+secondary : Config
 secondary =
-    init Secondary
+    config Secondary
 
 
-tertiary : Model
+tertiary : Config
 tertiary =
-    init Tertiary
+    config Tertiary
 
 
 
 -- VIEW
 
 
-view : List (Attribute msg) -> List (Html msg) -> Model -> Html msg
-view attributes children model =
-    styled button (styles model) attributes children
+view : List (Attribute msg) -> List (Html msg) -> Config -> Html msg
+view attributes children config =
+    styled button (styles config) attributes children
 
 
 
 -- STYLES
 
 
-styles : Model -> List Style
-styles (Model model) =
-    baseStyles ++ variantStyles model.variant
+styles : Config -> List Style
+styles (Config config) =
+    baseStyles ++ variantStyles config.variant
 
 
 baseStyles : List Style
