@@ -11,7 +11,7 @@
     "source-directories": [
         "src"
     ],
-    "elm-version": "0.19.1",
+    "elm-version": "0.19.1 <= v < 0.20.0",
     "dependencies": {
         "elm/browser": "1.0.2 <= v < 2.0.0",
         "elm/core": "1.0.5 <= v < 2.0.0",
