@@ -10,7 +10,6 @@ import Css
     exposing
         ( Style
         , backgroundColor
-        , border
         , border3
         , borderBox
         , borderRadius
@@ -28,7 +27,6 @@ import Css
         , padding2
         , pointer
         , pointerEvents
-        , px
         , rem
         , solid
         )

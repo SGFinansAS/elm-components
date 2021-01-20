@@ -1,7 +1,7 @@
 module UIExplorer.Unstyled exposing (Stories, Story)
 
 import Html exposing (Html)
-import UIExplorer exposing (Model, UI)
+import UIExplorer exposing (Model)
 
 
 type alias Story a b c =
