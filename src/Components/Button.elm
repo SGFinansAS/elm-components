@@ -1,5 +1,5 @@
 module Components.Button exposing
-    ( Config
+    ( Button
     , primary
     , secondary
     , tertiary
@@ -47,26 +47,30 @@ type Variant
     | Tertiary
 
 
-type Config
-    = Config { variant : Variant }
+type alias Config =
+    { variant : Variant }
 
 
-init : Variant -> Config
+type Button
+    = Button Config
+
+
+init : Variant -> Button
 init variant =
-    Config { variant = variant }
+    Button { variant = variant }
 
 
-primary : Config
+primary : Button
 primary =
     init Primary
 
 
-secondary : Config
+secondary : Button
 secondary =
     init Secondary
 
 
-tertiary : Config
+tertiary : Button
 tertiary =
     init Tertiary
 
@@ -75,8 +79,8 @@ tertiary =
 -- VIEW
 
 
-view : List (Attribute msg) -> List (Html msg) -> Config -> Html msg
-view attributes children config =
+view : List (Attribute msg) -> List (Html msg) -> Button -> Html msg
+view attributes children (Button config) =
     styled button (styles config) attributes children
 
 
@@ -85,7 +89,7 @@ view attributes children config =
 
 
 styles : Config -> List Style
-styles (Config config) =
+styles config =
     baseStyles ++ variantStyles config.variant
 
 
