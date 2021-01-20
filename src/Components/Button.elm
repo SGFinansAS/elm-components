@@ -48,24 +48,24 @@ type Config
     = Config { variant : Variant }
 
 
-config : Variant -> Config
-config variant =
+init : Variant -> Config
+init variant =
     Config { variant = variant }
 
 
 primary : Config
 primary =
-    config Primary
+    init Primary
 
 
 secondary : Config
 secondary =
-    config Secondary
+    init Secondary
 
 
 tertiary : Config
 tertiary =
-    config Tertiary
+    init Tertiary
 
 
 
