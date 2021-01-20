@@ -18,12 +18,15 @@ import Css
         , cursor
         , disabled
         , em
+        , focus
         , fontSize
         , height
         , hover
         , none
         , num
         , opacity
+        , outline3
+        , outlineOffset
         , padding2
         , pointer
         , pointerEvents
@@ -97,6 +100,10 @@ baseStyles =
     , disabled
         [ opacity (num 0.3)
         , pointerEvents none
+        ]
+    , focus
+        [ outline3 (em 0.125) solid Colors.blueDeep
+        , outlineOffset (em 0.1875)
         ]
     ]
 
