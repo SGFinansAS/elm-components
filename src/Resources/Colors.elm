@@ -84,10 +84,6 @@ grayLight =
     hex "#E3E3E3"
 
 
-
--- Backgrounds
-
-
 grayWarm : Color
 grayWarm =
     hex "#F4F2F1"
