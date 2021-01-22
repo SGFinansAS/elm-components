@@ -1,0 +1,4 @@
+[build]
+base = "explorer/"
+publish = "public"
+command = "yarn build"
