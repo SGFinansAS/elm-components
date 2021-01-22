@@ -1,6 +1,7 @@
 module Explorer exposing (main)
 
 import Stories.Button as Button
+import Stories.TextInput as TextInput
 import UIExplorer
     exposing
         ( UIExplorerProgram
@@ -11,4 +12,4 @@ import UIExplorer
 
 main : UIExplorerProgram {} () {}
 main =
-    explore defaultConfig [ Button.stories ]
+    explore defaultConfig [ Button.stories, TextInput.stories ]
