@@ -18,11 +18,11 @@ styledStoriesOf id stories =
     storiesOf id (toUnstyledStories stories)
 
 
-toUnstyledStory : StyledStory a b c -> Story a b c
-toUnstyledStory ( a, b, c ) =
-    ( a, \x -> toUnstyled (b x), c )
-
-
 toUnstyledStories : StyledStories a b c -> Stories a b c
 toUnstyledStories stories =
     List.map toUnstyledStory stories
+
+
+toUnstyledStory : StyledStory a b c -> Story a b c
+toUnstyledStory ( a, b, c ) =
+    ( a, \x -> toUnstyled (b x), c )
