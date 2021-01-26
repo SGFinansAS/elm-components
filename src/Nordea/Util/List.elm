@@ -1,4 +1,4 @@
-module Util.List exposing (filterMaybe)
+module Nordea.Util.List exposing (filterMaybe)
 
 
 filterMaybe : List (Maybe a) -> List a

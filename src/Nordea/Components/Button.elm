@@ -1,4 +1,4 @@
-module Components.Button exposing
+module Nordea.Components.Button exposing
     ( Button
     , primary
     , secondary
@@ -34,7 +34,7 @@ import Css
         , solid
         )
 import Html.Styled as Html exposing (Attribute, Html, button, styled)
-import Resources.Colors as Colors
+import Nordea.Resources.Colors as Colors
 
 
 

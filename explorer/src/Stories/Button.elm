@@ -1,8 +1,8 @@
 module Stories.Button exposing (stories)
 
-import Components.Button as Button
 import Html.Styled as Html exposing (text)
 import Html.Styled.Attributes exposing (disabled)
+import Nordea.Components.Button as Button
 import UIExplorer exposing (UI)
 import UIExplorer.Styled exposing (styledStoriesOf)
 

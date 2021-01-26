@@ -1,4 +1,4 @@
-module Resources.Colors exposing
+module Nordea.Resources.Colors exposing
     ( black
     , blueCloud
     , blueDeep

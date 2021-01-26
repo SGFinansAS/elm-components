@@ -1,4 +1,4 @@
-module Components.TextInput exposing
+module Nordea.Components.TextInput exposing
     ( TextInput
     , init
     , view
@@ -29,8 +29,8 @@ import Css
 import Html.Styled exposing (Attribute, Html, input, styled)
 import Html.Styled.Attributes exposing (placeholder, value)
 import Html.Styled.Events exposing (onInput)
-import Resources.Colors as Colors
-import Util.List as List
+import Nordea.Resources.Colors as Colors
+import Nordea.Util.List as List
 
 
 

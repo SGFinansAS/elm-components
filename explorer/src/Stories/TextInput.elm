@@ -1,7 +1,7 @@
 module Stories.TextInput exposing (stories)
 
-import Components.TextInput as TextInput
 import Html.Styled.Attributes exposing (disabled)
+import Nordea.Components.TextInput as TextInput
 import UIExplorer exposing (UI)
 import UIExplorer.Styled exposing (styledStoriesOf)
 
