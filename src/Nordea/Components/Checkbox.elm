@@ -1,4 +1,4 @@
-module Nordea.Components.Checkbox exposing (Checkbox, init, view)
+module Nordea.Components.Checkbox exposing (Checkbox, init, view, withOnCheck)
 
 import Css
     exposing
@@ -52,6 +52,11 @@ init checked =
         { checked = checked
         , onCheck = Nothing
         }
+
+
+withOnCheck : (Bool -> msg) -> Checkbox msg -> Checkbox msg
+withOnCheck onCheck (Checkbox config) =
+    Checkbox { config | onCheck = Just onCheck }
 
 
 
