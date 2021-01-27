@@ -129,7 +129,7 @@ variantStyles variant =
             , color Colors.blueDeep
             , border3 (em 0.125) solid Colors.blueDeep
             , hover
-                [ backgroundColor Colors.blueHaas
+                [ backgroundColor Colors.blueCloud
                 ]
             ]
 
