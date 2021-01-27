@@ -1,6 +1,7 @@
 module Explorer exposing (main)
 
 import Stories.Button as Button
+import Stories.Checkbox as Checkbox
 import Stories.TextInput as TextInput
 import UIExplorer
     exposing
@@ -12,4 +13,8 @@ import UIExplorer
 
 main : UIExplorerProgram {} () {}
 main =
-    explore defaultConfig [ Button.stories, TextInput.stories ]
+    explore defaultConfig
+        [ Button.stories
+        , TextInput.stories
+        , Checkbox.stories
+        ]
