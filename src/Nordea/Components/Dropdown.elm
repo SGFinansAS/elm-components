@@ -1,4 +1,10 @@
-module Nordea.Components.Dropdown exposing (Dropdown, init, view, withOnInput)
+module Nordea.Components.Dropdown exposing
+    ( Dropdown
+    , Option
+    , init
+    , view
+    , withOnInput
+    )
 
 import Css
     exposing
