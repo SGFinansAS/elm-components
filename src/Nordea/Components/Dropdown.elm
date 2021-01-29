@@ -1,4 +1,4 @@
-module Nordea.Components.Dropdown exposing (..)
+module Nordea.Components.Dropdown exposing (Dropdown, init, view, withOnInput)
 
 import Css
     exposing
@@ -56,6 +56,11 @@ init value options =
         , options = options
         , onInput = Nothing
         }
+
+
+withOnInput : (String -> msg) -> Dropdown msg -> Dropdown msg
+withOnInput onInput (Dropdown config) =
+    Dropdown { config | onInput = Just onInput }
 
 
 
