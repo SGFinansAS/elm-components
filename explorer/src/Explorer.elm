@@ -2,6 +2,7 @@ module Explorer exposing (main)
 
 import Stories.Button as Button
 import Stories.Checkbox as Checkbox
+import Stories.Dropdown as Dropdown
 import Stories.NumberInput as NumberInput
 import Stories.TextInput as TextInput
 import UIExplorer
@@ -18,5 +19,6 @@ main =
         [ Button.stories
         , TextInput.stories
         , NumberInput.stories
+        , Dropdown.stories
         , Checkbox.stories
         ]
