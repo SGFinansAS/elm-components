@@ -78,13 +78,15 @@ view attributes (Dropdown config) =
     styled Html.select
         styles
         (getAttributes config ++ attributes)
-        (List.map viewOption config.options)
+        (List.map (viewOption config.value) config.options)
 
 
-viewOption : Option -> Html msg
-viewOption option =
+viewOption : String -> Option -> Html msg
+viewOption selected option =
     Html.option
-        [ Attributes.value option.value ]
+        [ Attributes.value option.value
+        , Attributes.selected (option.value == selected)
+        ]
         [ Html.text option.label ]
 
 
