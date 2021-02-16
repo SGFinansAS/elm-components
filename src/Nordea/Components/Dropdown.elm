@@ -30,6 +30,7 @@ import Css
 import Html.Styled as Html exposing (Attribute, Html, styled)
 import Html.Styled.Attributes as Attributes
 import Html.Styled.Events as Events
+import List.Extra as List
 import Nordea.Resources.Colors as Colors
 import Nordea.Util.List as List
 
@@ -59,7 +60,7 @@ init : String -> List Option -> Dropdown msg
 init value options =
     Dropdown
         { value = value
-        , options = options
+        , options = options |> List.uniqueBy .value
         , onInput = Nothing
         }
 
@@ -78,22 +79,22 @@ view attributes (Dropdown config) =
     styled Html.select
         styles
         (getAttributes config ++ attributes)
-        (List.map viewOption config.options)
+        (List.map (viewOption config.value) config.options)
 
 
-viewOption : Option -> Html msg
-viewOption option =
+viewOption : String -> Option -> Html msg
+viewOption selected option =
     Html.option
-        [ Attributes.value option.value ]
+        [ Attributes.value option.value
+        , Attributes.selected (option.value == selected)
+        ]
         [ Html.text option.label ]
 
 
 getAttributes : Config msg -> List (Attribute msg)
 getAttributes config =
     List.filterMaybe
-        [ Just config.value |> Maybe.map Attributes.value
-        , config.onInput |> Maybe.map Events.onInput
-        ]
+        [ config.onInput |> Maybe.map Events.onInput ]
 
 
 
