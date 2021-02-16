@@ -27,9 +27,9 @@ import Css.Global exposing (adjacentSiblings, typeSelector)
 import Html.Styled exposing (Attribute, Html, div, input, label, styled)
 import Html.Styled.Attributes exposing (checked, type_)
 import Html.Styled.Events exposing (onCheck)
+import Maybe.Extra as Maybe
 import Nordea.Resources.Colors as Colors
 import Nordea.Resources.Icons as Icons
-import Nordea.Util.List as List
 
 
 type alias Config msg =
@@ -83,7 +83,7 @@ view attributes children (Checkbox config) =
 
 inputAttributes : Config msg -> List (Attribute msg)
 inputAttributes config =
-    List.filterMaybe
+    Maybe.values
         [ Just "checkbox" |> Maybe.map type_
         , Just config.checked |> Maybe.map checked
         , config.onCheck |> Maybe.map onCheck

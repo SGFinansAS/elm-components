@@ -30,8 +30,8 @@ import Css
 import Html.Styled exposing (Attribute, Html, input, styled)
 import Html.Styled.Attributes exposing (placeholder, value)
 import Html.Styled.Events exposing (onInput)
+import Maybe.Extra as Maybe
 import Nordea.Resources.Colors as Colors
-import Nordea.Util.List as List
 
 
 
@@ -82,7 +82,7 @@ view attributes (TextInput config) =
 
 getAttributes : Config msg -> List (Attribute msg)
 getAttributes config =
-    List.filterMaybe
+    Maybe.values
         [ Just config.value |> Maybe.map value
         , config.onInput |> Maybe.map onInput
         , config.placeholder |> Maybe.map placeholder

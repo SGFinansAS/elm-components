@@ -33,8 +33,8 @@ import Css
 import Html.Styled exposing (Attribute, Html, input, styled)
 import Html.Styled.Attributes as Attributes exposing (placeholder, step, type_, value)
 import Html.Styled.Events exposing (onInput)
+import Maybe.Extra as Maybe
 import Nordea.Resources.Colors as Colors
-import Nordea.Util.List as List
 
 
 
@@ -106,7 +106,7 @@ view attributes (NumberInput config) =
 
 getAttributes : Config msg -> List (Attribute msg)
 getAttributes config =
-    List.filterMaybe
+    Maybe.values
         [ Just "number" |> Maybe.map type_
         , Just config.value |> Maybe.map value
         , config.min |> Maybe.map String.fromFloat |> Maybe.map Attributes.min
