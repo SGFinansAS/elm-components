@@ -23,6 +23,7 @@ import Css
         , none
         , outline
         , padding2
+        , pct
         , rem
         , solid
         , width
@@ -109,7 +110,7 @@ styles =
     , borderRadius (em 0.125)
     , border3 (em 0.0625) solid Colors.grayMedium
     , boxSizing borderBox
-    , width (em 18.75)
+    , width (pct 100)
     , disabled
         [ backgroundColor Colors.grayWarm
         ]

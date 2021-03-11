@@ -23,12 +23,13 @@ import Css
         , focus
         , fontSize
         , height
-        , minWidth
         , none
         , outline
         , padding2
+        , pct
         , rem
         , solid
+        , width
         )
 import Html.Styled exposing (Attribute, Html, input, styled)
 import Html.Styled.Attributes as Attributes exposing (placeholder, step, type_, value)
@@ -129,7 +130,7 @@ styles =
     , borderRadius (em 0.125)
     , border3 (em 0.0625) solid Colors.grayMedium
     , boxSizing borderBox
-    , minWidth (em 18.75)
+    , width (pct 100)
     , disabled
         [ backgroundColor Colors.grayWarm
         ]
