@@ -4,6 +4,7 @@ import Stories.Button as Button
 import Stories.Checkbox as Checkbox
 import Stories.Dropdown as Dropdown
 import Stories.NumberInput as NumberInput
+import Stories.RadioButton as RadioButton
 import Stories.TextInput as TextInput
 import UIExplorer
     exposing
@@ -21,4 +22,5 @@ main =
         , NumberInput.stories
         , Dropdown.stories
         , Checkbox.stories
+        , RadioButton.stories
         ]
