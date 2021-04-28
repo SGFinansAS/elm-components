@@ -23,7 +23,7 @@ module Nordea.Resources.Colors exposing
     , yellowDark
     )
 
-import Css exposing (Color, ColorValue, NonMixable, hex)
+import Css exposing (Color, ColorValue, NonMixable)
 
 
 transparent : ColorValue NonMixable
@@ -37,12 +37,12 @@ transparent =
 
 white : Color
 white =
-    hex "#FFFFFF"
+    Css.hex "#FFFFFF"
 
 
 black : Color
 black =
-    hex "#000000"
+    Css.hex "#000000"
 
 
 
@@ -51,42 +51,42 @@ black =
 
 grayDarkest : Color
 grayDarkest =
-    hex "#151515"
+    Css.hex "#151515"
 
 
 grayEclipse : Color
 grayEclipse =
-    hex "#383838"
+    Css.hex "#383838"
 
 
 grayDark : Color
 grayDark =
-    hex "#5A575C"
+    Css.hex "#5A575C"
 
 
 grayNordea : Color
 grayNordea =
-    hex "#8B8A8D"
+    Css.hex "#8B8A8D"
 
 
 gray : Color
 gray =
-    hex "#9E9E9E"
+    Css.hex "#9E9E9E"
 
 
 grayMedium : Color
 grayMedium =
-    hex "#C9C7C7"
+    Css.hex "#C9C7C7"
 
 
 grayLight : Color
 grayLight =
-    hex "#E3E3E3"
+    Css.hex "#E3E3E3"
 
 
 grayWarm : Color
 grayWarm =
-    hex "#F4F2F1"
+    Css.hex "#F4F2F1"
 
 
 
@@ -95,27 +95,27 @@ grayWarm =
 
 blueDeep : Color
 blueDeep =
-    hex "#00005E"
+    Css.hex "#00005E"
 
 
 blueNordea : Color
 blueNordea =
-    hex "#0000A0"
+    Css.hex "#0000A0"
 
 
 blueMedium : Color
 blueMedium =
-    hex "#83B8ED"
+    Css.hex "#83B8ED"
 
 
 blueHaas : Color
 blueHaas =
-    hex "#AED5FF"
+    Css.hex "#AED5FF"
 
 
 blueCloud : Color
 blueCloud =
-    hex "#DCEDFF"
+    Css.hex "#DCEDFF"
 
 
 
@@ -124,29 +124,29 @@ blueCloud =
 
 green : Color
 green =
-    hex "#40BFA3"
+    Css.hex "#40BFA3"
 
 
 greenDark : Color
 greenDark =
-    hex "#0D8268"
+    Css.hex "#0D8268"
 
 
 red : Color
 red =
-    hex "#3FC6161"
+    Css.hex "#3FC6161"
 
 
 redDark : Color
 redDark =
-    hex "#E70404"
+    Css.hex "#E70404"
 
 
 yellow : Color
 yellow =
-    hex "#FFE183"
+    Css.hex "#FFE183"
 
 
 yellowDark : Color
 yellowDark =
-    hex "#FFCF3D"
+    Css.hex "#FFCF3D"
