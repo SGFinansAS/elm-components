@@ -6,6 +6,7 @@ import Stories.Dropdown as Dropdown
 import Stories.NumberInput as NumberInput
 import Stories.RadioButton as RadioButton
 import Stories.TextInput as TextInput
+import Stories.FlatLink as FlatLink
 import UIExplorer
     exposing
         ( UIExplorerProgram
@@ -18,6 +19,7 @@ main : UIExplorerProgram {} () {}
 main =
     explore defaultConfig
         [ Button.stories
+        , FlatLink.stories
         , TextInput.stories
         , NumberInput.stories
         , Dropdown.stories
