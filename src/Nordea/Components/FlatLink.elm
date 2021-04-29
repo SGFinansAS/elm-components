@@ -1,4 +1,11 @@
-module Nordea.Components.FlatLink exposing (..)
+module Nordea.Components.FlatLink exposing
+    ( FlatLink
+    , mini
+    , primary
+    , view
+    , withDisabled
+    , withStyles
+    )
 
 import Css exposing (Style)
 import Html.Styled as Html exposing (Attribute, Html)
