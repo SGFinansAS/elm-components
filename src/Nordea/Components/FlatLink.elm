@@ -1,7 +1,7 @@
 module Nordea.Components.FlatLink exposing (..)
 
-import Css exposing ( Style )
-import Html.Styled exposing (Attribute, Html, a, styled)
+import Css exposing (Style)
+import Html.Styled as Html exposing (Attribute, Html)
 import Nordea.Resources.Colors as Colors
 
 
@@ -13,11 +13,9 @@ type Variant
     = Primary
     | Mini
 
-type alias Option =
-    { isDisabled : Bool }
 
 type alias Config =
-    { variant : Variant, isDisabled : Maybe Bool }
+    { variant : Variant, styles : List Style, isDisabled : Maybe Bool }
 
 
 type FlatLink
@@ -26,74 +24,89 @@ type FlatLink
 
 init : Variant -> FlatLink
 init variant =
-    FlatLink { variant = variant, isDisabled = Nothing }
+    FlatLink { variant = variant, styles = [], isDisabled = Nothing }
 
 
 primary : FlatLink
-primary  =
+primary =
     init Primary
+
 
 mini : FlatLink
 mini =
     init Mini
 
+
+withStyles : List Style -> FlatLink -> FlatLink
+withStyles styles (FlatLink config) =
+    FlatLink { config | styles = styles }
+
+
 withDisabled : FlatLink -> FlatLink
-withDisabled ( FlatLink config ) =
-    FlatLink { config | isDisabled = Just True}
+withDisabled (FlatLink config) =
+    FlatLink { config | isDisabled = Just True }
+
+
 
 -- VIEW
 
 
 view : List (Attribute msg) -> List (Html msg) -> FlatLink -> Html msg
 view attributes children (FlatLink config) =
-    styled a (styles config) attributes children
+    Html.styled Html.a
+        [ baseStyle
+        , variantStyle config.variant
+        , disabledStyles config.isDisabled
+        , Css.batch config.styles
+        ]
+        attributes
+        children
 
 
 
 -- STYLES
 
 
-styles : Config -> List Style
-styles config =
-    baseStyles ++ variantStyles config.variant ++ disabledStyles config.isDisabled
+baseStyle : Style
+baseStyle =
+    Css.batch
+        [ Css.cursor Css.pointer
+        , Css.boxSizing Css.borderBox
+        , Css.textDecoration Css.underline
+        , Css.color Colors.blueDeep
+        , Css.hover
+            [ Css.color Colors.blueNordea
+            ]
+        , Css.focus
+            [ Css.color Colors.blueNordea
+            ]
+        ]
 
 
-baseStyles : List Style
-baseStyles =
-    [ Css.fontSize (Css.rem 1)
-    , Css.height (Css.em 2.5)
-    , Css.cursor Css.pointer
-    , Css.boxSizing Css.borderBox
-    , Css.textDecoration Css.underline
-    ]
-
-disabledStyles : Maybe Bool -> List Style
+disabledStyles : Maybe Bool -> Style
 disabledStyles isDisabled =
     case isDisabled of
         Just True ->
-            [ Css.opacity (Css.num 0.3)
-            , Css.pointerEvents Css.none
-            ]
+            Css.batch
+                [ Css.opacity (Css.num 0.3)
+                , Css.pointerEvents Css.none
+                ]
 
         _ ->
-            []
+            Css.batch []
 
-variantStyles : Variant -> List Style
-variantStyles variant =
+
+variantStyle : Variant -> Style
+variantStyle variant =
     case variant of
         Primary ->
-            [ Css.color Colors.blueDeep
-            , Css.hover
-                [ Css.color Colors.blueNordea
+            Css.batch
+                [ Css.fontSize (Css.rem 1)
+                , Css.lineHeight (Css.rem 1.5)
                 ]
-            ]
 
         Mini ->
-            [ Css.backgroundColor Colors.white
-            , Css.color Colors.blueDeep
-            , Css.border3 (Css.em 0.125) Css.solid Colors.blueDeep
-            , Css.hover
-                [ Css.backgroundColor Colors.blueCloud
+            Css.batch
+                [ Css.fontSize (Css.rem 0.875)
+                , Css.lineHeight (Css.rem 1.125)
                 ]
-            ]
-
