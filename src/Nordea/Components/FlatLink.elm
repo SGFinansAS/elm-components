@@ -7,7 +7,26 @@ module Nordea.Components.FlatLink exposing
     , withStyles
     )
 
-import Css exposing (Style)
+import Css
+    exposing
+        ( Style
+        , borderBox
+        , boxSizing
+        , color
+        , cursor
+        , focus
+        , fontSize
+        , hover
+        , lineHeight
+        , none
+        , num
+        , opacity
+        , pointer
+        , pointerEvents
+        , rem
+        , textDecoration
+        , underline
+        )
 import Html.Styled as Html exposing (Attribute, Html)
 import Nordea.Resources.Colors as Colors
 
@@ -77,15 +96,15 @@ view attributes children (FlatLink config) =
 baseStyle : Style
 baseStyle =
     Css.batch
-        [ Css.cursor Css.pointer
-        , Css.boxSizing Css.borderBox
-        , Css.textDecoration Css.underline
-        , Css.color Colors.blueDeep
-        , Css.hover
-            [ Css.color Colors.blueNordea
+        [ cursor pointer
+        , boxSizing borderBox
+        , textDecoration underline
+        , color Colors.blueDeep
+        , hover
+            [ color Colors.blueNordea
             ]
-        , Css.focus
-            [ Css.color Colors.blueNordea
+        , focus
+            [ color Colors.blueNordea
             ]
         ]
 
@@ -95,8 +114,8 @@ disabledStyles isDisabled =
     case isDisabled of
         Just True ->
             Css.batch
-                [ Css.opacity (Css.num 0.3)
-                , Css.pointerEvents Css.none
+                [ opacity (num 0.3)
+                , pointerEvents none
                 ]
 
         _ ->
@@ -108,12 +127,12 @@ variantStyle variant =
     case variant of
         Default ->
             Css.batch
-                [ Css.fontSize (Css.rem 1)
-                , Css.lineHeight (Css.rem 1.5)
+                [ fontSize (rem 1)
+                , lineHeight (rem 1.5)
                 ]
 
         Mini ->
             Css.batch
-                [ Css.fontSize (Css.rem 0.875)
-                , Css.lineHeight (Css.rem 1.125)
+                [ fontSize (rem 0.875)
+                , lineHeight (rem 1.125)
                 ]
