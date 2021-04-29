@@ -11,15 +11,15 @@ stories : UI a b {}
 stories =
     styledStoriesOf
         "FlatLink"
-        [ ( "Primary"
+        [ ( "Default"
           , \_ ->
-                FlatLink.primary
-                    |> FlatLink.view [ href "/#Default/FlatLink/Primary" ] [ text "Click me" ]
+                FlatLink.default
+                    |> FlatLink.view [ href "/#Default/FlatLink/Default" ] [ text "Click me" ]
           , {}
           )
-        , ( "Primary (Disabled)"
+        , ( "Default (Disabled)"
           , \_ ->
-                FlatLink.primary
+                FlatLink.default
                     |> FlatLink.withDisabled
                     |> FlatLink.view [] [ text "Click me" ]
           , {}

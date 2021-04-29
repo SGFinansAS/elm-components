@@ -1,7 +1,7 @@
 module Nordea.Components.FlatLink exposing
     ( FlatLink
+    , default
     , mini
-    , primary
     , view
     , withDisabled
     , withStyles
@@ -17,7 +17,7 @@ import Nordea.Resources.Colors as Colors
 
 
 type Variant
-    = Primary
+    = Default
     | Mini
 
 
@@ -34,9 +34,9 @@ init variant =
     FlatLink { variant = variant, styles = [], isDisabled = Nothing }
 
 
-primary : FlatLink
-primary =
-    init Primary
+default : FlatLink
+default =
+    init Default
 
 
 mini : FlatLink
@@ -106,7 +106,7 @@ disabledStyles isDisabled =
 variantStyle : Variant -> Style
 variantStyle variant =
     case variant of
-        Primary ->
+        Default ->
             Css.batch
                 [ Css.fontSize (Css.rem 1)
                 , Css.lineHeight (Css.rem 1.5)
