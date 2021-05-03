@@ -16,6 +16,10 @@ import Svg.Styled.Attributes
         )
 
 
+
+-- Icon Wrappers
+
+
 leftIcon : Html msg -> Html msg
 leftIcon icon =
     Html.div [ css [ displayFlex, marginRight (rem 0.28125) ] ]
@@ -28,6 +32,10 @@ rightIcon icon =
     Html.div [ css [ displayFlex, marginLeft (rem 0.28125) ] ]
         [ icon
         ]
+
+
+
+-- Inline SVG Icons
 
 
 check : Svg msg
