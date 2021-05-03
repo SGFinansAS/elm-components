@@ -7,7 +7,36 @@ module Nordea.Components.Button exposing
     , withStyles
     )
 
-import Css exposing (Style)
+import Css
+    exposing
+        ( Style
+        , backgroundColor
+        , batch
+        , border3
+        , borderBox
+        , borderRadius
+        , boxShadow5
+        , boxSizing
+        , color
+        , cursor
+        , disabled
+        , focus
+        , fontFamilies
+        , fontSize
+        , fontWeight
+        , hover
+        , int
+        , none
+        , num
+        , opacity
+        , outline
+        , padding2
+        , pointer
+        , pointerEvents
+        , rem
+        , solid
+        , zero
+        )
 import Html.Styled as Html exposing (Attribute, Html)
 import Nordea.Resources.Colors as Colors
 
@@ -65,7 +94,7 @@ view attributes children (Button config) =
     Html.styled Html.button
         [ baseStyle
         , variantStyle config.variant
-        , Css.batch config.styles
+        , batch config.styles
         ]
         attributes
         children
@@ -77,17 +106,17 @@ view attributes children (Button config) =
 
 baseStyle : Style
 baseStyle =
-    Css.batch
-        [ Css.fontFamilies [ "inherit" ]
-        , Css.fontSize (Css.rem 1)
-        , Css.fontWeight (Css.int 500)
-        , Css.padding2 (Css.rem 0.5) (Css.rem 1)
-        , Css.borderRadius (Css.rem 2)
-        , Css.cursor Css.pointer
-        , Css.boxSizing Css.borderBox
-        , Css.disabled
-            [ Css.opacity (Css.num 0.25)
-            , Css.pointerEvents Css.none
+    batch
+        [ fontFamilies [ "inherit" ]
+        , fontSize (rem 1)
+        , fontWeight (int 500)
+        , padding2 (rem 0.5) (rem 1)
+        , borderRadius (rem 2)
+        , cursor pointer
+        , boxSizing borderBox
+        , disabled
+            [ opacity (num 0.25)
+            , pointerEvents none
             ]
         ]
 
@@ -96,52 +125,52 @@ variantStyle : Variant -> Style
 variantStyle variant =
     case variant of
         Primary ->
-            Css.batch
-                [ Css.backgroundColor Colors.blueDeep
-                , Css.color Colors.white
-                , Css.border3 (Css.rem 0.125) Css.solid Colors.transparent
-                , Css.hover
-                    [ Css.backgroundColor Colors.blueCloud
-                    , Css.color Colors.blueDeep
+            batch
+                [ backgroundColor Colors.blueDeep
+                , color Colors.white
+                , border3 (rem 0.125) solid Colors.transparent
+                , hover
+                    [ backgroundColor Colors.blueCloud
+                    , color Colors.blueDeep
                     ]
-                , Css.focus
-                    [ Css.outline Css.none
-                    , Css.backgroundColor Colors.blueNordea
-                    , Css.color Colors.blueHaas
-                    , Css.boxShadow5 Css.zero Css.zero Css.zero (Css.rem 0.25) Colors.blueHaas
+                , focus
+                    [ outline none
+                    , backgroundColor Colors.blueNordea
+                    , color Colors.blueHaas
+                    , boxShadow5 zero zero zero (rem 0.25) Colors.blueHaas
                     ]
                 ]
 
         Secondary ->
-            Css.batch
-                [ Css.backgroundColor Colors.white
-                , Css.color Colors.blueDeep
-                , Css.border3 (Css.rem 0.125) Css.solid Colors.blueDeep
-                , Css.hover
-                    [ Css.backgroundColor Colors.blueCloud
-                    , Css.color Colors.blueDeep
+            batch
+                [ backgroundColor Colors.white
+                , color Colors.blueDeep
+                , border3 (rem 0.125) solid Colors.blueDeep
+                , hover
+                    [ backgroundColor Colors.blueCloud
+                    , color Colors.blueDeep
                     ]
-                , Css.focus
-                    [ Css.outline Css.none
-                    , Css.backgroundColor Colors.blueCloud
-                    , Css.color Colors.blueDeep
-                    , Css.boxShadow5 Css.zero Css.zero Css.zero (Css.rem 0.125) Colors.blueDeep
+                , focus
+                    [ outline none
+                    , backgroundColor Colors.blueCloud
+                    , color Colors.blueDeep
+                    , boxShadow5 zero zero zero (rem 0.125) Colors.blueDeep
                     ]
                 ]
 
         Tertiary ->
-            Css.batch
-                [ Css.backgroundColor Colors.transparent
-                , Css.color Colors.blueDeep
-                , Css.border3 (Css.rem 0.125) Css.solid Colors.transparent
-                , Css.hover
-                    [ Css.backgroundColor Colors.transparent
-                    , Css.color Colors.blueNordea
+            batch
+                [ backgroundColor Colors.transparent
+                , color Colors.blueDeep
+                , border3 (rem 0.125) solid Colors.transparent
+                , hover
+                    [ backgroundColor Colors.transparent
+                    , color Colors.blueNordea
                     ]
-                , Css.focus
-                    [ Css.outline Css.none
-                    , Css.backgroundColor Colors.transparent
-                    , Css.color Colors.blueDeep
-                    , Css.boxShadow5 Css.zero Css.zero Css.zero (Css.rem 0.25) Colors.blueHaas
+                , focus
+                    [ outline none
+                    , backgroundColor Colors.transparent
+                    , color Colors.blueDeep
+                    , boxShadow5 zero zero zero (rem 0.25) Colors.blueHaas
                     ]
                 ]
