@@ -1,3 +1,5 @@
 [build]
-publish = "explorer/public"
-command = "cd explorer && yarn build"
+base = "explorer/"
+publish = "public"
+command = "yarn build"
+ignore = "git diff --quiet HEAD^ HEAD .."
