@@ -42,11 +42,11 @@ stories =
           , \_ ->
                 Html.div [ css [ children [ everything [ marginBottom (rem 1) ] ] ] ]
                     [ Button.secondary
-                        |> Button.view [ disabled True ] [ text "Click me" ]
+                        |> Button.view [] [ text "Click me" ]
                     , Button.secondary
-                        |> Button.view [ disabled True ] [ text "Click me", Icons.rightIcon Icons.info ]
+                        |> Button.view [] [ text "Click me", Icons.rightIcon Icons.info ]
                     , Button.secondary
-                        |> Button.view [ disabled True ] [ Icons.leftIcon Icons.info, text "Click me" ]
+                        |> Button.view [] [ Icons.leftIcon Icons.info, text "Click me" ]
                     ]
           , {}
           )
@@ -54,11 +54,11 @@ stories =
           , \_ ->
                 Html.div [ css [ children [ everything [ marginBottom (rem 1) ] ] ] ]
                     [ Button.tertiary
-                        |> Button.view [ disabled True ] [ text "Click me" ]
+                        |> Button.view [] [ text "Click me" ]
                     , Button.tertiary
-                        |> Button.view [ disabled True ] [ text "Click me", Icons.rightIcon Icons.info ]
+                        |> Button.view [] [ text "Click me", Icons.rightIcon Icons.info ]
                     , Button.tertiary
-                        |> Button.view [ disabled True ] [ Icons.leftIcon Icons.info, text "Click me" ]
+                        |> Button.view [] [ Icons.leftIcon Icons.info, text "Click me" ]
                     ]
           , {}
           )
