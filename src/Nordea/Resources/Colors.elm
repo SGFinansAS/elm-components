@@ -19,6 +19,7 @@ module Nordea.Resources.Colors exposing
     , redDark
     , transparent
     , white
+    , withAlpha
     , yellow
     , yellowDark
     )
@@ -29,6 +30,11 @@ import Css exposing (Color, ColorValue, NonMixable)
 transparent : ColorValue NonMixable
 transparent =
     Css.transparent
+
+
+withAlpha : Float -> Color -> Color
+withAlpha alpha color =
+    Css.rgba color.red color.green color.blue alpha
 
 
 

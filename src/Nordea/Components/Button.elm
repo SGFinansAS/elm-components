@@ -147,7 +147,7 @@ variantStyle variant =
                 , color Colors.blueDeep
                 , border3 (rem 0.125) solid Colors.blueDeep
                 , hover
-                    [ backgroundColor Colors.blueCloud
+                    [ backgroundColor (Colors.blueCloud |> Colors.withAlpha 0.5)
                     , color Colors.blueDeep
                     ]
                 , focus
