@@ -24,7 +24,7 @@ module Nordea.Resources.Colors exposing
     , yellowDark
     )
 
-import Css exposing (Color, ColorValue, NonMixable)
+import Css exposing (Color, ColorValue, NonMixable, hex, rgba)
 
 
 transparent : ColorValue NonMixable
@@ -34,7 +34,7 @@ transparent =
 
 withAlpha : Float -> Color -> Color
 withAlpha alpha color =
-    Css.rgba color.red color.green color.blue alpha
+    rgba color.red color.green color.blue alpha
 
 
 
@@ -43,12 +43,12 @@ withAlpha alpha color =
 
 white : Color
 white =
-    Css.hex "#FFFFFF"
+    hex "#FFFFFF"
 
 
 black : Color
 black =
-    Css.hex "#000000"
+    hex "#000000"
 
 
 
@@ -57,42 +57,42 @@ black =
 
 grayDarkest : Color
 grayDarkest =
-    Css.hex "#151515"
+    hex "#151515"
 
 
 grayEclipse : Color
 grayEclipse =
-    Css.hex "#383838"
+    hex "#383838"
 
 
 grayDark : Color
 grayDark =
-    Css.hex "#5A575C"
+    hex "#5A575C"
 
 
 grayNordea : Color
 grayNordea =
-    Css.hex "#8B8A8D"
+    hex "#8B8A8D"
 
 
 gray : Color
 gray =
-    Css.hex "#9E9E9E"
+    hex "#9E9E9E"
 
 
 grayMedium : Color
 grayMedium =
-    Css.hex "#C9C7C7"
+    hex "#C9C7C7"
 
 
 grayLight : Color
 grayLight =
-    Css.hex "#E3E3E3"
+    hex "#E3E3E3"
 
 
 grayWarm : Color
 grayWarm =
-    Css.hex "#F4F2F1"
+    hex "#F4F2F1"
 
 
 
@@ -101,27 +101,27 @@ grayWarm =
 
 blueDeep : Color
 blueDeep =
-    Css.hex "#00005E"
+    hex "#00005E"
 
 
 blueNordea : Color
 blueNordea =
-    Css.hex "#0000A0"
+    hex "#0000A0"
 
 
 blueMedium : Color
 blueMedium =
-    Css.hex "#83B8ED"
+    hex "#83B8ED"
 
 
 blueHaas : Color
 blueHaas =
-    Css.hex "#AED5FF"
+    hex "#AED5FF"
 
 
 blueCloud : Color
 blueCloud =
-    Css.hex "#DCEDFF"
+    hex "#DCEDFF"
 
 
 
@@ -130,29 +130,29 @@ blueCloud =
 
 green : Color
 green =
-    Css.hex "#40BFA3"
+    hex "#40BFA3"
 
 
 greenDark : Color
 greenDark =
-    Css.hex "#0D8268"
+    hex "#0D8268"
 
 
 red : Color
 red =
-    Css.hex "#3FC6161"
+    hex "#3FC6161"
 
 
 redDark : Color
 redDark =
-    Css.hex "#E70404"
+    hex "#E70404"
 
 
 yellow : Color
 yellow =
-    Css.hex "#FFE183"
+    hex "#FFE183"
 
 
 yellowDark : Color
 yellowDark =
-    Css.hex "#FFCF3D"
+    hex "#FFCF3D"
