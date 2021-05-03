@@ -1,7 +1,9 @@
 module Nordea.Components.FlatLink exposing
     ( FlatLink
     , default
+    , leftIcon
     , mini
+    , rightIcon
     , view
     , withDisabled
     , withStyles
@@ -10,14 +12,19 @@ module Nordea.Components.FlatLink exposing
 import Css
     exposing
         ( Style
+        , alignItems
         , borderBox
         , boxSizing
+        , center
         , color
         , cursor
+        , displayFlex
         , focus
         , fontSize
         , hover
         , lineHeight
+        , marginLeft
+        , marginRight
         , none
         , num
         , opacity
@@ -28,6 +35,7 @@ import Css
         , underline
         )
 import Html.Styled as Html exposing (Attribute, Html)
+import Html.Styled.Attributes exposing (css)
 import Nordea.Resources.Colors as Colors
 
 
@@ -89,6 +97,20 @@ view attributes children (FlatLink config) =
         children
 
 
+leftIcon : Html msg -> Html msg
+leftIcon icon =
+    Html.div [ css [ displayFlex, marginRight (rem 0.28125) ] ]
+        [ icon
+        ]
+
+
+rightIcon : Html msg -> Html msg
+rightIcon icon =
+    Html.div [ css [ displayFlex, marginLeft (rem 0.28125) ] ]
+        [ icon
+        ]
+
+
 
 -- STYLES
 
@@ -96,7 +118,9 @@ view attributes children (FlatLink config) =
 baseStyle : Style
 baseStyle =
     Css.batch
-        [ cursor pointer
+        [ displayFlex
+        , alignItems center
+        , cursor pointer
         , boxSizing borderBox
         , textDecoration underline
         , color Colors.blueDeep

@@ -1,6 +1,8 @@
 module Nordea.Components.Button exposing
     ( Button
+    , leftIcon
     , primary
+    , rightIcon
     , secondary
     , tertiary
     , view
@@ -9,19 +11,24 @@ module Nordea.Components.Button exposing
 import Css
     exposing
         ( Style
+        , alignItems
         , backgroundColor
         , border3
         , borderBox
         , borderRadius
         , boxSizing
+        , center
         , color
         , cursor
         , disabled
+        , displayFlex
         , em
         , focus
         , fontSize
         , height
         , hover
+        , marginLeft
+        , marginRight
         , none
         , num
         , opacity
@@ -34,6 +41,7 @@ import Css
         , solid
         )
 import Html.Styled as Html exposing (Attribute, Html, button, styled)
+import Html.Styled.Attributes exposing (css)
 import Nordea.Resources.Colors as Colors
 
 
@@ -84,6 +92,20 @@ view attributes children (Button config) =
     styled button (styles config) attributes children
 
 
+leftIcon : Html msg -> Html msg
+leftIcon icon =
+    Html.div [ css [ displayFlex, marginRight (rem 0.28125) ] ]
+        [ icon
+        ]
+
+
+rightIcon : Html msg -> Html msg
+rightIcon icon =
+    Html.div [ css [ displayFlex, marginLeft (rem 0.28125) ] ]
+        [ icon
+        ]
+
+
 
 -- STYLES
 
@@ -95,7 +117,9 @@ styles config =
 
 baseStyles : List Style
 baseStyles =
-    [ fontSize (rem 1)
+    [ displayFlex
+    , alignItems center
+    , fontSize (rem 1)
     , height (em 2.5)
     , padding2 (em 0.5) (em 2)
     , borderRadius (em 2)
