@@ -4,6 +4,7 @@ module Nordea.Components.Button exposing
     , secondary
     , tertiary
     , view
+    , withStyles
     )
 
 import Css
@@ -11,32 +12,35 @@ import Css
         ( Style
         , alignItems
         , backgroundColor
+        , batch
         , border3
         , borderBox
         , borderRadius
+        , boxShadow5
         , boxSizing
         , center
         , color
         , cursor
         , disabled
         , displayFlex
-        , em
         , focus
+        , fontFamilies
         , fontSize
-        , height
+        , fontWeight
         , hover
+        , int
         , none
         , num
         , opacity
-        , outline3
-        , outlineOffset
+        , outline
         , padding2
         , pointer
         , pointerEvents
         , rem
         , solid
+        , zero
         )
-import Html.Styled exposing (Attribute, Html, button, styled)
+import Html.Styled as Html exposing (Attribute, Html)
 import Nordea.Resources.Colors as Colors
 
 
@@ -51,7 +55,7 @@ type Variant
 
 
 type alias Config =
-    { variant : Variant }
+    { variant : Variant, styles : List Style }
 
 
 type Button
@@ -60,7 +64,8 @@ type Button
 
 init : Variant -> Button
 init variant =
-    Button { variant = variant }
+    Button
+        { variant = variant, styles = [] }
 
 
 primary : Button
@@ -78,71 +83,99 @@ tertiary =
     init Tertiary
 
 
+withStyles : List Style -> Button -> Button
+withStyles styles (Button config) =
+    Button { config | styles = styles }
+
+
 
 -- VIEW
 
 
 view : List (Attribute msg) -> List (Html msg) -> Button -> Html msg
 view attributes children (Button config) =
-    styled button (styles config) attributes children
+    Html.styled Html.button
+        [ baseStyle
+        , variantStyle config.variant
+        , batch config.styles
+        ]
+        attributes
+        children
 
 
 
 -- STYLES
 
 
-styles : Config -> List Style
-styles config =
-    baseStyles ++ variantStyles config.variant
-
-
-baseStyles : List Style
-baseStyles =
-    [ displayFlex
-    , alignItems center
-    , fontSize (rem 1)
-    , height (em 2.5)
-    , padding2 (em 0.5) (em 2)
-    , borderRadius (em 2)
-    , cursor pointer
-    , boxSizing borderBox
-    , disabled
-        [ opacity (num 0.3)
-        , pointerEvents none
+baseStyle : Style
+baseStyle =
+    batch
+        [ fontFamilies [ "inherit" ]
+        , displayFlex
+        , alignItems center
+        , fontSize (rem 1)
+        , fontWeight (int 500)
+        , padding2 (rem 0.5) (rem 1)
+        , borderRadius (rem 2)
+        , cursor pointer
+        , boxSizing borderBox
+        , disabled
+            [ opacity (num 0.25)
+            , pointerEvents none
+            ]
         ]
-    , focus
-        [ outline3 (em 0.125) solid Colors.blueDeep
-        , outlineOffset (em 0.1875)
-        ]
-    ]
 
 
-variantStyles : Variant -> List Style
-variantStyles variant =
+variantStyle : Variant -> Style
+variantStyle variant =
     case variant of
         Primary ->
-            [ backgroundColor Colors.blueDeep
-            , color Colors.white
-            , border3 (em 0.125) solid Colors.transparent
-            , hover
-                [ backgroundColor Colors.blueNordea
+            batch
+                [ backgroundColor Colors.blueDeep
+                , color Colors.white
+                , border3 (rem 0.125) solid Colors.transparent
+                , hover
+                    [ backgroundColor Colors.blueCloud
+                    , color Colors.blueDeep
+                    ]
+                , focus
+                    [ outline none
+                    , backgroundColor Colors.blueNordea
+                    , color Colors.blueHaas
+                    , boxShadow5 zero zero zero (rem 0.25) Colors.blueHaas
+                    ]
                 ]
-            ]
 
         Secondary ->
-            [ backgroundColor Colors.white
-            , color Colors.blueDeep
-            , border3 (em 0.125) solid Colors.blueDeep
-            , hover
-                [ backgroundColor Colors.blueCloud
+            batch
+                [ backgroundColor Colors.white
+                , color Colors.blueDeep
+                , border3 (rem 0.125) solid Colors.blueDeep
+                , hover
+                    [ backgroundColor (Colors.blueCloud |> Colors.withAlpha 0.5)
+                    , color Colors.blueDeep
+                    ]
+                , focus
+                    [ outline none
+                    , backgroundColor Colors.blueCloud
+                    , color Colors.blueDeep
+                    , boxShadow5 zero zero zero (rem 0.125) Colors.blueDeep
+                    ]
                 ]
-            ]
 
         Tertiary ->
-            [ backgroundColor Colors.transparent
-            , color Colors.blueDeep
-            , border3 (em 0.125) solid Colors.transparent
-            , hover
-                [ color Colors.blueNordea
+            batch
+                [ backgroundColor Colors.transparent
+                , color Colors.blueDeep
+                , border3 (rem 0.125) solid Colors.transparent
+                , hover
+                    [ backgroundColor Colors.transparent
+                    , color Colors.blueNordea
+                    ]
+                , focus
+                    [ outline none
+                    , backgroundColor Colors.transparent
+                    , color Colors.blueDeep
+                    , boxShadow5 zero zero zero (rem 0.25) Colors.blueHaas
+                    ]
                 ]
-            ]
