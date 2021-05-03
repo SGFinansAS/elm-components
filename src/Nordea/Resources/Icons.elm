@@ -1,5 +1,8 @@
-module Nordea.Resources.Icons exposing (check, info)
+module Nordea.Resources.Icons exposing (check, info, leftIcon, rightIcon)
 
+import Css exposing (displayFlex, marginLeft, marginRight, rem)
+import Html.Styled as Html exposing (Html)
+import Html.Styled.Attributes exposing (css)
 import Svg.Styled as Svg exposing (Svg, svg)
 import Svg.Styled.Attributes
     exposing
@@ -11,6 +14,20 @@ import Svg.Styled.Attributes
         , viewBox
         , width
         )
+
+
+leftIcon : Html msg -> Html msg
+leftIcon icon =
+    Html.div [ css [ displayFlex, marginRight (rem 0.28125) ] ]
+        [ icon
+        ]
+
+
+rightIcon : Html msg -> Html msg
+rightIcon icon =
+    Html.div [ css [ displayFlex, marginLeft (rem 0.28125) ] ]
+        [ icon
+        ]
 
 
 check : Svg msg

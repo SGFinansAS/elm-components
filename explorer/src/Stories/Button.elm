@@ -1,6 +1,6 @@
 module Stories.Button exposing (stories)
 
-import Css exposing (column, displayFlex, flexDirection, marginBottom, rem)
+import Css exposing (marginBottom, rem)
 import Css.Global exposing (children, everything)
 import Html.Styled as Html exposing (text)
 import Html.Styled.Attributes exposing (css, disabled)
@@ -20,9 +20,9 @@ stories =
                     [ Button.primary
                         |> Button.view [] [ text "Click me" ]
                     , Button.primary
-                        |> Button.view [] [ text "Click me", Button.rightIcon Icons.info ]
+                        |> Button.view [] [ text "Click me", Icons.rightIcon Icons.info ]
                     , Button.primary
-                        |> Button.view [] [ Button.leftIcon Icons.info, text "Click me" ]
+                        |> Button.view [] [ Icons.leftIcon Icons.info, text "Click me" ]
                     ]
           , {}
           )
@@ -32,9 +32,9 @@ stories =
                     [ Button.primary
                         |> Button.view [ disabled True ] [ text "Click me" ]
                     , Button.primary
-                        |> Button.view [ disabled True ] [ text "Click me", Button.rightIcon Icons.info ]
+                        |> Button.view [ disabled True ] [ text "Click me", Icons.rightIcon Icons.info ]
                     , Button.primary
-                        |> Button.view [ disabled True ] [ Button.leftIcon Icons.info, text "Click me" ]
+                        |> Button.view [ disabled True ] [ Icons.leftIcon Icons.info, text "Click me" ]
                     ]
           , {}
           )
@@ -44,9 +44,9 @@ stories =
                     [ Button.secondary
                         |> Button.view [ disabled True ] [ text "Click me" ]
                     , Button.secondary
-                        |> Button.view [ disabled True ] [ text "Click me", Button.rightIcon Icons.info ]
+                        |> Button.view [ disabled True ] [ text "Click me", Icons.rightIcon Icons.info ]
                     , Button.secondary
-                        |> Button.view [ disabled True ] [ Button.leftIcon Icons.info, text "Click me" ]
+                        |> Button.view [ disabled True ] [ Icons.leftIcon Icons.info, text "Click me" ]
                     ]
           , {}
           )
@@ -56,9 +56,9 @@ stories =
                     [ Button.tertiary
                         |> Button.view [ disabled True ] [ text "Click me" ]
                     , Button.tertiary
-                        |> Button.view [ disabled True ] [ text "Click me", Button.rightIcon Icons.info ]
+                        |> Button.view [ disabled True ] [ text "Click me", Icons.rightIcon Icons.info ]
                     , Button.tertiary
-                        |> Button.view [ disabled True ] [ Button.leftIcon Icons.info, text "Click me" ]
+                        |> Button.view [ disabled True ] [ Icons.leftIcon Icons.info, text "Click me" ]
                     ]
           , {}
           )
