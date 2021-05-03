@@ -1,4 +1,3 @@
 [build]
-base = "explorer/"
-publish = "public"
-command = "yarn build"
+publish = "explorer/public"
+command = "cd explorer && yarn build"
