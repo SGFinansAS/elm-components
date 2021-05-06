@@ -10,6 +10,7 @@ module Nordea.Components.Button exposing
 import Css
     exposing
         ( Style
+        , alignItems
         , backgroundColor
         , batch
         , border3
@@ -17,9 +18,11 @@ import Css
         , borderRadius
         , boxShadow5
         , boxSizing
+        , center
         , color
         , cursor
         , disabled
+        , displayFlex
         , focus
         , fontFamilies
         , fontSize
@@ -108,6 +111,8 @@ baseStyle : Style
 baseStyle =
     batch
         [ fontFamilies [ "inherit" ]
+        , displayFlex
+        , alignItems center
         , fontSize (rem 1)
         , fontWeight (int 500)
         , padding2 (rem 0.5) (rem 1)

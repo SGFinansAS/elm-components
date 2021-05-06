@@ -10,10 +10,13 @@ module Nordea.Components.FlatLink exposing
 import Css
     exposing
         ( Style
+        , alignItems
         , borderBox
         , boxSizing
+        , center
         , color
         , cursor
+        , displayFlex
         , focus
         , fontSize
         , hover
@@ -96,7 +99,9 @@ view attributes children (FlatLink config) =
 baseStyle : Style
 baseStyle =
     Css.batch
-        [ cursor pointer
+        [ displayFlex
+        , alignItems center
+        , cursor pointer
         , boxSizing borderBox
         , textDecoration underline
         , color Colors.blueDeep
