@@ -1,13 +1,12 @@
 module Nordea.Components.RadioButton exposing (RadioButton, init, view, withOnCheck)
 
-import Css exposing (Style)
+import Css
 import Css.Global as Css
-import Html.Styled exposing (Attribute, Html, div, input, label, styled)
-import Html.Styled.Attributes exposing (checked, type_)
-import Html.Styled.Events exposing (onCheck)
+import Html.Styled as Html exposing (Attribute, Html)
+import Html.Styled.Attributes as Attrs
+import Html.Styled.Events as Events
 import Maybe.Extra as Maybe
 import Nordea.Resources.Colors as Colors
-import Nordea.Resources.Icons as Icons
 
 
 type alias Config msg =
@@ -43,66 +42,67 @@ withOnCheck onCheck (RadioButton config) =
 
 view : List (Attribute msg) -> List (Html msg) -> RadioButton msg -> Html msg
 view attributes children (RadioButton config) =
-    styled label
-        labelStyles
-        []
-        ([ styled input
-            inputStyles
-            (inputAttributes config ++ attributes)
-            []
-         ]
-            ++ children
-        )
+    viewLabel (viewInput config attributes :: (viewRadio :: children))
 
 
-inputAttributes : Config msg -> List (Attribute msg)
-inputAttributes config =
-    Maybe.values
-        [ Just "radio" |> Maybe.map type_
-        , Just config.checked |> Maybe.map checked
-        , config.onCheck |> Maybe.map onCheck
-        ]
-
-
-labelStyles : List Style
-labelStyles =
-    [ Css.displayFlex
-    , Css.alignItems Css.center
-    , Css.cursor Css.pointer
-    , Css.position Css.relative
-    , Css.paddingLeft (Css.rem 1.75)
-    , Css.height (Css.rem 1.25)
-    , Css.before
-        [ Css.property "content" "\"\""
-        , Css.position Css.absolute
-        , Css.top Css.zero
-        , Css.left Css.zero
-        , Css.width (Css.rem 1.25)
+viewLabel : List (Html msg) -> Html msg
+viewLabel =
+    Html.styled Html.label
+        [ Css.displayFlex
+        , Css.alignItems Css.center
+        , Css.cursor Css.pointer
+        , Css.position Css.relative
+        , Css.paddingLeft (Css.rem 1.75)
         , Css.height (Css.rem 1.25)
-        , Css.border3 (Css.rem 0.125) Css.solid Colors.blueDeep
-        , Css.borderRadius (Css.pct 50)
         ]
-    , Css.after
-        [ Css.property "content" "\"\""
-        , Css.position Css.absolute
-        , Css.top (Css.rem 0.25)
-        , Css.left (Css.rem 0.25)
-        , Css.width (Css.rem 0.75)
-        , Css.height (Css.rem 0.75)
-        , Css.borderRadius (Css.pct 50)
-
-        --, Css.backgroundColor Colors.blueDeep
-        ]
-    ]
+        []
 
 
-inputStyles : List Style
-inputStyles =
-    [ Css.display Css.none
-    , Css.checked
-        [ Css.adjacentSiblings
-            [ Css.typeSelector "div"
-                []
+viewInput : Config msg -> List (Attribute msg) -> Html msg
+viewInput config attributes =
+    Html.styled Html.input
+        [ Css.display Css.none
+        , Css.checked
+            [ Css.adjacentSiblings
+                [ Css.everything
+                    [ Css.after
+                        [ Css.backgroundColor Colors.blueDeep ]
+                    ]
+                ]
             ]
         ]
-    ]
+        (Maybe.values
+            [ Just "radio" |> Maybe.map Attrs.type_
+            , Just config.checked |> Maybe.map Attrs.checked
+            , config.onCheck |> Maybe.map Events.onCheck
+            ]
+            ++ attributes
+        )
+        []
+
+
+viewRadio : Html msg
+viewRadio =
+    Html.styled Html.span
+        [ Css.before
+            [ Css.property "content" "\"\""
+            , Css.position Css.absolute
+            , Css.top Css.zero
+            , Css.left Css.zero
+            , Css.width (Css.rem 1.25)
+            , Css.height (Css.rem 1.25)
+            , Css.border3 (Css.rem 0.125) Css.solid Colors.blueDeep
+            , Css.borderRadius (Css.pct 50)
+            ]
+        , Css.after
+            [ Css.property "content" "\"\""
+            , Css.position Css.absolute
+            , Css.top (Css.rem 0.25)
+            , Css.left (Css.rem 0.25)
+            , Css.width (Css.rem 0.75)
+            , Css.height (Css.rem 0.75)
+            , Css.borderRadius (Css.pct 50)
+            ]
+        ]
+        []
+        []
