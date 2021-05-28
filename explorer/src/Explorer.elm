@@ -1,23 +1,52 @@
 module Explorer exposing (main)
 
+import Config exposing (Config, Msg(..))
+import Html exposing (Html)
+import Html.Styled exposing (toUnstyled)
+import Nordea.Resources.Fonts as Fonts
+import Stories.Accordion as Accordion
 import Stories.Button as Button
 import Stories.Checkbox as Checkbox
 import Stories.Dropdown as Dropdown
+import Stories.FlatLink as FlatLink
 import Stories.NumberInput as NumberInput
 import Stories.RadioButton as RadioButton
 import Stories.TextInput as TextInput
-import Stories.FlatLink as FlatLink
 import UIExplorer
     exposing
         ( UIExplorerProgram
-        , defaultConfig
         , explore
         )
 
 
-main : UIExplorerProgram {} () {}
+type alias Model =
+    UIExplorer.Model Config Msg {}
+
+
+update : Msg -> Model -> ( Model, Cmd Msg )
+update msg model =
+    ( { model | customModel = Config.update msg model.customModel }, Cmd.none )
+
+
+viewEnhancer : a -> Html msg -> Html msg
+viewEnhancer _ stories =
+    Html.div []
+        [ Fonts.globalStyle "/fonts" |> toUnstyled
+        , stories
+        ]
+
+
+main : UIExplorerProgram Config Msg {}
 main =
-    explore defaultConfig
+    explore
+        { customModel = Config.init
+        , customHeader = Nothing
+        , update = update
+        , subscriptions = \_ -> Sub.none
+        , viewEnhancer = viewEnhancer
+        , menuViewEnhancer = \_ v -> v
+        , onModeChanged = Nothing
+        }
         [ Button.stories
         , FlatLink.stories
         , TextInput.stories
@@ -25,4 +54,5 @@ main =
         , Dropdown.stories
         , Checkbox.stories
         , RadioButton.stories
+        , Accordion.stories
         ]
