@@ -10,7 +10,6 @@ module Nordea.Components.Accordion exposing
     )
 
 import Css
-import Css.Global as Css
 import Html.Styled as Html exposing (Html)
 import Html.Styled.Attributes as Attrs
 import Html.Styled.Events as Events
