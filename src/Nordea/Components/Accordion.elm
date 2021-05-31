@@ -103,7 +103,7 @@ view (Accordion config) =
         ]
         []
         [ Html.viewMaybe config.title viewTitle
-        , Html.viewIfNotEmpty config.items (List.map viewItem >> viewList)
+        , Html.viewIfNotEmpty config.items viewItems
         ]
 
 
@@ -119,19 +119,20 @@ viewTitle title =
         [ Html.text title ]
 
 
-viewList : List (Html Msg) -> Html Msg
-viewList =
-    Html.styled Html.ul
+viewItems : List Item -> Html Msg
+viewItems items =
+    Html.styled Html.div
         [ Css.listStyle Css.none
         , Css.paddingLeft Css.zero
         , Css.padding2 (Css.rem 0.5) Css.zero
         ]
         []
+        (List.map viewItem items)
 
 
 viewItem : Item -> Html Msg
 viewItem item =
-    Html.styled Html.li
+    Html.styled Html.div
         [ Css.borderBottom3 (Css.rem 0.0625) Css.solid Colors.blueHaas
         , Css.firstChild
             [ Css.borderTop3 (Css.rem 0.0625) Css.solid Colors.blueHaas
