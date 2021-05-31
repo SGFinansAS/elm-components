@@ -1,5 +1,6 @@
 module Nordea.Components.Accordion exposing
     ( Accordion
+    , Item
     , Msg
     , init
     , update
