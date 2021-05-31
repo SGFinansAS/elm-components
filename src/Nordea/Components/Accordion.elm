@@ -148,21 +148,40 @@ viewItemTitle : Item -> Html Msg
 viewItemTitle item =
     Html.styled Html.div
         [ Css.displayFlex
-        , Css.justifyContent Css.spaceBetween
         , Css.alignItems Css.center
         , Css.padding2 (Css.rem 1) Css.zero
         , Fonts.fromSize 1
         , Css.color Colors.blueDeep
         , Css.cursor Css.pointer
-        , Css.children
-            [ Css.everything
-                [ Css.flexShrink Css.zero ]
-            ]
         ]
         [ Events.onClick (Toggle item) ]
-        [ Html.text item.title
-        , viewArrow item.open
+        [ viewItemTitleText item.title
+        , viewItemTitleArrow item.open
         ]
+
+
+viewItemTitleText : String -> Html Msg
+viewItemTitleText title =
+    Html.styled Html.span
+        [ Css.flexGrow (Css.num 1) ]
+        []
+        [ Html.text title ]
+
+
+viewItemTitleArrow : Bool -> Html Msg
+viewItemTitleArrow open =
+    let
+        icon =
+            if open then
+                Icons.chevronUp
+
+            else
+                Icons.chevronDown
+    in
+    Html.styled Html.span
+        [ Css.flexShrink Css.zero ]
+        []
+        [ icon ]
 
 
 viewItemBody : Item -> Html Msg
@@ -173,12 +192,3 @@ viewItemBody item =
         ]
         [ Attrs.hidden (not item.open) ]
         [ item.body ]
-
-
-viewArrow : Bool -> Html Msg
-viewArrow open =
-    if open then
-        Icons.chevronUp
-
-    else
-        Icons.chevronDown
