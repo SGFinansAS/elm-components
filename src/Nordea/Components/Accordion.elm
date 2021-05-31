@@ -37,7 +37,7 @@ type alias Config =
 
 type alias Item =
     { title : String
-    , body : Html Msg
+    , body : List (Html Msg)
     , open : Bool
     }
 
@@ -186,9 +186,9 @@ viewItemTitleArrow open =
 
 viewItemBody : Item -> Html Msg
 viewItemBody item =
-    Html.styled Html.p
+    Html.styled Html.div
         [ Fonts.fromSize 0.875
         , Css.paddingBottom (Css.rem 1)
         ]
         [ Attrs.hidden (not item.open) ]
-        [ item.body ]
+        item.body

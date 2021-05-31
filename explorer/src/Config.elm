@@ -19,12 +19,12 @@ init =
             |> Accordion.withTitle "FAQ"
             |> Accordion.withItem
                 { title = "Hello"
-                , body = Html.text "World"
+                , body = [ Html.text "World" ]
                 , open = False
                 }
             |> Accordion.withItem
                 { title = "This is a question"
-                , body = Html.text "This is an answer"
+                , body = [ Html.text "This is an answer" ]
                 , open = False
                 }
     }
