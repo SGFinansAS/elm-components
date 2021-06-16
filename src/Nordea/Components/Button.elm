@@ -1,5 +1,7 @@
 module Nordea.Components.Button exposing
     ( Button
+    , Variant(..)
+    , buttonStyleForExport
     , primary
     , secondary
     , tertiary
@@ -179,3 +181,8 @@ variantStyle variant =
                     , boxShadow5 zero zero zero (rem 0.25) Colors.blueHaas
                     ]
                 ]
+
+
+buttonStyleForExport : Variant -> Style
+buttonStyleForExport variant =
+    batch [ baseStyle, variantStyle variant ]

@@ -12,39 +12,28 @@ import Css
     exposing
         ( Style
         , alignItems
-        , backgroundColor
-        , border3
         , borderBox
-        , borderRadius
-        , boxShadow5
         , boxSizing
         , center
         , color
         , cursor
-        , disabled
         , displayFlex
         , fitContent
         , focus
-        , fontFamilies
         , fontSize
-        , fontWeight
         , hover
-        , int
         , lineHeight
         , none
         , num
         , opacity
-        , outline
-        , padding2
         , pointer
         , pointerEvents
         , rem
-        , solid
         , textDecoration
         , underline
-        , zero
         )
 import Html.Styled as Html exposing (Attribute, Html)
+import Nordea.Components.Button as Button
 import Nordea.Resources.Colors as Colors
 
 
@@ -90,9 +79,9 @@ withDisabled (FlatLink config) =
     FlatLink { config | isDisabled = Just True }
 
 
-withButtonStyle : FlatLink -> FlatLink
-withButtonStyle (FlatLink config) =
-    FlatLink { config | styles = buttonStyle }
+withButtonStyle : Button.Variant -> FlatLink -> FlatLink
+withButtonStyle buttonVariant (FlatLink config) =
+    FlatLink { config | styles = buttonStyle buttonVariant }
 
 
 
@@ -162,34 +151,9 @@ variantStyle variant =
                 ]
 
 
-buttonStyle : List Style
-buttonStyle =
-    [ fontFamilies [ "inherit" ]
-    , Css.maxWidth fitContent
+buttonStyle : Button.Variant -> List Style
+buttonStyle buttonVariant =
+    [ Css.maxWidth fitContent
     , textDecoration none
-    , displayFlex
-    , alignItems center
-    , fontSize (rem 1)
-    , fontWeight (int 500)
-    , padding2 (rem 0.5) (rem 1)
-    , borderRadius (rem 2)
-    , cursor pointer
-    , boxSizing borderBox
-    , backgroundColor Colors.blueDeep
-    , color Colors.white
-    , border3 (rem 0.125) solid Colors.transparent
-    , hover
-        [ backgroundColor Colors.blueCloud
-        , color Colors.blueDeep
-        ]
-    , focus
-        [ outline none
-        , backgroundColor Colors.blueNordea
-        , color Colors.blueHaas
-        , boxShadow5 zero zero zero (rem 0.25) Colors.blueHaas
-        ]
-    , disabled
-        [ opacity (num 0.25)
-        , pointerEvents none
-        ]
+    , Button.buttonStyleForExport buttonVariant
     ]

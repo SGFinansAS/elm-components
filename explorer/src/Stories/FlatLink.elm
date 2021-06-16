@@ -4,6 +4,7 @@ import Css exposing (marginBottom, rem)
 import Css.Global exposing (children, everything)
 import Html.Styled as Html exposing (text)
 import Html.Styled.Attributes exposing (css, href)
+import Nordea.Components.Button as ButtonVariant
 import Nordea.Components.FlatLink as FlatLink
 import Nordea.Resources.Icons as Icons
 import UIExplorer exposing (UI)
@@ -53,18 +54,18 @@ stories =
                     ]
           , {}
           )
-        , ( "With buttonStyle"
+        , ( "withButtonStyle"
           , \_ ->
                 Html.div [ css [ children [ everything [ marginBottom (rem 1) ] ] ] ]
                     [ FlatLink.default
-                        |> FlatLink.withButtonStyle
-                        |> FlatLink.view [ href "/#Default/FlatLink/Default" ] [ text "Click me" ]
+                        |> FlatLink.withButtonStyle ButtonVariant.Primary
+                        |> FlatLink.view [ href "/#Default/FlatLink/withButtonStyle" ] [ text "Click me" ]
                     , FlatLink.default
-                        |> FlatLink.withButtonStyle
-                        |> FlatLink.view [ href "/#Default/FlatLink/Default" ] [ text "Click me", Icons.rightIcon Icons.info ]
+                        |> FlatLink.withButtonStyle ButtonVariant.Primary
+                        |> FlatLink.view [ href "/#Default/FlatLink/withButtonStyle" ] [ text "Click me", Icons.rightIcon Icons.info ]
                     , FlatLink.default
-                        |> FlatLink.withButtonStyle
-                        |> FlatLink.view [ href "/#Default/FlatLink/Default" ] [ Icons.leftIcon Icons.info, text "Click me" ]
+                        |> FlatLink.withButtonStyle ButtonVariant.Primary
+                        |> FlatLink.view [ href "/#Default/FlatLink/withButtonStyle" ] [ Icons.leftIcon Icons.info, text "Click me" ]
                     ]
           , {}
           )
