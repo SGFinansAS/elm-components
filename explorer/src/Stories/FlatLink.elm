@@ -53,4 +53,19 @@ stories =
                     ]
           , {}
           )
+        , ( "With buttonStyle"
+          , \_ ->
+                Html.div [ css [ children [ everything [ marginBottom (rem 1) ] ] ] ]
+                    [ FlatLink.default
+                        |> FlatLink.withButtonStyle
+                        |> FlatLink.view [ href "/#Default/FlatLink/Default" ] [ text "Click me" ]
+                    , FlatLink.default
+                        |> FlatLink.withButtonStyle
+                        |> FlatLink.view [ href "/#Default/FlatLink/Default" ] [ text "Click me", Icons.rightIcon Icons.info ]
+                    , FlatLink.default
+                        |> FlatLink.withButtonStyle
+                        |> FlatLink.view [ href "/#Default/FlatLink/Default" ] [ Icons.leftIcon Icons.info, text "Click me" ]
+                    ]
+          , {}
+          )
         ]
