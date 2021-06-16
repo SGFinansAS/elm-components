@@ -23,6 +23,7 @@ import Css
         , fontSize
         , hover
         , lineHeight
+        , maxWidth
         , none
         , num
         , opacity
@@ -153,7 +154,7 @@ variantStyle variant =
 
 buttonStyle : Button.Variant -> List Style
 buttonStyle buttonVariant =
-    [ Css.maxWidth fitContent
+    [ maxWidth fitContent
     , textDecoration none
     , Button.buttonStyleForExport buttonVariant
     ]
