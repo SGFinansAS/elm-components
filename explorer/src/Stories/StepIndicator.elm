@@ -16,23 +16,20 @@ stories =
         "StepIndicator"
         [ ( "5 steps, current 1"
           , \_ ->
-
-                    StepIndicator.init ["Step name", "Step name", "Step name", "Step name", "Step name"] 1
-                      |> StepIndicator.view
+                StepIndicator.init ["Step name", "Step name", "Step name", "Step name", "Step name"] 1
+                   |> StepIndicator.view
           , {}
           )
           ,( "5 steps, current 3"
           , \_ ->
-
-                    StepIndicator.init ["Step name", "Step name", "Step name", "Step name", "Step name"] 3
-                      |> StepIndicator.view
+                StepIndicator.init ["Step name", "Step name", "Step name", "Step name", "Step name"] 3
+                    |> StepIndicator.view
           , {}
           )
           ,( "5 steps, current 5"
           , \_ ->
-
-                    StepIndicator.init ["Step name", "Step name", "Step name", "Step name", "Step name"] 5
-                      |> StepIndicator.view
+                StepIndicator.init ["Step name", "Step name", "Step name", "Step name", "Step name"] 5
+                    |> StepIndicator.view
           , {}
           )
-           ]
+        ]
