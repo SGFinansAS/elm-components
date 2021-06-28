@@ -23,7 +23,7 @@ type alias Config msg =
     { value : String
     , onInput : Maybe (String -> msg)
     , placeholder : Maybe String
-    , error : Maybe Bool
+    , showError : Bool
     }
 
 
@@ -37,7 +37,7 @@ init value =
         { value = value
         , onInput = Nothing
         , placeholder = Nothing
-        , error = Nothing
+        , showError = False
         }
 
 
@@ -52,7 +52,7 @@ withPlaceholder placeholder (TextInput config) =
 
 withError : Bool -> TextInput msg -> TextInput msg
 withError condition (TextInput config) =
-    TextInput { config | error = Just condition }
+    TextInput { config | showError = condition }
 
 
 
@@ -79,17 +79,9 @@ getAttributes config =
 getStyles : Config msg -> List Style
 getStyles config =
     let
-        borderColorNormal =
-            Colors.grayMedium
         borderColorStyle =
-            case config.error of
-                Just error ->
-                    if error then Colors.redDark
-                    else borderColorNormal
-
-                Nothing ->
-                    borderColorNormal
-
+            if config.showError then Colors.redDark
+            else Colors.grayMedium
     in
     [ fontSize (rem 1)
         , height (em 2.5)
