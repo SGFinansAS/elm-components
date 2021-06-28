@@ -111,7 +111,7 @@ getAttributes config =
 getStyles : Config msg -> List Style
 getStyles config =
     let
-        borderColorStyleNormal =
+        borderColorNormal =
             borderColor Colors.grayMedium
         borderColorStyle =
             case config.error of
@@ -119,9 +119,9 @@ getStyles config =
                     if error then
                         borderColor Colors.redDark
                     else
-                        borderColorStyleNormal
+                        borderColorNormal
                 Nothing ->
-                    borderColorStyleNormal
+                    borderColorNormal
     in
 
     [ fontSize (rem 1)
