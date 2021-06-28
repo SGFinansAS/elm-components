@@ -2,32 +2,12 @@ module Nordea.Components.TextInput exposing
     ( TextInput
     , init
     , view
+    , withError
     , withOnInput
     , withPlaceholder
     )
 
-import Css
-    exposing
-        ( Style
-        , backgroundColor
-        , border3
-        , borderBox
-        , borderColor
-        , borderRadius
-        , boxSizing
-        , disabled
-        , em
-        , focus
-        , fontSize
-        , height
-        , none
-        , outline
-        , padding2
-        , pct
-        , rem
-        , solid
-        , width
-        )
+import Css exposing (Style, backgroundColor, border3, borderBox, borderColor, borderRadius, boxSizing, disabled, em, focus, fontSize, height, none, outline, padding2, pct, rem, solid, width)
 import Html.Styled exposing (Attribute, Html, input, styled)
 import Html.Styled.Attributes exposing (placeholder, value)
 import Html.Styled.Events exposing (onInput)
@@ -43,6 +23,7 @@ type alias Config msg =
     { value : String
     , onInput : Maybe (String -> msg)
     , placeholder : Maybe String
+    , showError : Bool
     }
 
 
@@ -56,6 +37,7 @@ init value =
         { value = value
         , onInput = Nothing
         , placeholder = Nothing
+        , showError = False
         }
 
 
@@ -69,6 +51,11 @@ withPlaceholder placeholder (TextInput config) =
     TextInput { config | placeholder = Just placeholder }
 
 
+withError : Bool -> TextInput msg -> TextInput msg
+withError condition (TextInput config) =
+    TextInput { config | showError = condition }
+
+
 
 -- VIEW
 
@@ -76,7 +63,7 @@ withPlaceholder placeholder (TextInput config) =
 view : List (Attribute msg) -> TextInput msg -> Html msg
 view attributes (TextInput config) =
     styled input
-        styles
+        (getStyles config)
         (getAttributes config ++ attributes)
         []
 
@@ -94,13 +81,21 @@ getAttributes config =
 -- STYLES
 
 
-styles : List Style
-styles =
+getStyles : Config msg -> List Style
+getStyles config =
+    let
+        borderColorStyle =
+            if config.showError then
+                Colors.redDark
+
+            else
+                Colors.grayMedium
+    in
     [ fontSize (rem 1)
     , height (em 2.5)
     , padding2 (em 0.75) (em 0.75)
     , borderRadius (em 0.125)
-    , border3 (em 0.0625) solid Colors.grayMedium
+    , border3 (em 0.0625) solid borderColorStyle
     , boxSizing borderBox
     , width (pct 100)
     , disabled

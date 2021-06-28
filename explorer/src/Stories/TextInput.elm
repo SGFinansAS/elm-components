@@ -29,4 +29,11 @@ stories =
                     |> TextInput.view []
           , {}
           )
+        , ( "Error"
+          , \_ ->
+                TextInput.init "Text"
+                    |> TextInput.withError True
+                    |> TextInput.view []
+          , {}
+          )
         ]
