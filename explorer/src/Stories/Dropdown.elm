@@ -20,4 +20,16 @@ stories =
                     |> Dropdown.view []
           , {}
           )
+          , ( "Error"
+                      , \_ ->
+                            Dropdown.init
+                                "no"
+                                [ { value = "no", label = "Norway" }
+                                , { value = "se", label = "Sweden" }
+                                , { value = "dk", label = "Denmark" }
+                                ]
+                                |> Dropdown.withError True
+                                |> Dropdown.view []
+                      , {}
+                      )
         ]

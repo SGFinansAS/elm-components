@@ -4,30 +4,10 @@ module Nordea.Components.Dropdown exposing
     , init
     , view
     , withOnInput
+    , withError
     )
 
-import Css
-    exposing
-        ( Style
-        , backgroundColor
-        , border3
-        , borderBox
-        , borderColor
-        , borderRadius
-        , boxSizing
-        , disabled
-        , em
-        , focus
-        , fontSize
-        , height
-        , none
-        , outline
-        , padding2
-        , pct
-        , rem
-        , solid
-        , width
-        )
+import Css exposing (Style, backgroundColor, border2, borderBox, borderColor, borderRadius, boxSizing, disabled, em, focus, fontSize, height, none, outline, padding2, pct, rem, solid, width)
 import Html.Styled as Html exposing (Attribute, Html, styled)
 import Html.Styled.Attributes as Attributes
 import Html.Styled.Events as Events
@@ -50,6 +30,7 @@ type alias Config msg =
     { value : String
     , options : List Option
     , onInput : Maybe (String -> msg)
+    , error: Maybe Bool
     }
 
 
@@ -63,12 +44,17 @@ init value options =
         { value = value
         , options = options |> List.uniqueBy .value
         , onInput = Nothing
+        , error = Nothing
         }
 
 
 withOnInput : (String -> msg) -> Dropdown msg -> Dropdown msg
 withOnInput onInput (Dropdown config) =
     Dropdown { config | onInput = Just onInput }
+
+withError : Bool -> Dropdown msg -> Dropdown msg
+withError condition (Dropdown config) =
+    Dropdown { config | error = Just condition }
 
 
 
@@ -78,7 +64,7 @@ withOnInput onInput (Dropdown config) =
 view : List (Attribute msg) -> Dropdown msg -> Html msg
 view attributes (Dropdown config) =
     styled Html.select
-        styles
+        (getStyles config)
         (getAttributes config ++ attributes)
         (List.map (viewOption config.value) config.options)
 
@@ -101,21 +87,35 @@ getAttributes config =
 
 -- STYLES
 
+getStyles : Config msg -> List Style
+getStyles config =
+    let
+        borderColorNormal =
+            borderColor Colors.grayMedium
+        borderColorStyle =
+            case config.error of
+                Just error ->
+                    if error then
+                        borderColor Colors.redDark
+                    else
+                        borderColorNormal
+                Nothing ->
+                    borderColorNormal
+    in
 
-styles : List Style
-styles =
     [ fontSize (rem 1)
-    , height (em 2.5)
-    , padding2 (em 0.5) (em 0.75)
-    , borderRadius (em 0.125)
-    , border3 (em 0.0625) solid Colors.grayMedium
-    , boxSizing borderBox
-    , width (pct 100)
-    , disabled
-        [ backgroundColor Colors.grayWarm
+        , height (em 2.5)
+        , padding2 (em 0.5) (em 0.75)
+        , borderRadius (em 0.125)
+        , border2 (em 0.0625) solid
+        , borderColorStyle
+        , boxSizing borderBox
+        , width (pct 100)
+        , disabled
+            [ backgroundColor Colors.grayWarm
+            ]
+        , focus
+            [ outline none
+            , borderColor Colors.blueNordea
+            ]
         ]
-    , focus
-        [ outline none
-        , borderColor Colors.blueNordea
-        ]
-    ]
