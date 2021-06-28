@@ -7,7 +7,28 @@ module Nordea.Components.Dropdown exposing
     , withOnInput
     )
 
-import Css exposing (Style, backgroundColor, border3, borderBox, borderColor, borderRadius, boxSizing, disabled, em, focus, fontSize, height, none, outline, padding2, pct, rem, solid, width)
+import Css
+    exposing
+        ( Style
+        , backgroundColor
+        , border3
+        , borderBox
+        , borderColor
+        , borderRadius
+        , boxSizing
+        , disabled
+        , em
+        , focus
+        , fontSize
+        , height
+        , none
+        , outline
+        , padding2
+        , pct
+        , rem
+        , solid
+        , width
+        )
 import Html.Styled as Html exposing (Attribute, Html, styled)
 import Html.Styled.Attributes as Attributes
 import Html.Styled.Events as Events
