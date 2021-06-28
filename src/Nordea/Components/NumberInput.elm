@@ -10,11 +10,11 @@ module Nordea.Components.NumberInput exposing
     , withError
     )
 
-import Css exposing (Style, backgroundColor, border2, borderBox, borderColor, borderRadius, boxSizing, disabled, em, focus, fontSize, height, none, outline, padding2, pct, rem, solid, width)
+import Css exposing (Style, backgroundColor, border3, borderBox, borderColor, borderRadius, boxSizing, disabled, em, focus, fontSize, height, none, outline, padding2, pct, rem, solid, width)
 import Html.Styled exposing (Attribute, Html, input, styled)
 import Html.Styled.Attributes as Attributes exposing (placeholder, step, type_, value)
 import Html.Styled.Events exposing (onInput)
-import Maybe.Extra as Maybe exposing (isJust)
+import Maybe.Extra as Maybe
 import Nordea.Resources.Colors as Colors
 
 
@@ -29,7 +29,7 @@ type alias Config msg =
     , step : Maybe Float
     , placeholder : Maybe String
     , onInput : Maybe (String -> msg)
-    , error: Maybe Bool
+    , showError: Bool
     }
 
 
@@ -46,7 +46,7 @@ init value =
         , step = Nothing
         , placeholder = Nothing
         , onInput = Nothing
-        , error = Nothing
+        , showError = False
         }
 
 
@@ -74,9 +74,10 @@ withOnInput : (String -> msg) -> NumberInput msg -> NumberInput msg
 withOnInput onInput (NumberInput config) =
     NumberInput { config | onInput = Just onInput }
 
+
 withError : Bool  -> NumberInput msg -> NumberInput msg
 withError condition (NumberInput config) =
-    NumberInput { config | error = Just condition }
+    NumberInput { config | showError = condition }
 
 
 
@@ -111,25 +112,18 @@ getAttributes config =
 getStyles : Config msg -> List Style
 getStyles config =
     let
-        borderColorNormal =
-            borderColor Colors.grayMedium
         borderColorStyle =
-            case config.error of
-                Just error ->
-                    if error then
-                        borderColor Colors.redDark
-                    else
-                        borderColorNormal
-                Nothing ->
-                    borderColorNormal
+            if config.showError then
+                Colors.redDark
+            else
+                Colors.grayMedium
     in
 
     [ fontSize (rem 1)
     , height (em 2.5)
     , padding2 (em 0.75) (em 0.75)
     , borderRadius (em 0.125)
-    , border2 (em 0.0625) solid
-    , borderColorStyle
+    , border3 (em 0.0625) solid borderColorStyle
     , boxSizing borderBox
     , width (pct 100)
     , disabled
