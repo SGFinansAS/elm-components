@@ -1,7 +1,8 @@
 module Nordea.Components.NumberInput exposing
-    ( TextInput
+    ( NumberInput
     , init
     , view
+    , withError
     , withMax
     , withMin
     , withOnInput
@@ -49,14 +50,15 @@ type alias Config msg =
     , step : Maybe Float
     , placeholder : Maybe String
     , onInput : Maybe (String -> msg)
+    , showError : Bool
     }
 
 
-type TextInput msg
+type NumberInput msg
     = NumberInput (Config msg)
 
 
-init : String -> TextInput msg
+init : String -> NumberInput msg
 init value =
     NumberInput
         { value = value
@@ -65,42 +67,48 @@ init value =
         , step = Nothing
         , placeholder = Nothing
         , onInput = Nothing
+        , showError = False
         }
 
 
-withMin : Float -> TextInput msg -> TextInput msg
+withMin : Float -> NumberInput msg -> NumberInput msg
 withMin min (NumberInput config) =
     NumberInput { config | min = Just min }
 
 
-withMax : Float -> TextInput msg -> TextInput msg
+withMax : Float -> NumberInput msg -> NumberInput msg
 withMax max (NumberInput config) =
     NumberInput { config | max = Just max }
 
 
-withStep : Float -> TextInput msg -> TextInput msg
+withStep : Float -> NumberInput msg -> NumberInput msg
 withStep step (NumberInput config) =
     NumberInput { config | step = Just step }
 
 
-withPlaceholder : String -> TextInput msg -> TextInput msg
+withPlaceholder : String -> NumberInput msg -> NumberInput msg
 withPlaceholder placeholder (NumberInput config) =
     NumberInput { config | placeholder = Just placeholder }
 
 
-withOnInput : (String -> msg) -> TextInput msg -> TextInput msg
+withOnInput : (String -> msg) -> NumberInput msg -> NumberInput msg
 withOnInput onInput (NumberInput config) =
     NumberInput { config | onInput = Just onInput }
+
+
+withError : Bool -> NumberInput msg -> NumberInput msg
+withError condition (NumberInput config) =
+    NumberInput { config | showError = condition }
 
 
 
 -- VIEW
 
 
-view : List (Attribute msg) -> TextInput msg -> Html msg
+view : List (Attribute msg) -> NumberInput msg -> Html msg
 view attributes (NumberInput config) =
     styled input
-        styles
+        (getStyles config)
         (getAttributes config ++ attributes)
         []
 
@@ -122,13 +130,21 @@ getAttributes config =
 -- STYLES
 
 
-styles : List Style
-styles =
+getStyles : Config msg -> List Style
+getStyles config =
+    let
+        borderColorStyle =
+            if config.showError then
+                Colors.redDark
+
+            else
+                Colors.grayMedium
+    in
     [ fontSize (rem 1)
     , height (em 2.5)
     , padding2 (em 0.75) (em 0.75)
     , borderRadius (em 0.125)
-    , border3 (em 0.0625) solid Colors.grayMedium
+    , border3 (em 0.0625) solid borderColorStyle
     , boxSizing borderBox
     , width (pct 100)
     , disabled
