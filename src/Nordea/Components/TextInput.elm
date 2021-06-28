@@ -7,7 +7,7 @@ module Nordea.Components.TextInput exposing
     , withError
     )
 
-import Css exposing (Style, backgroundColor, border2, border3, borderBox, borderColor, borderRadius, boxSizing, disabled, em, focus, fontSize, height, none, outline, padding2, pct, rem, solid, width)
+import Css exposing (Style, backgroundColor, border2, borderBox, borderColor, borderRadius, boxSizing, disabled, em, focus, fontSize, height, none, outline, padding2, pct, rem, solid, width)
 import Html.Styled exposing (Attribute, Html, input, styled)
 import Html.Styled.Attributes exposing (placeholder, value)
 import Html.Styled.Events exposing (onInput)
