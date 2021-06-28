@@ -2,12 +2,12 @@ module Nordea.Components.NumberInput exposing
     ( NumberInput
     , init
     , view
+    , withError
     , withMax
     , withMin
     , withOnInput
     , withPlaceholder
     , withStep
-    , withError
     )
 
 import Css exposing (Style, backgroundColor, border3, borderBox, borderColor, borderRadius, boxSizing, disabled, em, focus, fontSize, height, none, outline, padding2, pct, rem, solid, width)
@@ -29,7 +29,7 @@ type alias Config msg =
     , step : Maybe Float
     , placeholder : Maybe String
     , onInput : Maybe (String -> msg)
-    , showError: Bool
+    , showError : Bool
     }
 
 
@@ -75,7 +75,7 @@ withOnInput onInput (NumberInput config) =
     NumberInput { config | onInput = Just onInput }
 
 
-withError : Bool  -> NumberInput msg -> NumberInput msg
+withError : Bool -> NumberInput msg -> NumberInput msg
 withError condition (NumberInput config) =
     NumberInput { config | showError = condition }
 
@@ -115,10 +115,10 @@ getStyles config =
         borderColorStyle =
             if config.showError then
                 Colors.redDark
+
             else
                 Colors.grayMedium
     in
-
     [ fontSize (rem 1)
     , height (em 2.5)
     , padding2 (em 0.75) (em 0.75)

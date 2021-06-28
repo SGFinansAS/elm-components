@@ -39,11 +39,11 @@ stories =
                     |> NumberInput.view []
           , {}
           )
-          , ( "Error"
-            , \_ ->
-                  NumberInput.init "0"
-                      |> NumberInput.withError True
-                      |> NumberInput.view []
-            , {}
-            )
+        , ( "Error"
+          , \_ ->
+                NumberInput.init "0"
+                    |> NumberInput.withError True
+                    |> NumberInput.view []
+          , {}
+          )
         ]
