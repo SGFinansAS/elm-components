@@ -16,4 +16,11 @@ stories =
                     |> Checkbox.view [] [ text "Click me" ]
           , {}
           )
+        , ( "Error"
+          , \_ ->
+                Checkbox.init False
+                    |> Checkbox.withError True
+                    |> Checkbox.view [] [ text "Click me" ]
+          , {}
+          )
         ]

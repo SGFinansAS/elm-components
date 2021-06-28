@@ -1,4 +1,4 @@
-module Nordea.Components.Checkbox exposing (Checkbox, init, view, withOnCheck)
+module Nordea.Components.Checkbox exposing (Checkbox, init, view, withError, withOnCheck)
 
 import Css
     exposing
@@ -35,6 +35,7 @@ import Nordea.Resources.Icons as Icons
 type alias Config msg =
     { checked : Bool
     , onCheck : Maybe (Bool -> msg)
+    , showError : Bool
     }
 
 
@@ -51,12 +52,18 @@ init checked =
     Checkbox
         { checked = checked
         , onCheck = Nothing
+        , showError = False
         }
 
 
 withOnCheck : (Bool -> msg) -> Checkbox msg -> Checkbox msg
 withOnCheck onCheck (Checkbox config) =
     Checkbox { config | onCheck = Just onCheck }
+
+
+withError : Bool -> Checkbox msg -> Checkbox msg
+withError condition (Checkbox config) =
+    Checkbox { config | showError = condition }
 
 
 
@@ -73,7 +80,7 @@ view attributes children (Checkbox config) =
             (inputAttributes config ++ attributes)
             []
          , styled div
-            boxStyles
+            (boxStyles config)
             []
             [ Icons.check ]
          ]
@@ -111,13 +118,21 @@ inputStyles =
     ]
 
 
-boxStyles : List Style
-boxStyles =
+boxStyles : Config msg -> List Style
+boxStyles config =
+    let
+        borderColorStyle =
+            if config.showError then
+                Colors.redDark
+
+            else
+                Colors.blueDeep
+    in
     [ display inlineBlock
     , width (em 1)
     , height (em 1)
     , boxSizing contentBox
-    , border3 (em 0.125) solid Colors.blueDeep
+    , border3 (em 0.125) solid borderColorStyle
     , backgroundColor Colors.white
     , color Colors.white
     , marginRight (em 0.5)
