@@ -121,6 +121,7 @@ getStyles config =
         , Css.height (Css.rem 1.25)
         , Css.border3 (Css.rem 0.125) Css.solid borderColorStyle
         , Css.borderRadius (Css.pct 50)
+        , Css.boxSizing Css.borderBox
         ]
     , Css.after
         [ Css.property "content" "\"\""
