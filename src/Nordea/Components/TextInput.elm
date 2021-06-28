@@ -2,9 +2,9 @@ module Nordea.Components.TextInput exposing
     ( TextInput
     , init
     , view
+    , withError
     , withOnInput
     , withPlaceholder
-    , withError
     )
 
 import Css exposing (Style, backgroundColor, border3, borderBox, borderColor, borderRadius, boxSizing, disabled, em, focus, fontSize, height, none, outline, padding2, pct, rem, solid, width)
@@ -50,6 +50,7 @@ withPlaceholder : String -> TextInput msg -> TextInput msg
 withPlaceholder placeholder (TextInput config) =
     TextInput { config | placeholder = Just placeholder }
 
+
 withError : Bool -> TextInput msg -> TextInput msg
 withError condition (TextInput config) =
     TextInput { config | showError = condition }
@@ -75,27 +76,33 @@ getAttributes config =
         , config.placeholder |> Maybe.map placeholder
         ]
 
+
+
 -- STYLES
+
+
 getStyles : Config msg -> List Style
 getStyles config =
     let
         borderColorStyle =
-            if config.showError then Colors.redDark
-            else Colors.grayMedium
+            if config.showError then
+                Colors.redDark
+
+            else
+                Colors.grayMedium
     in
     [ fontSize (rem 1)
-        , height (em 2.5)
-        , padding2 (em 0.75) (em 0.75)
-        , borderRadius (em 0.125)
-        , border3 (em 0.0625) solid borderColorStyle
-        , boxSizing borderBox
-        , width (pct 100)
-        , disabled
-            [ backgroundColor Colors.grayWarm
-            ]
-        , focus
-            [ outline none
-            , borderColor Colors.blueNordea
-            ]
+    , height (em 2.5)
+    , padding2 (em 0.75) (em 0.75)
+    , borderRadius (em 0.125)
+    , border3 (em 0.0625) solid borderColorStyle
+    , boxSizing borderBox
+    , width (pct 100)
+    , disabled
+        [ backgroundColor Colors.grayWarm
         ]
-
+    , focus
+        [ outline none
+        , borderColor Colors.blueNordea
+        ]
+    ]
