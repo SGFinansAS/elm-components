@@ -11,7 +11,7 @@ import Css exposing (Style, backgroundColor, border2, borderBox, borderColor, bo
 import Html.Styled exposing (Attribute, Html, input, styled)
 import Html.Styled.Attributes exposing (placeholder, value)
 import Html.Styled.Events exposing (onInput)
-import Maybe.Extra as Maybe exposing (isJust)
+import Maybe.Extra as Maybe
 import Nordea.Resources.Colors as Colors
 
 
@@ -79,11 +79,17 @@ getAttributes config =
 getStyles : Config msg -> List Style
 getStyles config =
     let
+        borderColorNormal =
+            borderColor Colors.grayMedium
         borderColorStyle =
-           if isJust config.error then
-                borderColor Colors.redDark
-            else
-                borderColor Colors.grayMedium
+            case config.error of
+                Just error ->
+                    if error then borderColor Colors.redDark
+                    else borderColorNormal
+
+                Nothing ->
+                    borderColorNormal
+
     in
     [ fontSize (rem 1)
         , height (em 2.5)
