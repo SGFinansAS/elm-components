@@ -7,7 +7,7 @@ module Nordea.Components.TextInput exposing
     , withError
     )
 
-import Css exposing (Style, backgroundColor, border2, borderBox, borderColor, borderRadius, boxSizing, disabled, em, focus, fontSize, height, none, outline, padding2, pct, rem, solid, width)
+import Css exposing (Style, backgroundColor, border3, borderBox, borderColor, borderRadius, boxSizing, disabled, em, focus, fontSize, height, none, outline, padding2, pct, rem, solid, width)
 import Html.Styled exposing (Attribute, Html, input, styled)
 import Html.Styled.Attributes exposing (placeholder, value)
 import Html.Styled.Events exposing (onInput)
@@ -80,11 +80,11 @@ getStyles : Config msg -> List Style
 getStyles config =
     let
         borderColorNormal =
-            borderColor Colors.grayMedium
+            Colors.grayMedium
         borderColorStyle =
             case config.error of
                 Just error ->
-                    if error then borderColor Colors.redDark
+                    if error then Colors.redDark
                     else borderColorNormal
 
                 Nothing ->
@@ -95,8 +95,7 @@ getStyles config =
         , height (em 2.5)
         , padding2 (em 0.75) (em 0.75)
         , borderRadius (em 0.125)
-        , border2 (em 0.0625) solid
-        , borderColorStyle
+        , border3 (em 0.0625) solid borderColorStyle
         , boxSizing borderBox
         , width (pct 100)
         , disabled
