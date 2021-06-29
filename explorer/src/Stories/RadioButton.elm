@@ -30,4 +30,24 @@ stories =
                     ]
           , {}
           )
+        , ( "Error"
+          , \_ ->
+                Html.div []
+                    [ Html.styled Html.div
+                        [ Css.margin2 (Css.rem 0.5) Css.zero ]
+                        []
+                        [ RadioButton.init False
+                            |> RadioButton.withError True
+                            |> RadioButton.view [ Attrs.name "radio" ] [ text "Answer 1" ]
+                        ]
+                    , Html.styled Html.div
+                        [ Css.margin2 (Css.rem 0.5) Css.zero ]
+                        []
+                        [ RadioButton.init False
+                            |> RadioButton.withError True
+                            |> RadioButton.view [ Attrs.name "radio" ] [ text "Answer 2" ]
+                        ]
+                    ]
+          , {}
+          )
         ]

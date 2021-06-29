@@ -3,6 +3,7 @@ module Nordea.Components.FlatLink exposing
     , default
     , mini
     , view
+    , withButtonStyle
     , withDisabled
     , withStyles
     )
@@ -17,10 +18,12 @@ import Css
         , color
         , cursor
         , displayFlex
+        , fitContent
         , focus
         , fontSize
         , hover
         , lineHeight
+        , maxWidth
         , none
         , num
         , opacity
@@ -31,6 +34,7 @@ import Css
         , underline
         )
 import Html.Styled as Html exposing (Attribute, Html)
+import Nordea.Components.Button as Button
 import Nordea.Resources.Colors as Colors
 
 
@@ -74,6 +78,11 @@ withStyles styles (FlatLink config) =
 withDisabled : FlatLink -> FlatLink
 withDisabled (FlatLink config) =
     FlatLink { config | isDisabled = Just True }
+
+
+withButtonStyle : Button.Variant -> FlatLink -> FlatLink
+withButtonStyle buttonVariant (FlatLink config) =
+    FlatLink { config | styles = buttonStyle buttonVariant }
 
 
 
@@ -141,3 +150,11 @@ variantStyle variant =
                 [ fontSize (rem 0.875)
                 , lineHeight (rem 1.125)
                 ]
+
+
+buttonStyle : Button.Variant -> List Style
+buttonStyle buttonVariant =
+    [ maxWidth fitContent
+    , textDecoration none
+    , Button.buttonStyleForExport buttonVariant
+    ]
