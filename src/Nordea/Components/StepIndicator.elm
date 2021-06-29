@@ -120,7 +120,7 @@ viewStepItem currentStep ( item, stepName ) =
         styled li
             listStylesLi
             []
-            [ styled div divStyles [] [ text (String.fromInt item) ]
+            [ styled div divStyles [] []
             , styled p textStyles [] [ text stepName ]
             , viewLine
             ]
