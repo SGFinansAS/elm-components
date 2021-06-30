@@ -11,8 +11,10 @@ import Css
         , alignItems
         , backgroundColor
         , border3
+        , borderBox
         , borderRadius
         , bottom
+        , boxSizing
         , center
         , color
         , column
@@ -158,6 +160,7 @@ divStyles =
     , lineHeight (rem 1.8)
     , fontSize (rem 1)
     , color Colors.grayEclipse
+    , backgroundColor Colors.white
     ]
 
 
@@ -167,10 +170,12 @@ divStylesCurrent =
     , width (rem 2)
     , borderRadius (pct 50)
     , border3 (rem 0.125) solid Colors.black
+    , backgroundColor Colors.white
     , textAlign center
     , position relative
-    , lineHeight (rem 1.8)
     , fontSize (rem 1)
+    , lineHeight (rem 1.8)
+    , boxSizing borderBox
     , color Colors.black
     ]
 
