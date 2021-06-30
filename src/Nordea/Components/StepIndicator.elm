@@ -34,6 +34,7 @@ import Css
         , rem
         , solid
         , textAlign
+        , top
         , width
         , zIndex
         )
@@ -198,7 +199,7 @@ textStyles : List Style
 textStyles =
     [ textAlign center
     , position absolute
-    , bottom (rem -3)
+    , top (rem 2.5)
     , width (rem 7)
     , Fonts.fromSize 0.875
     , fontWeight (int 400)

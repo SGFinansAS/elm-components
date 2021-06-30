@@ -22,7 +22,7 @@ stories =
           )
           ,( "5 steps, current 3"
           , \_ ->
-                StepIndicator.init ["Step name", "Step name", "Step name", "Step name", "Step name"] 3
+                StepIndicator.init ["Step longlongname", "Step name", "Step longlonglong name", "Step name", "Step name"] 3
                     |> StepIndicator.view
           , {}
           )
