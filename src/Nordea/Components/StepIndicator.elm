@@ -19,6 +19,7 @@ import Css
         , displayFlex
         , flexDirection
         , fontSize
+        , fontWeight
         , height
         , int
         , lineHeight
@@ -37,6 +38,7 @@ import Css
 import Html.Styled exposing (Html, div, li, p, span, styled, text, ul)
 import List.Extra as List
 import Nordea.Resources.Colors as Colors
+import Nordea.Resources.Fonts as Fonts
 import Nordea.Resources.Icons as Icons
 
 
@@ -120,7 +122,7 @@ viewStepItem currentStep ( item, stepName ) =
         styled li
             listStylesLi
             []
-            [ styled div divStyles [] []
+            [ styled div divStyles [] [ text (String.fromInt item) ]
             , styled p textStyles [] [ text stepName ]
             , viewLine
             ]
@@ -150,11 +152,12 @@ divStyles =
     [ height (rem 2)
     , width (rem 2)
     , borderRadius (pct 50)
-    , border3 (rem 0.125) solid Colors.gray
+    , border3 (rem 0.125) solid Colors.grayMedium
     , textAlign center
     , position relative
     , lineHeight (rem 1.8)
     , fontSize (rem 1)
+    , color Colors.grayEclipse
     ]
 
 
@@ -168,6 +171,7 @@ divStylesCurrent =
     , position relative
     , lineHeight (rem 1.8)
     , fontSize (rem 1)
+    , color Colors.black
     ]
 
 
@@ -191,6 +195,9 @@ textStyles =
     , position absolute
     , bottom (rem -3)
     , width (rem 7)
+    , Fonts.fromSize 0.875
+    , fontWeight (int 400)
+    , lineHeight (rem 1.125)
     ]
 
 
@@ -204,7 +211,6 @@ viewLineActive =
             , Css.right (Css.rem 2)
             , Css.width (Css.rem 6)
             , Css.height (Css.rem 0.1)
-            , Css.color Colors.blueDeep
             , Css.backgroundColor Colors.black
             ]
         ]
@@ -222,8 +228,7 @@ viewLine =
             , Css.right (Css.rem 2)
             , Css.width (Css.rem 6)
             , Css.height (Css.rem 0.1)
-            , Css.color Colors.blueDeep
-            , Css.backgroundColor Colors.gray
+            , Css.backgroundColor Colors.grayMedium
             ]
         ]
         []
