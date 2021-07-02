@@ -13,7 +13,6 @@ import Css
         , border3
         , borderBox
         , borderRadius
-        , bottom
         , boxSizing
         , center
         , color
@@ -39,6 +38,7 @@ import Css
         , zIndex
         )
 import Html.Styled exposing (Html, div, li, p, span, styled, text, ul)
+import Html.Styled.Attributes exposing (attribute)
 import List.Extra as List
 import Nordea.Resources.Colors as Colors
 import Nordea.Resources.Fonts as Fonts
@@ -65,14 +65,14 @@ init stepNames currentStep =
 
 view : StepIndicator -> Html msg
 view (StepIndicator config) =
-    div []
+    div [ attribute "aria-label" "progress" ]
         [ viewSteps config.stepNames config.currentStep
         ]
 
 
 enumerateList : List a -> List ( Int, a )
 enumerateList list =
-    List.zip (List.range 1 (List.length list)) list
+    List.indexedMap (\i a -> ( i + 1, a )) list
 
 
 viewSteps : List String -> Int -> Html msg
@@ -86,39 +86,22 @@ viewSteps stepNames currentStep =
 
 viewStepItem : Int -> ( Int, String ) -> Html msg
 viewStepItem currentStep ( item, stepName ) =
-    if item == 1 then
-        if item == currentStep then
-            styled li
-                listStylesLi
-                []
-                [ styled div divStylesCurrent [] [ text (String.fromInt item) ]
-                , styled p textStyles [] [ text stepName ]
-                ]
-
-        else
-            styled li
-                listStylesLi
-                []
-                [ styled div divStylesActive [] [ Icons.check ]
-                , styled p textStyles [] [ text stepName ]
-                ]
-
-    else if item < currentStep then
+    if item < currentStep then
         styled li
             listStylesLi
             []
             [ styled div divStylesActive [] [ Icons.check ]
             , styled p textStyles [] [ text stepName ]
-            , viewLineActive
+            , showIf (item /= 1) viewLineActive
             ]
 
     else if item == currentStep then
         styled li
             listStylesLi
-            []
+            [ attribute "aria-current" "step" ]
             [ styled div divStylesCurrent [] [ text (String.fromInt item) ]
             , styled p textStyles [] [ text stepName ]
-            , viewLineActive
+            , showIf (item /= 1) viewLineActive
             ]
 
     else
@@ -127,8 +110,17 @@ viewStepItem currentStep ( item, stepName ) =
             []
             [ styled div divStyles [] [ text (String.fromInt item) ]
             , styled p textStyles [] [ text stepName ]
-            , viewLine
+            , showIf (item /= 1) viewLine
             ]
+
+
+showIf : Bool -> Html msg -> Html msg
+showIf pred elem =
+    if pred then
+        elem
+
+    else
+        text ""
 
 
 listStyles : List Style
