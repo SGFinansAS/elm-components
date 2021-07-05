@@ -37,7 +37,7 @@ import Css
         , width
         , zIndex
         )
-import Html.Styled exposing (Html, div, li, p, span, styled, text, ul)
+import Html.Styled exposing (Html, div, li, ol, p, span, styled, text)
 import Html.Styled.Attributes exposing (attribute)
 import List.Extra as List
 import Nordea.Resources.Colors as Colors
@@ -65,7 +65,7 @@ init stepNames currentStep =
 
 view : StepIndicator -> Html msg
 view (StepIndicator config) =
-    div [ attribute "aria-label" "progress" ]
+    div [ attribute "role" "group", attribute "aria-label" "Step progress" ]
         [ viewSteps config.stepNames config.currentStep
         ]
 
@@ -81,7 +81,7 @@ viewSteps stepNames currentStep =
         list =
             List.map (viewStepItem currentStep) (enumerateList stepNames)
     in
-    styled ul listStyles [] list
+    styled ol listStyles [] list
 
 
 viewStepItem : Int -> ( Int, String ) -> Html msg
