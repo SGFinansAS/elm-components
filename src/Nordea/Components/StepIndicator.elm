@@ -23,6 +23,7 @@ import Css
         , fontWeight
         , height
         , int
+        , justifyContent
         , lineHeight
         , listStyleType
         , margin
@@ -40,6 +41,7 @@ import Css
 import Html.Styled exposing (Html, div, li, ol, p, span, styled, text)
 import Html.Styled.Attributes exposing (attribute)
 import List.Extra as List
+import Nordea.Html exposing (viewIf)
 import Nordea.Resources.Colors as Colors
 import Nordea.Resources.Fonts as Fonts
 import Nordea.Resources.Icons as Icons
@@ -92,7 +94,7 @@ viewStepItem currentStep ( item, stepName ) =
             []
             [ styled div divStylesActive [] [ Icons.check ]
             , styled p textStyles [] [ text stepName ]
-            , showIf (item /= 1) viewLineActive
+            , viewIf (item /= 1) viewLineActive
             ]
 
     else if item == currentStep then
@@ -101,7 +103,7 @@ viewStepItem currentStep ( item, stepName ) =
             [ attribute "aria-current" "step" ]
             [ styled div divStylesCurrent [] [ text (String.fromInt item) ]
             , styled p textStyles [] [ text stepName ]
-            , showIf (item /= 1) viewLineActive
+            , viewIf (item /= 1) viewLineActive
             ]
 
     else
@@ -110,17 +112,8 @@ viewStepItem currentStep ( item, stepName ) =
             []
             [ styled div divStyles [] [ text (String.fromInt item) ]
             , styled p textStyles [] [ text stepName ]
-            , showIf (item /= 1) viewLine
+            , viewLine
             ]
-
-
-showIf : Bool -> Html msg -> Html msg
-showIf pred elem =
-    if pred then
-        elem
-
-    else
-        text ""
 
 
 listStyles : List Style
@@ -144,13 +137,13 @@ listStylesLi =
 
 divStyles : List Style
 divStyles =
-    [ height (rem 2)
+    [ displayFlex
+    , justifyContent center
+    , alignItems center
+    , height (rem 2)
     , width (rem 2)
     , borderRadius (pct 50)
     , border3 (rem 0.125) solid Colors.grayMedium
-    , textAlign center
-    , position relative
-    , lineHeight (rem 1.8)
     , fontSize (rem 1)
     , color Colors.grayEclipse
     , backgroundColor Colors.white
@@ -159,15 +152,15 @@ divStyles =
 
 divStylesCurrent : List Style
 divStylesCurrent =
-    [ height (rem 2)
+    [ displayFlex
+    , justifyContent center
+    , alignItems center
+    , height (rem 2)
     , width (rem 2)
     , borderRadius (pct 50)
     , border3 (rem 0.125) solid Colors.black
     , backgroundColor Colors.white
-    , textAlign center
-    , position relative
     , fontSize (rem 1)
-    , lineHeight (rem 1.8)
     , boxSizing borderBox
     , color Colors.black
     ]
@@ -175,15 +168,15 @@ divStylesCurrent =
 
 divStylesActive : List Style
 divStylesActive =
-    [ height (rem 2)
+    [ displayFlex
+    , justifyContent center
+    , alignItems center
+    , height (rem 2)
     , width (rem 2)
     , borderRadius (pct 50)
     , border3 (rem 0.125) solid Colors.white
     , backgroundColor Colors.blueDeep
     , color Colors.white
-    , textAlign center
-    , position relative
-    , lineHeight (rem 2.2)
     ]
 
 
