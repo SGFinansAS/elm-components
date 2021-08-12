@@ -34,6 +34,7 @@ import Html.Styled.Attributes as Attributes
 import Html.Styled.Events as Events
 import List.Extra as List
 import Maybe.Extra as Maybe
+import Nordea.Html.Events as Events
 import Nordea.Resources.Colors as Colors
 
 
@@ -103,7 +104,7 @@ viewOption selected option =
 getAttributes : Config msg -> List (Attribute msg)
 getAttributes config =
     Maybe.values
-        [ config.onInput |> Maybe.map Events.onInput ]
+        [ config.onInput |> Maybe.map Events.onChange ]
 
 
 
