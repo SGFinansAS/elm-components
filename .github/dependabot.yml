@@ -1,0 +1,29 @@
+# https://docs.github.com/en/github/administering-a-repository/about-dependabot-version-updates#supported-repositories-and-ecosystems
+version: 2
+updates:
+  - package-ecosystem: "github-actions"
+    # default location of `.github/workflows`
+    directory: "/"
+    schedule:
+      interval: "weekly"
+
+  # Keep npm and yarn dependencies up to date
+  - package-ecosystem: "npm"
+    directory: "/explorer"
+    # Check the npm registry for updates at 2am UTC
+    schedule:
+      interval: "weekly"
+
+  # Keep npm and yarn dependencies up to date
+  - package-ecosystem: "elm"
+    directory: "/explorer"
+    # Check the npm registry for updates at 2am UTC
+    schedule:
+      interval: "weekly"
+      
+  # Keep npm and yarn dependencies up to date
+  - package-ecosystem: "elm"
+    directory: "/"
+    # Check the npm registry for updates at 2am UTC
+    schedule:
+      interval: "weekly"
