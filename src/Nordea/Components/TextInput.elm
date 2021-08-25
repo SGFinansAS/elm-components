@@ -14,7 +14,6 @@ import Html.Styled exposing (Attribute, Html, input, styled)
 import Html.Styled.Attributes exposing (maxlength, pattern, placeholder, value)
 import Html.Styled.Events exposing (onInput)
 import Maybe.Extra as Maybe
-import Nordea.Components.Accordion exposing (Msg)
 import Nordea.Resources.Colors as Colors
 
 
