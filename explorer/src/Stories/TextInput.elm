@@ -29,7 +29,23 @@ stories =
                     |> TextInput.view []
           , {}
           )
-        , ( "Error"
+        , ( "Max length 3"
+          , \_ ->
+                TextInput.init ""
+                    |> TextInput.withPlaceholder "Type something"
+                    |> TextInput.withMaxLength 3
+                    |> TextInput.view []
+          , {}
+          )
+          , ( "Pattern only digits"
+          , \_ ->
+                TextInput.init ""
+                    |> TextInput.withPlaceholder "Type something"
+                    |> TextInput.withPattern "\\d*"
+                    |> TextInput.view []
+          , {}
+          )
+          , ( "Error"
           , \_ ->
                 TextInput.init "Text"
                     |> TextInput.withError True

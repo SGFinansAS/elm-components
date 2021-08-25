@@ -3,15 +3,18 @@ module Nordea.Components.TextInput exposing
     , init
     , view
     , withError
+    , withMaxLength
     , withOnInput
+    , withPattern
     , withPlaceholder
     )
 
 import Css exposing (Style, backgroundColor, border3, borderBox, borderColor, borderRadius, boxSizing, disabled, em, focus, fontSize, height, none, outline, padding2, pct, rem, solid, width)
 import Html.Styled exposing (Attribute, Html, input, styled)
-import Html.Styled.Attributes exposing (placeholder, value)
+import Html.Styled.Attributes exposing (maxlength, pattern, placeholder, value)
 import Html.Styled.Events exposing (onInput)
 import Maybe.Extra as Maybe
+import Nordea.Components.Accordion exposing (Msg)
 import Nordea.Resources.Colors as Colors
 
 
@@ -24,6 +27,8 @@ type alias Config msg =
     , onInput : Maybe (String -> msg)
     , placeholder : Maybe String
     , showError : Bool
+    , maxLength : Maybe Int
+    , pattern : Maybe String
     }
 
 
@@ -38,6 +43,8 @@ init value =
         , onInput = Nothing
         , placeholder = Nothing
         , showError = False
+        , maxLength = Nothing
+        , pattern = Nothing
         }
 
 
@@ -49,6 +56,16 @@ withOnInput onInput (TextInput config) =
 withPlaceholder : String -> TextInput msg -> TextInput msg
 withPlaceholder placeholder (TextInput config) =
     TextInput { config | placeholder = Just placeholder }
+
+
+withMaxLength : Int -> TextInput msg -> TextInput msg
+withMaxLength maxLength (TextInput config) =
+    TextInput { config | maxLength = Just maxLength }
+
+
+withPattern : String -> TextInput msg -> TextInput msg
+withPattern pattern (TextInput config) =
+    TextInput { config | pattern = Just pattern }
 
 
 withError : Bool -> TextInput msg -> TextInput msg
@@ -74,6 +91,8 @@ getAttributes config =
         [ Just config.value |> Maybe.map value
         , config.onInput |> Maybe.map onInput
         , config.placeholder |> Maybe.map placeholder
+        , config.maxLength |> Maybe.map maxlength
+        , config.pattern |> Maybe.map pattern
         ]
 
 
