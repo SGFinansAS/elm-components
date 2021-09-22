@@ -11,9 +11,9 @@ import Stories.Dropdown as Dropdown
 import Stories.FlatLink as FlatLink
 import Stories.NumberInput as NumberInput
 import Stories.RadioButton as RadioButton
-import Stories.TextInput as TextInput
-import Stories.FlatLink as FlatLink
+import Stories.Spinner as Spinner
 import Stories.StepIndicator as StepIndicator
+import Stories.TextInput as TextInput
 import UIExplorer
     exposing
         ( UIExplorerProgram
@@ -58,4 +58,5 @@ main =
         , RadioButton.stories
         , StepIndicator.stories
         , Accordion.stories
+        , Spinner.stories
         ]

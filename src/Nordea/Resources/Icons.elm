@@ -1,21 +1,11 @@
-module Nordea.Resources.Icons exposing (check, chevronDown, chevronUp, info, leftIcon, rightIcon)
+module Nordea.Resources.Icons exposing (check, chevronDown, chevronUp, info, leftIcon, rightIcon, spinner)
 
-import Css exposing (displayFlex, marginLeft, marginRight, rem)
+import Css exposing (animationDuration, animationName, displayFlex, marginLeft, marginRight, ms, rem)
+import Css.Animations as Animations exposing (keyframes)
 import Html.Styled as Html exposing (Html)
 import Html.Styled.Attributes exposing (css)
 import Svg.Styled as Svg exposing (Svg, svg)
-import Svg.Styled.Attributes
-    exposing
-        ( clipRule
-        , d
-        , fill
-        , fillRule
-        , height
-        , stroke
-        , strokeWidth
-        , viewBox
-        , width
-        )
+import Svg.Styled.Attributes as SvgAttrs exposing (clipRule, cx, cy, d, fill, fillRule, height, r, stroke, strokeWidth, viewBox, width)
 
 
 
@@ -86,6 +76,46 @@ chevronDown =
             [ d "M4 7L10 13L16 7"
             , stroke "currentColor"
             , strokeWidth "2"
+            ]
+            []
+        ]
+
+
+spinner : Svg msg
+spinner =
+    Svg.svg
+        [ fill "none"
+        , viewBox "0 0 20 20"
+        , SvgAttrs.css
+            [ Css.property "animation-iteration-count" "infinite"
+            , Css.property "animation-timing-function" "linear"
+            , Css.property "transform-origin" "center"
+            , animationDuration (ms 1000)
+            , animationName
+                (keyframes
+                    [ ( 0, [ Animations.transform [ Css.rotateZ (Css.deg 0) ] ] )
+                    , ( 100, [ Animations.transform [ Css.rotateZ (Css.deg 360) ] ] )
+                    ]
+                )
+            ]
+        ]
+        [ Svg.circle
+            [ cx "10"
+            , cy "10"
+            , r "9"
+            , strokeWidth "2"
+            , stroke "currentColor"
+            , SvgAttrs.css
+                [ Css.property "stroke-dasharray" "56px"
+                , Css.property "animation-iteration-count" "infinite"
+                , animationDuration (ms 4000)
+                , animationName
+                    (keyframes
+                        [ ( 0, [ Animations.property "stroke-dashoffset" "112" ] )
+                        , ( 100, [ Animations.property "stroke-dashoffset" "0" ] )
+                        ]
+                    )
+                ]
             ]
             []
         ]
