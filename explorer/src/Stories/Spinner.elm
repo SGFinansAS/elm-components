@@ -22,16 +22,4 @@ stories =
                     []
           , {}
           )
-        , ( "Medium"
-          , \_ ->
-                Spinner.medium
-                    []
-          , {}
-          )
-        , ( "Large"
-          , \_ ->
-                Spinner.large
-                    []
-          , {}
-          )
         ]
