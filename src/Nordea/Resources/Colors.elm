@@ -1,5 +1,6 @@
 module Nordea.Resources.Colors exposing
     ( black
+    , black25
     , blueCloud
     , blueDeep
     , blueHaas
@@ -49,6 +50,11 @@ white =
 black : Color
 black =
     hex "#000000"
+
+
+black25 : Color
+black25 =
+    rgba 0 0 0 0.25
 
 
 

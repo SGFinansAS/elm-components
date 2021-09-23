@@ -1,5 +1,6 @@
-module Nordea.Html exposing (nothing, viewIf, viewIfNotEmpty, viewMaybe)
+module Nordea.Html exposing (nothing, showIf, styleIf, viewIfNotEmpty, viewMaybe)
 
+import Css exposing (Style)
 import Html.Styled as Html exposing (Html)
 
 
@@ -8,8 +9,8 @@ nothing =
     Html.text ""
 
 
-viewMaybe : Maybe a -> (a -> Html msg) -> Html msg
-viewMaybe maybe view =
+viewMaybe : (a -> Html msg) -> Maybe a -> Html msg
+viewMaybe view maybe =
     case maybe of
         Just value ->
             view value
@@ -18,8 +19,8 @@ viewMaybe maybe view =
             nothing
 
 
-viewIf : Bool -> Html msg -> Html msg
-viewIf condition element =
+showIf : Bool -> Html msg -> Html msg
+showIf condition element =
     if condition then
         element
 
@@ -34,3 +35,12 @@ viewIfNotEmpty list view =
 
     else
         nothing
+
+
+styleIf : Bool -> Style -> Style
+styleIf condition style =
+    if condition then
+        style
+
+    else
+        Css.property "" ""

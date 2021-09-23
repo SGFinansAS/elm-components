@@ -41,7 +41,7 @@ import Css
 import Html.Styled exposing (Html, div, li, ol, p, span, styled, text)
 import Html.Styled.Attributes exposing (attribute)
 import List.Extra as List
-import Nordea.Html exposing (viewIf)
+import Nordea.Html exposing (showIf)
 import Nordea.Resources.Colors as Colors
 import Nordea.Resources.Fonts as Fonts
 import Nordea.Resources.Icons as Icons
@@ -94,7 +94,7 @@ viewStepItem currentStep ( item, stepName ) =
             []
             [ styled div divStylesActive [] [ Icons.check ]
             , styled p textStyles [] [ text stepName ]
-            , viewIf (item /= 1) viewLineActive
+            , showIf (item /= 1) viewLineActive
             ]
 
     else if item == currentStep then
@@ -103,7 +103,7 @@ viewStepItem currentStep ( item, stepName ) =
             [ attribute "aria-current" "step" ]
             [ styled div divStylesCurrent [] [ text (String.fromInt item) ]
             , styled p textStyles [] [ text stepName ]
-            , viewIf (item /= 1) viewLineActive
+            , showIf (item /= 1) viewLineActive
             ]
 
     else

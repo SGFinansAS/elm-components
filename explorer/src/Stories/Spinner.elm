@@ -10,16 +10,8 @@ stories : UI Config Msg {}
 stories =
     styledStoriesOf
         "Spinner"
-        [ ( "Default"
-          , \_ ->
-                Spinner.default
-                    []
-          , {}
-          )
-        , ( "Small"
-          , \_ ->
-                Spinner.small
-                    []
+        [ ( "Small"
+          , \_ -> Spinner.small []
           , {}
           )
         ]
