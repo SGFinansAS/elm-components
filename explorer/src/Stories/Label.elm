@@ -165,7 +165,7 @@ stories =
                     ]
           , {}
           )
-        , ( "With checkboxes buttons"
+        , ( "With checkboxes"
           , \_ ->
                 Html.div [ css [ displayFlex, flexDirection column, maxWidth (rem 30), Css.property "gap" "2rem" ] ]
                     [ Label.init "State of object" Label.GroupLabel
