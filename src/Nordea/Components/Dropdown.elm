@@ -12,6 +12,7 @@ import Css
         , boxShadow5
         , color
         , displayFlex
+        , flexBasis
         , focus
         , fontFamilies
         , fontSize
@@ -125,6 +126,7 @@ view attrs (Dropdown config) =
         (css
             [ displayFlex
             , position relative
+            , flexBasis (pct 100)
             , border3 (rem 0.0625) solid Colors.grayMedium
             , borderColor Colors.redDark |> styleIf config.hasError
             , borderRadius (rem 0.25)

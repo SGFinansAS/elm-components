@@ -32,6 +32,7 @@ import Css
         , display
         , firstOfType
         , flex
+        , flexBasis
         , height
         , hover
         , inlineFlex
@@ -166,6 +167,7 @@ view attrs (RadioButton config) =
                 ListStyle ->
                     Css.batch
                         [ commonNonSimpleStyles
+                        , flexBasis (pct 100)
                         , borderColor Colors.grayMedium
                         , borderColor Colors.redDark |> styleIf config.showError
                         , Css.firstOfType [ borderTopLeftRadius (rem 0.5), borderTopRightRadius (rem 0.5) ]

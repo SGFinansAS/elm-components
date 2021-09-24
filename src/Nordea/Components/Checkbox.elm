@@ -33,6 +33,7 @@ import Css
         , displayFlex
         , firstOfType
         , flex
+        , flexBasis
         , height
         , hover
         , inlineFlex
@@ -45,6 +46,7 @@ import Css
         , num
         , opacity
         , padding2
+        , pct
         , pointer
         , position
         , pseudoClass
@@ -164,6 +166,7 @@ view attrs (Checkbox config) =
                 ListStyle ->
                     Css.batch
                         [ commonNonSimpleStyles
+                        , flexBasis (pct 100)
                         , borderColor Colors.grayMedium
                         , borderColor Colors.redDark |> styleIf config.hasError
                         , Css.firstOfType [ borderTopLeftRadius (rem 0.5), borderTopRightRadius (rem 0.5) ]

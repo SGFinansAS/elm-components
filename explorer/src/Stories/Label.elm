@@ -1,7 +1,7 @@
 module Stories.Label exposing (stories)
 
 import Config exposing (Msg(..))
-import Css exposing (column, displayFlex, flexDirection, marginRight, rem)
+import Css exposing (column, displayFlex, flexDirection, marginRight, maxWidth, rem)
 import Html.Styled as Html exposing (text)
 import Html.Styled.Attributes as Attrs exposing (css)
 import Nordea.Components.Checkbox as Checkbox
@@ -19,7 +19,7 @@ stories =
         "Label"
         [ ( "With text input"
           , \_ ->
-                Html.div [ css [ displayFlex, flexDirection column, Css.property "gap" "2rem" ] ]
+                Html.div [ css [ displayFlex, flexDirection column, maxWidth (rem 20), Css.property "gap" "2rem" ] ]
                     [ Label.init "Customer name" Label.InputLabel
                         |> Label.view []
                             [ TextInput.init "Text"
@@ -36,7 +36,6 @@ stories =
                         |> Label.withHintText (Just "This is some extra hint")
                         |> Label.view []
                             [ TextInput.init "Text"
-                                |> TextInput.withError True
                                 |> TextInput.view []
                             ]
                     , Label.init "Customer name (with error and hint)" Label.InputLabel
@@ -51,7 +50,6 @@ stories =
                         |> Label.withRequirednessHint (Just (Label.Mandatory .no))
                         |> Label.view []
                             [ TextInput.init "Text"
-                                |> TextInput.withError True
                                 |> TextInput.view []
                             ]
                     , Label.init "Customer name (with requiredness)" Label.InputLabel
@@ -65,7 +63,6 @@ stories =
                         |> Label.withCharCounter (Just { current = String.length "Text", max = 100 })
                         |> Label.view []
                             [ TextInput.init "Text"
-                                |> TextInput.withError True
                                 |> TextInput.view []
                             ]
                     ]
@@ -73,7 +70,7 @@ stories =
           )
         , ( "With dropdown"
           , \_ ->
-                Html.div [ css [ displayFlex, flexDirection column, Css.property "gap" "2rem" ] ]
+                Html.div [ css [ displayFlex, flexDirection column, maxWidth (rem 20), Css.property "gap" "2rem" ] ]
                     [ Label.init "Choose financingVariant" Label.InputLabel
                         |> Label.view []
                             [ Dropdown.init
@@ -105,7 +102,7 @@ stories =
           )
         , ( "With radio buttons"
           , \_ ->
-                Html.div [ css [ displayFlex, flexDirection column, Css.property "gap" "2rem" ] ]
+                Html.div [ css [ displayFlex, flexDirection column, maxWidth (rem 30), Css.property "gap" "2rem" ] ]
                     [ Label.init "State of object" Label.GroupLabel
                         |> Label.view []
                             [ RadioButton.init
@@ -120,7 +117,7 @@ stories =
                                 |> RadioButton.withIsSelected True
                                 |> RadioButton.view []
                             ]
-                    , Label.init "State of object" Label.GroupLabel
+                    , Label.init "State of object (with error)" Label.GroupLabel
                         |> Label.withErrorMessage (Just "State of object is required")
                         |> Label.view []
                             [ RadioButton.init
@@ -136,12 +133,41 @@ stories =
                                 |> RadioButton.withHasError True
                                 |> RadioButton.view []
                             ]
+                    , Label.init "State of object" Label.GroupLabel
+                        |> Label.view []
+                            (List.range 0 5
+                                |> List.map
+                                    (\i ->
+                                        RadioButton.init
+                                            "simple"
+                                            (text ("Click me: " ++ String.fromInt i))
+                                            NoOp
+                                            |> RadioButton.withAppearance RadioButton.ListStyle
+                                            |> RadioButton.withIsSelected (i == 2)
+                                            |> RadioButton.view []
+                                    )
+                            )
+                    , Label.init "State of object (with error)" Label.GroupLabel
+                        |> Label.withErrorMessage (Just "State of object is required")
+                        |> Label.view []
+                            (List.range 0 5
+                                |> List.map
+                                    (\i ->
+                                        RadioButton.init
+                                            "simple"
+                                            (text ("Click me: " ++ String.fromInt i))
+                                            NoOp
+                                            |> RadioButton.withAppearance RadioButton.ListStyle
+                                            |> RadioButton.withHasError True
+                                            |> RadioButton.view []
+                                    )
+                            )
                     ]
           , {}
           )
         , ( "With checkboxes buttons"
           , \_ ->
-                Html.div [ css [ displayFlex, flexDirection column, Css.property "gap" "2rem" ] ]
+                Html.div [ css [ displayFlex, flexDirection column, maxWidth (rem 30), Css.property "gap" "2rem" ] ]
                     [ Label.init "State of object" Label.GroupLabel
                         |> Label.view []
                             [ Checkbox.init
@@ -172,6 +198,35 @@ stories =
                                 |> Checkbox.withHasError True
                                 |> Checkbox.view []
                             ]
+                    , Label.init "State of object" Label.GroupLabel
+                        |> Label.view []
+                            (List.range 0 5
+                                |> List.map
+                                    (\i ->
+                                        Checkbox.init
+                                            "simple"
+                                            (text ("Click me: " ++ String.fromInt i))
+                                            (\_ -> NoOp)
+                                            |> Checkbox.withAppearance Checkbox.ListStyle
+                                            |> Checkbox.withIsChecked (i == 2)
+                                            |> Checkbox.view []
+                                    )
+                            )
+                    , Label.init "State of object (with error)" Label.GroupLabel
+                        |> Label.withErrorMessage (Just "State of object is required")
+                        |> Label.view []
+                            (List.range 0 5
+                                |> List.map
+                                    (\i ->
+                                        Checkbox.init
+                                            "simple"
+                                            (text ("Click me: " ++ String.fromInt i))
+                                            (\_ -> NoOp)
+                                            |> Checkbox.withAppearance Checkbox.ListStyle
+                                            |> Checkbox.withHasError True
+                                            |> Checkbox.view []
+                                    )
+                            )
                     ]
           , {}
           )
