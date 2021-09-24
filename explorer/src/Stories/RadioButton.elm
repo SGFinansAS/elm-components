@@ -15,42 +15,78 @@ stories =
         "RadioButton"
         [ ( "Standard"
           , \_ ->
-                RadioButton.init
-                    "simple"
-                    (text "Click me")
-                    NoOp
-                    |> RadioButton.view []
+                Html.div [ css [ displayFlex, Css.property "gap" "1rem" ] ]
+                    [ RadioButton.init
+                        "simple"
+                        (text "Click me")
+                        NoOp
+                        |> RadioButton.view []
+                    , RadioButton.init
+                        "simple"
+                        (text "Click me")
+                        NoOp
+                        |> RadioButton.withIsSelected True
+                        |> RadioButton.view []
+                    ]
           , {}
           )
         , ( "Standard with error"
           , \_ ->
-                RadioButton.init
-                    "simple"
-                    (text "Click me")
-                    NoOp
-                    |> RadioButton.withHasError True
-                    |> RadioButton.view []
+                Html.div [ css [ displayFlex, Css.property "gap" "1rem" ] ]
+                    [ RadioButton.init
+                        "simple"
+                        (text "Click me")
+                        NoOp
+                        |> RadioButton.withHasError True
+                        |> RadioButton.view []
+                    , RadioButton.init
+                        "simple"
+                        (text "Click me")
+                        NoOp
+                        |> RadioButton.withHasError True
+                        |> RadioButton.withIsSelected True
+                        |> RadioButton.view []
+                    ]
           , {}
           )
         , ( "Simple"
           , \_ ->
-                RadioButton.init
-                    "simple"
-                    (text "Click me")
-                    NoOp
-                    |> RadioButton.withAppearance RadioButton.Simple
-                    |> RadioButton.view []
+                Html.div [ css [ displayFlex, Css.property "gap" "1rem" ] ]
+                    [ RadioButton.init
+                        "simple"
+                        (text "Click me")
+                        NoOp
+                        |> RadioButton.withAppearance RadioButton.Simple
+                        |> RadioButton.view []
+                    , RadioButton.init
+                        "simple"
+                        (text "Click me")
+                        NoOp
+                        |> RadioButton.withAppearance RadioButton.Simple
+                        |> RadioButton.withIsSelected True
+                        |> RadioButton.view []
+                    ]
           , {}
           )
         , ( "Simple with error"
           , \_ ->
-                RadioButton.init
-                    "simple"
-                    (text "Click me")
-                    NoOp
-                    |> RadioButton.withAppearance RadioButton.Simple
-                    |> RadioButton.withHasError True
-                    |> RadioButton.view []
+                Html.div [ css [ displayFlex, Css.property "gap" "1rem" ] ]
+                    [ RadioButton.init
+                        "simple"
+                        (text "Click me")
+                        NoOp
+                        |> RadioButton.withAppearance RadioButton.Simple
+                        |> RadioButton.withHasError True
+                        |> RadioButton.view []
+                    , RadioButton.init
+                        "simple"
+                        (text "Click me")
+                        NoOp
+                        |> RadioButton.withAppearance RadioButton.Simple
+                        |> RadioButton.withHasError True
+                        |> RadioButton.withIsSelected True
+                        |> RadioButton.view []
+                    ]
           , {}
           )
         , ( "Liststyle"
@@ -64,6 +100,7 @@ stories =
                                     (text ("Click me: " ++ String.fromInt i))
                                     NoOp
                                     |> RadioButton.withAppearance RadioButton.ListStyle
+                                    |> RadioButton.withIsSelected (i == 2)
                                     |> RadioButton.view []
                             )
                     )
@@ -81,6 +118,7 @@ stories =
                                     NoOp
                                     |> RadioButton.withAppearance RadioButton.ListStyle
                                     |> RadioButton.withHasError True
+                                    |> RadioButton.withIsSelected (i == 2)
                                     |> RadioButton.view []
                             )
                     )

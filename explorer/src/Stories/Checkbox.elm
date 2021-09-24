@@ -15,42 +15,78 @@ stories =
         "Checkbox"
         [ ( "Standard"
           , \_ ->
-                Checkbox.init
-                    "simple"
-                    (text "Click me")
-                    (\_ -> NoOp)
-                    |> Checkbox.view []
+                Html.div [ css [ displayFlex, Css.property "gap" "1rem" ] ]
+                    [ Checkbox.init
+                        "simple"
+                        (text "Click me")
+                        (\_ -> NoOp)
+                        |> Checkbox.view []
+                    , Checkbox.init
+                        "simple"
+                        (text "Click me")
+                        (\_ -> NoOp)
+                        |> Checkbox.withIsChecked True
+                        |> Checkbox.view []
+                    ]
           , {}
           )
         , ( "Standard with error"
           , \_ ->
-                Checkbox.init
-                    "simple"
-                    (text "Click me")
-                    (\_ -> NoOp)
-                    |> Checkbox.withHasError True
-                    |> Checkbox.view []
+                Html.div [ css [ displayFlex, Css.property "gap" "1rem" ] ]
+                    [ Checkbox.init
+                        "simple"
+                        (text "Click me")
+                        (\_ -> NoOp)
+                        |> Checkbox.withHasError True
+                        |> Checkbox.view []
+                    , Checkbox.init
+                        "simple"
+                        (text "Click me")
+                        (\_ -> NoOp)
+                        |> Checkbox.withHasError True
+                        |> Checkbox.withIsChecked True
+                        |> Checkbox.view []
+                    ]
           , {}
           )
         , ( "Simple"
           , \_ ->
-                Checkbox.init
-                    "simple"
-                    (text "Click me")
-                    (\_ -> NoOp)
-                    |> Checkbox.withAppearance Checkbox.Simple
-                    |> Checkbox.view []
+                Html.div [ css [ displayFlex, Css.property "gap" "1rem" ] ]
+                    [ Checkbox.init
+                        "simple"
+                        (text "Click me")
+                        (\_ -> NoOp)
+                        |> Checkbox.withAppearance Checkbox.Simple
+                        |> Checkbox.view []
+                    , Checkbox.init
+                        "simple"
+                        (text "Click me")
+                        (\_ -> NoOp)
+                        |> Checkbox.withAppearance Checkbox.Simple
+                        |> Checkbox.withIsChecked True
+                        |> Checkbox.view []
+                    ]
           , {}
           )
         , ( "Simple with error"
           , \_ ->
-                Checkbox.init
-                    "simple"
-                    (text "Click me")
-                    (\_ -> NoOp)
-                    |> Checkbox.withAppearance Checkbox.Simple
-                    |> Checkbox.withHasError True
-                    |> Checkbox.view []
+                Html.div [ css [ displayFlex, Css.property "gap" "1rem" ] ]
+                    [ Checkbox.init
+                        "simple"
+                        (text "Click me")
+                        (\_ -> NoOp)
+                        |> Checkbox.withAppearance Checkbox.Simple
+                        |> Checkbox.withHasError True
+                        |> Checkbox.view []
+                    , Checkbox.init
+                        "simple"
+                        (text "Click me")
+                        (\_ -> NoOp)
+                        |> Checkbox.withAppearance Checkbox.Simple
+                        |> Checkbox.withHasError True
+                        |> Checkbox.withIsChecked True
+                        |> Checkbox.view []
+                    ]
           , {}
           )
         , ( "Liststyle"
@@ -64,6 +100,7 @@ stories =
                                     (text ("Click me: " ++ String.fromInt i))
                                     (\_ -> NoOp)
                                     |> Checkbox.withAppearance Checkbox.ListStyle
+                                    |> Checkbox.withIsChecked (i == 2)
                                     |> Checkbox.view []
                             )
                     )
@@ -81,6 +118,7 @@ stories =
                                     (\_ -> NoOp)
                                     |> Checkbox.withAppearance Checkbox.ListStyle
                                     |> Checkbox.withHasError True
+                                    |> Checkbox.withIsChecked (i == 2)
                                     |> Checkbox.view []
                             )
                     )

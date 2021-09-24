@@ -9,6 +9,7 @@ import Stories.Button as Button
 import Stories.Checkbox as Checkbox
 import Stories.Dropdown as Dropdown
 import Stories.FlatLink as FlatLink
+import Stories.Label as Label
 import Stories.NumberInput as NumberInput
 import Stories.RadioButton as RadioButton
 import Stories.Spinner as Spinner
@@ -59,4 +60,5 @@ main =
         , StepIndicator.stories
         , Accordion.stories
         , Spinner.stories
+        , Label.stories
         ]
