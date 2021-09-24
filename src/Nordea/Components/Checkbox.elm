@@ -36,6 +36,7 @@ import Css
         , height
         , hover
         , inlineFlex
+        , int
         , lastOfType
         , left
         , margin
@@ -55,6 +56,7 @@ import Css
         , transforms
         , transparent
         , width
+        , zIndex
         )
 import Css.Transitions exposing (transition)
 import Html.Styled as Html exposing (Attribute, Html)
@@ -125,8 +127,8 @@ view attrs (Checkbox config) =
                         , position absolute
                         , top (rem -0.0625)
                         , left (rem 0.25)
-                        , width (rem 0.375)
-                        , height (rem 0.688)
+                        , width (rem 0.5)
+                        , height (rem 0.813)
                         , transforms [ rotate (deg 45) ]
                         , border3 (rem 0.0625) solid Colors.white
                         , borderWidth4 (rem 0) (rem 0.125) (rem 0.125) (rem 0)
@@ -141,12 +143,11 @@ view attrs (Checkbox config) =
                     Css.batch
                         [ padding2 (rem 0.75) (rem 1)
                         , border3 (rem 0.0625) solid transparent
-                        , borderColor Colors.grayMedium |> styleIf (not config.isChecked)
-                        , borderColor Colors.redDark |> styleIf config.hasError
                         , backgroundColor Colors.blueCloud |> styleIf config.isChecked
                         , hover
                             [ borderColor Colors.blueNordea |> styleIf (not config.hasError)
                             , boxShadow5 (rem 0) (rem 0.25) (rem 0.25) (rem 0) Colors.black25
+                            , zIndex (int 1)
                             ]
                         , transition [ Css.Transitions.borderColor 100, Css.Transitions.boxShadow 100 ]
                         ]
@@ -154,17 +155,21 @@ view attrs (Checkbox config) =
             case config.appearance of
                 Standard ->
                     Css.batch
-                        [ borderRadius (rem 0.5)
-                        , commonNonSimpleStyles
+                        [ commonNonSimpleStyles
+                        , borderRadius (rem 0.5)
+                        , borderColor Colors.grayMedium |> styleIf (not config.isChecked)
+                        , borderColor Colors.redDark |> styleIf config.hasError
                         ]
 
                 ListStyle ->
                     Css.batch
-                        [ firstOfType [ borderTopLeftRadius (rem 0.5), borderTopRightRadius (rem 0.5) ]
-                        , lastOfType [ borderBottomLeftRadius (rem 0.5), borderBottomRightRadius (rem 0.5) ]
-                        , pseudoClass "not(label:first-of-type):not(:hover)" [ borderTopColor transparent ]
-                        , pseudoClass "not(label:first-of-type)" [ marginTop (rem -0.0625) ]
-                        , commonNonSimpleStyles
+                        [ commonNonSimpleStyles
+                        , borderColor Colors.grayMedium
+                        , borderColor Colors.redDark |> styleIf config.hasError
+                        , Css.firstOfType [ borderTopLeftRadius (rem 0.5), borderTopRightRadius (rem 0.5) ]
+                        , Css.lastOfType [ borderBottomLeftRadius (rem 0.5), borderBottomRightRadius (rem 0.5) ]
+                        , pseudoClass "not(label:first-of-type):not(:hover)" [ borderTopColor transparent ] |> styleIf (not config.isChecked)
+                        , pseudoClass "not(label:first-of-type)" [ Css.marginTop (rem -0.0625) ]
                         ]
 
                 Simple ->
@@ -189,10 +194,10 @@ view attrs (Checkbox config) =
             , Attrs.checked config.isChecked
             , onCheck config.onCheck
             , css
-                [ opacity (num 0)
+                [ position absolute
+                , opacity (num 0)
                 , width (rem 0)
                 , height (rem 0)
-                , margin (rem 0)
 
                 -- when <input> is checked, apply styles to sibling with class .nfe-checkbox
                 , pseudoClass "checked ~ .nfe-checkbox"

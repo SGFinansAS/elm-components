@@ -2,7 +2,7 @@ module Nordea.Resources.Icons exposing
     ( check
     , chevronDown
     , chevronUp
-    , errorIcon
+    , error
     , info
     , leftIcon
     , rightIcon
@@ -132,7 +132,6 @@ spinner attrs =
     iconContainer
         (css
             [ Css.width (rem 3.75)
-            , Css.height (rem 3.75)
             , Css.color Colors.blueDeep
             ]
             :: attrs
@@ -176,15 +175,15 @@ spinner attrs =
         ]
 
 
-errorIcon : List (Attribute msg) -> Html msg
-errorIcon attrs =
+error : List (Attribute msg) -> Html msg
+error attrs =
     iconContainer (css [ Css.width (rem 1) ] :: attrs)
         [ Svg.svg [ viewBox "0 0 16 16", fill "none" ]
             [ Svg.path
                 [ fillRule "evenodd"
                 , clipRule "evenodd"
                 , d "M15 8C15 4.14 11.859 1 8 1C4.14 1 1 4.14 1 8C1 11.86 4.14 15 8 15C11.859 15 15 11.86 15 8ZM0 8C0 3.589 3.589 0 8 0C12.411 0 16 3.589 16 8C16 12.411 12.411 16 8 16C3.589 16 0 12.411 0 8ZM9.0064 11.9283C9.0064 12.4373 8.5944 12.8493 8.0864 12.8493C7.5784 12.8493 7.1664 12.4373 7.1664 11.9283C7.1664 11.4203 7.5784 11.0083 8.0864 11.0083C8.5944 11.0083 9.0064 11.4203 9.0064 11.9283ZM8.5 3C8.5 2.72386 8.27614 2.5 8 2.5C7.72386 2.5 7.5 2.72386 7.5 3L7.5 9C7.5 9.27614 7.72386 9.5 8 9.5C8.27614 9.5 8.5 9.27614 8.5 9V3Z"
-                , stroke "currentColor"
+                , fill "currentColor"
                 ]
                 []
             ]

@@ -23,7 +23,9 @@ import Css
         , column
         , displayFlex
         , flex
+        , flexBasis
         , flexDirection
+        , flexWrap
         , fontFamilies
         , fontSize
         , justifyContent
@@ -40,6 +42,7 @@ import Css
         , rem
         , spaceBetween
         , width
+        , wrap
         )
 import Css.Global exposing (descendants, typeSelector)
 import Html.Styled as Html
@@ -112,7 +115,7 @@ view attrs children (Label config) =
         InputLabel ->
             styled label
                 [ displayFlex
-                , flexDirection column
+                , flexWrap wrap
                 , focusStyle |> styleIf config.showFocusOutline
                 ]
                 attrs
@@ -121,7 +124,7 @@ view attrs children (Label config) =
         GroupLabel ->
             styled fieldset
                 [ displayFlex
-                , flexDirection column
+                , flexWrap wrap
                 , focusStyle |> styleIf config.showFocusOutline
                 , margin (rem 0)
                 , padding (rem 0)
@@ -129,7 +132,7 @@ view attrs children (Label config) =
                 ]
                 attrs
                 ((legend
-                    [ css [ width (pct 100), padding (rem 0) ] ]
+                    [ css [ flexBasis (pct 100), padding (rem 0) ] ]
                     [ topInfo config ]
                     |> showIf (not (String.isEmpty config.labelText) || Maybe.isJust config.requirednessHint)
                  )
@@ -168,7 +171,7 @@ topInfo config =
                 Custom string ->
                     string
     in
-    div [ css [ displayFlex, justifyContent spaceBetween, width (pct 100), marginBottom (rem 0.5) ] ]
+    div [ css [ displayFlex, justifyContent spaceBetween, flexBasis (pct 100), marginBottom (rem 0.5) ] ]
         [ bodyText [ css [ textStyle ] ] [ text config.labelText ]
         , config.requirednessHint
             |> Html.viewMaybe
@@ -191,7 +194,7 @@ bottomInfo config =
                             [ String.fromInt charCounter.current ++ "/" ++ String.fromInt charCounter.max |> text ]
                     )
     in
-    [ div [ css [ displayFlex, width (pct 100), justifyContent spaceBetween, marginTop (rem 0.5), Css.property "gap" "1rem" ] ]
+    [ div [ css [ displayFlex, flexBasis (pct 100), justifyContent spaceBetween, marginTop (rem 0.5), Css.property "gap" "1rem" ] ]
         [ config.errorMessage
             |> Html.viewMaybe
                 (\errText ->
@@ -203,14 +206,14 @@ bottomInfo config =
                             , fontSize (rem 0.875)
                             ]
                         ]
-                        [ Icons.errorIcon [ css [ marginRight (rem 0.5), flex none ] ]
+                        [ Icons.error [ css [ marginRight (rem 0.5), flex none ] ]
                         , text errText
                         ]
                 )
         , charCounterView
         ]
         |> showIf (Maybe.isJust config.errorMessage)
-    , div [ css [ displayFlex, width (pct 100), justifyContent spaceBetween, marginTop (rem 0.5), Css.property "gap" "1rem" ] ]
+    , div [ css [ displayFlex, flexBasis (pct 100), justifyContent spaceBetween, marginTop (rem 0.5), Css.property "gap" "1rem" ] ]
         [ config.hintText
             |> Html.viewMaybe
                 (\hintText ->

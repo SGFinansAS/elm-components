@@ -18,6 +18,7 @@ import Css
         , before
         , block
         , border3
+        , borderBottomColor
         , borderBottomLeftRadius
         , borderBottomRightRadius
         , borderColor
@@ -34,6 +35,7 @@ import Css
         , height
         , hover
         , inlineFlex
+        , int
         , lastOfType
         , left
         , marginTop
@@ -51,6 +53,7 @@ import Css
         , top
         , transparent
         , width
+        , zIndex
         )
 import Css.Transitions exposing (transition)
 import Html.Styled as Html exposing (Attribute, Html)
@@ -111,8 +114,8 @@ view attrs (RadioButton config) =
                         , position absolute
                         , top (rem 0)
                         , left (rem 0)
-                        , width (rem 1.125)
-                        , height (rem 1.125)
+                        , width (pct 100)
+                        , height (pct 100)
                         , backgroundColor Colors.white
                         , border3 (rem 0.125) solid Colors.blueNordea
                         , borderColor Colors.redDark
@@ -142,12 +145,11 @@ view attrs (RadioButton config) =
                     Css.batch
                         [ padding2 (rem 0.75) (rem 1)
                         , border3 (rem 0.0625) solid transparent
-                        , borderColor Colors.grayMedium |> styleIf (not config.isSelected)
-                        , borderColor Colors.redDark |> styleIf config.showError
                         , backgroundColor Colors.blueCloud |> styleIf config.isSelected
                         , hover
                             [ borderColor Colors.blueNordea |> styleIf (not config.showError)
                             , boxShadow5 (rem 0) (rem 0.25) (rem 0.25) (rem 0) Colors.black25
+                            , zIndex (int 1)
                             ]
                         , transition [ Css.Transitions.borderColor 100, Css.Transitions.boxShadow 100 ]
                         ]
@@ -155,17 +157,21 @@ view attrs (RadioButton config) =
             case config.appearance of
                 Standard ->
                     Css.batch
-                        [ borderRadius (rem 0.5)
-                        , commonNonSimpleStyles
+                        [ commonNonSimpleStyles
+                        , borderRadius (rem 0.5)
+                        , borderColor Colors.grayMedium |> styleIf (not config.isSelected)
+                        , borderColor Colors.redDark |> styleIf config.showError
                         ]
 
                 ListStyle ->
                     Css.batch
-                        [ Css.firstOfType [ borderTopLeftRadius (rem 0.5), borderTopRightRadius (rem 0.5) ]
+                        [ commonNonSimpleStyles
+                        , borderColor Colors.grayMedium
+                        , borderColor Colors.redDark |> styleIf config.showError
+                        , Css.firstOfType [ borderTopLeftRadius (rem 0.5), borderTopRightRadius (rem 0.5) ]
                         , Css.lastOfType [ borderBottomLeftRadius (rem 0.5), borderBottomRightRadius (rem 0.5) ]
-                        , pseudoClass "not(label:first-of-type):not(:hover)" [ borderTopColor transparent ]
-                        , pseudoClass "not(label:first-of-type)" [ marginTop (rem -0.0625) ]
-                        , commonNonSimpleStyles
+                        , pseudoClass "not(label:first-of-type):not(:hover)" [ borderTopColor transparent ] |> styleIf (not config.isSelected)
+                        , pseudoClass "not(label:first-of-type)" [ Css.marginTop (rem -0.0625) ]
                         ]
 
                 Simple ->
