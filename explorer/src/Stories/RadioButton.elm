@@ -1,53 +1,127 @@
 module Stories.RadioButton exposing (stories)
 
-import Css
+import Config exposing (Msg(..))
+import Css exposing (column, displayFlex, flexDirection, maxWidth, rem)
 import Html.Styled as Html exposing (text)
-import Html.Styled.Attributes as Attrs
+import Html.Styled.Attributes as Attrs exposing (css)
 import Nordea.Components.RadioButton as RadioButton
 import UIExplorer exposing (UI)
 import UIExplorer.Styled exposing (styledStoriesOf)
 
 
-stories : UI a b {}
+stories : UI a Msg {}
 stories =
     styledStoriesOf
         "RadioButton"
-        [ ( "Default"
+        [ ( "Standard"
           , \_ ->
-                Html.div []
-                    [ Html.styled Html.div
-                        [ Css.margin2 (Css.rem 0.5) Css.zero ]
-                        []
-                        [ RadioButton.init False
-                            |> RadioButton.view [ Attrs.name "radio" ] [ text "Answer 1" ]
-                        ]
-                    , Html.styled Html.div
-                        [ Css.margin2 (Css.rem 0.5) Css.zero ]
-                        []
-                        [ RadioButton.init False
-                            |> RadioButton.view [ Attrs.name "radio" ] [ text "Answer 2" ]
-                        ]
+                Html.div [ css [ displayFlex, Css.property "gap" "1rem" ] ]
+                    [ RadioButton.init
+                        "simple"
+                        (text "Click me")
+                        NoOp
+                        |> RadioButton.view []
+                    , RadioButton.init
+                        "simple"
+                        (text "Click me")
+                        NoOp
+                        |> RadioButton.withIsSelected True
+                        |> RadioButton.view []
                     ]
           , {}
           )
-        , ( "Error"
+        , ( "Standard with error"
           , \_ ->
-                Html.div []
-                    [ Html.styled Html.div
-                        [ Css.margin2 (Css.rem 0.5) Css.zero ]
-                        []
-                        [ RadioButton.init False
-                            |> RadioButton.withError True
-                            |> RadioButton.view [ Attrs.name "radio" ] [ text "Answer 1" ]
-                        ]
-                    , Html.styled Html.div
-                        [ Css.margin2 (Css.rem 0.5) Css.zero ]
-                        []
-                        [ RadioButton.init False
-                            |> RadioButton.withError True
-                            |> RadioButton.view [ Attrs.name "radio" ] [ text "Answer 2" ]
-                        ]
+                Html.div [ css [ displayFlex, Css.property "gap" "1rem" ] ]
+                    [ RadioButton.init
+                        "simple"
+                        (text "Click me")
+                        NoOp
+                        |> RadioButton.withHasError True
+                        |> RadioButton.view []
+                    , RadioButton.init
+                        "simple"
+                        (text "Click me")
+                        NoOp
+                        |> RadioButton.withHasError True
+                        |> RadioButton.withIsSelected True
+                        |> RadioButton.view []
                     ]
+          , {}
+          )
+        , ( "Simple"
+          , \_ ->
+                Html.div [ css [ displayFlex, Css.property "gap" "1rem" ] ]
+                    [ RadioButton.init
+                        "simple"
+                        (text "Click me")
+                        NoOp
+                        |> RadioButton.withAppearance RadioButton.Simple
+                        |> RadioButton.view []
+                    , RadioButton.init
+                        "simple"
+                        (text "Click me")
+                        NoOp
+                        |> RadioButton.withAppearance RadioButton.Simple
+                        |> RadioButton.withIsSelected True
+                        |> RadioButton.view []
+                    ]
+          , {}
+          )
+        , ( "Simple with error"
+          , \_ ->
+                Html.div [ css [ displayFlex, Css.property "gap" "1rem" ] ]
+                    [ RadioButton.init
+                        "simple"
+                        (text "Click me")
+                        NoOp
+                        |> RadioButton.withAppearance RadioButton.Simple
+                        |> RadioButton.withHasError True
+                        |> RadioButton.view []
+                    , RadioButton.init
+                        "simple"
+                        (text "Click me")
+                        NoOp
+                        |> RadioButton.withAppearance RadioButton.Simple
+                        |> RadioButton.withHasError True
+                        |> RadioButton.withIsSelected True
+                        |> RadioButton.view []
+                    ]
+          , {}
+          )
+        , ( "Liststyle"
+          , \_ ->
+                Html.div [ css [ displayFlex, flexDirection column, maxWidth (rem 30) ] ]
+                    (List.range 0 5
+                        |> List.map
+                            (\i ->
+                                RadioButton.init
+                                    "simple"
+                                    (text ("Click me: " ++ String.fromInt i))
+                                    NoOp
+                                    |> RadioButton.withAppearance RadioButton.ListStyle
+                                    |> RadioButton.withIsSelected (i == 2)
+                                    |> RadioButton.view []
+                            )
+                    )
+          , {}
+          )
+        , ( "Liststyle with error"
+          , \_ ->
+                Html.div [ css [ displayFlex, flexDirection column, maxWidth (rem 30) ] ]
+                    (List.range 0 5
+                        |> List.map
+                            (\i ->
+                                RadioButton.init
+                                    "simple"
+                                    (text ("Click me: " ++ String.fromInt i))
+                                    NoOp
+                                    |> RadioButton.withAppearance RadioButton.ListStyle
+                                    |> RadioButton.withHasError True
+                                    |> RadioButton.withIsSelected (i == 2)
+                                    |> RadioButton.view []
+                            )
+                    )
           , {}
           )
         ]

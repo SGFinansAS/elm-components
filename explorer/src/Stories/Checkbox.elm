@@ -1,26 +1,127 @@
 module Stories.Checkbox exposing (stories)
 
-import Html.Styled exposing (text)
+import Config exposing (Msg(..))
+import Css exposing (column, displayFlex, flexDirection, maxWidth, rem)
+import Html.Styled as Html exposing (text)
+import Html.Styled.Attributes as Attrs exposing (css)
 import Nordea.Components.Checkbox as Checkbox
 import UIExplorer exposing (UI)
 import UIExplorer.Styled exposing (styledStoriesOf)
 
 
-stories : UI a b {}
+stories : UI a Msg {}
 stories =
     styledStoriesOf
         "Checkbox"
-        [ ( "Default"
+        [ ( "Standard"
           , \_ ->
-                Checkbox.init False
-                    |> Checkbox.view [] [ text "Click me" ]
+                Html.div [ css [ displayFlex, Css.property "gap" "1rem" ] ]
+                    [ Checkbox.init
+                        "simple"
+                        (text "Click me")
+                        (\_ -> NoOp)
+                        |> Checkbox.view []
+                    , Checkbox.init
+                        "simple"
+                        (text "Click me")
+                        (\_ -> NoOp)
+                        |> Checkbox.withIsChecked True
+                        |> Checkbox.view []
+                    ]
           , {}
           )
-        , ( "Error"
+        , ( "Standard with error"
           , \_ ->
-                Checkbox.init False
-                    |> Checkbox.withError True
-                    |> Checkbox.view [] [ text "Click me" ]
+                Html.div [ css [ displayFlex, Css.property "gap" "1rem" ] ]
+                    [ Checkbox.init
+                        "simple"
+                        (text "Click me")
+                        (\_ -> NoOp)
+                        |> Checkbox.withHasError True
+                        |> Checkbox.view []
+                    , Checkbox.init
+                        "simple"
+                        (text "Click me")
+                        (\_ -> NoOp)
+                        |> Checkbox.withHasError True
+                        |> Checkbox.withIsChecked True
+                        |> Checkbox.view []
+                    ]
+          , {}
+          )
+        , ( "Simple"
+          , \_ ->
+                Html.div [ css [ displayFlex, Css.property "gap" "1rem" ] ]
+                    [ Checkbox.init
+                        "simple"
+                        (text "Click me")
+                        (\_ -> NoOp)
+                        |> Checkbox.withAppearance Checkbox.Simple
+                        |> Checkbox.view []
+                    , Checkbox.init
+                        "simple"
+                        (text "Click me")
+                        (\_ -> NoOp)
+                        |> Checkbox.withAppearance Checkbox.Simple
+                        |> Checkbox.withIsChecked True
+                        |> Checkbox.view []
+                    ]
+          , {}
+          )
+        , ( "Simple with error"
+          , \_ ->
+                Html.div [ css [ displayFlex, Css.property "gap" "1rem" ] ]
+                    [ Checkbox.init
+                        "simple"
+                        (text "Click me")
+                        (\_ -> NoOp)
+                        |> Checkbox.withAppearance Checkbox.Simple
+                        |> Checkbox.withHasError True
+                        |> Checkbox.view []
+                    , Checkbox.init
+                        "simple"
+                        (text "Click me")
+                        (\_ -> NoOp)
+                        |> Checkbox.withAppearance Checkbox.Simple
+                        |> Checkbox.withHasError True
+                        |> Checkbox.withIsChecked True
+                        |> Checkbox.view []
+                    ]
+          , {}
+          )
+        , ( "Liststyle"
+          , \_ ->
+                Html.div [ css [ displayFlex, flexDirection column, maxWidth (rem 30) ] ]
+                    (List.range 0 5
+                        |> List.map
+                            (\i ->
+                                Checkbox.init
+                                    "simple"
+                                    (text ("Click me: " ++ String.fromInt i))
+                                    (\_ -> NoOp)
+                                    |> Checkbox.withAppearance Checkbox.ListStyle
+                                    |> Checkbox.withIsChecked (i == 2)
+                                    |> Checkbox.view []
+                            )
+                    )
+          , {}
+          )
+        , ( "Liststyle with error"
+          , \_ ->
+                Html.div [ css [ displayFlex, flexDirection column, maxWidth (rem 30) ] ]
+                    (List.range 0 5
+                        |> List.map
+                            (\i ->
+                                Checkbox.init
+                                    "simple"
+                                    (text ("Click me: " ++ String.fromInt i))
+                                    (\_ -> NoOp)
+                                    |> Checkbox.withAppearance Checkbox.ListStyle
+                                    |> Checkbox.withHasError True
+                                    |> Checkbox.withIsChecked (i == 2)
+                                    |> Checkbox.view []
+                            )
+                    )
           , {}
           )
         ]

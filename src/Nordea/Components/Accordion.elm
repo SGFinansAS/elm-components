@@ -102,7 +102,7 @@ view (Accordion config) =
         , Css.backgroundColor Colors.blueCloud
         ]
         []
-        [ Html.viewMaybe config.title viewTitle
+        [ Html.viewMaybe viewTitle config.title
         , Html.viewIfNotEmpty config.items viewItems
         ]
 
@@ -173,10 +173,10 @@ viewItemTitleArrow open =
     let
         icon =
             if open then
-                Icons.chevronUp
+                Icons.chevronUp []
 
             else
-                Icons.chevronDown
+                Icons.chevronDown []
     in
     Html.styled Html.span
         [ Css.flexShrink Css.zero ]

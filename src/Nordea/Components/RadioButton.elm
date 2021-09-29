@@ -1,135 +1,233 @@
 module Nordea.Components.RadioButton exposing
-    ( RadioButton
+    ( Appearance(..)
+    , RadioButton
     , init
     , view
-    , withError
-    , withOnCheck
+    , withAppearance
+    , withHasError
+    , withIsSelected
+    , withOnBlur
     )
 
-import Css exposing (Style)
-import Css.Global as Css
+import Css
+    exposing
+        ( absolute
+        , after
+        , alignItems
+        , backgroundColor
+        , before
+        , block
+        , border3
+        , borderBottomColor
+        , borderBottomLeftRadius
+        , borderBottomRightRadius
+        , borderColor
+        , borderRadius
+        , borderTopColor
+        , borderTopLeftRadius
+        , borderTopRightRadius
+        , boxShadow5
+        , center
+        , cursor
+        , display
+        , firstOfType
+        , flex
+        , flexBasis
+        , height
+        , hover
+        , inlineFlex
+        , int
+        , lastOfType
+        , left
+        , marginTop
+        , none
+        , num
+        , opacity
+        , padding2
+        , pct
+        , pointer
+        , position
+        , pseudoClass
+        , relative
+        , rem
+        , solid
+        , top
+        , transparent
+        , width
+        , zIndex
+        )
+import Css.Transitions exposing (transition)
 import Html.Styled as Html exposing (Attribute, Html)
-import Html.Styled.Attributes as Attrs
+import Html.Styled.Attributes as Attrs exposing (css, name, type_)
 import Html.Styled.Events as Events
-import Maybe.Extra as Maybe
+import Nordea.Html exposing (styleIf)
 import Nordea.Resources.Colors as Colors
 
 
-type alias Config msg =
-    { checked : Bool
-    , onCheck : Maybe (Bool -> msg)
+type alias InputProperties msg =
+    { name : String
+    , label : Html msg
+    , onCheck : msg
+    , onBlur : Maybe msg
+    , isSelected : Bool
+    , appearance : Appearance
     , showError : Bool
     }
 
 
 type RadioButton msg
-    = RadioButton (Config msg)
+    = RadioButton (InputProperties msg)
 
 
+type Appearance
+    = Standard
+    | Simple
+    | ListStyle
 
--- CONFIG
 
-
-init : Bool -> RadioButton msg
-init checked =
+init : String -> Html msg -> msg -> RadioButton msg
+init name label onCheck =
     RadioButton
-        { checked = checked
-        , onCheck = Nothing
+        { name = name
+        , label = label
+        , onCheck = onCheck
+        , onBlur = Nothing
+        , isSelected = False
+        , appearance = Standard
         , showError = False
         }
 
 
-withOnCheck : (Bool -> msg) -> RadioButton msg -> RadioButton msg
-withOnCheck onCheck (RadioButton config) =
-    RadioButton { config | onCheck = Just onCheck }
-
-
-withError : Bool -> RadioButton msg -> RadioButton msg
-withError condition (RadioButton config) =
-    RadioButton { config | showError = condition }
-
-
-
--- VIEW
-
-
-view : List (Attribute msg) -> List (Html msg) -> RadioButton msg -> Html msg
-view attributes children (RadioButton config) =
-    viewLabel (viewInput config attributes :: (viewRadio config :: children))
-
-
-viewLabel : List (Html msg) -> Html msg
-viewLabel =
-    Html.styled Html.label
-        [ Css.displayFlex
-        , Css.alignItems Css.center
-        , Css.cursor Css.pointer
-        , Css.position Css.relative
-        , Css.paddingLeft (Css.rem 1.75)
-        , Css.height (Css.rem 1.25)
-        ]
-        []
-
-
-viewInput : Config msg -> List (Attribute msg) -> Html msg
-viewInput config attributes =
-    Html.styled Html.input
-        [ Css.display Css.none
-        , Css.checked
-            [ Css.adjacentSiblings
-                [ Css.everything
-                    [ Css.after
-                        [ Css.backgroundColor Colors.blueDeep ]
+view : List (Attribute msg) -> RadioButton msg -> Html msg
+view attrs (RadioButton config) =
+    let
+        radiomark =
+            Html.span
+                [ Attrs.class "nfe-radiomark"
+                , css
+                    [ position relative
+                    , width (rem 1.375)
+                    , height (rem 1.375)
+                    , flex none
+                    , before
+                        [ Css.property "content" "''"
+                        , display block
+                        , position absolute
+                        , top (rem 0)
+                        , left (rem 0)
+                        , width (pct 100)
+                        , height (pct 100)
+                        , backgroundColor Colors.white
+                        , border3 (rem 0.125) solid Colors.blueNordea
+                        , borderColor Colors.redDark
+                            |> styleIf (config.showError && config.appearance == Simple)
+                        , borderColor Colors.grayMedium
+                            |> styleIf (config.showError && List.member config.appearance [ Standard, ListStyle ])
+                        , borderRadius (pct 100)
+                        ]
+                    , after
+                        [ Css.property "content" "''"
+                        , position absolute
+                        , top (rem 0.3125)
+                        , left (rem 0.3125)
+                        , display none
+                        , width (rem 0.75)
+                        , height (rem 0.75)
+                        , backgroundColor Colors.blueNordea
+                        , borderRadius (pct 100)
+                        ]
                     ]
                 ]
-            ]
-        ]
-        (Maybe.values
-            [ Just "radio" |> Maybe.map Attrs.type_
-            , Just config.checked |> Maybe.map Attrs.checked
-            , config.onCheck |> Maybe.map Events.onCheck
-            ]
-            ++ attributes
-        )
-        []
+                []
 
+        appearanceStyle =
+            let
+                commonNonSimpleStyles =
+                    Css.batch
+                        [ padding2 (rem 0.75) (rem 1)
+                        , border3 (rem 0.0625) solid transparent
+                        , backgroundColor Colors.blueCloud |> styleIf config.isSelected
+                        , hover
+                            [ borderColor Colors.blueNordea |> styleIf (not config.showError)
+                            , boxShadow5 (rem 0) (rem 0.25) (rem 0.25) (rem 0) Colors.black25
+                            , zIndex (int 1)
+                            ]
+                        , transition [ Css.Transitions.borderColor 100, Css.Transitions.boxShadow 100 ]
+                        ]
+            in
+            case config.appearance of
+                Standard ->
+                    Css.batch
+                        [ commonNonSimpleStyles
+                        , borderRadius (rem 0.5)
+                        , borderColor Colors.grayMedium |> styleIf (not config.isSelected)
+                        , borderColor Colors.redDark |> styleIf config.showError
+                        ]
 
-viewRadio : Config msg -> Html msg
-viewRadio config =
-    Html.styled Html.span
-        (getStyles config)
-        []
-        []
+                ListStyle ->
+                    Css.batch
+                        [ commonNonSimpleStyles
+                        , flexBasis (pct 100)
+                        , borderColor Colors.grayMedium
+                        , borderColor Colors.redDark |> styleIf config.showError
+                        , Css.firstOfType [ borderTopLeftRadius (rem 0.5), borderTopRightRadius (rem 0.5) ]
+                        , Css.lastOfType [ borderBottomLeftRadius (rem 0.5), borderBottomRightRadius (rem 0.5) ]
+                        , pseudoClass "not(label:first-of-type):not(:hover)" [ borderTopColor transparent ] |> styleIf (not config.isSelected)
+                        , pseudoClass "not(label:first-of-type)" [ Css.marginTop (rem -0.0625) ]
+                        ]
 
-
-getStyles : Config msg -> List Style
-getStyles config =
-    let
-        borderColorStyle =
-            if config.showError then
-                Colors.redDark
-
-            else
-                Colors.blueDeep
+                Simple ->
+                    Css.batch []
     in
-    [ Css.before
-        [ Css.property "content" "\"\""
-        , Css.position Css.absolute
-        , Css.top Css.zero
-        , Css.left Css.zero
-        , Css.width (Css.rem 1.25)
-        , Css.height (Css.rem 1.25)
-        , Css.border3 (Css.rem 0.125) Css.solid borderColorStyle
-        , Css.borderRadius (Css.pct 50)
-        , Css.boxSizing Css.borderBox
+    Html.label
+        (css
+            [ display inlineFlex
+            , Css.property "gap" "0.5rem"
+            , alignItems center
+            , cursor pointer
+            , appearanceStyle
+            , position relative
+            , pseudoClass "hover .nfe-radiomark:before" [ boxShadow5 (rem 0) (rem 0) (rem 0) (rem 0.0625) Colors.blueMedium ]
+            , pseudoClass "focus-within .nfe-radiomark:before" [ boxShadow5 (rem 0) (rem 0) (rem 0) (rem 0.0625) Colors.blueMedium ]
+            ]
+            :: attrs
+        )
+        [ Html.input
+            [ type_ "radio"
+            , name config.name
+            , Attrs.checked config.isSelected
+            , Events.onCheck (\_ -> config.onCheck)
+            , css
+                [ position absolute
+                , opacity (num 0)
+                , height (rem 0)
+                , width (rem 0)
+
+                -- when <input> is checked, apply styles to sibling with class .nfe-radiomark
+                , pseudoClass "checked ~ .nfe-radiomark:after" [ display block ]
+                ]
+            ]
+            []
+        , radiomark
+        , config.label
         ]
-    , Css.after
-        [ Css.property "content" "\"\""
-        , Css.position Css.absolute
-        , Css.top (Css.rem 0.25)
-        , Css.left (Css.rem 0.25)
-        , Css.width (Css.rem 0.75)
-        , Css.height (Css.rem 0.75)
-        , Css.borderRadius (Css.pct 50)
-        ]
-    ]
+
+
+withOnBlur : msg -> RadioButton msg -> RadioButton msg
+withOnBlur msg (RadioButton config) =
+    RadioButton { config | onBlur = Just msg }
+
+
+withIsSelected : Bool -> RadioButton msg -> RadioButton msg
+withIsSelected isSelected (RadioButton config) =
+    RadioButton { config | isSelected = isSelected }
+
+
+withAppearance : Appearance -> RadioButton msg -> RadioButton msg
+withAppearance appearance (RadioButton config) =
+    RadioButton { config | appearance = appearance }
+
+
+withHasError : Bool -> RadioButton msg -> RadioButton msg
+withHasError showError (RadioButton config) =
+    RadioButton { config | showError = showError }

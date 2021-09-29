@@ -10,6 +10,7 @@ type alias Config =
 
 type Msg
     = AccordionMsg Accordion.Msg
+    | NoOp
 
 
 init : Config
@@ -35,3 +36,6 @@ update msg config =
     case msg of
         AccordionMsg m ->
             { config | accordion = Accordion.update m config.accordion }
+
+        NoOp ->
+            config
