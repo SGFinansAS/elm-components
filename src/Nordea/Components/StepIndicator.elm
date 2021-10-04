@@ -28,6 +28,7 @@ import Css
         , listStyleType
         , margin
         , none
+        , paddingLeft
         , pct
         , position
         , relative
@@ -40,7 +41,6 @@ import Css
         )
 import Html.Styled exposing (Html, div, li, ol, p, span, styled, text)
 import Html.Styled.Attributes exposing (attribute)
-import List.Extra as List
 import Nordea.Html exposing (showIf)
 import Nordea.Resources.Colors as Colors
 import Nordea.Resources.Fonts as Fonts
@@ -121,6 +121,7 @@ listStyles =
     [ displayFlex
     , listStyleType none
     , alignItems center
+    , paddingLeft (rem 0)
     ]
 
 
