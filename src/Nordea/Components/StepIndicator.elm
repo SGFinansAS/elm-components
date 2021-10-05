@@ -4,41 +4,7 @@ module Nordea.Components.StepIndicator exposing
     , view
     )
 
-import Css
-    exposing
-        ( Style
-        , absolute
-        , alignItems
-        , backgroundColor
-        , border3
-        , borderBox
-        , borderRadius
-        , boxSizing
-        , center
-        , color
-        , column
-        , displayFlex
-        , flexDirection
-        , fontSize
-        , fontWeight
-        , height
-        , int
-        , justifyContent
-        , lineHeight
-        , listStyleType
-        , margin
-        , none
-        , paddingLeft
-        , pct
-        , position
-        , relative
-        , rem
-        , solid
-        , textAlign
-        , top
-        , width
-        , zIndex
-        )
+import Css exposing (Style, absolute, alignItems, backgroundColor, border3, borderBox, borderRadius, boxSizing, center, color, column, displayFlex, flexDirection, fontSize, fontWeight, height, int, justifyContent, lineHeight, listStyleType, margin, margin4, none, paddingLeft, pct, position, relative, rem, solid, textAlign, top, width, zIndex)
 import Html.Styled exposing (Html, div, li, ol, p, span, styled, text)
 import Html.Styled.Attributes exposing (attribute)
 import Nordea.Html exposing (showIf)
@@ -132,7 +98,7 @@ listStylesLi =
     , flexDirection column
     , position relative
     , zIndex (int 1)
-    , margin (rem 3)
+    , margin4 (rem 1) (rem 3) (rem 2) (rem 3)
     ]
 
 
@@ -190,6 +156,7 @@ textStyles =
     , Fonts.fromSize 0.875
     , fontWeight (int 400)
     , lineHeight (rem 1.125)
+    , margin (rem 0)
     ]
 
 
