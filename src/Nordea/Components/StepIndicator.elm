@@ -27,6 +27,7 @@ import Css
         , lineHeight
         , listStyleType
         , margin
+        , margin4
         , none
         , paddingLeft
         , pct
@@ -39,7 +40,17 @@ import Css
         , width
         , zIndex
         )
-import Html.Styled exposing (Html, div, li, ol, p, span, styled, text)
+import Html.Styled
+    exposing
+        ( Html
+        , div
+        , li
+        , ol
+        , p
+        , span
+        , styled
+        , text
+        )
 import Html.Styled.Attributes exposing (attribute)
 import Nordea.Html exposing (showIf)
 import Nordea.Resources.Colors as Colors
@@ -132,7 +143,7 @@ listStylesLi =
     , flexDirection column
     , position relative
     , zIndex (int 1)
-    , margin (rem 3)
+    , margin4 (rem 1) (rem 3) (rem 2) (rem 3)
     ]
 
 
@@ -190,6 +201,7 @@ textStyles =
     , Fonts.fromSize 0.875
     , fontWeight (int 400)
     , lineHeight (rem 1.125)
+    , margin (rem 0)
     ]
 
 
