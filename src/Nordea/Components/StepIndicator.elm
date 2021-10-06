@@ -40,7 +40,17 @@ import Css
         , width
         , zIndex
         )
-import Html.Styled exposing (Html, div, li, ol, p, span, styled, text)
+import Html.Styled
+    exposing
+        ( Html
+        , div
+        , li
+        , ol
+        , p
+        , span
+        , styled
+        , text
+        )
 import Html.Styled.Attributes exposing (attribute)
 import Nordea.Html exposing (showIf)
 import Nordea.Resources.Colors as Colors
