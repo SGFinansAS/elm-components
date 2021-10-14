@@ -9,53 +9,7 @@ module Nordea.Components.RadioButton exposing
     , withOnBlur
     )
 
-import Css
-    exposing
-        ( absolute
-        , after
-        , alignItems
-        , backgroundColor
-        , before
-        , block
-        , border3
-        , borderBottomColor
-        , borderBottomLeftRadius
-        , borderBottomRightRadius
-        , borderColor
-        , borderRadius
-        , borderTopColor
-        , borderTopLeftRadius
-        , borderTopRightRadius
-        , boxShadow5
-        , center
-        , cursor
-        , display
-        , firstOfType
-        , flex
-        , flexBasis
-        , height
-        , hover
-        , inlineFlex
-        , int
-        , lastOfType
-        , left
-        , marginTop
-        , none
-        , num
-        , opacity
-        , padding2
-        , pct
-        , pointer
-        , position
-        , pseudoClass
-        , relative
-        , rem
-        , solid
-        , top
-        , transparent
-        , width
-        , zIndex
-        )
+import Css exposing (absolute, after, alignItems, backgroundColor, before, block, border3, borderBottomColor, borderBottomLeftRadius, borderBottomRightRadius, borderBox, borderColor, borderRadius, borderTopColor, borderTopLeftRadius, borderTopRightRadius, boxShadow5, boxSizing, center, cursor, display, firstOfType, flex, flexBasis, height, hover, inlineFlex, int, lastOfType, left, marginTop, none, num, opacity, padding2, pct, pointer, position, pseudoClass, relative, rem, solid, top, transparent, width, zIndex)
 import Css.Transitions exposing (transition)
 import Html.Styled as Html exposing (Attribute, Html)
 import Html.Styled.Attributes as Attrs exposing (css, name, type_)
@@ -124,6 +78,7 @@ view attrs (RadioButton config) =
                         , borderColor Colors.grayMedium
                             |> styleIf (config.showError && List.member config.appearance [ Standard, ListStyle ])
                         , borderRadius (pct 100)
+                        , boxSizing borderBox
                         ]
                     , after
                         [ Css.property "content" "''"
