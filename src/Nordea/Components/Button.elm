@@ -156,7 +156,7 @@ variantStyle variant =
                 , border3 (rem 0.125) solid Css.transparent
                 , borderColorWithVariable "--themePrimaryColor" Colors.blueDeep
                 , hover
-                    [ backgroundColorWithVariable "--themePrimaryColor70" (Colors.blueCloud |> Colors.withAlpha 0.5)
+                    [ backgroundColorWithVariable "--themePrimaryColor20" (Colors.blueCloud |> Colors.withAlpha 0.5)
                     , colorWithVariable "--themePrimaryColor" Colors.blueDeep
                     ]
                 , focus
