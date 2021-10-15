@@ -52,6 +52,7 @@ import Html.Styled
         , text
         )
 import Html.Styled.Attributes exposing (attribute)
+import Nordea.Css exposing (backgroundColorWithVariable)
 import Nordea.Html exposing (showIf)
 import Nordea.Resources.Colors as Colors
 import Nordea.Resources.Fonts as Fonts
@@ -187,7 +188,7 @@ divStylesActive =
     , width (rem 2)
     , borderRadius (pct 50)
     , border3 (rem 0.125) solid Colors.white
-    , backgroundColor Colors.blueDeep
+    , backgroundColorWithVariable "--themePrimaryColor" Colors.blueDeep
     , color Colors.white
     ]
 

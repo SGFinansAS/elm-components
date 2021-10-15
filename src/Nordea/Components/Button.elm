@@ -43,6 +43,7 @@ import Css
         , zero
         )
 import Html.Styled as Html exposing (Attribute, Html)
+import Nordea.Css exposing (backgroundColorWithVariable, borderColorWithVariable, colorVariable, colorWithVariable)
 import Nordea.Resources.Colors as Colors
 
 
@@ -133,52 +134,53 @@ variantStyle variant =
     case variant of
         Primary ->
             batch
-                [ backgroundColor Colors.blueDeep
+                [ backgroundColorWithVariable "--themePrimaryColor" Colors.blueDeep
                 , color Colors.white
                 , border3 (rem 0.125) solid Colors.transparent
                 , hover
-                    [ backgroundColor Colors.blueCloud
-                    , color Colors.blueDeep
+                    [ backgroundColorWithVariable "--themePrimaryColor20" Colors.blueCloud
+                    , colorWithVariable "--themePrimaryColor" Colors.blueDeep
                     ]
                 , focus
                     [ outline none
-                    , backgroundColor Colors.blueNordea
-                    , color Colors.blueHaas
-                    , boxShadow5 zero zero zero (rem 0.25) Colors.blueHaas
+                    , backgroundColorWithVariable "--themePrimaryColor70" Colors.blueNordea
+                    , colorWithVariable "--themePrimaryColor20" Colors.blueHaas
+                    , Css.property "box-shadow" ("0rem 0rem 0rem 0.25rem " ++ colorVariable "--themePrimaryColor20" Colors.blueHaas)
                     ]
                 ]
 
         Secondary ->
             batch
                 [ backgroundColor Colors.white
-                , color Colors.blueDeep
-                , border3 (rem 0.125) solid Colors.blueDeep
+                , colorWithVariable "--themePrimaryColor" Colors.blueDeep
+                , border3 (rem 0.125) solid Css.transparent
+                , borderColorWithVariable "--themePrimaryColor" Colors.blueDeep
                 , hover
-                    [ backgroundColor (Colors.blueCloud |> Colors.withAlpha 0.5)
-                    , color Colors.blueDeep
+                    [ backgroundColorWithVariable "--themePrimaryColor70" (Colors.blueCloud |> Colors.withAlpha 0.5)
+                    , colorWithVariable "--themePrimaryColor" Colors.blueDeep
                     ]
                 , focus
                     [ outline none
-                    , backgroundColor Colors.blueCloud
-                    , color Colors.blueDeep
-                    , boxShadow5 zero zero zero (rem 0.125) Colors.blueDeep
+                    , backgroundColorWithVariable "--themePrimaryColor20" Colors.blueCloud
+                    , colorWithVariable "--themePrimaryColor" Colors.blueDeep
+                    , Css.property "box-shadow" ("0rem 0rem 0rem 0.25rem " ++ colorVariable "--themePrimaryColor" Colors.blueDeep)
                     ]
                 ]
 
         Tertiary ->
             batch
                 [ backgroundColor Colors.transparent
-                , color Colors.blueDeep
+                , colorWithVariable "--themePrimaryColor" Colors.blueDeep
                 , border3 (rem 0.125) solid Colors.transparent
                 , hover
                     [ backgroundColor Colors.transparent
-                    , color Colors.blueNordea
+                    , colorWithVariable "--themePrimaryColor70" Colors.blueNordea
                     ]
                 , focus
                     [ outline none
                     , backgroundColor Colors.transparent
-                    , color Colors.blueDeep
-                    , boxShadow5 zero zero zero (rem 0.25) Colors.blueHaas
+                    , colorWithVariable "--themePrimaryColor" Colors.blueDeep
+                    , Css.property "box-shadow" ("0rem 0rem 0rem 0.25rem " ++ colorVariable "--themePrimaryColor20" Colors.blueHaas)
                     ]
                 ]
 

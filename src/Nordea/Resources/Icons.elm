@@ -130,12 +130,7 @@ chevronDown attrs =
 spinner : List (Attribute msg) -> Html msg
 spinner attrs =
     iconContainer
-        (css
-            [ Css.width (rem 3.75)
-            , Css.color Colors.blueDeep
-            ]
-            :: attrs
-        )
+        attrs
         [ Svg.svg
             [ fill "none"
             , viewBox "0 0 20 20"
