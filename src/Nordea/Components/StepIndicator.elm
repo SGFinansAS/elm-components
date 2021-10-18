@@ -156,6 +156,7 @@ divStyles =
     , width (rem 2)
     , borderRadius (pct 50)
     , border3 (rem 0.125) solid Colors.grayMedium
+    , boxSizing borderBox
     , fontSize (rem 1)
     , color Colors.grayEclipse
     , backgroundColor Colors.white
