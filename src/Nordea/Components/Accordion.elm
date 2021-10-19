@@ -19,6 +19,7 @@ import Nordea.Html as Html
 import Nordea.Resources.Colors as Colors
 import Nordea.Resources.Fonts as Fonts
 import Nordea.Resources.Icons as Icons
+import Nordea.Themes as Themes
 
 
 
@@ -99,7 +100,7 @@ view (Accordion config) =
     Html.styled Html.div
         [ Css.padding2 (Css.rem 1) (Css.rem 1.5)
         , Css.borderRadius (Css.rem 0.5)
-        , Css.backgroundColor Colors.blueCloud
+        , Themes.backgroundColor Themes.PrimaryColor20 Colors.blueCloud
         ]
         []
         [ Html.viewMaybe viewTitle config.title
@@ -113,7 +114,7 @@ viewTitle title =
         [ Css.padding2 (Css.rem 1) Css.zero
         , Fonts.fromSize 1.125
         , Css.fontWeight (Css.int 500)
-        , Css.color Colors.blueDeep
+        , Themes.color Themes.PrimaryColor Colors.blueDeep
         ]
         []
         [ Html.text title ]
@@ -133,10 +134,9 @@ viewItems items =
 viewItem : Item -> Html Msg
 viewItem item =
     Html.styled Html.div
-        [ Css.borderBottom3 (Css.rem 0.0625) Css.solid Colors.blueHaas
-        , Css.firstChild
-            [ Css.borderTop3 (Css.rem 0.0625) Css.solid Colors.blueHaas
-            ]
+        [ Css.borderBottom3 (Css.rem 0.0625) Css.solid Css.transparent
+        , Css.firstChild [ Css.borderTop3 (Css.rem 0.0625) Css.solid Css.transparent ]
+        , Themes.borderColor Themes.PrimaryColor20 Colors.blueHaas
         ]
         []
         [ viewItemTitle item
@@ -151,7 +151,7 @@ viewItemTitle item =
         , Css.alignItems Css.center
         , Css.padding2 (Css.rem 1) Css.zero
         , Fonts.fromSize 1
-        , Css.color Colors.blueDeep
+        , Themes.color Themes.PrimaryColor Colors.blueDeep
         , Css.cursor Css.pointer
         ]
         [ Events.onClick (Toggle item) ]

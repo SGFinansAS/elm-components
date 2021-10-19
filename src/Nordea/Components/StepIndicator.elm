@@ -56,6 +56,7 @@ import Nordea.Html exposing (showIf)
 import Nordea.Resources.Colors as Colors
 import Nordea.Resources.Fonts as Fonts
 import Nordea.Resources.Icons as Icons
+import Nordea.Themes as Themes
 
 
 type StepIndicator
@@ -188,7 +189,7 @@ divStylesActive =
     , width (rem 2)
     , borderRadius (pct 50)
     , border3 (rem 0.125) solid Colors.white
-    , backgroundColor Colors.blueDeep
+    , Themes.backgroundColor Themes.PrimaryColor Colors.blueDeep
     , color Colors.white
     ]
 

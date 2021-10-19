@@ -15,6 +15,7 @@ import Html.Styled.Attributes exposing (maxlength, pattern, placeholder, value)
 import Html.Styled.Events exposing (onInput)
 import Maybe.Extra as Maybe
 import Nordea.Resources.Colors as Colors
+import Nordea.Themes as Themes
 
 
 
@@ -116,11 +117,9 @@ getStyles config =
     , border3 (em 0.0625) solid borderColorStyle
     , boxSizing borderBox
     , width (pct 100)
-    , disabled
-        [ backgroundColor Colors.grayWarm
-        ]
+    , disabled [ backgroundColor Colors.grayWarm ]
     , focus
         [ outline none
-        , borderColor Colors.blueNordea
+        , Themes.borderColor Themes.PrimaryColor70 Colors.blueNordea
         ]
     ]

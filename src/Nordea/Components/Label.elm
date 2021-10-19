@@ -61,6 +61,7 @@ import Maybe.Extra as Maybe
 import Nordea.Html as Html exposing (showIf, styleIf)
 import Nordea.Resources.Colors as Colors
 import Nordea.Resources.Icons as Icons
+import Nordea.Themes as Themes
 
 
 type LabelType
@@ -241,7 +242,7 @@ focusStyle =
         [ pseudoClass "focus-within"
             [ descendants
                 [ typeSelector "span"
-                    [ color Colors.blueNordea ]
+                    [ Themes.color Themes.PrimaryColor70 Colors.blueNordea ]
                 ]
             ]
         ]

@@ -36,6 +36,7 @@ import Css
 import Html.Styled as Html exposing (Attribute, Html)
 import Nordea.Components.Button as Button
 import Nordea.Resources.Colors as Colors
+import Nordea.Themes as Themes
 
 
 
@@ -113,13 +114,9 @@ baseStyle =
         , cursor pointer
         , boxSizing borderBox
         , textDecoration underline
-        , color Colors.blueDeep
-        , hover
-            [ color Colors.blueNordea
-            ]
-        , focus
-            [ color Colors.blueNordea
-            ]
+        , Themes.color Themes.PrimaryColor Colors.blueDeep
+        , hover [ Themes.color Themes.PrimaryColor70 Colors.blueNordea ]
+        , focus [ Themes.color Themes.PrimaryColor70 Colors.blueNordea ]
         ]
 
 

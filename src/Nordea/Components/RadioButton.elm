@@ -9,13 +9,62 @@ module Nordea.Components.RadioButton exposing
     , withOnBlur
     )
 
-import Css exposing (absolute, after, alignItems, backgroundColor, before, block, border3, borderBottomColor, borderBottomLeftRadius, borderBottomRightRadius, borderBox, borderColor, borderRadius, borderTopColor, borderTopLeftRadius, borderTopRightRadius, boxShadow5, boxSizing, center, cursor, display, firstOfType, flex, flexBasis, height, hover, inlineFlex, int, lastOfType, left, marginTop, none, num, opacity, padding2, pct, pointer, position, pseudoClass, relative, rem, solid, top, transparent, width, zIndex)
+import Css
+    exposing
+        ( absolute
+        , after
+        , alignItems
+        , backgroundColor
+        , before
+        , block
+        , border3
+        , borderBottomColor
+        , borderBottomLeftRadius
+        , borderBottomRightRadius
+        , borderBox
+        , borderColor
+        , borderRadius
+        , borderTopColor
+        , borderTopLeftRadius
+        , borderTopRightRadius
+        , boxShadow5
+        , boxSizing
+        , center
+        , cursor
+        , display
+        , firstOfType
+        , flex
+        , flexBasis
+        , height
+        , hover
+        , inlineFlex
+        , int
+        , lastOfType
+        , left
+        , marginTop
+        , none
+        , num
+        , opacity
+        , padding2
+        , pct
+        , pointer
+        , position
+        , pseudoClass
+        , relative
+        , rem
+        , solid
+        , top
+        , transparent
+        , width
+        , zIndex
+        )
 import Css.Transitions exposing (transition)
 import Html.Styled as Html exposing (Attribute, Html)
 import Html.Styled.Attributes as Attrs exposing (css, name, type_)
 import Html.Styled.Events as Events
 import Nordea.Html exposing (styleIf)
 import Nordea.Resources.Colors as Colors
+import Nordea.Themes as Themes
 
 
 type alias InputProperties msg =
@@ -72,7 +121,8 @@ view attrs (RadioButton config) =
                         , width (pct 100)
                         , height (pct 100)
                         , backgroundColor Colors.white
-                        , border3 (rem 0.125) solid Colors.blueNordea
+                        , border3 (rem 0.125) solid Css.transparent
+                        , Themes.borderColor Themes.PrimaryColor70 Colors.blueNordea
                         , borderColor Colors.redDark
                             |> styleIf (config.showError && config.appearance == Simple)
                         , borderColor Colors.grayMedium
@@ -88,7 +138,7 @@ view attrs (RadioButton config) =
                         , display none
                         , width (rem 0.75)
                         , height (rem 0.75)
-                        , backgroundColor Colors.blueNordea
+                        , Themes.backgroundColor Themes.PrimaryColor70 Colors.blueNordea
                         , borderRadius (pct 100)
                         ]
                     ]
@@ -101,9 +151,9 @@ view attrs (RadioButton config) =
                     Css.batch
                         [ padding2 (rem 0.75) (rem 1)
                         , border3 (rem 0.0625) solid transparent
-                        , backgroundColor Colors.blueCloud |> styleIf config.isSelected
+                        , Themes.backgroundColor Themes.PrimaryColor20 Colors.blueCloud |> styleIf config.isSelected
                         , hover
-                            [ borderColor Colors.blueNordea |> styleIf (not config.showError)
+                            [ Themes.borderColor Themes.PrimaryColor70 Colors.blueNordea |> styleIf (not config.showError)
                             , boxShadow5 (rem 0) (rem 0.25) (rem 0.25) (rem 0) Colors.black25
                             , zIndex (int 1)
                             ]
@@ -142,8 +192,8 @@ view attrs (RadioButton config) =
             , cursor pointer
             , appearanceStyle
             , position relative
-            , pseudoClass "hover .nfe-radiomark:before" [ boxShadow5 (rem 0) (rem 0) (rem 0) (rem 0.0625) Colors.blueMedium ]
-            , pseudoClass "focus-within .nfe-radiomark:before" [ boxShadow5 (rem 0) (rem 0) (rem 0) (rem 0.0625) Colors.blueMedium ]
+            , pseudoClass "hover .nfe-radiomark:before" [ Css.property "box-shadow" ("0rem 0rem 0rem 0.0625rem " ++ Themes.colorVariable Themes.PrimaryColor20 Colors.blueMedium) ]
+            , pseudoClass "focus-within .nfe-radiomark:before" [ Css.property "box-shadow" ("0rem 0rem 0rem 0.0625rem " ++ Themes.colorVariable Themes.PrimaryColor20 Colors.blueMedium) ]
             ]
             :: attrs
         )

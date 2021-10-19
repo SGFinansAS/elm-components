@@ -46,6 +46,7 @@ import Json.Decode as Decode
 import Nordea.Html exposing (styleIf, viewMaybe)
 import Nordea.Resources.Colors as Colors
 import Nordea.Resources.Icons as Icon
+import Nordea.Themes as Themes
 
 
 type alias Option a =
@@ -146,7 +147,10 @@ view attrs (Dropdown config) =
                 , backgroundColor transparent
                 , padding4 (rem 0.5) (rem 2) (rem 0.5) (rem 1)
                 , borderStyle none
-                , focus [ boxShadow5 (rem 0) (rem 0) (rem 0) (rem 0.0625) Colors.blueNordea, outline none ]
+                , focus
+                    [ Css.property "box-shadow" ("0rem 0rem 0rem 0.0625rem " ++ Themes.colorVariable Themes.PrimaryColor20 Colors.blueNordea)
+                    , outline none
+                    ]
                 , fontSize (rem 1.0)
                 , lineHeight (rem 1.4)
                 , fontFamilies [ "Nordea Sans Small" ]
