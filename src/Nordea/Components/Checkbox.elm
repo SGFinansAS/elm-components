@@ -64,9 +64,9 @@ import Css.Transitions exposing (transition)
 import Html.Styled as Html exposing (Attribute, Html)
 import Html.Styled.Attributes as Attrs exposing (class, css, name, type_)
 import Html.Styled.Events exposing (onCheck)
-import Nordea.Css exposing (backgroundColorWithVariable, borderColorWithVariable, colorVariable, colorWithVariable)
 import Nordea.Html exposing (styleIf)
 import Nordea.Resources.Colors as Colors
+import Nordea.Themes as Themes
 
 
 type alias CheckBoxProperties msg =
@@ -116,7 +116,7 @@ view attrs (Checkbox config) =
                     , width (rem 1.25)
                     , backgroundColor Colors.white
                     , border3 (rem 0.125) solid Css.transparent
-                    , borderColorWithVariable "--themePrimaryColor70" Colors.blueNordea
+                    , Themes.borderColor Themes.PrimaryColor70 Colors.blueNordea
                     , borderRadius (rem 0.125)
                     , borderColor Colors.redDark
                         |> styleIf (config.hasError && config.appearance == Simple)
@@ -147,9 +147,9 @@ view attrs (Checkbox config) =
                     Css.batch
                         [ padding2 (rem 0.75) (rem 1)
                         , border3 (rem 0.0625) solid transparent
-                        , backgroundColorWithVariable "--themePrimaryColor20" Colors.blueCloud |> styleIf config.isChecked
+                        , Themes.backgroundColor Themes.PrimaryColor20 Colors.blueCloud |> styleIf config.isChecked
                         , hover
-                            [ borderColorWithVariable "--themePrimaryColor70" Colors.blueNordea |> styleIf (not config.hasError)
+                            [ Themes.borderColor Themes.PrimaryColor70 Colors.blueNordea |> styleIf (not config.hasError)
                             , boxShadow5 (rem 0) (rem 0.25) (rem 0.25) (rem 0) Colors.black25
                             , zIndex (int 1)
                             ]
@@ -188,8 +188,8 @@ view attrs (Checkbox config) =
             , cursor pointer
             , appearanceStyle
             , position relative
-            , pseudoClass "hover .nfe-checkbox" [ Css.property "box-shadow" ("0rem 0rem 0rem 0.0625rem " ++ colorVariable "--themePrimaryColor20" Colors.blueMedium) ]
-            , pseudoClass "focus-within .nfe-checkbox" [ Css.property "box-shadow" ("0rem 0rem 0rem 0.0625rem " ++ colorVariable "--themePrimaryColor20" Colors.blueMedium) ]
+            , pseudoClass "hover .nfe-checkbox" [ Css.property "box-shadow" ("0rem 0rem 0rem 0.0625rem " ++ Themes.colorVariable Themes.PrimaryColor20 Colors.blueMedium) ]
+            , pseudoClass "focus-within .nfe-checkbox" [ Css.property "box-shadow" ("0rem 0rem 0rem 0.0625rem " ++ Themes.colorVariable Themes.PrimaryColor20 Colors.blueMedium) ]
             ]
             :: attrs
         )
@@ -206,7 +206,7 @@ view attrs (Checkbox config) =
 
                 -- when <input> is checked, apply styles to sibling with class .nfe-checkbox
                 , pseudoClass "checked ~ .nfe-checkbox"
-                    [ backgroundColorWithVariable "--themePrimaryColor70" Colors.blueNordea
+                    [ Themes.backgroundColor Themes.PrimaryColor70 Colors.blueNordea
                     , after [ display block ]
                     ]
                 ]

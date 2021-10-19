@@ -43,10 +43,10 @@ import Html.Styled as Html exposing (Attribute, Html, div, option, text)
 import Html.Styled.Attributes as Attrs exposing (css, selected, value)
 import Html.Styled.Events as Events exposing (on, targetValue)
 import Json.Decode as Decode
-import Nordea.Css exposing (colorVariable)
 import Nordea.Html exposing (styleIf, viewMaybe)
 import Nordea.Resources.Colors as Colors
 import Nordea.Resources.Icons as Icon
+import Nordea.Themes as Themes
 
 
 type alias Option a =
@@ -148,7 +148,7 @@ view attrs (Dropdown config) =
                 , padding4 (rem 0.5) (rem 2) (rem 0.5) (rem 1)
                 , borderStyle none
                 , focus
-                    [ Css.property "box-shadow" ("0rem 0rem 0rem 0.0625rem " ++ colorVariable "--themePrimaryColor20" Colors.blueNordea)
+                    [ Css.property "box-shadow" ("0rem 0rem 0rem 0.0625rem " ++ Themes.colorVariable Themes.PrimaryColor20 Colors.blueNordea)
                     , outline none
                     ]
                 , fontSize (rem 1.0)

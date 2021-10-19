@@ -58,10 +58,10 @@ import Html.Styled as Html
         )
 import Html.Styled.Attributes exposing (css)
 import Maybe.Extra as Maybe
-import Nordea.Css exposing (backgroundColorWithVariable, borderColorWithVariable, colorVariable, colorWithVariable)
 import Nordea.Html as Html exposing (showIf, styleIf)
 import Nordea.Resources.Colors as Colors
 import Nordea.Resources.Icons as Icons
+import Nordea.Themes as Themes
 
 
 type LabelType
@@ -242,7 +242,7 @@ focusStyle =
         [ pseudoClass "focus-within"
             [ descendants
                 [ typeSelector "span"
-                    [ colorWithVariable "--themePrimaryColor70" Colors.blueNordea ]
+                    [ Themes.color Themes.PrimaryColor70 Colors.blueNordea ]
                 ]
             ]
         ]

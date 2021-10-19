@@ -1,8 +1,5 @@
 module Nordea.Css exposing
-    ( backgroundColorWithVariable
-    , borderColorWithVariable
-    , colorVariable
-    , colorWithVariable
+    ( colorVariable
     , propertyWithColorVariable
     , propertyWithVariable
     , variable
@@ -29,21 +26,6 @@ propertyWithVariable property variableName fallback =
 propertyWithColorVariable : String -> String -> Css.Color -> Css.Style
 propertyWithColorVariable property variableName fallbackColor =
     Css.property property (colorVariable variableName fallbackColor)
-
-
-backgroundColorWithVariable : String -> Css.Color -> Css.Style
-backgroundColorWithVariable variableName fallbackColor =
-    propertyWithColorVariable "background-color" variableName fallbackColor
-
-
-colorWithVariable : String -> Css.Color -> Css.Style
-colorWithVariable variableName fallbackColor =
-    propertyWithColorVariable "color" variableName fallbackColor
-
-
-borderColorWithVariable : String -> Css.Color -> Css.Style
-borderColorWithVariable variableName fallbackColor =
-    propertyWithColorVariable "border-color" variableName fallbackColor
 
 
 colorToString : Css.Color -> String
