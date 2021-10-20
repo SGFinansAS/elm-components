@@ -30,8 +30,9 @@ import Css
         , fontSize
         , justifyContent
         , lineHeight
-        , margin
         , marginBottom
+        , marginInlineEnd
+        , marginInlineStart
         , marginLeft
         , marginRight
         , marginTop
@@ -128,7 +129,8 @@ view attrs children (Label config) =
                 [ displayFlex
                 , flexWrap wrap
                 , focusStyle |> styleIf config.showFocusOutline
-                , margin (rem 0)
+                , marginInlineStart (rem 0)
+                , marginInlineEnd (rem 0)
                 , padding (rem 0)
                 , border (rem 0)
                 ]
