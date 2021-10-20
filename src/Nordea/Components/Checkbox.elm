@@ -19,6 +19,7 @@ import Css
         , border3
         , borderBottomLeftRadius
         , borderBottomRightRadius
+        , borderBox
         , borderColor
         , borderRadius
         , borderTopColor
@@ -26,6 +27,7 @@ import Css
         , borderTopRightRadius
         , borderWidth4
         , boxShadow5
+        , boxSizing
         , center
         , cursor
         , deg
@@ -136,6 +138,7 @@ view attrs (Checkbox config) =
                         , transforms [ rotate (deg 45) ]
                         , border3 (rem 0.0625) solid Colors.white
                         , borderWidth4 (rem 0) (rem 0.125) (rem 0.125) (rem 0)
+                        , boxSizing borderBox
                         ]
                     ]
                 ]
