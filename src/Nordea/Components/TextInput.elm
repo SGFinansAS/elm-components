@@ -120,6 +120,6 @@ getStyles config =
     , disabled [ backgroundColor Colors.grayWarm ]
     , focus
         [ outline none
-        , Themes.borderColor Themes.PrimaryColor70 Colors.blueNordea
+        , Themes.borderColor Themes.PrimaryColorLight Colors.blueNordea
         ]
     ]

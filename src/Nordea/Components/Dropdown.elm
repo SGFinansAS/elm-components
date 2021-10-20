@@ -145,7 +145,7 @@ view attrs (Dropdown config) =
                 , padding4 (rem 0.5) (rem 2) (rem 0.5) (rem 1)
                 , borderStyle none
                 , focus
-                    [ Css.property "box-shadow" ("0rem 0rem 0rem 0.0625rem " ++ Themes.colorVariable Themes.PrimaryColor20 Colors.blueNordea)
+                    [ Css.property "box-shadow" ("0rem 0rem 0rem 0.0625rem " ++ Themes.colorVariable Themes.SecondaryColor Colors.blueNordea)
                     , outline none
                     ]
                 , fontSize (rem 1.0)

@@ -14,8 +14,8 @@ import Nordea.Css as Css
 
 type ThemeColor
     = PrimaryColor
-    | PrimaryColor70
-    | PrimaryColor20
+    | PrimaryColorLight
+    | SecondaryColor
 
 
 
@@ -48,8 +48,8 @@ toString themeColor =
         PrimaryColor ->
             "--themePrimaryColor"
 
-        PrimaryColor70 ->
-            "--themePrimaryColor70"
+        PrimaryColorLight ->
+            "--themePrimaryColorLight"
 
-        PrimaryColor20 ->
-            "--themePrimaryColor20"
+        SecondaryColor ->
+            "--themeSecondaryColor"
