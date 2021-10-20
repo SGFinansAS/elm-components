@@ -131,11 +131,10 @@ view attrs children (Label config) =
                 , margin (rem 0)
                 , padding (rem 0)
                 , border (rem 0)
-                , Css.Global.children [ everything [ flexBasis (pct 100) ] ]
                 ]
                 attrs
                 ((legend
-                    [ css [ padding (rem 0), Css.Global.children [ everything [ flexBasis (pct 100) ] ] ] ]
+                    [ css [ padding (rem 0), flexBasis (pct 100), Css.Global.children [ everything [ flexBasis (pct 100) ] ] ] ]
                     [ topInfo config ]
                     |> showIf (not (String.isEmpty config.labelText) || Maybe.isJust config.requirednessHint)
                  )
@@ -198,7 +197,7 @@ bottomInfo config =
                             [ String.fromInt charCounter.current ++ "/" ++ String.fromInt charCounter.max |> text ]
                     )
     in
-    [ div [ css [ displayFlex, justifyContent spaceBetween, marginTop (rem 0.5), Css.property "gap" "1rem" ] ]
+    [ div [ css [ displayFlex, flexBasis (pct 100), justifyContent spaceBetween, marginTop (rem 0.5), Css.property "gap" "1rem" ] ]
         [ config.errorMessage
             |> Html.viewMaybe
                 (\errText ->
@@ -217,7 +216,7 @@ bottomInfo config =
         , charCounterView
         ]
         |> showIf (Maybe.isJust config.errorMessage)
-    , div [ css [ displayFlex, justifyContent spaceBetween, marginTop (rem 0.5), Css.property "gap" "1rem" ] ]
+    , div [ css [ displayFlex, flexBasis (pct 100), justifyContent spaceBetween, marginTop (rem 0.5), Css.property "gap" "1rem" ] ]
         [ config.hintText
             |> Html.viewMaybe
                 (\hintText ->
