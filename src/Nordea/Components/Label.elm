@@ -246,7 +246,7 @@ focusStyle =
         [ pseudoClass "focus-within"
             [ descendants
                 [ typeSelector "span"
-                    [ Themes.color Themes.PrimaryColor70 Colors.blueNordea ]
+                    [ Themes.color Themes.PrimaryColorLight Colors.blueNordea ]
                 ]
             ]
         ]

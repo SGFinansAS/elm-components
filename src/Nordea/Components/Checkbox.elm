@@ -118,7 +118,7 @@ view attrs (Checkbox config) =
                     , width (rem 1.25)
                     , backgroundColor Colors.white
                     , border3 (rem 0.125) solid Css.transparent
-                    , Themes.borderColor Themes.PrimaryColor70 Colors.blueNordea
+                    , Themes.borderColor Themes.PrimaryColorLight Colors.blueNordea
                     , borderRadius (rem 0.125)
                     , borderColor Colors.redDark
                         |> styleIf (config.hasError && config.appearance == Simple)
@@ -150,9 +150,9 @@ view attrs (Checkbox config) =
                     Css.batch
                         [ padding2 (rem 0.75) (rem 1)
                         , border3 (rem 0.0625) solid transparent
-                        , Themes.backgroundColor Themes.PrimaryColor20 Colors.blueCloud |> styleIf config.isChecked
+                        , Themes.backgroundColor Themes.SecondaryColor Colors.blueCloud |> styleIf config.isChecked
                         , hover
-                            [ Themes.borderColor Themes.PrimaryColor70 Colors.blueNordea |> styleIf (not config.hasError)
+                            [ Themes.borderColor Themes.PrimaryColorLight Colors.blueNordea |> styleIf (not config.hasError)
                             , boxShadow5 (rem 0) (rem 0.25) (rem 0.25) (rem 0) Colors.black25
                             , zIndex (int 1)
                             ]
@@ -191,8 +191,8 @@ view attrs (Checkbox config) =
             , cursor pointer
             , appearanceStyle
             , position relative
-            , pseudoClass "hover .nfe-checkbox" [ Css.property "box-shadow" ("0rem 0rem 0rem 0.0625rem " ++ Themes.colorVariable Themes.PrimaryColor20 Colors.blueMedium) ]
-            , pseudoClass "focus-within .nfe-checkbox" [ Css.property "box-shadow" ("0rem 0rem 0rem 0.0625rem " ++ Themes.colorVariable Themes.PrimaryColor20 Colors.blueMedium) ]
+            , pseudoClass "hover .nfe-checkbox" [ Css.property "box-shadow" ("0rem 0rem 0rem 0.0625rem " ++ Themes.colorVariable Themes.SecondaryColor Colors.blueMedium) ]
+            , pseudoClass "focus-within .nfe-checkbox" [ Css.property "box-shadow" ("0rem 0rem 0rem 0.0625rem " ++ Themes.colorVariable Themes.SecondaryColor Colors.blueMedium) ]
             ]
             :: attrs
         )
@@ -209,7 +209,7 @@ view attrs (Checkbox config) =
 
                 -- when <input> is checked, apply styles to sibling with class .nfe-checkbox
                 , pseudoClass "checked ~ .nfe-checkbox"
-                    [ Themes.backgroundColor Themes.PrimaryColor70 Colors.blueNordea
+                    [ Themes.backgroundColor Themes.PrimaryColorLight Colors.blueNordea
                     , after [ display block ]
                     ]
                 ]

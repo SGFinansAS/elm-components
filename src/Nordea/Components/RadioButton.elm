@@ -122,7 +122,7 @@ view attrs (RadioButton config) =
                         , height (pct 100)
                         , backgroundColor Colors.white
                         , border3 (rem 0.125) solid Css.transparent
-                        , Themes.borderColor Themes.PrimaryColor70 Colors.blueNordea
+                        , Themes.borderColor Themes.PrimaryColorLight Colors.blueNordea
                         , borderColor Colors.redDark
                             |> styleIf (config.showError && config.appearance == Simple)
                         , borderColor Colors.grayMedium
@@ -138,7 +138,7 @@ view attrs (RadioButton config) =
                         , display none
                         , width (rem 0.75)
                         , height (rem 0.75)
-                        , Themes.backgroundColor Themes.PrimaryColor70 Colors.blueNordea
+                        , Themes.backgroundColor Themes.PrimaryColorLight Colors.blueNordea
                         , borderRadius (pct 100)
                         , boxSizing borderBox
                         ]
@@ -152,9 +152,9 @@ view attrs (RadioButton config) =
                     Css.batch
                         [ padding2 (rem 0.75) (rem 1)
                         , border3 (rem 0.0625) solid transparent
-                        , Themes.backgroundColor Themes.PrimaryColor20 Colors.blueCloud |> styleIf config.isSelected
+                        , Themes.backgroundColor Themes.SecondaryColor Colors.blueCloud |> styleIf config.isSelected
                         , hover
-                            [ Themes.borderColor Themes.PrimaryColor70 Colors.blueNordea |> styleIf (not config.showError)
+                            [ Themes.borderColor Themes.PrimaryColorLight Colors.blueNordea |> styleIf (not config.showError)
                             , boxShadow5 (rem 0) (rem 0.25) (rem 0.25) (rem 0) Colors.black25
                             , zIndex (int 1)
                             ]
@@ -193,8 +193,8 @@ view attrs (RadioButton config) =
             , cursor pointer
             , appearanceStyle
             , position relative
-            , pseudoClass "hover .nfe-radiomark:before" [ Css.property "box-shadow" ("0rem 0rem 0rem 0.0625rem " ++ Themes.colorVariable Themes.PrimaryColor20 Colors.blueMedium) ]
-            , pseudoClass "focus-within .nfe-radiomark:before" [ Css.property "box-shadow" ("0rem 0rem 0rem 0.0625rem " ++ Themes.colorVariable Themes.PrimaryColor20 Colors.blueMedium) ]
+            , pseudoClass "hover .nfe-radiomark:before" [ Css.property "box-shadow" ("0rem 0rem 0rem 0.0625rem " ++ Themes.colorVariable Themes.SecondaryColor Colors.blueMedium) ]
+            , pseudoClass "focus-within .nfe-radiomark:before" [ Css.property "box-shadow" ("0rem 0rem 0rem 0.0625rem " ++ Themes.colorVariable Themes.SecondaryColor Colors.blueMedium) ]
             ]
             :: attrs
         )

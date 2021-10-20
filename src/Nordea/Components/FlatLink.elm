@@ -115,8 +115,8 @@ baseStyle =
         , boxSizing borderBox
         , textDecoration underline
         , Themes.color Themes.PrimaryColor Colors.blueDeep
-        , hover [ Themes.color Themes.PrimaryColor70 Colors.blueNordea ]
-        , focus [ Themes.color Themes.PrimaryColor70 Colors.blueNordea ]
+        , hover [ Themes.color Themes.PrimaryColorLight Colors.blueNordea ]
+        , focus [ Themes.color Themes.PrimaryColorLight Colors.blueNordea ]
         ]
 
 

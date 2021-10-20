@@ -100,7 +100,7 @@ view (Accordion config) =
     Html.styled Html.div
         [ Css.padding2 (Css.rem 1) (Css.rem 1.5)
         , Css.borderRadius (Css.rem 0.5)
-        , Themes.backgroundColor Themes.PrimaryColor20 Colors.blueCloud
+        , Themes.backgroundColor Themes.SecondaryColor Colors.blueCloud
         ]
         []
         [ Html.viewMaybe viewTitle config.title
@@ -136,7 +136,7 @@ viewItem item =
     Html.styled Html.div
         [ Css.borderBottom3 (Css.rem 0.0625) Css.solid Css.transparent
         , Css.firstChild [ Css.borderTop3 (Css.rem 0.0625) Css.solid Css.transparent ]
-        , Themes.borderColor Themes.PrimaryColor20 Colors.blueHaas
+        , Themes.borderColor Themes.SecondaryColor Colors.blueHaas
         ]
         []
         [ viewItemTitle item

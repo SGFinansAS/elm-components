@@ -138,14 +138,14 @@ variantStyle variant =
                 , color Colors.white
                 , border3 (rem 0.125) solid Colors.transparent
                 , hover
-                    [ Themes.backgroundColor Themes.PrimaryColor20 Colors.blueCloud
+                    [ Themes.backgroundColor Themes.SecondaryColor Colors.blueCloud
                     , Themes.color Themes.PrimaryColor Colors.blueDeep
                     ]
                 , focus
                     [ outline none
-                    , Themes.backgroundColor Themes.PrimaryColor70 Colors.blueNordea
-                    , Themes.color Themes.PrimaryColor20 Colors.blueHaas
-                    , Css.property "box-shadow" ("0rem 0rem 0rem 0.25rem " ++ Themes.colorVariable Themes.PrimaryColor20 Colors.blueHaas)
+                    , Themes.backgroundColor Themes.PrimaryColorLight Colors.blueNordea
+                    , Themes.color Themes.SecondaryColor Colors.blueHaas
+                    , Css.property "box-shadow" ("0rem 0rem 0rem 0.25rem " ++ Themes.colorVariable Themes.SecondaryColor Colors.blueHaas)
                     ]
                 ]
 
@@ -156,12 +156,12 @@ variantStyle variant =
                 , border3 (rem 0.125) solid Css.transparent
                 , Themes.borderColor Themes.PrimaryColor Colors.blueDeep
                 , hover
-                    [ Themes.backgroundColor Themes.PrimaryColor20 (Colors.blueCloud |> Colors.withAlpha 0.5)
+                    [ Themes.backgroundColor Themes.SecondaryColor (Colors.blueCloud |> Colors.withAlpha 0.5)
                     , Themes.color Themes.PrimaryColor Colors.blueDeep
                     ]
                 , focus
                     [ outline none
-                    , Themes.backgroundColor Themes.PrimaryColor20 Colors.blueCloud
+                    , Themes.backgroundColor Themes.SecondaryColor Colors.blueCloud
                     , Themes.color Themes.PrimaryColor Colors.blueDeep
                     , Css.property "box-shadow" ("0rem 0rem 0rem 0.25rem " ++ Themes.colorVariable Themes.PrimaryColor Colors.blueDeep)
                     ]
@@ -174,13 +174,13 @@ variantStyle variant =
                 , border3 (rem 0.125) solid Colors.transparent
                 , hover
                     [ backgroundColor Colors.transparent
-                    , Themes.color Themes.PrimaryColor70 Colors.blueNordea
+                    , Themes.color Themes.PrimaryColorLight Colors.blueNordea
                     ]
                 , focus
                     [ outline none
                     , backgroundColor Colors.transparent
                     , Themes.color Themes.PrimaryColor Colors.blueDeep
-                    , Css.property "box-shadow" ("0rem 0rem 0rem 0.25rem " ++ Themes.colorVariable Themes.PrimaryColor20 Colors.blueHaas)
+                    , Css.property "box-shadow" ("0rem 0rem 0rem 0.25rem " ++ Themes.colorVariable Themes.SecondaryColor Colors.blueHaas)
                     ]
                 ]
 
