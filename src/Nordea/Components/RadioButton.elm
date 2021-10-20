@@ -140,6 +140,7 @@ view attrs (RadioButton config) =
                         , height (rem 0.75)
                         , Themes.backgroundColor Themes.PrimaryColor70 Colors.blueNordea
                         , borderRadius (pct 100)
+                        , boxSizing borderBox
                         ]
                     ]
                 ]
