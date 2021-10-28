@@ -135,7 +135,7 @@ variantStyle variant =
         Primary ->
             batch
                 [ Themes.backgroundColor Themes.PrimaryColor Colors.blueDeep
-                , color Colors.white
+                , Themes.color Themes.TextColorOnPrimaryColorBackground Colors.white
                 , border3 (rem 0.125) solid Colors.transparent
                 , hover
                     [ Themes.backgroundColor Themes.SecondaryColor Colors.blueCloud

@@ -16,6 +16,7 @@ type ThemeColor
     = PrimaryColor
     | PrimaryColorLight
     | SecondaryColor
+    | TextColorOnPrimaryColorBackground
 
 
 
@@ -53,3 +54,6 @@ toString themeColor =
 
         SecondaryColor ->
             "--themeSecondaryColor"
+
+        TextColorOnPrimaryColorBackground ->
+            "--themeTextColorOnPrimaryColorBackground"
