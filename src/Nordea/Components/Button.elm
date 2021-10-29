@@ -163,7 +163,7 @@ variantStyle variant =
                     [ outline none
                     , Themes.backgroundColor Themes.SecondaryColor Colors.blueCloud
                     , Themes.color Themes.PrimaryColor Colors.blueDeep
-                    , Css.property "box-shadow" ("0rem 0rem 0rem 0.25rem " ++ Themes.colorVariable Themes.PrimaryColor Colors.blueDeep)
+                    , Css.property "box-shadow" ("0rem 0rem 0rem 0.125rem " ++ Themes.colorVariable Themes.PrimaryColor Colors.blueDeep)
                     ]
                 ]
 
