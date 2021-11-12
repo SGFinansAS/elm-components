@@ -1,240 +1,169 @@
-module Nordea.Components.Checkbox exposing
-    ( Appearance(..)
-    , Checkbox
-    , init
-    , view
-    , withAppearance
-    , withHasError
-    , withIsChecked
-    , withOnBlur
-    )
+module Nordea.Components.Checkbox exposing (Checkbox, init, view, withDisabled, withError, withOnCheck)
 
 import Css
     exposing
-        ( absolute
-        , after
+        ( Style
         , alignItems
         , backgroundColor
-        , block
         , border3
-        , borderBottomLeftRadius
-        , borderBottomRightRadius
-        , borderBox
-        , borderColor
         , borderRadius
-        , borderTopColor
-        , borderTopLeftRadius
-        , borderTopRightRadius
-        , borderWidth4
-        , boxShadow5
         , boxSizing
         , center
+        , color
+        , contentBox
         , cursor
-        , deg
+        , default
         , display
         , displayFlex
-        , firstOfType
-        , flex
-        , flexBasis
+        , em
         , height
-        , hover
-        , inlineFlex
-        , int
-        , lastOfType
-        , left
-        , margin
-        , marginTop
+        , inlineBlock
+        , marginRight
         , none
-        , num
-        , opacity
-        , padding2
-        , pct
         , pointer
-        , position
         , pseudoClass
-        , relative
-        , rem
-        , rotate
         , solid
-        , top
-        , transforms
-        , transparent
         , width
-        , zIndex
         )
-import Css.Transitions exposing (transition)
-import Html.Styled as Html exposing (Attribute, Html)
-import Html.Styled.Attributes as Attrs exposing (class, css, name, type_)
+import Css.Global exposing (adjacentSiblings, typeSelector)
+import Html.Styled exposing (Attribute, Html, div, input, label, styled)
+import Html.Styled.Attributes exposing (checked, disabled, type_)
 import Html.Styled.Events exposing (onCheck)
-import Nordea.Html exposing (styleIf)
+import Maybe.Extra as Maybe
 import Nordea.Resources.Colors as Colors
-import Nordea.Themes as Themes
+import Nordea.Resources.Icons as Icons
 
 
-type alias CheckBoxProperties msg =
-    { name : String
-    , label : Html msg
-    , onCheck : Bool -> msg
-    , onBlur : Maybe msg
-    , isChecked : Bool
-    , appearance : Appearance
-    , hasError : Bool
+type alias Config msg =
+    { checked : Bool
+    , onCheck : Maybe (Bool -> msg)
+    , showError : Bool
+    , disabled : Bool
     }
 
 
 type Checkbox msg
-    = Checkbox (CheckBoxProperties msg)
+    = Checkbox (Config msg)
 
 
-type Appearance
-    = Standard
-    | Simple
-    | ListStyle
+
+-- CONFIG
 
 
-init : String -> Html msg -> (Bool -> msg) -> Checkbox msg
-init name label onCheck =
+init : Bool -> Checkbox msg
+init checked =
     Checkbox
-        { name = name
-        , label = label
-        , onCheck = onCheck
-        , onBlur = Nothing
-        , isChecked = False
-        , appearance = Standard
-        , hasError = False
+        { checked = checked
+        , onCheck = Nothing
+        , showError = False
+        , disabled = False
         }
 
 
-view : List (Attribute msg) -> Checkbox msg -> Html msg
-view attrs (Checkbox config) =
-    let
-        checkbox =
-            Html.span
-                [ class "nfe-checkbox"
-                , css
-                    [ displayFlex
-                    , flex none
-                    , height (rem 1.25)
-                    , width (rem 1.25)
-                    , backgroundColor Colors.white
-                    , border3 (rem 0.125) solid Css.transparent
-                    , Themes.borderColor Themes.PrimaryColorLight Colors.blueNordea
-                    , borderRadius (rem 0.125)
-                    , borderColor Colors.redDark
-                        |> styleIf (config.hasError && config.appearance == Simple)
-                    , borderColor Colors.grayMedium
-                        |> styleIf (config.hasError && List.member config.appearance [ Standard, ListStyle ])
-                    , position relative
+withDisabled : Bool -> Checkbox msg -> Checkbox msg
+withDisabled disabled (Checkbox config) =
+    Checkbox { config | disabled = disabled }
 
-                    -- Styling the checkmark
-                    , after
-                        [ Css.property "content" "''"
-                        , display none
-                        , position absolute
-                        , top (rem -0.0625)
-                        , left (rem 0.25)
-                        , width (rem 0.5)
-                        , height (rem 0.813)
-                        , transforms [ rotate (deg 45) ]
-                        , border3 (rem 0.0625) solid Colors.white
-                        , borderWidth4 (rem 0) (rem 0.125) (rem 0.125) (rem 0)
-                        , boxSizing borderBox
-                        ]
-                    ]
-                ]
-                []
 
-        appearanceStyle =
-            let
-                commonNonSimpleStyles =
-                    Css.batch
-                        [ padding2 (rem 0.75) (rem 1)
-                        , border3 (rem 0.0625) solid transparent
-                        , Themes.backgroundColor Themes.SecondaryColor Colors.blueCloud |> styleIf config.isChecked
-                        , hover
-                            [ Themes.borderColor Themes.PrimaryColorLight Colors.blueNordea |> styleIf (not config.hasError)
-                            , boxShadow5 (rem 0) (rem 0.25) (rem 0.25) (rem 0) Colors.black25
-                            , zIndex (int 1)
-                            ]
-                        , transition [ Css.Transitions.borderColor 100, Css.Transitions.boxShadow 100 ]
-                        ]
-            in
-            case config.appearance of
-                Standard ->
-                    Css.batch
-                        [ commonNonSimpleStyles
-                        , borderRadius (rem 0.5)
-                        , borderColor Colors.grayMedium |> styleIf (not config.isChecked)
-                        , borderColor Colors.redDark |> styleIf config.hasError
-                        ]
+withOnCheck : (Bool -> msg) -> Checkbox msg -> Checkbox msg
+withOnCheck onCheck (Checkbox config) =
+    Checkbox { config | onCheck = Just onCheck }
 
-                ListStyle ->
-                    Css.batch
-                        [ commonNonSimpleStyles
-                        , flexBasis (pct 100)
-                        , borderColor Colors.grayMedium
-                        , borderColor Colors.redDark |> styleIf config.hasError
-                        , Css.firstOfType [ borderTopLeftRadius (rem 0.5), borderTopRightRadius (rem 0.5) ]
-                        , Css.lastOfType [ borderBottomLeftRadius (rem 0.5), borderBottomRightRadius (rem 0.5) ]
-                        , pseudoClass "not(label:first-of-type):not(:hover)" [ borderTopColor transparent ] |> styleIf (not config.isChecked)
-                        , pseudoClass "not(label:first-of-type)" [ Css.marginTop (rem -0.0625) ]
-                        ]
 
-                Simple ->
-                    Css.batch []
-    in
-    Html.label
-        (css
-            [ display inlineFlex
-            , Css.property "gap" "0.5rem"
-            , alignItems center
-            , cursor pointer
-            , appearanceStyle
-            , position relative
-            , pseudoClass "hover .nfe-checkbox" [ Css.property "box-shadow" ("0rem 0rem 0rem 0.0625rem " ++ Themes.colorVariable Themes.SecondaryColor Colors.blueMedium) ]
-            , pseudoClass "focus-within .nfe-checkbox" [ Css.property "box-shadow" ("0rem 0rem 0rem 0.0625rem " ++ Themes.colorVariable Themes.SecondaryColor Colors.blueMedium) ]
-            ]
-            :: attrs
-        )
-        [ Html.input
-            [ type_ "checkbox"
-            , name config.name
-            , Attrs.checked config.isChecked
-            , onCheck config.onCheck
-            , css
-                [ position absolute
-                , opacity (num 0)
-                , width (rem 0)
-                , height (rem 0)
+withError : Bool -> Checkbox msg -> Checkbox msg
+withError condition (Checkbox config) =
+    Checkbox { config | showError = condition }
 
-                -- when <input> is checked, apply styles to sibling with class .nfe-checkbox
-                , pseudoClass "checked ~ .nfe-checkbox"
-                    [ Themes.backgroundColor Themes.PrimaryColorLight Colors.blueNordea
-                    , after [ display block ]
-                    ]
-                ]
-            ]
+
+
+-- VIEW
+
+
+view : List (Attribute msg) -> List (Html msg) -> Checkbox msg -> Html msg
+view attributes children (Checkbox config) =
+    styled label
+        (labelStyles config)
+        []
+        ([ styled input
+            (inputStyles config)
+            (inputAttributes config ++ attributes)
             []
-        , checkbox
-        , config.label
+         , styled div
+            (boxStyles config)
+            []
+            [ Icons.check ]
+         ]
+            ++ children
+        )
+
+
+inputAttributes : Config msg -> List (Attribute msg)
+inputAttributes config =
+    Maybe.values
+        [ Just "checkbox" |> Maybe.map type_
+        , Just config.checked |> Maybe.map checked
+        , config.onCheck |> Maybe.map onCheck
+        , Just (disabled config.disabled)
         ]
 
 
-withIsChecked : Bool -> Checkbox msg -> Checkbox msg
-withIsChecked isChecked (Checkbox config) =
-    Checkbox { config | isChecked = isChecked }
+labelStyles : Config msg -> List Style
+labelStyles config =
+    let
+        cursorStyle =
+            if config.disabled then
+                default
+
+            else
+                pointer
+    in
+    [ displayFlex
+    , alignItems center
+    , cursor cursorStyle
+    ]
 
 
-withOnBlur : msg -> Checkbox msg -> Checkbox msg
-withOnBlur msg (Checkbox config) =
-    Checkbox { config | onBlur = Just msg }
+inputStyles : Config msg -> List Style
+inputStyles config =
+    let
+        backgroundColorStyle =
+            if config.disabled then
+                Colors.grayMedium
+
+            else
+                Colors.blueDeep
+    in
+    [ display none
+    , pseudoClass "checked"
+        [ adjacentSiblings
+            [ typeSelector "div"
+                [ backgroundColor backgroundColorStyle
+                ]
+            ]
+        ]
+    ]
 
 
-withAppearance : Appearance -> Checkbox msg -> Checkbox msg
-withAppearance appearance (Checkbox config) =
-    Checkbox { config | appearance = appearance }
+boxStyles : Config msg -> List Style
+boxStyles config =
+    let
+        borderColorStyle =
+            if config.showError then
+                Colors.redDark
 
+            else if config.disabled then
+                Colors.grayMedium
 
-withHasError : Bool -> Checkbox msg -> Checkbox msg
-withHasError hasError (Checkbox config) =
-    Checkbox { config | hasError = hasError }
+            else
+                Colors.blueDeep
+    in
+    [ display inlineBlock
+    , width (em 1)
+    , height (em 1)
+    , boxSizing contentBox
+    , border3 (em 0.125) solid borderColorStyle
+    , borderRadius (em 0.125)
+    , backgroundColor Colors.white
+    , color Colors.white
+    , marginRight (em 0.5)
+    ]

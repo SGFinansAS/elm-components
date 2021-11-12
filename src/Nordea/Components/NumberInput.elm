@@ -2,6 +2,7 @@ module Nordea.Components.NumberInput exposing
     ( NumberInput
     , init
     , view
+    , withDisabled
     , withError
     , withMax
     , withMin
@@ -19,17 +20,19 @@ import Css
         , borderColor
         , borderRadius
         , boxSizing
-        , disabled
         , em
         , focus
         , fontSize
         , height
+        , important
         , none
         , outline
         , padding2
         , pct
+        , property
         , rem
         , solid
+        , unset
         , width
         )
 import Html.Styled exposing (Attribute, Html, input, styled)
@@ -37,7 +40,6 @@ import Html.Styled.Attributes as Attributes exposing (placeholder, step, type_, 
 import Html.Styled.Events exposing (onInput)
 import Maybe.Extra as Maybe
 import Nordea.Resources.Colors as Colors
-import Nordea.Themes as Themes
 
 
 
@@ -52,6 +54,7 @@ type alias Config msg =
     , placeholder : Maybe String
     , onInput : Maybe (String -> msg)
     , showError : Bool
+    , disabled : Bool
     }
 
 
@@ -69,6 +72,7 @@ init value =
         , placeholder = Nothing
         , onInput = Nothing
         , showError = False
+        , disabled = False
         }
 
 
@@ -102,6 +106,11 @@ withError condition (NumberInput config) =
     NumberInput { config | showError = condition }
 
 
+withDisabled : Bool -> NumberInput msg -> NumberInput msg
+withDisabled condition (NumberInput config) =
+    NumberInput { config | disabled = condition }
+
+
 
 -- VIEW
 
@@ -124,6 +133,7 @@ getAttributes config =
         , config.step |> Maybe.map String.fromFloat |> Maybe.map step
         , config.placeholder |> Maybe.map placeholder
         , config.onInput |> Maybe.map onInput
+        , Just config.disabled |> Maybe.map Attributes.disabled
         ]
 
 
@@ -141,16 +151,20 @@ getStyles config =
             else
                 Colors.grayMedium
     in
-    [ fontSize (rem 1)
-    , height (em 2.5)
-    , padding2 (em 0.75) (em 0.75)
-    , borderRadius (em 0.125)
-    , border3 (em 0.0625) solid borderColorStyle
-    , boxSizing borderBox
-    , width (pct 100)
-    , disabled [ backgroundColor Colors.grayWarm ]
-    , focus
-        [ outline none
-        , Themes.borderColor Themes.PrimaryColorLight Colors.blueNordea
+    -- Need to override Main.css styling
+    List.map (\style -> important <| style)
+        [ fontSize (rem 0.8)
+        , height (em 2)
+        , padding2 (em 0.65) (em 0.65)
+        , borderRadius (em 0.125)
+        , border3 (em 0.0625) solid borderColorStyle
+        , boxSizing borderBox
+        , width (pct 70)
+        , Css.disabled
+            [ backgroundColor Colors.grayWarm
+            ]
+        , focus
+            [ outline none
+            , borderColor Colors.blueNordea
+            ]
         ]
-    ]

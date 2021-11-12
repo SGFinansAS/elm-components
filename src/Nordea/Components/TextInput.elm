@@ -2,20 +2,39 @@ module Nordea.Components.TextInput exposing
     ( TextInput
     , init
     , view
+    , withDisabled
     , withError
-    , withMaxLength
     , withOnInput
-    , withPattern
     , withPlaceholder
     )
 
-import Css exposing (Style, backgroundColor, border3, borderBox, borderColor, borderRadius, boxSizing, disabled, em, focus, fontSize, height, none, outline, padding2, pct, rem, solid, width)
+import Css
+    exposing
+        ( Style
+        , backgroundColor
+        , border3
+        , borderBox
+        , borderColor
+        , borderRadius
+        , boxSizing
+        , em
+        , focus
+        , fontSize
+        , height
+        , none
+        , outline
+        , padding2
+        , pct
+        , property
+        , rem
+        , solid
+        , width
+        )
 import Html.Styled exposing (Attribute, Html, input, styled)
-import Html.Styled.Attributes exposing (maxlength, pattern, placeholder, value)
+import Html.Styled.Attributes as Attributes exposing (placeholder, value)
 import Html.Styled.Events exposing (onInput)
 import Maybe.Extra as Maybe
 import Nordea.Resources.Colors as Colors
-import Nordea.Themes as Themes
 
 
 
@@ -27,8 +46,7 @@ type alias Config msg =
     , onInput : Maybe (String -> msg)
     , placeholder : Maybe String
     , showError : Bool
-    , maxLength : Maybe Int
-    , pattern : Maybe String
+    , disabled : Bool
     }
 
 
@@ -43,8 +61,7 @@ init value =
         , onInput = Nothing
         , placeholder = Nothing
         , showError = False
-        , maxLength = Nothing
-        , pattern = Nothing
+        , disabled = False
         }
 
 
@@ -58,19 +75,14 @@ withPlaceholder placeholder (TextInput config) =
     TextInput { config | placeholder = Just placeholder }
 
 
-withMaxLength : Int -> TextInput msg -> TextInput msg
-withMaxLength maxLength (TextInput config) =
-    TextInput { config | maxLength = Just maxLength }
-
-
-withPattern : String -> TextInput msg -> TextInput msg
-withPattern pattern (TextInput config) =
-    TextInput { config | pattern = Just pattern }
-
-
 withError : Bool -> TextInput msg -> TextInput msg
 withError condition (TextInput config) =
     TextInput { config | showError = condition }
+
+
+withDisabled : Bool -> TextInput msg -> TextInput msg
+withDisabled condition (TextInput config) =
+    TextInput { config | disabled = condition }
 
 
 
@@ -91,8 +103,7 @@ getAttributes config =
         [ Just config.value |> Maybe.map value
         , config.onInput |> Maybe.map onInput
         , config.placeholder |> Maybe.map placeholder
-        , config.maxLength |> Maybe.map maxlength
-        , config.pattern |> Maybe.map pattern
+        , Just config.disabled |> Maybe.map Attributes.disabled
         ]
 
 
@@ -110,16 +121,18 @@ getStyles config =
             else
                 Colors.grayMedium
     in
-    [ fontSize (rem 1)
-    , height (em 2.5)
-    , padding2 (em 0.75) (em 0.75)
+    [ fontSize (rem 0.8)
+    , height (em 2)
+    , padding2 (em 0.65) (em 0.65)
     , borderRadius (em 0.125)
     , border3 (em 0.0625) solid borderColorStyle
     , boxSizing borderBox
-    , width (pct 100)
-    , disabled [ backgroundColor Colors.grayWarm ]
+    , width (pct 70)
+    , Css.disabled
+        [ backgroundColor Colors.grayWarm
+        ]
     , focus
         [ outline none
-        , Themes.borderColor Themes.PrimaryColorLight Colors.blueNordea
+        , borderColor Colors.blueNordea
         ]
     ]

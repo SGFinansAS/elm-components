@@ -1,180 +1,149 @@
-module Nordea.Components.Dropdown exposing (Dropdown, init, view, withHasError, withSelectedValue)
+module Nordea.Components.DropDown exposing
+    ( Dropdown
+    , Option
+    , init
+    , view
+    , withDisabled
+    , withError
+    , withOnInput
+    )
 
 import Css
     exposing
-        ( Color
-        , absolute
+        ( Style
         , backgroundColor
         , border3
+        , borderBox
         , borderColor
         , borderRadius
-        , borderStyle
-        , boxShadow5
-        , color
-        , displayFlex
+        , boxSizing
+        , disabled
+        , em
         , focus
-        , fontFamilies
         , fontSize
         , height
-        , hidden
-        , inherit
-        , lineHeight
         , none
         , outline
-        , overflow
-        , padding4
+        , padding2
         , pct
-        , pointerEvents
-        , position
-        , property
-        , relative
         , rem
-        , right
         , solid
-        , top
-        , transform
-        , translateY
-        , transparent
         , width
         )
-import Dict
-import Html.Styled as Html exposing (Attribute, Html, div, option, text)
-import Html.Styled.Attributes as Attrs exposing (css, selected, value)
-import Html.Styled.Events as Events exposing (on, targetValue)
-import Json.Decode as Decode
-import Nordea.Html exposing (styleIf, viewMaybe)
+import Html.Styled as Html exposing (Attribute, Html, styled)
+import Html.Styled.Attributes as Attributes
+import List.Extra as List
+import Maybe.Extra as Maybe
+import Nordea.Html.Events as Events
 import Nordea.Resources.Colors as Colors
-import Nordea.Resources.Icons as Icon
-import Nordea.Themes as Themes
 
 
-type alias Option a =
-    { value : a
-    , text : String
+
+-- CONFIG
+
+
+type alias Option =
+    { value : String
+    , label : String
+    , disabled : Bool
     }
 
 
-type alias DropdownProperties a msg =
-    { placeholder : Maybe String
-    , onInput : a -> msg
-    , options : List (Option a)
-    , optionToString : a -> String
-    , selectedValue : Maybe a
-    , hasError : Bool
+type alias Config msg =
+    { value : String
+    , options : List Option
+    , onInput : Maybe (String -> msg)
+    , showError : Bool
+    , disabled : Bool
     }
 
 
-type Dropdown a msg
-    = Dropdown (DropdownProperties a msg)
+type Dropdown msg
+    = Dropdown (Config msg)
 
 
-init : List (Option a) -> (a -> String) -> (a -> msg) -> Dropdown a msg
-init options optionToString onInput =
+init : String -> List Option -> Dropdown msg
+init value options =
     Dropdown
-        { placeholder = Nothing
-        , onInput = onInput
-        , options = options
-        , optionToString = optionToString
-        , selectedValue = Nothing
-        , hasError = False
+        { value = value
+        , options = options |> List.uniqueBy .value
+        , onInput = Nothing
+        , showError = False
+        , disabled = False
         }
 
 
-view : List (Attribute msg) -> Dropdown a msg -> Html msg
-view attrs (Dropdown config) =
-    let
-        placeholder =
-            config.placeholder
-                |> viewMaybe
-                    (\placeholderTxt ->
-                        option
-                            [ value "", selected True, Attrs.hidden True ]
-                            [ text placeholderTxt ]
-                    )
+withOnInput : (String -> msg) -> Dropdown msg -> Dropdown msg
+withOnInput onInput (Dropdown config) =
+    Dropdown { config | onInput = Just onInput }
 
-        options =
-            config.options
-                |> List.map
-                    (\dropDownOption ->
-                        option
-                            [ dropDownOption.value |> config.optionToString |> value
-                            , selected (config.selectedValue == Just dropDownOption.value)
-                            , css [ color Colors.black ]
-                            ]
-                            [ text dropDownOption.text ]
-                    )
 
-        optionsDict =
-            config.options
-                |> List.map (\opt -> ( config.optionToString opt.value, opt.value ))
-                |> Dict.fromList
+withError : Bool -> Dropdown msg -> Dropdown msg
+withError condition (Dropdown config) =
+    Dropdown { config | showError = condition }
 
-        decoder =
-            targetValue
-                |> Decode.andThen
-                    (\val ->
-                        case Dict.get val optionsDict of
-                            Nothing ->
-                                Decode.fail ""
 
-                            Just tag ->
-                                Decode.succeed tag
-                    )
-                |> Decode.map config.onInput
-    in
-    div
-        (css
-            [ displayFlex
-            , position relative
-            , border3 (rem 0.0625) solid Colors.grayMedium
-            , borderColor Colors.redDark |> styleIf config.hasError
-            , borderRadius (rem 0.25)
-            , overflow hidden
-            ]
-            :: attrs
-        )
-        [ Html.select
-            [ Events.on "change" decoder
-            , css
-                [ height (rem 2.5)
-                , width (pct 100)
-                , property "appearance" "none"
-                , property "-moz-appearance" "none"
-                , property "-webkit-appearance" "none"
-                , backgroundColor transparent
-                , padding4 (rem 0.5) (rem 2) (rem 0.5) (rem 1)
-                , borderStyle none
-                , focus
-                    [ Css.property "box-shadow" ("0rem 0rem 0rem 0.0625rem " ++ Themes.colorVariable Themes.SecondaryColor Colors.blueNordea)
-                    , outline none
-                    ]
-                , fontSize (rem 1.0)
-                , lineHeight (rem 1.4)
-                , fontFamilies [ "Nordea Sans Small" ]
-                , color inherit
-                ]
-            ]
-            (placeholder :: options)
-        , Icon.chevronDown
-            [ css
-                [ position absolute
-                , top (pct 50)
-                , transform (translateY (pct -50))
-                , right (rem 0.75)
-                , width (rem 1.125) |> Css.important
-                , height (rem 1.125)
-                , pointerEvents none
-                , color inherit
-                ]
-            ]
+withDisabled : Bool -> Dropdown msg -> Dropdown msg
+withDisabled condition (Dropdown config) =
+    Dropdown { config | disabled = condition }
+
+
+
+-- VIEW
+
+
+view : List (Attribute msg) -> Dropdown msg -> Html msg
+view attributes (Dropdown config) =
+    styled Html.select
+        (getStyles config)
+        (getAttributes config ++ attributes)
+        (List.map (viewOption config.value) config.options)
+
+
+viewOption : String -> Option -> Html msg
+viewOption selected option =
+    Html.option
+        [ Attributes.value option.value
+        , Attributes.selected (option.value == selected)
+        , Attributes.disabled option.disabled
+        ]
+        [ Html.text option.label ]
+
+
+getAttributes : Config msg -> List (Attribute msg)
+getAttributes config =
+    Maybe.values
+        [ config.onInput |> Maybe.map Events.onChange
+        , Just config.disabled |> Maybe.map Attributes.disabled
         ]
 
 
-withSelectedValue : Maybe a -> Dropdown a msg -> Dropdown a msg
-withSelectedValue selectedValue (Dropdown config) =
-    Dropdown { config | selectedValue = selectedValue }
+
+-- STYLES
 
 
-withHasError : Bool -> Dropdown a msg -> Dropdown a msg
-withHasError hasError (Dropdown config) =
-    Dropdown { config | hasError = hasError }
+getStyles : Config msg -> List Style
+getStyles config =
+    let
+        borderColorStyle =
+            if config.showError then
+                Colors.redDark
+
+            else
+                Colors.grayMedium
+    in
+    [ fontSize (rem 0.8)
+    , height (em 2)
+    , padding2 (em 0.2) (em 0.65)
+    , borderRadius (em 0.125)
+    , border3 (em 0.0625) solid borderColorStyle
+    , boxSizing borderBox
+    , width (pct 80)
+    , disabled
+        [ backgroundColor Colors.grayWarm
+        ]
+    , focus
+        [ outline none
+        , borderColor Colors.blueNordea
+        ]
+    ]

@@ -134,53 +134,55 @@ variantStyle variant =
     case variant of
         Primary ->
             batch
-                [ Themes.backgroundColor Themes.PrimaryColor Colors.blueDeep
-                , Themes.color Themes.TextColorOnPrimaryColorBackground Colors.white
+                [ backgroundColor Colors.blueDeep
+                , color Colors.white
                 , border3 (rem 0.125) solid Colors.transparent
                 , hover
-                    [ Themes.backgroundColor Themes.SecondaryColor Colors.blueCloud
-                    , Themes.color Themes.PrimaryColor Colors.blueDeep
+                    [ backgroundColor Colors.blueCloud
+                    , color Colors.blueDeep
                     ]
                 , focus
                     [ outline none
-                    , Themes.backgroundColor Themes.PrimaryColorLight Colors.blueNordea
-                    , Themes.color Themes.SecondaryColor Colors.blueHaas
-                    , Css.property "box-shadow" ("0rem 0rem 0rem 0.25rem " ++ Themes.colorVariable Themes.SecondaryColor Colors.blueHaas)
+                    , backgroundColor Colors.blueNordea
+                    , color Colors.blueHaas
+                    , boxShadow5 zero zero zero (rem 0.25) Colors.blueHaas
                     ]
                 ]
 
         Secondary ->
             batch
                 [ backgroundColor Colors.white
-                , Themes.color Themes.PrimaryColor Colors.blueDeep
-                , border3 (rem 0.125) solid Css.transparent
-                , Themes.borderColor Themes.PrimaryColor Colors.blueDeep
+                , color Colors.blueDeep
+                , border3 (rem 0.125) solid Colors.blueDeep
+                , fontSize (rem 0.9)
+                , padding2 (rem 0.4) (rem 0.7)
                 , hover
-                    [ Themes.backgroundColor Themes.SecondaryColor (Colors.blueCloud |> Colors.withAlpha 0.5)
-                    , Themes.color Themes.PrimaryColor Colors.blueDeep
+                    [ backgroundColor (Colors.blueCloud |> Colors.withAlpha 0.5)
+                    , color Colors.blueDeep
                     ]
                 , focus
                     [ outline none
-                    , Themes.backgroundColor Themes.SecondaryColor Colors.blueCloud
-                    , Themes.color Themes.PrimaryColor Colors.blueDeep
-                    , Css.property "box-shadow" ("0rem 0rem 0rem 0.125rem " ++ Themes.colorVariable Themes.PrimaryColor Colors.blueDeep)
+                    , backgroundColor Colors.blueCloud
+                    , color Colors.blueDeep
+                    , boxShadow5 zero zero zero (rem 0.125) Colors.blueDeep
                     ]
                 ]
 
         Tertiary ->
             batch
                 [ backgroundColor Colors.transparent
-                , Themes.color Themes.PrimaryColor Colors.blueDeep
+                , color Colors.blueDeep
                 , border3 (rem 0.125) solid Colors.transparent
+                , fontSize (rem 0.8)
                 , hover
                     [ backgroundColor Colors.transparent
-                    , Themes.color Themes.PrimaryColorLight Colors.blueNordea
+                    , color Colors.blueNordea
                     ]
                 , focus
                     [ outline none
                     , backgroundColor Colors.transparent
-                    , Themes.color Themes.PrimaryColor Colors.blueDeep
-                    , Css.property "box-shadow" ("0rem 0rem 0rem 0.25rem " ++ Themes.colorVariable Themes.SecondaryColor Colors.blueHaas)
+                    , color Colors.blueDeep
+                    , boxShadow5 zero zero zero (rem 0.25) Colors.blueHaas
                     ]
                 ]
 
