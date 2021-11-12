@@ -4,7 +4,9 @@ module Nordea.Components.TextInput exposing
     , view
     , withDisabled
     , withError
+    , withMaxLength
     , withOnInput
+    , withPattern
     , withPlaceholder
     )
 
@@ -31,10 +33,11 @@ import Css
         , width
         )
 import Html.Styled exposing (Attribute, Html, input, styled)
-import Html.Styled.Attributes as Attributes exposing (placeholder, value)
+import Html.Styled.Attributes as Attributes exposing (maxlength, pattern, placeholder, value)
 import Html.Styled.Events exposing (onInput)
 import Maybe.Extra as Maybe
 import Nordea.Resources.Colors as Colors
+import Nordea.Themes as Themes
 
 
 
@@ -46,6 +49,8 @@ type alias Config msg =
     , onInput : Maybe (String -> msg)
     , placeholder : Maybe String
     , showError : Bool
+    , maxLength : Maybe Int
+    , pattern : Maybe String
     , disabled : Bool
     }
 
@@ -61,6 +66,8 @@ init value =
         , onInput = Nothing
         , placeholder = Nothing
         , showError = False
+        , maxLength = Nothing
+        , pattern = Nothing
         , disabled = False
         }
 
@@ -73,6 +80,16 @@ withOnInput onInput (TextInput config) =
 withPlaceholder : String -> TextInput msg -> TextInput msg
 withPlaceholder placeholder (TextInput config) =
     TextInput { config | placeholder = Just placeholder }
+
+
+withMaxLength : Int -> TextInput msg -> TextInput msg
+withMaxLength maxLength (TextInput config) =
+    TextInput { config | maxLength = Just maxLength }
+
+
+withPattern : String -> TextInput msg -> TextInput msg
+withPattern pattern (TextInput config) =
+    TextInput { config | pattern = Just pattern }
 
 
 withError : Bool -> TextInput msg -> TextInput msg
@@ -103,6 +120,8 @@ getAttributes config =
         [ Just config.value |> Maybe.map value
         , config.onInput |> Maybe.map onInput
         , config.placeholder |> Maybe.map placeholder
+        , config.maxLength |> Maybe.map maxlength
+        , config.pattern |> Maybe.map pattern
         , Just config.disabled |> Maybe.map Attributes.disabled
         ]
 
@@ -133,6 +152,6 @@ getStyles config =
         ]
     , focus
         [ outline none
-        , borderColor Colors.blueNordea
+        , Themes.borderColor Themes.PrimaryColorLight Colors.blueNordea
         ]
     ]

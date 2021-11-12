@@ -40,6 +40,7 @@ import Html.Styled.Attributes as Attributes exposing (placeholder, step, type_, 
 import Html.Styled.Events exposing (onInput)
 import Maybe.Extra as Maybe
 import Nordea.Resources.Colors as Colors
+import Nordea.Themes as Themes
 
 
 
@@ -165,6 +166,6 @@ getStyles config =
             ]
         , focus
             [ outline none
-            , borderColor Colors.blueNordea
+            , Themes.borderColor Themes.PrimaryColorLight Colors.blueNordea
             ]
         ]
