@@ -2,6 +2,7 @@ module Nordea.Components.Button exposing
     ( Button
     , Variant(..)
     , buttonStyleForExport
+    , card
     , primary
     , secondary
     , tertiary
@@ -40,7 +41,6 @@ import Css
         , padding2
         , pointer
         , pointerEvents
-        , px
         , rem
         , scale
         , solid
@@ -202,7 +202,7 @@ variantStyle variant =
                 , padding (rem 1)
                 , borderRadius (rem 0.75)
                 , borderStyle none
-                , boxShadow4 (rem 0) (px 4) (px 40) Colors.grayLight
+                , boxShadow4 (rem 0) (rem 0.25) (rem 2.5) Colors.grayLight
                 , hover [ transform (scale 1.25) ]
                 ]
 
