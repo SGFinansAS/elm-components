@@ -56,6 +56,7 @@ type Variant
 type alias Option a =
     { value : a
     , text : String
+    , disabled : Bool
     }
 
 
