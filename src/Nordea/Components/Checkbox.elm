@@ -10,7 +10,60 @@ module Nordea.Components.Checkbox exposing
     , withOnBlur
     )
 
-import Css exposing (absolute, after, alignItems, backgroundColor, block, border3, borderBottomLeftRadius, borderBottomRightRadius, borderBox, borderColor, borderRadius, borderTopColor, borderTopLeftRadius, borderTopRightRadius, borderWidth4, boxShadow5, boxSizing, center, cursor, deg, disabled, display, displayFlex, firstOfType, flex, flexBasis, height, hover, inlineFlex, int, lastOfType, left, margin, marginTop, none, num, opacity, padding2, pct, pointer, position, pseudoClass, relative, rem, rotate, solid, top, transforms, transparent, width, zIndex)
+import Css
+    exposing
+        ( absolute
+        , after
+        , alignItems
+        , backgroundColor
+        , block
+        , border3
+        , borderBottomLeftRadius
+        , borderBottomRightRadius
+        , borderBox
+        , borderColor
+        , borderRadius
+        , borderTopColor
+        , borderTopLeftRadius
+        , borderTopRightRadius
+        , borderWidth4
+        , boxShadow5
+        , boxSizing
+        , center
+        , cursor
+        , deg
+        , disabled
+        , display
+        , displayFlex
+        , firstOfType
+        , flex
+        , flexBasis
+        , height
+        , hover
+        , inlineFlex
+        , int
+        , lastOfType
+        , left
+        , margin
+        , marginTop
+        , none
+        , num
+        , opacity
+        , padding2
+        , pct
+        , pointer
+        , position
+        , pseudoClass
+        , relative
+        , rem
+        , rotate
+        , solid
+        , top
+        , transforms
+        , transparent
+        , width
+        , zIndex
+        )
 import Css.Transitions exposing (transition)
 import Html.Styled as Html exposing (Attribute, Html)
 import Html.Styled.Attributes as Attrs exposing (class, css, name, type_)
