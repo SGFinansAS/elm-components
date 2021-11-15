@@ -1,4 +1,4 @@
-module Nordea.Components.Dropdown exposing (Dropdown, init, simple, view, withHasError, withSelectedValue)
+module Nordea.Components.Dropdown exposing (Dropdown, init, optionInit, optionIsDisabled, simple, view, withHasError, withSelectedValue)
 
 import Css
     exposing
@@ -56,8 +56,21 @@ type Variant
 type alias Option a =
     { value : a
     , text : String
-    , disabled : Bool
+    , isDisabled : Bool
     }
+
+
+optionInit : { value : a, text : String } -> Option a
+optionInit { value, text } =
+    { value = value
+    , text = text
+    , isDisabled = False
+    }
+
+
+optionIsDisabled : Bool -> Option a -> Option a
+optionIsDisabled isDisabled option =
+    { option | isDisabled = isDisabled }
 
 
 type alias DropdownProperties a msg =
