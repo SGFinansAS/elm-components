@@ -89,6 +89,27 @@ stories =
                     ]
           , {}
           )
+        , ( "Simple disabled"
+          , \_ ->
+                Html.div [ css [ displayFlex, Css.property "gap" "1rem" ] ]
+                    [ Checkbox.init
+                        "simple"
+                        (text "Click me")
+                        (\_ -> NoOp)
+                        |> Checkbox.withAppearance Checkbox.Simple
+                        |> Checkbox.withIsDisabled True
+                        |> Checkbox.view []
+                    , Checkbox.init
+                        "simple"
+                        (text "Click me")
+                        (\_ -> NoOp)
+                        |> Checkbox.withAppearance Checkbox.Simple
+                        |> Checkbox.withIsDisabled True
+                        |> Checkbox.withIsChecked True
+                        |> Checkbox.view []
+                    ]
+          , {}
+          )
         , ( "Liststyle"
           , \_ ->
                 Html.div [ css [ displayFlex, flexDirection column, maxWidth (rem 30) ] ]

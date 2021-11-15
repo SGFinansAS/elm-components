@@ -10,59 +10,7 @@ module Nordea.Components.Checkbox exposing
     , withOnBlur
     )
 
-import Css
-    exposing
-        ( absolute
-        , after
-        , alignItems
-        , backgroundColor
-        , block
-        , border3
-        , borderBottomLeftRadius
-        , borderBottomRightRadius
-        , borderBox
-        , borderColor
-        , borderRadius
-        , borderTopColor
-        , borderTopLeftRadius
-        , borderTopRightRadius
-        , borderWidth4
-        , boxShadow5
-        , boxSizing
-        , center
-        , cursor
-        , deg
-        , display
-        , displayFlex
-        , firstOfType
-        , flex
-        , flexBasis
-        , height
-        , hover
-        , inlineFlex
-        , int
-        , lastOfType
-        , left
-        , margin
-        , marginTop
-        , none
-        , num
-        , opacity
-        , padding2
-        , pct
-        , pointer
-        , position
-        , pseudoClass
-        , relative
-        , rem
-        , rotate
-        , solid
-        , top
-        , transforms
-        , transparent
-        , width
-        , zIndex
-        )
+import Css exposing (absolute, after, alignItems, backgroundColor, block, border3, borderBottomLeftRadius, borderBottomRightRadius, borderBox, borderColor, borderRadius, borderTopColor, borderTopLeftRadius, borderTopRightRadius, borderWidth4, boxShadow5, boxSizing, center, cursor, deg, disabled, display, displayFlex, firstOfType, flex, flexBasis, height, hover, inlineFlex, int, lastOfType, left, margin, marginTop, none, num, opacity, padding2, pct, pointer, position, pseudoClass, relative, rem, rotate, solid, top, transforms, transparent, width, zIndex)
 import Css.Transitions exposing (transition)
 import Html.Styled as Html exposing (Attribute, Html)
 import Html.Styled.Attributes as Attrs exposing (class, css, name, type_)
@@ -121,7 +69,11 @@ view attrs (Checkbox config) =
                     , width (rem 1.25)
                     , backgroundColor Colors.white
                     , border3 (rem 0.125) solid Css.transparent
-                    , Themes.borderColor Themes.PrimaryColorLight Colors.blueNordea
+                    , if config.isDisabled then
+                        borderColor Colors.grayMedium
+
+                      else
+                        Themes.borderColor Themes.PrimaryColorLight Colors.blueNordea
                     , borderRadius (rem 0.125)
                     , borderColor Colors.redDark
                         |> styleIf (config.hasError && config.appearance == Simple)
@@ -186,18 +138,27 @@ view attrs (Checkbox config) =
 
                 Simple ->
                     Css.batch []
+
+        notDisabledSpecificStyling =
+            if config.isDisabled then
+                []
+
+            else
+                [ pseudoClass "hover .nfe-checkbox" [ Css.property "box-shadow" ("0rem 0rem 0rem 0.0625rem " ++ Themes.colorVariable Themes.SecondaryColor Colors.blueMedium) ]
+                , pseudoClass "focus-within .nfe-checkbox" [ Css.property "box-shadow" ("0rem 0rem 0rem 0.0625rem " ++ Themes.colorVariable Themes.SecondaryColor Colors.blueMedium) ]
+                , cursor pointer
+                ]
     in
     Html.label
         (css
-            [ display inlineFlex
-            , Css.property "gap" "0.5rem"
-            , alignItems center
-            , cursor pointer
-            , appearanceStyle
-            , position relative
-            , pseudoClass "hover .nfe-checkbox" [ Css.property "box-shadow" ("0rem 0rem 0rem 0.0625rem " ++ Themes.colorVariable Themes.SecondaryColor Colors.blueMedium) ]
-            , pseudoClass "focus-within .nfe-checkbox" [ Css.property "box-shadow" ("0rem 0rem 0rem 0.0625rem " ++ Themes.colorVariable Themes.SecondaryColor Colors.blueMedium) ]
-            ]
+            ([ display inlineFlex
+             , Css.property "gap" "0.5rem"
+             , alignItems center
+             , appearanceStyle
+             , position relative
+             ]
+                ++ notDisabledSpecificStyling
+            )
             :: attrs
         )
         [ Html.input
@@ -214,7 +175,16 @@ view attrs (Checkbox config) =
 
                 -- when <input> is checked, apply styles to sibling with class .nfe-checkbox
                 , pseudoClass "checked ~ .nfe-checkbox"
-                    [ Themes.backgroundColor Themes.PrimaryColorLight Colors.blueNordea
+                    [ if config.isDisabled then
+                        backgroundColor Colors.grayMedium
+
+                      else
+                        Themes.backgroundColor Themes.PrimaryColorLight Colors.blueNordea
+                    , if config.isDisabled then
+                        borderColor Colors.grayMedium
+
+                      else
+                        Themes.borderColor Themes.PrimaryColorLight Colors.blueNordea
                     , after [ display block ]
                     ]
                 ]

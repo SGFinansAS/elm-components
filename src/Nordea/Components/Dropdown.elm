@@ -171,7 +171,11 @@ view attrs (Dropdown config) =
                 , property "appearance" "none"
                 , property "-moz-appearance" "none"
                 , property "-webkit-appearance" "none"
-                , backgroundColor transparent
+                , if config.isDisabled then
+                    backgroundColor Colors.grayMedium
+
+                  else
+                    backgroundColor transparent
                 , padding4 (rem 0.5) (rem 2) (rem 0.5) (rem 1)
                 , borderStyle none
                 , focus
@@ -181,7 +185,11 @@ view attrs (Dropdown config) =
                 , fontSize (rem 1.0)
                 , lineHeight (rem 1.4)
                 , fontFamilies [ "Nordea Sans Small" ]
-                , color inherit
+                , if config.isDisabled then
+                    color Colors.grayDark
+
+                  else
+                    color inherit
                 ]
             ]
             (placeholder :: options)
