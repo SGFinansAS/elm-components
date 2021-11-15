@@ -12,8 +12,7 @@ module Nordea.Components.Checkbox exposing
 
 import Css
     exposing
-        ( Style
-        , absolute
+        ( absolute
         , after
         , alignItems
         , backgroundColor
@@ -31,27 +30,17 @@ import Css
         , boxShadow5
         , boxSizing
         , center
-        , color
-        , contentBox
         , cursor
-        , default
         , deg
         , display
         , displayFlex
-        , em
-        , firstOfType
         , flex
         , flexBasis
         , height
         , hover
-        , inlineBlock
         , inlineFlex
         , int
-        , lastOfType
         , left
-        , margin
-        , marginRight
-        , marginTop
         , none
         , num
         , opacity
@@ -71,7 +60,7 @@ import Css
         , zIndex
         )
 import Css.Transitions exposing (transition)
-import Html.Styled as Html exposing (Attribute, Html, label)
+import Html.Styled as Html exposing (Attribute, Html)
 import Html.Styled.Attributes as Attrs exposing (class, css, name, type_)
 import Html.Styled.Events exposing (onCheck)
 import Nordea.Html exposing (styleIf)
