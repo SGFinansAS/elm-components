@@ -6,6 +6,7 @@ module Nordea.Components.Checkbox exposing
     , withAppearance
     , withHasError
     , withIsChecked
+    , withIsDisabled
     , withOnBlur
     )
 
@@ -79,6 +80,7 @@ type alias CheckBoxProperties msg =
     , isChecked : Bool
     , appearance : Appearance
     , hasError : Bool
+    , isDisabled : Bool
     }
 
 
@@ -102,6 +104,7 @@ init name label onCheck =
         , isChecked = False
         , appearance = Standard
         , hasError = False
+        , isDisabled = False
         }
 
 
@@ -202,6 +205,7 @@ view attrs (Checkbox config) =
             , name config.name
             , Attrs.checked config.isChecked
             , onCheck config.onCheck
+            , Attrs.disabled config.isDisabled
             , css
                 [ position absolute
                 , opacity (num 0)
@@ -219,6 +223,11 @@ view attrs (Checkbox config) =
         , checkbox
         , config.label
         ]
+
+
+withIsDisabled : Bool -> Checkbox msg -> Checkbox msg
+withIsDisabled isDisabled (Checkbox config) =
+    Checkbox { config | isDisabled = isDisabled }
 
 
 withIsChecked : Bool -> Checkbox msg -> Checkbox msg
