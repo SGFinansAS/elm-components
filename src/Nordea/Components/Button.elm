@@ -2,6 +2,7 @@ module Nordea.Components.Button exposing
     ( Button
     , Variant(..)
     , buttonStyleForExport
+    , card
     , primary
     , secondary
     , tertiary
@@ -18,10 +19,10 @@ import Css
         , border3
         , borderBox
         , borderRadius
-        , boxShadow5
+        , borderStyle
+        , boxShadow4
         , boxSizing
         , center
-        , color
         , cursor
         , disabled
         , displayFlex
@@ -31,16 +32,20 @@ import Css
         , fontWeight
         , hover
         , int
+        , left
         , none
         , num
         , opacity
         , outline
+        , padding
         , padding2
         , pointer
         , pointerEvents
         , rem
+        , scale
         , solid
-        , zero
+        , textAlign
+        , transform
         )
 import Html.Styled as Html exposing (Attribute, Html)
 import Nordea.Resources.Colors as Colors
@@ -55,6 +60,7 @@ type Variant
     = Primary
     | Secondary
     | Tertiary
+    | Card
 
 
 type alias Config =
@@ -84,6 +90,11 @@ secondary =
 tertiary : Button
 tertiary =
     init Tertiary
+
+
+card : Button
+card =
+    init Card
 
 
 withStyles : List Style -> Button -> Button
@@ -182,6 +193,17 @@ variantStyle variant =
                     , Themes.color Themes.PrimaryColor Colors.blueDeep
                     , Css.property "box-shadow" ("0rem 0rem 0rem 0.25rem " ++ Themes.colorVariable Themes.SecondaryColor Colors.blueHaas)
                     ]
+                ]
+
+        Card ->
+            batch
+                [ backgroundColor Colors.white
+                , textAlign left
+                , padding (rem 1)
+                , borderRadius (rem 0.75)
+                , borderStyle none
+                , boxShadow4 (rem 0) (rem 0.25) (rem 2.5) Colors.grayLight
+                , hover [ transform (scale 1.25) ]
                 ]
 
 
