@@ -211,6 +211,7 @@ view attrs (Checkbox config) =
             , name config.name
             , Attrs.checked config.isChecked
             , onCheck config.onCheck
+            , Attrs.disabled config.isDisabled
             , css
                 [ position absolute
                 , opacity (num 0)
