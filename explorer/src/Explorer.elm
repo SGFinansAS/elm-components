@@ -13,6 +13,7 @@ import Stories.Label as Label
 import Stories.NumberInput as NumberInput
 import Stories.RadioButton as RadioButton
 import Stories.Spinner as Spinner
+import Stories.Status as Status
 import Stories.StepIndicator as StepIndicator
 import Stories.Text as Header
 import Stories.TextInput as TextInput
@@ -63,4 +64,5 @@ main =
         , Spinner.stories
         , Label.stories
         , Header.stories
+        , Status.stories
         ]
