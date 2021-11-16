@@ -16,6 +16,7 @@ module Nordea.Resources.Colors exposing
     , grayWarm
     , green
     , greenDark
+    , inputOutline
     , red
     , redDark
     , transparent
@@ -25,7 +26,8 @@ module Nordea.Resources.Colors exposing
     , yellowDark
     )
 
-import Css exposing (Color, ColorValue, NonMixable, hex, rgba)
+import Css exposing (Color, ColorValue, NonMixable, Style, hex, rgba)
+import Nordea.Themes as Themes
 
 
 transparent : ColorValue NonMixable
@@ -162,3 +164,12 @@ yellow =
 yellowDark : Color
 yellowDark =
     hex "#FFCF3D"
+
+
+
+-- EXTRAS
+
+
+inputOutline : Style
+inputOutline =
+    Css.property "box-shadow" ("0rem 0rem 0rem 0.0625rem " ++ Themes.colorVariable Themes.SecondaryColor blueNordea)

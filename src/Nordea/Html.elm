@@ -1,7 +1,9 @@
-module Nordea.Html exposing (nothing, showIf, styleIf, viewIfNotEmpty, viewMaybe)
+module Nordea.Html exposing (maybeAttr, nothing, showIf, styleIf, viewIfNotEmpty, viewMaybe)
 
 import Css exposing (Style)
-import Html.Styled as Html exposing (Html)
+import Html.Styled as Html exposing (Attribute, Html)
+import Html.Styled.Attributes as Attrs
+import Json.Encode as Encode
 
 
 nothing : Html msg
@@ -44,3 +46,8 @@ styleIf condition style =
 
     else
         Css.property "" ""
+
+
+maybeAttr : Maybe (Attribute msg) -> Attribute msg
+maybeAttr attr =
+    attr |> Maybe.withDefault (Attrs.property "optionalAttrProp" (Encode.string ""))
