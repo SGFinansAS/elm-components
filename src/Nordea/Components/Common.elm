@@ -1,6 +1,27 @@
 module Nordea.Components.Common exposing (..)
 
-import Css exposing (alignItems, auto, center, color, displayFlex, flex, flexBasis, fontFamilies, fontSize, justifyContent, lineHeight, marginBottom, marginLeft, marginRight, marginTop, none, pct, rem, spaceBetween)
+import Css
+    exposing
+        ( alignItems
+        , auto
+        , center
+        , color
+        , displayFlex
+        , flex
+        , flexBasis
+        , fontFamilies
+        , fontSize
+        , justifyContent
+        , lineHeight
+        , marginBottom
+        , marginLeft
+        , marginRight
+        , marginTop
+        , none
+        , pct
+        , rem
+        , spaceBetween
+        )
 import Html.Styled as Html exposing (Attribute, Html, div, styled, text)
 import Html.Styled.Attributes exposing (css)
 import Maybe.Extra as Maybe
@@ -31,6 +52,8 @@ type alias CharCounter =
     }
 
 
+{-| Should be replaced by common typography
+-}
 bodyText : List (Attribute msg) -> List (Html msg) -> Html msg
 bodyText =
     styled Html.span
@@ -52,7 +75,15 @@ bottomInfo config =
                             [ String.fromInt charCounter.current ++ "/" ++ String.fromInt charCounter.max |> text ]
                     )
     in
-    [ div [ css [ displayFlex, flexBasis (pct 100), justifyContent spaceBetween, marginTop (rem 0.5), Css.property "gap" "1rem" ] ]
+    [ div
+        [ css
+            [ displayFlex
+            , flexBasis (pct 100)
+            , justifyContent spaceBetween
+            , marginTop (rem 0.5)
+            , Css.property "gap" "1rem"
+            ]
+        ]
         [ config.errorMessage
             |> Html.viewMaybe
                 (\errText ->
