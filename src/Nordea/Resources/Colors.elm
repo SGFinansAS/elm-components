@@ -118,11 +118,6 @@ grayWarm =
     hex "#F4F2F1"
 
 
-grayCool : Color
-grayCool =
-    hex "#F1F2F4"
-
-
 
 -- Blue
 
