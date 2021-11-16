@@ -13,6 +13,7 @@ import Stories.Label as Label
 import Stories.NumberInput as NumberInput
 import Stories.RadioButton as RadioButton
 import Stories.Spinner as Spinner
+import Stories.Status as Status
 import Stories.StepIndicator as StepIndicator
 import Stories.TextInput as TextInput
 import UIExplorer
@@ -61,4 +62,5 @@ main =
         , Accordion.stories
         , Spinner.stories
         , Label.stories
+        , Status.stories
         ]
