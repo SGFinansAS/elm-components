@@ -44,10 +44,9 @@ import Css
         )
 import Css.Global as Global
 import Html.Styled as Html exposing (Attribute, Html)
-import Html.Styled.Attributes as Attrs exposing (css)
+import Html.Styled.Attributes exposing (attribute, css, tabindex)
 import Html.Styled.Events as Events exposing (keyCode, on)
 import Json.Decode as Json
-import Json.Encode as Encode
 import Nordea.Components.Button as NordeaButton
 import Nordea.Components.Card as Card
 import Nordea.Components.Text as Text
@@ -67,8 +66,8 @@ view config attrs children =
     let
         card =
             Html.div
-                (Attrs.attribute "role" "dialog"
-                    :: Attrs.attribute "aria-modal" "true"
+                (attribute "role" "dialog"
+                    :: attribute "aria-modal" "true"
                     :: css
                         [ borderRadius (rem 0.5)
                         , backgroundColor Colors.white
@@ -83,7 +82,7 @@ view config attrs children =
     in
     Html.div
         [ onEscPress config.onClickClose
-        , Attrs.tabindex 0
+        , tabindex 0
         , css
             [ position fixed
             , left (rem 0)
