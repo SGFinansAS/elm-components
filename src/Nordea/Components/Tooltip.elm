@@ -2,6 +2,7 @@ module Nordea.Components.Tooltip exposing (..)
 
 import Css exposing (Style, deg, int, pct, rem, zero)
 import Css.Global as Css
+import Css.Transitions exposing (transition)
 import Html.Styled exposing (Html, div, span, styled)
 import Html.Styled.Attributes as Attr
 import Nordea.Resources.Colors as Colors
@@ -79,6 +80,7 @@ view children (Tooltip config) =
                     , Css.maxWidth (rem 20)
                     , Css.pointerEvents Css.none
                     , Css.opacity zero
+                    , transition [ Css.Transitions.opacity 150 ]
                     , tooltipContentStyle config.placement
                     , Css.before
                         [ Css.property "content" "' '"
