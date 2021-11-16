@@ -6,6 +6,7 @@ import Html.Styled exposing (toUnstyled)
 import Nordea.Resources.Fonts as Fonts
 import Stories.Accordion as Accordion
 import Stories.Button as Button
+import Stories.Card as Card
 import Stories.Checkbox as Checkbox
 import Stories.Dropdown as Dropdown
 import Stories.FlatLink as FlatLink
@@ -61,4 +62,5 @@ main =
         , Accordion.stories
         , Spinner.stories
         , Label.stories
+        , Card.stories
         ]
