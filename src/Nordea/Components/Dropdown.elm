@@ -172,7 +172,7 @@ view attrs (Dropdown config) =
                 , property "-moz-appearance" "none"
                 , property "-webkit-appearance" "none"
                 , if config.isDisabled then
-                    backgroundColor Colors.grayMedium
+                    backgroundColor Colors.grayCool
 
                   else
                     backgroundColor transparent
@@ -186,7 +186,7 @@ view attrs (Dropdown config) =
                 , lineHeight (rem 1.4)
                 , fontFamilies [ "Nordea Sans Small" ]
                 , if config.isDisabled then
-                    color Colors.grayDark
+                    color Colors.grayNordea
 
                   else
                     color inherit
