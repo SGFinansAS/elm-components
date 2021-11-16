@@ -7,6 +7,7 @@ import Nordea.Components.Table as Table
 import UIExplorer exposing (UI)
 import UIExplorer.Styled exposing (styledStoriesOf)
 import Html as HtmlUnstyled
+import Css exposing (textAlign, left, right)
 
 type alias RowModel = 
     { id: Int
@@ -30,9 +31,9 @@ stories =
         [ ( "Default"
           , \_ ->
                 Table.init 
-                    [ Table.Column "ID" Nothing
-                    , Table.Column "Navn" (Just orderRowModel)
-                    , Table.Column "Detaljer" Nothing ] toHtml
+                    [ Table.Column "ID" Nothing [textAlign Css.center, Css.flex (Css.num 2) ]
+                    , Table.Column "Navn" (Just orderRowModel) []
+                    , Table.Column "Detaljer" Nothing [] ] toHtml
                       |> Table.withRows 
                         [ RowModel 1 "trym" "veldig kul"
                         , RowModel 2 "Fredrik" "også veldig kul" 

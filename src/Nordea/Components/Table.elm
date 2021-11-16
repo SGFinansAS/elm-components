@@ -1,10 +1,58 @@
 module Nordea.Components.Table exposing (..)
 
-import Css exposing (Style, backgroundColor, border3, borderBox, borderColor, borderRadius, boxSizing, disabled, em, focus, fontSize, height, none, order, outline, padding2, pct, rem, solid, width)
-import Html as HtmlUnstyled
+import Css
+    exposing
+        ( Style
+        , alignItems
+        , backgroundColor
+        , border3
+        , borderRadius
+        , center
+        , column
+        , cursor
+        , displayFlex
+        , ellipsis
+        , flex
+        , flexDirection
+        , flexShrink
+        , flexStart
+        , fontWeight
+        , height
+        , hidden
+        , hover
+        , int
+        , justifyContent
+        , left
+        , marginBottom
+        , marginLeft
+        , noWrap
+        , normal
+        , num
+        , overflow
+        , padding
+        , padding2
+        , pct
+        , pointer
+        , position
+        , pseudoClass
+        , px
+        , relative
+        , rem
+        , row
+        , solid
+        , stretch
+        , textAlign
+        , textDecoration
+        , textOverflow
+        , underline
+        , whiteSpace
+        , width
+        )
+import Css.Media as Media
 import Html.Styled exposing (Attribute, Html, div, h1, input, span, styled, table, tbody, td, text, th, thead, tr)
 import Html.Styled.Attributes exposing (maxlength, pattern, placeholder, value)
 import Html.Styled.Events as Events
+import List.Extra exposing (zip)
 import Maybe.Extra as Maybe
 import Nordea.Resources.Colors as Colors
 import Nordea.Themes as Themes
@@ -30,6 +78,7 @@ type Table a msg
 type alias Column a =
     { title : String
     , orderFn : Maybe (a -> a -> Order)
+    , style : List Style
     }
 
 
@@ -70,26 +119,88 @@ withOrder orderFn (Table config) =
 -- VIEW
 
 
+smallerScreenOnly : List Style -> Style
+smallerScreenOnly styleAttrs =
+    Media.withMedia
+        [ Media.only Media.screen [ Media.maxWidth (px 950) ] ]
+        styleAttrs
+
+
+headerRowStyle : List Style
+headerRowStyle =
+    [ displayFlex
+    , position relative
+    , alignItems center
+    , textAlign left
+    , padding2 (rem 0) (rem 1.5)
+    , marginBottom (rem 0.5)
+    , smallerScreenOnly [ padding2 (rem 0) (rem 0.875) ]
+    ]
+
+
+rowStyle : List Style
+rowStyle =
+    [ displayFlex
+    , alignItems center
+    , position relative
+    , textAlign left
+    , height (rem 3.2)
+    , marginBottom (rem 0.5)
+    , padding2 (rem 0.5) (rem 1.5)
+    , borderRadius (rem 0.5)
+    , backgroundColor Colors.white
+    , smallerScreenOnly [ padding2 (rem 0) (rem 0.875) ]
+    ]
+
+
+zip : List a -> List b -> List ( a, b )
+zip la lb =
+    List.map2 Tuple.pair la lb
+
+
 view : List (Attribute msg) -> Table a msg -> Html msg
 view attributes (Table config) =
-    table []
+    styled table
+        [ displayFlex
+        , flexDirection column
+        , borderRadius (rem 0.5)
+        ]
+        []
         [ thead []
-            [ tr []
+            [ styled tr
+                headerRowStyle
+                []
                 (config.columns
                     |> List.map
-                        (\s ->
-                            th []
-                                [ text s.title
+                        (\column ->
+                            styled th
+                                ([ flex (num 1), pseudoClass "not(:first-child)" [ marginLeft (rem 1) ] ]
+                                    ++ column.style
+                                )
+                                []
+                                [ text column.title
                                 ]
                         )
                 )
             ]
-        , tbody []
+        , styled tbody
+            [ displayFlex, flexDirection column ]
+            []
             (config.compareFn
                 |> Maybe.map (\fn -> List.sortWith fn config.rows)
                 |> Maybe.withDefault config.rows
                 |> List.map config.rowToHtml
-                |> List.map (\row -> tr [] (row |> List.map (\field -> td [] [ field ])))
+                --|> List.indexedMap Tuple.pair
+                |> List.map
+                    (\row ->
+                        styled tr
+                            rowStyle
+                            []
+                            (row
+                                |> zip config.columns
+                                |> List.map (\( column, field ) -> styled td ([ flex (num 1), pseudoClass "not(:first-child)" [ marginLeft (rem 1) ] ] ++ column.style) [] [ field ])
+                            )
+                    )
             )
         ]
 
