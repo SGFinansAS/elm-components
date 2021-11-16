@@ -4,6 +4,7 @@ import Css exposing (Style, backgroundColor, borderBottom3, borderRadius, fontSi
 import Html.Styled as Html exposing (Attribute, Html)
 import Html.Styled.Attributes exposing (css)
 import Maybe.Extra as Maybe
+import Nordea.Components.Text as Text
 import Nordea.Html exposing (styleIf, viewMaybe)
 import Nordea.Resources.Colors as Colors
 
@@ -56,7 +57,8 @@ cardTitle title =
             , borderBottom3 (rem 0.0625) solid Colors.grayCool
             ]
         ]
-        [ Html.text title
+        [ Text.bodyTextHeavy
+            |> Text.view [] [ Html.text title ]
         ]
 
 
