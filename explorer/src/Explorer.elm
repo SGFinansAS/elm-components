@@ -15,6 +15,7 @@ import Stories.RadioButton as RadioButton
 import Stories.Spinner as Spinner
 import Stories.StepIndicator as StepIndicator
 import Stories.TextInput as TextInput
+import Stories.Table as Table
 import UIExplorer
     exposing
         ( UIExplorerProgram
@@ -61,4 +62,5 @@ main =
         , Accordion.stories
         , Spinner.stories
         , Label.stories
+        , Table.stories
         ]
