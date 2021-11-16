@@ -2,6 +2,7 @@ module Nordea.Resources.Colors exposing
     ( black
     , black25
     , blueCloud
+    , blueCloudStatus
     , blueDeep
     , blueHaas
     , blueMedium
@@ -12,18 +13,23 @@ module Nordea.Resources.Colors exposing
     , grayDarkest
     , grayEclipse
     , grayLight
+    , grayLightStatus
     , grayMedium
     , grayNordea
     , grayWarm
     , green
     , greenDark
+    , greenStatus
     , red
     , redDark
+    , redStatus
+    , toString
     , transparent
     , white
     , withAlpha
     , yellow
     , yellowDark
+    , yellowStatus
     )
 
 import Css exposing (Color, ColorValue, NonMixable, hex, rgba)
@@ -97,6 +103,16 @@ grayLight =
     hex "#E3E3E3"
 
 
+grayLightStatus : Color
+grayLightStatus =
+    hex "#D8D7D7"
+
+
+grayCool : Color
+grayCool =
+    hex "#F1F2F4"
+
+
 grayWarm : Color
 grayWarm =
     hex "#F4F2F1"
@@ -136,6 +152,11 @@ blueCloud =
     hex "#DCEDFF"
 
 
+blueCloudStatus : Color
+blueCloudStatus =
+    hex "#C5E0FE"
+
+
 
 -- Accents
 
@@ -143,6 +164,11 @@ blueCloud =
 green : Color
 green =
     hex "#40BFA3"
+
+
+greenStatus : Color
+greenStatus =
+    hex "#78D1BE"
 
 
 greenDark : Color
@@ -160,11 +186,32 @@ redDark =
     hex "#E70404"
 
 
+redStatus : Color
+redStatus =
+    hex "#FC8F8F"
+
+
 yellow : Color
 yellow =
     hex "#FFE183"
 
 
+yellowStatus : Color
+yellowStatus =
+    hex "#FEDC76"
+
+
 yellowDark : Color
 yellowDark =
     hex "#FFCF3D"
+
+
+toString : Css.Color -> String
+toString color =
+    [ String.fromInt color.red
+    , String.fromInt color.green
+    , String.fromInt color.blue
+    , String.fromFloat color.alpha
+    ]
+        |> String.join ","
+        |> (\s -> "rgba(" ++ s ++ ")")

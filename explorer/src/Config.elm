@@ -14,6 +14,7 @@ type FinancingVariant
 
 type alias Config =
     { accordion : Accordion
+    , isModalOpen : Bool
     , searchComponentInput : Maybe String
     , searchHasFocus : Bool
     }
@@ -25,6 +26,7 @@ type Msg
     | SearchComponentSelected (Item FinancingVariant)
     | SearchComponentFocus Bool
     | NoOp
+    | ToggleModal
 
 
 init : Config
@@ -44,6 +46,7 @@ init =
                 }
     , searchComponentInput = Nothing
     , searchHasFocus = False
+    , isModalOpen = True
     }
 
 
@@ -67,3 +70,6 @@ update msg config =
 
         NoOp ->
             config
+
+        ToggleModal ->
+            { config | isModalOpen = not config.isModalOpen }
