@@ -1,0 +1,151 @@
+module Nordea.Components.Modal exposing
+    ( ViewConfig
+    , header
+    , view
+    )
+
+import Css
+    exposing
+        ( alignItems
+        , auto
+        , backgroundColor
+        , borderBottom3
+        , borderRadius
+        , bottom
+        , center
+        , column
+        , displayFlex
+        , fixed
+        , flexDirection
+        , fontWeight
+        , height
+        , hidden
+        , int
+        , justifyContent
+        , left
+        , margin
+        , marginLeft
+        , maxWidth
+        , minHeight
+        , minWidth
+        , none
+        , normal
+        , outline
+        , overflow
+        , padding
+        , padding4
+        , pct
+        , position
+        , rem
+        , solid
+        , top
+        , width
+        , zIndex
+        )
+import Css.Global as Global
+import Html.Styled as Html exposing (Attribute, Html)
+import Html.Styled.Attributes as Attrs exposing (css)
+import Html.Styled.Events as Events exposing (keyCode, on)
+import Json.Decode as Json
+import Json.Encode as Encode
+import Nordea.Components.Button as NordeaButton
+import Nordea.Components.Card as Card
+import Nordea.Components.Text as Text
+import Nordea.Resources.Colors as Colors
+import Nordea.Resources.Icons as Icons
+import Nordea.Themes as Themes
+
+
+type alias ViewConfig msg =
+    { onClickClose : msg
+    , title : String
+    }
+
+
+view : ViewConfig msg -> List (Attribute msg) -> List (Html msg) -> Html msg
+view config attrs children =
+    let
+        card =
+            Html.div
+                (Attrs.attribute "role" "dialog"
+                    :: Attrs.attribute "aria-modal" "true"
+                    :: css
+                        [ borderRadius (rem 0.5)
+                        , backgroundColor Colors.white
+                        , displayFlex
+                        , flexDirection column
+                        , minWidth (rem 18)
+                        , maxWidth (rem 60)
+                        ]
+                    :: attrs
+                )
+                [ header config.onClickClose config.title, contentContainer [] children ]
+    in
+    Html.div
+        [ onEscPress config.onClickClose
+        , Attrs.tabindex 0
+        , css
+            [ position fixed
+            , left (rem 0)
+            , top (rem 0)
+            , bottom (rem 0)
+            , minWidth (pct 100)
+            , outline none
+            , overflow auto
+            , displayFlex
+            , justifyContent center
+            , alignItems center
+            , padding4 (rem 8) (rem 1) (rem 2) (rem 1)
+            , backgroundColor (Colors.black |> Colors.withAlpha 0.5)
+            , zIndex (int 1)
+            ]
+        ]
+        [ card, disableScrollOnBody ]
+
+
+header : msg -> String -> Html msg
+header onClickMsg title =
+    let
+        cross onClick =
+            NordeaButton.tertiary
+                |> NordeaButton.view
+                    [ Events.onClick onClick, css [ alignItems center, marginLeft auto ] ]
+                    [ Icons.cross
+                        [ css [ Themes.color Themes.PrimaryColor Colors.blueDeep ] ]
+                    ]
+    in
+    Html.div
+        [ css
+            [ minHeight (rem 6)
+            , padding4 (rem 1.5) (rem 1.5) (rem 1.5) (rem 2.5)
+            , alignItems center
+            , borderBottom3 (rem 0.0625) solid Colors.grayCool
+            , displayFlex
+            ]
+        ]
+        [ Text.headlineFourHeavy
+            |> Text.view [] [ Html.text title ]
+        , cross onClickMsg
+        ]
+
+
+contentContainer : List (Attribute msg) -> List (Html msg) -> Html msg
+contentContainer attrs children =
+    Html.div (css [ padding (rem 2.5), displayFlex, flexDirection column ] :: attrs) children
+
+
+disableScrollOnBody =
+    Global.global [ Global.body [ overflow hidden ] ]
+
+
+onEscPress : msg -> Attribute msg
+onEscPress msg =
+    let
+        isEnter code =
+            if code == 27 then
+                Json.succeed msg
+
+            else
+                Json.fail "not ESC"
+    in
+    on "keydown" (Json.andThen isEnter keyCode)
