@@ -1,4 +1,4 @@
-module Nordea.Components.Search exposing
+module Nordea.Components.DropdownFilter exposing
     ( Item
     , ItemGroup
     , init
@@ -30,7 +30,7 @@ type alias ItemGroup a =
     }
 
 
-type alias SearchProperties a msg =
+type alias DropdownFilterProperties a msg =
     { searchItems : List (ItemGroup a)
     , onInput : String -> msg
     , onSelectedValue : Item a -> msg
@@ -44,8 +44,8 @@ type alias SearchProperties a msg =
     }
 
 
-type Search a msg
-    = Search (SearchProperties a msg)
+type DropdownFilter a msg
+    = DropdownFilter (DropdownFilterProperties a msg)
 
 
 {-| Default Options, will give you empty dropdown with no empty item
@@ -53,9 +53,9 @@ type Search a msg
   - TODO handle isSearching - use with RemoteData to show that new data is loading
 
 -}
-init : (String -> msg) -> (Item a -> msg) -> List (ItemGroup a) -> String -> Search a msg
+init : (String -> msg) -> (Item a -> msg) -> List (ItemGroup a) -> String -> DropdownFilter a msg
 init onSearchHandler onSelectedValue searchItems rawInputString =
-    Search
+    DropdownFilter
         { searchItems = searchItems
         , onInput = onSearchHandler
         , onSelectedValue = onSelectedValue
@@ -67,8 +67,8 @@ init onSearchHandler onSelectedValue searchItems rawInputString =
         }
 
 
-view : Search a msg -> List (Html.Attribute msg) -> Html msg
-view (Search options) attributes =
+view : DropdownFilter a msg -> List (Html.Attribute msg) -> Html msg
+view (DropdownFilter options) attributes =
     let
         filteredSearchResult =
             options.searchItems
@@ -235,9 +235,9 @@ itemView itemAttributes onSelectedValue item =
         [ Html.text item.text ]
 
 
-withFocusHandling : String -> Bool -> (Bool -> msg) -> Search a msg -> Search a msg
-withFocusHandling uniqueName hasFocus onFocus (Search config) =
-    Search { config | hasFocus = hasFocus, onFocus = Just ( uniqueName, onFocus ) }
+withFocusHandling : String -> Bool -> (Bool -> msg) -> DropdownFilter a msg -> DropdownFilter a msg
+withFocusHandling uniqueName hasFocus onFocus (DropdownFilter config) =
+    DropdownFilter { config | hasFocus = hasFocus, onFocus = Just ( uniqueName, onFocus ) }
 
 
 

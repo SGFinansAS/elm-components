@@ -2,7 +2,7 @@ module Config exposing (Config, FinancingVariant(..), Msg(..), init, update)
 
 import Html.Styled as Html
 import Nordea.Components.Accordion as Accordion exposing (Accordion)
-import Nordea.Components.Search exposing (Item)
+import Nordea.Components.DropdownFilter exposing (Item)
 
 
 type FinancingVariant

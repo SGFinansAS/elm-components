@@ -1,7 +1,7 @@
-module Stories.Search exposing (stories)
+module Stories.DropdownFilter exposing (stories)
 
 import Config exposing (Config, FinancingVariant(..), Msg(..))
-import Nordea.Components.Search as Search
+import Nordea.Components.DropdownFilter as DropdownFilter
 import UIExplorer exposing (UI)
 import UIExplorer.Styled exposing (styledStoriesOf)
 
@@ -46,13 +46,13 @@ stories =
           , \model ->
                 let
                     defaultOptions =
-                        Search.init
+                        DropdownFilter.init
                             SearchComponentInput
                             SearchComponentSelected
                             searchResult
                             (Maybe.withDefault "" model.customModel.searchComponentInput)
                 in
-                Search.view
+                DropdownFilter.view
                     defaultOptions
                     []
           , {}
@@ -61,14 +61,14 @@ stories =
           , \model ->
                 let
                     defaultOptions =
-                        Search.init
+                        DropdownFilter.init
                             SearchComponentInput
                             SearchComponentSelected
                             searchResult
                             (Maybe.withDefault "" model.customModel.searchComponentInput)
-                            |> Search.withFocusHandling "explorer" model.customModel.searchHasFocus SearchComponentFocus
+                            |> DropdownFilter.withFocusHandling "explorer" model.customModel.searchHasFocus SearchComponentFocus
                 in
-                Search.view
+                DropdownFilter.view
                     defaultOptions
                     []
           , {}

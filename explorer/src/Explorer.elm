@@ -8,11 +8,11 @@ import Stories.Accordion as Accordion
 import Stories.Button as Button
 import Stories.Checkbox as Checkbox
 import Stories.Dropdown as Dropdown
+import Stories.DropdownFilter as Search
 import Stories.FlatLink as FlatLink
 import Stories.Label as Label
 import Stories.NumberInput as NumberInput
 import Stories.RadioButton as RadioButton
-import Stories.Search as Search
 import Stories.Spinner as Spinner
 import Stories.StepIndicator as StepIndicator
 import Stories.TextInput as TextInput
