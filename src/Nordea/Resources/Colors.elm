@@ -7,6 +7,7 @@ module Nordea.Resources.Colors exposing
     , blueMedium
     , blueNordea
     , gray
+    , grayCool
     , grayDark
     , grayDarkest
     , grayEclipse
@@ -99,6 +100,11 @@ grayLight =
 grayWarm : Color
 grayWarm =
     hex "#F4F2F1"
+
+
+grayCool : Color
+grayCool =
+    hex "#F1F2F4"
 
 
 
