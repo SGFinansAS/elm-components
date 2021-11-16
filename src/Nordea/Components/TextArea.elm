@@ -38,11 +38,11 @@ import Nordea.Resources.Colors as Colors
 type alias InputProperties msg =
     { placeholder : Maybe String
     , value : String
-    , onInput : String -> msg
+    , onInput : Maybe (String -> msg)
     , onBlur : Maybe msg
     , isDisabled : Bool
     , hasError : Bool
-    , maxlength : Int
+    , maxLength : Int
     }
 
 
@@ -50,26 +50,25 @@ type TextArea msg
     = TextArea (InputProperties msg)
 
 
-init : (String -> msg) -> String -> TextArea msg
-init onInput contentValue =
+init : String -> TextArea msg
+init contentValue =
     TextArea
         { placeholder = Nothing
         , value = contentValue
-        , onInput = onInput
+        , onInput = Nothing
         , onBlur = Nothing
         , isDisabled = False
         , hasError = False
-        , maxlength = 120
+        , maxLength = 120
         }
 
 
 view : List (Attribute msg) -> TextArea msg -> Html msg
 view attrs (TextArea config) =
     Html.textarea
-        ([ onInput config.onInput
-         , config.placeholder |> Maybe.map placeholder |> maybeAttr
+        ([ config.placeholder |> Maybe.map placeholder |> maybeAttr
          , disabled config.isDisabled
-         , maxlength config.maxlength
+         , maxlength config.maxLength
          , css
             [ width (pct 100)
             , minHeight (rem 6)
@@ -110,7 +109,7 @@ withPlaceholder placeholder (TextArea config) =
 
 withMaxLength : Int -> TextArea msg -> TextArea msg
 withMaxLength maxLength (TextArea config) =
-    TextArea { config | maxlength = maxLength }
+    TextArea { config | maxLength = maxLength }
 
 
 {-| The Grammarly extension may modify the DOM, which may cause Elm to crash.
