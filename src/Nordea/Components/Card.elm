@@ -1,14 +1,14 @@
 module Nordea.Components.Card exposing (..)
 
-import Css exposing (Style, auto, backgroundColor, border3, borderRadius, borderStyle, fontSize, height, left, margin, none, padding4, rem, solid, textAlign, width)
+import Css exposing (Style, auto, backgroundColor, border3, borderBottom3, borderRadius, borderStyle, fontSize, height, left, margin, none, padding4, rem, solid, textAlign, width)
 import Html.Styled as Html exposing (Attribute, Html)
 import Html.Styled.Attributes exposing (css)
-import Nordea.Html exposing (styleIf)
+import Nordea.Html exposing (styleIf, viewMaybe)
 import Nordea.Resources.Colors as Colors
 
 
 type alias CardProperties =
-    { title : String
+    { title : Maybe String
     , hasShadow : Bool
     }
 
@@ -17,10 +17,10 @@ type Card msg
     = Card CardProperties
 
 
-init : String -> Card msg
-init title =
+init : Card msg
+init =
     Card
-        { title = title
+        { title = Nothing
         , hasShadow = False
         }
 
@@ -39,8 +39,7 @@ view children (Card config) =
         [ css
             cardStyle
         ]
-        [ cardTitle config.title
-        , separationLine
+        [ config.title |> viewMaybe (\title -> cardTitle title)
         , cardContentContainer
             children
         ]
@@ -52,6 +51,7 @@ cardTitle title =
         [ css
             [ cardPadding
             , fontSize (rem 1.125)
+            , borderBottom3 (rem 0.0625) solid Colors.grayCool
             ]
         ]
         [ Html.text title
@@ -69,23 +69,14 @@ cardContentContainer children =
         children
 
 
-separationLine : Html msg
-separationLine =
-    Html.hr
-        [ css
-            [ width auto
-            , borderStyle none
-            , height (rem 0.0625)
-            , backgroundColor Colors.grayCool
-            , margin (rem 0)
-            ]
-        ]
-        []
-
-
 cardPadding : Style
 cardPadding =
     padding4 (rem 2) (rem 2) (rem 1) (rem 2)
+
+
+withTitle : String -> Card msg -> Card msg
+withTitle title (Card config) =
+    Card { config | title = Just title }
 
 
 withShadow : Card msg -> Card msg
