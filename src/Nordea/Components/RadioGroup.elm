@@ -1,6 +1,6 @@
 module Nordea.Components.RadioGroup exposing (init, view, withErrorMessage)
 
-import Css exposing (displayFlex, flexDirection, flexWrap, marginBottom, rem, row, wrap)
+import Css exposing (displayFlex, flexDirection, flexWrap, lineHeight, marginBottom, rem, row, wrap)
 import Html.Styled as Html exposing (Attribute, Html)
 import Html.Styled.Attributes exposing (css)
 import Nordea.Components.Common as Common
@@ -27,7 +27,7 @@ init label =
 view : List (Attribute msg) -> List (Html msg) -> RadioGroup -> Html msg
 view attrs contents (RadioGroup properties) =
     Html.fieldset attrs
-        ([ Html.legend [ css [ marginBottom (rem 0.75) ] ] [ Html.text properties.label ]
+        ([ Html.legend [ css [ marginBottom (rem 0.5) ] ] [ Html.text properties.label ]
          , Html.div [ css [ displayFlex, flexWrap wrap, flexDirection row, Css.property "gap" "1rem" ] ] contents
          ]
             ++ Common.bottomInfo
