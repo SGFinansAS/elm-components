@@ -11,6 +11,7 @@ import Stories.Checkbox as Checkbox
 import Stories.Dropdown as Dropdown
 import Stories.FlatLink as FlatLink
 import Stories.Label as Label
+import Stories.Modal as Modal
 import Stories.NumberInput as NumberInput
 import Stories.RadioButton as RadioButton
 import Stories.Spinner as Spinner
@@ -67,4 +68,5 @@ main =
         , Card.stories
         , Header.stories
         , Status.stories
+        , Modal.stories
         ]

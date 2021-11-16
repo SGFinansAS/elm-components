@@ -5,12 +5,13 @@ import Nordea.Components.Accordion as Accordion exposing (Accordion)
 
 
 type alias Config =
-    { accordion : Accordion }
+    { accordion : Accordion, isModalOpen : Bool }
 
 
 type Msg
     = AccordionMsg Accordion.Msg
     | NoOp
+    | ToggleModal
 
 
 init : Config
@@ -28,6 +29,7 @@ init =
                 , body = [ Html.text "This is an answer" ]
                 , open = False
                 }
+    , isModalOpen = True
     }
 
 
@@ -39,3 +41,6 @@ update msg config =
 
         NoOp ->
             config
+
+        ToggleModal ->
+            { config | isModalOpen = not config.isModalOpen }
