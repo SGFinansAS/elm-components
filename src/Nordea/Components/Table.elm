@@ -38,6 +38,7 @@ import Css
         , px
         , relative
         , rem
+        , rgb
         , row
         , solid
         , stretch
@@ -48,6 +49,7 @@ import Css
         , whiteSpace
         , width
         )
+import Css.Global exposing (children)
 import Css.Media as Media
 import Html.Styled exposing (Attribute, Html, div, h1, input, span, styled, table, tbody, td, text, th, thead, tr)
 import Html.Styled.Attributes exposing (maxlength, pattern, placeholder, value)
@@ -184,7 +186,7 @@ view attributes (Table config) =
                 )
             ]
         , styled tbody
-            [ displayFlex, flexDirection column ]
+            [ displayFlex, flexDirection column, children [ Css.Global.everything [ pseudoClass "nth-child(2n)" [ backgroundColor (rgb 250 250 252) ] ] ] ]
             []
             (config.compareFn
                 |> Maybe.map (\fn -> List.sortWith fn config.rows)
