@@ -1,8 +1,9 @@
 module Nordea.Components.Card exposing (..)
 
-import Css exposing (Style, auto, backgroundColor, border3, borderBottom3, borderRadius, borderStyle, fontSize, height, left, margin, none, padding4, rem, solid, textAlign, width)
+import Css exposing (Style, backgroundColor, borderBottom3, borderRadius, fontSize, left, padding, padding4, rem, solid, textAlign)
 import Html.Styled as Html exposing (Attribute, Html)
 import Html.Styled.Attributes exposing (css)
+import Maybe.Extra as Maybe
 import Nordea.Html exposing (styleIf, viewMaybe)
 import Nordea.Resources.Colors as Colors
 
@@ -41,6 +42,7 @@ view children (Card config) =
         ]
         [ config.title |> viewMaybe (\title -> cardTitle title)
         , cardContentContainer
+            (Maybe.isJust config.title)
             children
         ]
 
@@ -49,7 +51,7 @@ cardTitle : String -> Html msg
 cardTitle title =
     Html.div
         [ css
-            [ cardPadding
+            [ padding4 (rem 2) (rem 2) (rem 1) (rem 2)
             , fontSize (rem 1.125)
             , borderBottom3 (rem 0.0625) solid Colors.grayCool
             ]
@@ -58,20 +60,19 @@ cardTitle title =
         ]
 
 
-cardContentContainer : List (Html msg) -> Html msg
-cardContentContainer children =
+cardContentContainer : Bool -> List (Html msg) -> Html msg
+cardContentContainer hasTitle children =
     Html.div
         [ css
-            [ cardPadding
+            [ if hasTitle then
+                padding4 (rem 1) (rem 2) (rem 2) (rem 2)
+
+              else
+                padding (rem 2)
             , textAlign left
             ]
         ]
         children
-
-
-cardPadding : Style
-cardPadding =
-    padding4 (rem 2) (rem 2) (rem 1) (rem 2)
 
 
 withTitle : String -> Card msg -> Card msg
