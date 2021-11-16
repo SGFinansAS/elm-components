@@ -1,6 +1,7 @@
 module Nordea.Resources.Icons exposing
     ( check
     , chevronDown
+    , chevronDownFilled
     , chevronUp
     , cross
     , error
@@ -33,22 +34,8 @@ import Css.Global exposing (children, everything)
 import Html.Styled as Html exposing (Attribute, Html, div, styled)
 import Html.Styled.Attributes exposing (css)
 import Nordea.Resources.Colors as Colors
-import Svg.Styled as Svg exposing (Svg, svg)
-import Svg.Styled.Attributes as SvgAttrs
-    exposing
-        ( clipRule
-        , cx
-        , cy
-        , d
-        , fill
-        , fillRule
-        , height
-        , r
-        , stroke
-        , strokeWidth
-        , viewBox
-        , width
-        )
+import Svg.Styled as Svg exposing (Svg, rect, svg)
+import Svg.Styled.Attributes as SvgAttrs exposing (clipRule, cx, cy, d, fill, fillRule, height, r, rx, stroke, strokeWidth, viewBox, width)
 
 
 
@@ -122,6 +109,22 @@ chevronDown attrs =
                 [ d "M4 7L10 13L16 7"
                 , stroke "currentColor"
                 , strokeWidth "2"
+                ]
+                []
+            ]
+        ]
+
+
+chevronDownFilled : List (Attribute msg) -> Html msg
+chevronDownFilled attrs =
+    iconContainer (css [ Css.width (rem 2) ] :: attrs)
+        [ svg [ viewBox "0 0 30 30", fill "none" ]
+            [ rect [ width "30", height "30", rx "2", fill "currentColor" ] []
+            , Svg.path
+                [ fillRule "evenodd"
+                , clipRule "evenodd"
+                , d "M20.5303 13.5304L14.9999 19.0607L9.46961 13.5304L10.5303 12.4697L14.9999 16.9391L19.4696 12.4697L20.5303 13.5304Z"
+                , fill (Colors.toString Colors.grayEclipse)
                 ]
                 []
             ]

@@ -23,6 +23,7 @@ module Nordea.Resources.Colors exposing
     , red
     , redDark
     , redStatus
+    , toString
     , transparent
     , white
     , withAlpha
@@ -198,3 +199,14 @@ yellowStatus =
 yellowDark : Color
 yellowDark =
     hex "#FFCF3D"
+
+
+toString : Css.Color -> String
+toString color =
+    [ String.fromInt color.red
+    , String.fromInt color.green
+    , String.fromInt color.blue
+    , String.fromFloat color.alpha
+    ]
+        |> String.join ","
+        |> (\s -> "rgba(" ++ s ++ ")")
