@@ -7,6 +7,7 @@ import Nordea.Resources.Fonts as Fonts
 import Stories.Accordion as Accordion
 import Stories.Button as Button
 import Stories.Checkbox as Checkbox
+import Stories.CoachMark as CoachMark
 import Stories.Dropdown as Dropdown
 import Stories.FlatLink as FlatLink
 import Stories.Label as Label
@@ -65,4 +66,5 @@ main =
         , Label.stories
         , Header.stories
         , Status.stories
+        , CoachMark.stories
         ]
