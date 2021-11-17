@@ -102,7 +102,15 @@ bottomInfo config =
         , charCounterView
         ]
         |> showIf (Maybe.isJust config.errorMessage)
-    , div [ css [ displayFlex, flexBasis (pct 100), justifyContent spaceBetween, marginTop (rem 0.5), Css.property "gap" "1rem" ] ]
+    , div
+        [ css
+            [ displayFlex
+            , flexBasis (pct 100)
+            , justifyContent spaceBetween
+            , marginTop (rem 0.2)
+            , Css.property "gap" "1rem"
+            ]
+        ]
         [ config.hintText
             |> Html.viewMaybe
                 (\hintText ->
@@ -135,7 +143,7 @@ topInfo config =
                 Custom string ->
                     string
     in
-    div [ css [ displayFlex, justifyContent spaceBetween, marginBottom (rem 0.5) ] ]
+    div [ css [ displayFlex, justifyContent spaceBetween, marginBottom (rem 0.2) ] ]
         [ bodyText [ css [ textStyle ] ] [ text config.labelText ]
         , config.requirednessHint
             |> Html.viewMaybe
