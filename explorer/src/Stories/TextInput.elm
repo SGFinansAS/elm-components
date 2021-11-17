@@ -55,8 +55,7 @@ stories =
         , ( "Disabled"
           , \_ ->
                 TextInput.init "Text"
-                    |> TextInput.withDisabled True
-                    |> TextInput.view []
+                    |> TextInput.view [ disabled True ]
           , {}
           )
         ]

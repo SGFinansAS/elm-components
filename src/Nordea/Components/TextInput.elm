@@ -2,7 +2,6 @@ module Nordea.Components.TextInput exposing
     ( TextInput
     , init
     , view
-    , withDisabled
     , withError
     , withMaxLength
     , withOnInput
@@ -31,7 +30,7 @@ import Css
         , width
         )
 import Html.Styled exposing (Attribute, Html, input, styled)
-import Html.Styled.Attributes as Attr exposing (maxlength, pattern, placeholder, value)
+import Html.Styled.Attributes exposing (maxlength, pattern, placeholder, value)
 import Html.Styled.Events exposing (onInput)
 import Maybe.Extra as Maybe
 import Nordea.Resources.Colors as Colors
@@ -49,7 +48,6 @@ type alias Config msg =
     , showError : Bool
     , maxLength : Maybe Int
     , pattern : Maybe String
-    , disabled : Bool
     }
 
 
@@ -66,7 +64,6 @@ init value =
         , showError = False
         , maxLength = Nothing
         , pattern = Nothing
-        , disabled = False
         }
 
 
@@ -95,11 +92,6 @@ withError condition (TextInput config) =
     TextInput { config | showError = condition }
 
 
-withDisabled : Bool -> TextInput msg -> TextInput msg
-withDisabled condition (TextInput config) =
-    TextInput { config | disabled = condition }
-
-
 
 -- VIEW
 
@@ -120,7 +112,6 @@ getAttributes config =
         , config.placeholder |> Maybe.map placeholder
         , config.maxLength |> Maybe.map maxlength
         , config.pattern |> Maybe.map pattern
-        , Just config.disabled |> Maybe.map Attr.disabled
         ]
 
 

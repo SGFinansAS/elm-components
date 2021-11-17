@@ -37,6 +37,7 @@ import Css
         , transparent
         , width
         )
+import Css.Global exposing (withAttribute)
 import Dict
 import Html.Styled as Html exposing (Attribute, Html, div, option, text)
 import Html.Styled.Attributes as Attrs exposing (css, selected, value)
@@ -151,6 +152,9 @@ view attrs (Dropdown config) =
                                 Decode.succeed tag
                     )
                 |> Decode.map config.onInput
+
+        isDisabled =
+            List.member (Attrs.disabled True) attrs
     in
     div
         (css
@@ -165,17 +169,14 @@ view attrs (Dropdown config) =
         )
         [ Html.select
             [ Events.on "change" decoder
+            , Attrs.disabled isDisabled
             , css
                 [ height (rem 2.5)
                 , width (pct 100)
                 , property "appearance" "none"
                 , property "-moz-appearance" "none"
                 , property "-webkit-appearance" "none"
-                , if config.isDisabled then
-                    backgroundColor Colors.grayCool
-
-                  else
-                    backgroundColor transparent
+                , backgroundColor transparent
                 , padding4 (rem 0.5) (rem 2) (rem 0.5) (rem 1)
                 , borderStyle none
                 , focus
@@ -185,11 +186,8 @@ view attrs (Dropdown config) =
                 , fontSize (rem 1.0)
                 , lineHeight (rem 1.4)
                 , fontFamilies [ "Nordea Sans Small" ]
-                , if config.isDisabled then
-                    color Colors.grayNordea
-
-                  else
-                    color inherit
+                , color inherit
+                , withAttribute "disabled" [ color Colors.grayNordea, backgroundColor Colors.grayCool ]
                 ]
             ]
             (placeholder :: options)

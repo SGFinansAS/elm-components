@@ -6,7 +6,6 @@ module Nordea.Components.Checkbox exposing
     , withAppearance
     , withHasError
     , withIsChecked
-    , withIsDisabled
     , withOnBlur
     )
 
@@ -64,6 +63,7 @@ import Css
         , width
         , zIndex
         )
+import Css.Global exposing (withAttribute)
 import Css.Transitions exposing (transition)
 import Html.Styled as Html exposing (Attribute, Html)
 import Html.Styled.Attributes as Attrs exposing (class, css, name, type_)
@@ -81,7 +81,6 @@ type alias CheckBoxProperties msg =
     , isChecked : Bool
     , appearance : Appearance
     , hasError : Bool
-    , isDisabled : Bool
     }
 
 
@@ -105,13 +104,15 @@ init name label onCheck =
         , isChecked = False
         , appearance = Standard
         , hasError = False
-        , isDisabled = False
         }
 
 
 view : List (Attribute msg) -> Checkbox msg -> Html msg
 view attrs (Checkbox config) =
     let
+        isDisabled =
+            List.member (Attrs.disabled True) attrs
+
         checkbox =
             Html.span
                 [ class "nfe-checkbox"
@@ -122,7 +123,7 @@ view attrs (Checkbox config) =
                     , width (rem 1.25)
                     , backgroundColor Colors.white
                     , border3 (rem 0.125) solid Css.transparent
-                    , if config.isDisabled then
+                    , if isDisabled then
                         borderColor Colors.grayMedium
 
                       else
@@ -145,7 +146,7 @@ view attrs (Checkbox config) =
                         , width (rem 0.5)
                         , height (rem 0.813)
                         , transforms [ rotate (deg 45) ]
-                        , if config.isDisabled then
+                        , if isDisabled then
                             border3 (rem 0.0625) solid Colors.grayNordea
 
                           else
@@ -197,7 +198,7 @@ view attrs (Checkbox config) =
                     Css.batch []
 
         notDisabledSpecificStyling =
-            if config.isDisabled then
+            if isDisabled then
                 []
 
             else
@@ -223,7 +224,6 @@ view attrs (Checkbox config) =
             , name config.name
             , Attrs.checked config.isChecked
             , onCheck config.onCheck
-            , Attrs.disabled config.isDisabled
             , css
                 [ position absolute
                 , opacity (num 0)
@@ -232,17 +232,12 @@ view attrs (Checkbox config) =
 
                 -- when <input> is checked, apply styles to sibling with class .nfe-checkbox
                 , pseudoClass "checked ~ .nfe-checkbox"
-                    [ if config.isDisabled then
+                    [ after [ display block ]
+                    , if isDisabled then
                         backgroundColor Colors.grayMedium
 
                       else
                         Themes.backgroundColor Themes.PrimaryColorLight Colors.blueNordea
-                    , if config.isDisabled then
-                        borderColor Colors.grayMedium
-
-                      else
-                        Themes.borderColor Themes.PrimaryColorLight Colors.blueNordea
-                    , after [ display block ]
                     ]
                 ]
             ]
@@ -250,11 +245,6 @@ view attrs (Checkbox config) =
         , checkbox
         , config.label
         ]
-
-
-withIsDisabled : Bool -> Checkbox msg -> Checkbox msg
-withIsDisabled isDisabled (Checkbox config) =
-    Checkbox { config | isDisabled = isDisabled }
 
 
 withIsChecked : Bool -> Checkbox msg -> Checkbox msg
