@@ -5,13 +5,14 @@ import Nordea.Components.Accordion as Accordion exposing (Accordion)
 
 
 type alias Config =
-    { accordion : Accordion, isModalOpen : Bool }
+    { accordion : Accordion, isModalOpen : Bool, isProgressBarCompleted : Bool }
 
 
 type Msg
     = AccordionMsg Accordion.Msg
     | NoOp
     | ToggleModal
+    | ToggleProgressBarCompleted
 
 
 init : Config
@@ -30,6 +31,7 @@ init =
                 , open = False
                 }
     , isModalOpen = True
+    , isProgressBarCompleted = False
     }
 
 
@@ -44,3 +46,6 @@ update msg config =
 
         ToggleModal ->
             { config | isModalOpen = not config.isModalOpen }
+
+        ToggleProgressBarCompleted ->
+            { config | isProgressBarCompleted = not config.isProgressBarCompleted }
