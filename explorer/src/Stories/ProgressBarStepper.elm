@@ -6,7 +6,6 @@ import Css.Global exposing (children, everything)
 import Html.Styled as Html exposing (text)
 import Html.Styled.Attributes exposing (css)
 import Html.Styled.Events exposing (onClick)
-import Nordea.Components.Button as Button
 import Nordea.Components.ProgressBarStepper as ProgressBarStepper
 import UIExplorer exposing (UI)
 import UIExplorer.Styled exposing (styledStoriesOf)
@@ -18,7 +17,7 @@ stories =
         "ProgressBarStepper"
         [ ( "Default"
           , \_ ->
-                ProgressBarStepper.init { steps = [], currentStep = 1, nextLabel = .no }
+                ProgressBarStepper.init { steps = [ "Step 1", "Step 2", "Step 3", "Step 4", "Step 5" ], currentStep = 2, nextLabel = .no }
                     |> ProgressBarStepper.view []
           , {}
           )
