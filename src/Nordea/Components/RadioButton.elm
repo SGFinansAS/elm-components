@@ -18,7 +18,6 @@ import Css
         , before
         , block
         , border3
-        , borderBottomColor
         , borderBottomLeftRadius
         , borderBottomRightRadius
         , borderBox
@@ -32,16 +31,15 @@ import Css
         , center
         , cursor
         , display
-        , firstOfType
+        , fitContent
         , flex
         , flexBasis
         , height
         , hover
         , inlineFlex
         , int
-        , lastOfType
         , left
-        , marginTop
+        , minWidth
         , none
         , num
         , opacity
@@ -191,6 +189,7 @@ view attrs (RadioButton config) =
             , Css.property "gap" "0.5rem"
             , alignItems center
             , cursor pointer
+            , minWidth fitContent
             , appearanceStyle
             , position relative
             , pseudoClass "hover .nfe-radiomark:before" [ Css.property "box-shadow" ("0rem 0rem 0rem 0.0625rem " ++ Themes.colorVariable Themes.SecondaryColor Colors.blueMedium) ]
