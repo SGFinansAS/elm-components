@@ -4,6 +4,8 @@ module Nordea.Components.DropdownFilter exposing
     , init
     , view
     , withFocusHandling
+    , withFocusState
+    , withIsLoading
     )
 
 import Css
@@ -13,6 +15,7 @@ import Html.Styled.Attributes as Attr
 import Html.Styled.Events as Events
 import Json.Decode as Decode
 import Maybe.Extra as Maybe
+import Nordea.Components.Spinner as Spinner
 import Nordea.Html as Html exposing (styleIf)
 import Nordea.Resources.Colors as Colors
 import Nordea.Resources.Icons as Icon
@@ -39,8 +42,7 @@ type alias DropdownFilterProperties a msg =
     , onFocus : Maybe ( String, Bool -> msg )
     , hasFocus : Bool
     , hasError : Bool
-
-    --, hasSearching : Bool  -- data might be fetching
+    , isLoading : Bool -- data might be fetching
     }
 
 
@@ -64,6 +66,7 @@ init onSearchHandler onSelectedValue searchItems rawInputString =
         , onFocus = Nothing
         , hasFocus = True
         , hasError = False
+        , isLoading = False
         }
 
 
@@ -113,38 +116,40 @@ view (DropdownFilter options) attributes =
             ++ attributes
         )
         [ inputSearchView options.hasFocus options.rawInputString options.onInput options.onFocus
-        , case searchResultToShow of
-            [] ->
-                Html.nothing
+        , if options.isLoading then
+            Spinner.small []
 
-            result ->
-                Html.ul
-                    [ Attr.css
-                        [ Css.listStyle Css.none
-                        , Css.padding3 (Css.px 3) (Css.px 1) (Css.px 12)
-                        ]
+          else if List.isEmpty searchResultToShow then
+            Html.nothing
+
+          else
+            Html.ul
+                [ Attr.css
+                    [ Css.listStyle Css.none
+                    , Css.padding3 (Css.px 3) (Css.px 1) (Css.px 12)
                     ]
-                    (List.concatMap
-                        (\header ->
-                            let
-                                subResultView =
-                                    List.map (itemView (groupIdAttributeToItemAttrs options.onFocus) options.onSelectedValue)
-                                        header.items
-                            in
-                            -- Do not show header if there are no results to view
-                            if List.length subResultView > 0 then
-                                -- Do not show header without text
-                                if not (String.isEmpty header.header) then
-                                    headerView header.header :: subResultView
-
-                                else
-                                    subResultView
+                ]
+                (List.concatMap
+                    (\header ->
+                        let
+                            subResultView =
+                                List.map (itemView (groupIdAttributeToItemAttrs options.onFocus) options.onSelectedValue)
+                                    header.items
+                        in
+                        -- Do not show header if there are no results to view
+                        if List.length subResultView > 0 then
+                            -- Do not show header without text
+                            if not (String.isEmpty header.header) then
+                                headerView header.header :: subResultView
 
                             else
-                                []
-                        )
-                        result
+                                subResultView
+
+                        else
+                            []
                     )
+                    searchResultToShow
+                )
         ]
 
 
@@ -238,6 +243,16 @@ itemView itemAttributes onSelectedValue item =
 withFocusHandling : String -> Bool -> (Bool -> msg) -> DropdownFilter a msg -> DropdownFilter a msg
 withFocusHandling uniqueName hasFocus onFocus (DropdownFilter config) =
     DropdownFilter { config | hasFocus = hasFocus, onFocus = Just ( uniqueName, onFocus ) }
+
+
+withFocusState : Bool -> DropdownFilter a msg -> DropdownFilter a msg
+withFocusState hasFocus (DropdownFilter config) =
+    DropdownFilter { config | hasFocus = hasFocus }
+
+
+withIsLoading : Bool -> DropdownFilter a msg -> DropdownFilter a msg
+withIsLoading isLoading (DropdownFilter config) =
+    DropdownFilter { config | isLoading = isLoading }
 
 
 

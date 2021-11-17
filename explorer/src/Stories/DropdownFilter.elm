@@ -1,6 +1,7 @@
 module Stories.DropdownFilter exposing (stories)
 
 import Config exposing (Config, FinancingVariant(..), Msg(..))
+import Html.Styled as Html
 import Nordea.Components.DropdownFilter as DropdownFilter
 import UIExplorer exposing (UI)
 import UIExplorer.Styled exposing (styledStoriesOf)
@@ -41,7 +42,7 @@ stories =
             ]
     in
     styledStoriesOf
-        "Search"
+        "DropdownFilter"
         [ ( "Default"
           , \model ->
                 let
@@ -57,7 +58,26 @@ stories =
                     []
           , {}
           )
-        , ( "with focus"
+        , ( "focused without group"
+          , \model ->
+                let
+                    removedGroups =
+                        List.map (\v -> { v | header = "" }) searchResult
+
+                    defaultOptions =
+                        DropdownFilter.init
+                            SearchComponentInput
+                            SearchComponentSelected
+                            removedGroups
+                            (Maybe.withDefault "" model.customModel.searchComponentInput)
+                            |> DropdownFilter.withFocusState True
+                in
+                DropdownFilter.view
+                    defaultOptions
+                    []
+          , {}
+          )
+        , ( "interactive with focus"
           , \model ->
                 let
                     defaultOptions =
@@ -71,6 +91,11 @@ stories =
                 DropdownFilter.view
                     defaultOptions
                     []
+          , {}
+          )
+        , ( "interactive with async"
+          , \model ->
+                Html.text "TODO debouncer and RemoteData"
           , {}
           )
         ]
