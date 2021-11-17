@@ -37,7 +37,7 @@ stories =
                     |> TextInput.view []
           , {}
           )
-          , ( "Pattern only digits"
+        , ( "Pattern only digits"
           , \_ ->
                 TextInput.init ""
                     |> TextInput.withPlaceholder "Type something"
@@ -45,10 +45,17 @@ stories =
                     |> TextInput.view []
           , {}
           )
-          , ( "Error"
+        , ( "Error"
           , \_ ->
                 TextInput.init "Text"
                     |> TextInput.withError True
+                    |> TextInput.view []
+          , {}
+          )
+        , ( "Disabled"
+          , \_ ->
+                TextInput.init "Text"
+                    |> TextInput.withDisabled True
                     |> TextInput.view []
           , {}
           )

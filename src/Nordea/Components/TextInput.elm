@@ -31,7 +31,7 @@ import Css
         , width
         )
 import Html.Styled exposing (Attribute, Html, input, styled)
-import Html.Styled.Attributes exposing (maxlength, pattern, placeholder, value)
+import Html.Styled.Attributes as Attr exposing (maxlength, pattern, placeholder, value)
 import Html.Styled.Events exposing (onInput)
 import Maybe.Extra as Maybe
 import Nordea.Resources.Colors as Colors
@@ -120,7 +120,7 @@ getAttributes config =
         , config.placeholder |> Maybe.map placeholder
         , config.maxLength |> Maybe.map maxlength
         , config.pattern |> Maybe.map pattern
-        , Just config.disabled |> Maybe.map Attributes.disabled
+        , Just config.disabled |> Maybe.map Attr.disabled
         ]
 
 
