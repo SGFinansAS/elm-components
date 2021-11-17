@@ -2,6 +2,7 @@ module Nordea.Components.TextInput exposing
     ( TextInput
     , init
     , view
+    , withDisabled
     , withError
     , withMaxLength
     , withOnInput
@@ -48,6 +49,7 @@ type alias Config msg =
     , showError : Bool
     , maxLength : Maybe Int
     , pattern : Maybe String
+    , disabled : Bool
     }
 
 
@@ -64,6 +66,7 @@ init value =
         , showError = False
         , maxLength = Nothing
         , pattern = Nothing
+        , disabled = False
         }
 
 
@@ -92,6 +95,11 @@ withError condition (TextInput config) =
     TextInput { config | showError = condition }
 
 
+withDisabled : Bool -> TextInput msg -> TextInput msg
+withDisabled condition (TextInput config) =
+    TextInput { config | disabled = condition }
+
+
 
 -- VIEW
 
@@ -112,6 +120,7 @@ getAttributes config =
         , config.placeholder |> Maybe.map placeholder
         , config.maxLength |> Maybe.map maxlength
         , config.pattern |> Maybe.map pattern
+        , Just config.disabled |> Maybe.map Attributes.disabled
         ]
 
 

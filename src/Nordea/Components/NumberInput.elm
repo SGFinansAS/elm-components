@@ -2,6 +2,7 @@ module Nordea.Components.NumberInput exposing
     ( NumberInput
     , init
     , view
+    , withDisabled
     , withError
     , withMax
     , withMin
@@ -50,6 +51,7 @@ type alias Config msg =
     , placeholder : Maybe String
     , onInput : Maybe (String -> msg)
     , showError : Bool
+    , disabled : Bool
     }
 
 
@@ -67,6 +69,7 @@ init value =
         , placeholder = Nothing
         , onInput = Nothing
         , showError = False
+        , disabled = False
         }
 
 
@@ -100,6 +103,11 @@ withError condition (NumberInput config) =
     NumberInput { config | showError = condition }
 
 
+withDisabled : Bool -> NumberInput msg -> NumberInput msg
+withDisabled condition (NumberInput config) =
+    NumberInput { config | disabled = condition }
+
+
 
 -- VIEW
 
@@ -122,6 +130,7 @@ getAttributes config =
         , config.step |> Maybe.map String.fromFloat |> Maybe.map step
         , config.placeholder |> Maybe.map placeholder
         , config.onInput |> Maybe.map onInput
+        , Just config.disabled |> Maybe.map Attributes.disabled
         ]
 
 
