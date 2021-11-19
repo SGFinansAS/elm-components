@@ -15,6 +15,8 @@ import Css.Global exposing (children, everything)
 import Html.Styled as Html exposing (text)
 import Html.Styled.Attributes exposing (css, disabled)
 import Nordea.Components.Button as Button
+import Nordea.Components.Status as Status
+import Nordea.Components.Text as Text
 import Nordea.Resources.Icons as Icons
 import UIExplorer exposing (UI)
 import UIExplorer.Styled exposing (styledStoriesOf)
@@ -72,7 +74,7 @@ stories =
                     ]
           , {}
           )
-        , ( "Card (WIP)"
+        , ( "Card (clickable)"
           , \_ ->
                 Html.div [ css [ children [ everything [ marginBottom (rem 1) ] ] ] ]
                     [ Button.card
@@ -84,8 +86,25 @@ stories =
                                 , flexDirection column
                                 ]
                             ]
-                            [ text "Click me"
-                            , Icons.rightIcon Icons.info
+                            [ Text.bodyTextSmall |> Text.view [] [ Html.text "Øvrig reg.bart landbruksutstyr" ]
+                            ]
+                    , Button.card
+                        |> Button.withHtmlTag Html.a
+                        |> Button.view
+                            [ css
+                                [ width (rem 11)
+                                , minHeight (rem 8.25)
+                                , justifyContent spaceBetween
+                                , flexDirection column
+                                ]
+                            ]
+                            [ Html.div
+                                [ css [ marginBottom (rem 2.0) ] ]
+                                [ Status.blue "Status" ]
+                            , Text.headlineTwo |> Text.view [] [ Html.text "10" ]
+                            , Text.bodyTextSmall
+                                |> Text.view [ css [ marginBottom (rem 1) |> Css.important ] ]
+                                    [ Html.text "Applications ready for e-signing" ]
                             ]
                     ]
           , {}
