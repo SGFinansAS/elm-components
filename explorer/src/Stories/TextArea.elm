@@ -11,7 +11,16 @@ stories =
         "TextArea"
         [ ( "Default"
           , \_ ->
-                TextArea.init "Text"
+                TextArea.init "Label" "Text"
+                    |> TextArea.withCharCounter { current = 30, max = 50 }
+                    |> TextArea.view []
+          , {}
+          )
+        , ( "Textarea with error"
+          , \_ ->
+                TextArea.init "Label" "Text"
+                    |> TextArea.withErrorMessage "Some error here"
+                    --|> TextArea.withCharCounter 30
                     |> TextArea.view []
           , {}
           )

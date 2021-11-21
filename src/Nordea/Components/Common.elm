@@ -1,33 +1,14 @@
 module Nordea.Components.Common exposing (..)
 
-import Css
-    exposing
-        ( alignItems
-        , auto
-        , center
-        , color
-        , displayFlex
-        , flex
-        , flexBasis
-        , fontFamilies
-        , fontSize
-        , justifyContent
-        , lineHeight
-        , marginBottom
-        , marginLeft
-        , marginRight
-        , marginTop
-        , none
-        , pct
-        , rem
-        , spaceBetween
-        )
+import Css exposing (Style, alignItems, auto, center, color, displayFlex, flex, flexBasis, fontFamilies, fontSize, justifyContent, lineHeight, marginBottom, marginLeft, marginRight, marginTop, none, pct, pseudoClass, rem, spaceBetween)
+import Css.Global exposing (descendants, typeSelector)
 import Html.Styled as Html exposing (Attribute, Html, div, styled, text)
 import Html.Styled.Attributes exposing (css)
 import Maybe.Extra as Maybe
 import Nordea.Html as Html exposing (showIf)
 import Nordea.Resources.Colors as Colors
 import Nordea.Resources.Icons as Icons
+import Nordea.Themes as Themes
 
 
 type RequirednessHint
@@ -152,6 +133,18 @@ topInfo config =
                         [ css [ color Colors.grayDark |> Css.important ] ]
                         [ requirednessHint |> toI18NString |> text ]
                 )
+        ]
+
+
+focusStyle : Style
+focusStyle =
+    Css.batch
+        [ pseudoClass "focus-within"
+            [ descendants
+                [ typeSelector "span"
+                    [ Themes.color Themes.PrimaryColorLight Colors.blueNordea ]
+                ]
+            ]
         ]
 
 
