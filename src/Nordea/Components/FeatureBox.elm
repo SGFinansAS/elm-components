@@ -19,7 +19,6 @@ import Css
         , fixed
         , flexDirection
         , height
-        , important
         , int
         , justifyContent
         , left
@@ -31,7 +30,6 @@ import Css
         , none
         , outline
         , overflow
-        , padding
         , padding4
         , pct
         , position
@@ -42,7 +40,7 @@ import Css
         , width
         , zIndex
         )
-import Css.Global as Css exposing (children, everything)
+import Css.Global exposing (children, everything)
 import Html.Styled
     exposing
         ( Html
@@ -54,6 +52,7 @@ import Html.Styled
 import Html.Styled.Attributes exposing (css)
 import Html.Styled.Events exposing (onClick)
 import Nordea.Components.Button as Button
+import Nordea.Components.Card as Card
 import Nordea.Components.Text as Text exposing (..)
 import Nordea.Html as Html exposing (showIf)
 import Nordea.Resources.Colors as Colors
@@ -63,7 +62,7 @@ import Svg.Styled as Svg exposing (Svg)
 
 
 type alias Config msg =
-    { showModal : Bool
+    { showFeatureBox : Bool
     , closeMsg : msg
     , name : String
     , description : String
@@ -77,9 +76,9 @@ type FeatureBox msg
 
 
 init : Bool -> msg -> String -> String -> FeatureBox msg
-init showModal closeMsg name description =
+init showFeatureBox closeMsg name description =
     FeatureBox
-        { showModal = showModal
+        { showFeatureBox = showFeatureBox
         , closeMsg = closeMsg
         , name = name
         , description = description
@@ -90,7 +89,7 @@ init showModal closeMsg name description =
 
 view : FeatureBox msg -> Html msg
 view (FeatureBox config) =
-    showIf config.showModal
+    showIf config.showFeatureBox
         (div
             [ css
                 [ position fixed
@@ -108,39 +107,34 @@ view (FeatureBox config) =
                 , zIndex (int 1)
                 ]
             ]
-            [ div
-                [ css
-                    [ displayFlex
-                    , alignItems center
-                    , flexDirection column
-                    , backgroundColor Colors.white
-                    , Css.borderRadius (rem 0.5)
-                    , width (rem 20.5)
-                    , children
-                        [ everything
-                            [ pseudoClass "not(:last-child)" [ marginBottom (rem 0.5) ] ]
+            [ Card.init
+                |> Card.view
+                    [ css
+                        [ displayFlex
+                        , alignItems center
+                        , flexDirection column
+                        , width (rem 20.5)
+                        , children
+                            [ everything
+                                [ pseudoClass "not(:last-child)" [ marginBottom (rem 0.5) ] ]
+                            ]
                         ]
-                    , padding (rem 1.5)
                     ]
-                ]
-                [ closeButton config.closeMsg
-                , config.icon
-                    |> Html.viewMaybe
-                        (\icon ->
-                            div [ css [ marginBottom (rem 1.5) |> Css.important ] ] [ icon ]
-                        )
-                , Text.titleHeavy
-                    |> Text.withHtmlTag h2
-                    |> Text.view [] [ text config.name ]
-                , Text.bodyTextSmall
-                    |> Text.withHtmlTag p
-                    |> Text.view [ css [ textAlign center ] ] [ text config.description ]
-                , config.button
-                    |> Html.viewMaybe
-                        (\button ->
-                            div [ css [ marginTop (rem 1), marginBottom (rem 1) ] ] [ button ]
-                        )
-                ]
+                    [ closeButton config.closeMsg
+                    , config.icon
+                        |> Html.viewMaybe (\icon -> icon)
+                    , Text.titleHeavy
+                        |> Text.withHtmlTag h2
+                        |> Text.view [ css [ marginTop (rem 1.5) ] ] [ text config.name ]
+                    , Text.bodyTextSmall
+                        |> Text.withHtmlTag p
+                        |> Text.view [ css [ textAlign center ] ] [ text config.description ]
+                    , config.button
+                        |> Html.viewMaybe
+                            (\button ->
+                                div [ css [ marginTop (rem 1), marginBottom (rem 1) ] ] [ button ]
+                            )
+                    ]
             ]
         )
 
