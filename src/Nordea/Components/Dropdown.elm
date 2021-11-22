@@ -155,16 +155,14 @@ view attrs (Dropdown config) =
                 ]
             ]
             (placeholder :: options)
-        , Icon.chevronDown
+        , Icon.chevronDownFilled
             [ css
                 [ position absolute
                 , top (pct 50)
                 , transform (translateY (pct -50))
-                , right (rem 0.75)
-                , width (rem 1.125) |> Css.important
-                , height (rem 1.125)
+                , right (rem 0.25)
                 , pointerEvents none
-                , color inherit
+                , color Colors.grayCool
                 ]
             ]
         ]

@@ -1,6 +1,5 @@
 module Nordea.Components.Label exposing
-    ( CharCounter
-    , Label
+    ( Label
     , LabelType(..)
     , RequirednessHint(..)
     , init
@@ -15,38 +14,22 @@ module Nordea.Components.Label exposing
 import Css
     exposing
         ( Style
-        , alignItems
-        , auto
         , border
-        , center
-        , color
         , column
         , displayFlex
-        , flex
         , flexBasis
         , flexDirection
         , flexWrap
-        , fontFamilies
-        , fontSize
-        , justifyContent
-        , lineHeight
-        , marginBottom
         , marginInlineEnd
         , marginInlineStart
-        , marginLeft
-        , marginRight
-        , marginTop
-        , none
         , padding
         , pct
         , pseudoClass
         , rem
-        , spaceBetween
-        , width
         , wrap
         )
 import Css.Global exposing (descendants, everything, typeSelector)
-import Html.Styled as Html
+import Html.Styled
     exposing
         ( Attribute
         , Html
@@ -55,13 +38,12 @@ import Html.Styled as Html
         , label
         , legend
         , styled
-        , text
         )
 import Html.Styled.Attributes exposing (css)
 import Maybe.Extra as Maybe
-import Nordea.Html as Html exposing (showIf, styleIf)
+import Nordea.Components.Common as Common exposing (CharCounter, RequirednessHint, bottomInfo, topInfo)
+import Nordea.Html exposing (showIf, styleIf)
 import Nordea.Resources.Colors as Colors
-import Nordea.Resources.Icons as Icons
 import Nordea.Themes as Themes
 
 
@@ -88,12 +70,6 @@ type alias InputProperties =
     }
 
 
-type alias CharCounter =
-    { current : Int
-    , max : Int
-    }
-
-
 type Label
     = Label InputProperties
 
@@ -113,6 +89,31 @@ init labelText labelType =
 
 view : List (Attribute msg) -> List (Html msg) -> Label -> Html msg
 view attrs children (Label config) =
+    let
+        commonConfig =
+            let
+                fromLabelRequirednessHint requirednessHint =
+                    case requirednessHint of
+                        Just (Mandatory a) ->
+                            Just (Common.Mandatory a)
+
+                        Just (Optional a) ->
+                            Just (Common.Optional a)
+
+                        Just (Custom a) ->
+                            Just (Common.Custom a)
+
+                        Nothing ->
+                            Nothing
+            in
+            { labelText = config.labelText
+            , requirednessHint = config.requirednessHint |> fromLabelRequirednessHint
+            , showFocusOutline = config.showFocusOutline
+            , errorMessage = config.errorMessage
+            , hintText = config.hintText
+            , charCounter = config.charCounter
+            }
+    in
     case config.labelType of
         InputLabel ->
             styled label
@@ -122,7 +123,7 @@ view attrs children (Label config) =
                 , Css.Global.children [ everything [ flexBasis (pct 100) ] ]
                 ]
                 attrs
-                (topInfo config :: children ++ bottomInfo config)
+                (topInfo commonConfig :: children ++ bottomInfo commonConfig)
 
         GroupLabel ->
             styled fieldset
@@ -137,11 +138,11 @@ view attrs children (Label config) =
                 attrs
                 ((legend
                     [ css [ padding (rem 0), flexBasis (pct 100), Css.Global.children [ everything [ flexBasis (pct 100) ] ] ] ]
-                    [ topInfo config ]
+                    [ topInfo commonConfig ]
                     |> showIf (not (String.isEmpty config.labelText) || Maybe.isJust config.requirednessHint)
                  )
                     :: children
-                    ++ bottomInfo config
+                    ++ bottomInfo commonConfig
                 )
 
         TextLabel ->
@@ -152,92 +153,7 @@ view attrs children (Label config) =
                 , Css.Global.children [ everything [ flexBasis (pct 100) ] ]
                 ]
                 attrs
-                (topInfo config :: children ++ bottomInfo config)
-
-
-topInfo : InputProperties -> Html msg
-topInfo config =
-    let
-        textStyle =
-            if Maybe.isJust config.errorMessage then
-                color Colors.redDark |> Css.important
-
-            else
-                color Colors.black
-
-        toI18NString requirednessHint =
-            case requirednessHint of
-                Mandatory translate ->
-                    translate strings.mandatory
-
-                Optional translate ->
-                    translate strings.optional
-
-                Custom string ->
-                    string
-    in
-    div [ css [ displayFlex, justifyContent spaceBetween, marginBottom (rem 0.5) ] ]
-        [ bodyText [ css [ textStyle ] ] [ text config.labelText ]
-        , config.requirednessHint
-            |> Html.viewMaybe
-                (\requirednessHint ->
-                    bodyText
-                        [ css [ color Colors.grayDark |> Css.important ] ]
-                        [ requirednessHint |> toI18NString |> text ]
-                )
-        ]
-
-
-bottomInfo : InputProperties -> List (Html msg)
-bottomInfo config =
-    let
-        charCounterView =
-            config.charCounter
-                |> Html.viewMaybe
-                    (\charCounter ->
-                        bodyText [ css [ marginLeft auto, color Colors.grayDark |> Css.important ] ]
-                            [ String.fromInt charCounter.current ++ "/" ++ String.fromInt charCounter.max |> text ]
-                    )
-    in
-    [ div [ css [ displayFlex, flexBasis (pct 100), justifyContent spaceBetween, marginTop (rem 0.5), Css.property "gap" "1rem" ] ]
-        [ config.errorMessage
-            |> Html.viewMaybe
-                (\errText ->
-                    div
-                        [ css
-                            [ displayFlex
-                            , alignItems center
-                            , color Colors.redDark
-                            , fontSize (rem 0.875)
-                            ]
-                        ]
-                        [ Icons.error [ css [ marginRight (rem 0.5), flex none ] ]
-                        , text errText
-                        ]
-                )
-        , charCounterView
-        ]
-        |> showIf (Maybe.isJust config.errorMessage)
-    , div [ css [ displayFlex, flexBasis (pct 100), justifyContent spaceBetween, marginTop (rem 0.5), Css.property "gap" "1rem" ] ]
-        [ config.hintText
-            |> Html.viewMaybe
-                (\hintText ->
-                    Html.div [ css [ color Colors.grayDark, fontSize (rem 0.875) ] ] [ text hintText ]
-                )
-        , charCounterView |> showIf (Maybe.isNothing config.errorMessage)
-        ]
-        |> showIf (Maybe.isJust config.hintText || Maybe.isJust config.charCounter)
-    ]
-
-
-bodyText : List (Attribute msg) -> List (Html msg) -> Html msg
-bodyText =
-    styled Html.span
-        [ fontSize (rem 0.875)
-        , fontFamilies [ "Nordea Sans Small" ]
-        , lineHeight (rem 1.5)
-        , color Colors.black
-        ]
+                (topInfo commonConfig :: children ++ bottomInfo commonConfig)
 
 
 focusStyle : Style
@@ -275,17 +191,3 @@ withCharCounter charCounter (Label config) =
 withShowFocusOutline : Bool -> Label -> Label
 withShowFocusOutline focus (Label config) =
     Label { config | showFocusOutline = focus }
-
-
-strings =
-    { mandatory =
-        { no = "Obligatorisk"
-        , se = "Obligatoriskt"
-        , dk = "Obligatorisk"
-        }
-    , optional =
-        { no = "Valgfritt"
-        , se = "Valfritt"
-        , dk = "Valgfrit"
-        }
-    }

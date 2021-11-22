@@ -1,6 +1,7 @@
 module Nordea.Resources.Icons exposing
     ( check
     , chevronDown
+    , chevronDownFilled
     , chevronUp
     , confetti
     , confetti2
@@ -34,23 +35,9 @@ import Css.Animations as Animations exposing (keyframes)
 import Css.Global exposing (children, everything)
 import Html.Styled as Html exposing (Attribute, Html, div, styled)
 import Html.Styled.Attributes exposing (css)
-import Svg.Styled as Svg exposing (Svg, svg)
-import Svg.Styled.Attributes as SvgAttrs
-    exposing
-        ( clipRule
-        , cx
-        , cy
-        , d
-        , fill
-        , fillRule
-        , height
-        , opacity
-        , r
-        , stroke
-        , strokeWidth
-        , viewBox
-        , width
-        )
+import Nordea.Resources.Colors as Colors
+import Svg.Styled as Svg exposing (Svg, rect, svg)
+import Svg.Styled.Attributes as SvgAttrs exposing (clipRule, cx, cy, d, fill, fillRule, height, opacity, r, rx, stroke, strokeWidth, viewBox, width)
 
 
 
@@ -130,6 +117,22 @@ chevronDown attrs =
         ]
 
 
+chevronDownFilled : List (Attribute msg) -> Html msg
+chevronDownFilled attrs =
+    iconContainer (css [ Css.width (rem 2) ] :: attrs)
+        [ svg [ viewBox "0 0 30 30", fill "none" ]
+            [ rect [ width "30", height "30", rx "2", fill "currentColor" ] []
+            , Svg.path
+                [ fillRule "evenodd"
+                , clipRule "evenodd"
+                , d "M20.5303 13.5304L14.9999 19.0607L9.46961 13.5304L10.5303 12.4697L14.9999 16.9391L19.4696 12.4697L20.5303 13.5304Z"
+                , fill (Colors.toString Colors.grayEclipse)
+                ]
+                []
+            ]
+        ]
+
+
 spinner : List (Attribute msg) -> Html msg
 spinner attrs =
     iconContainer
@@ -181,6 +184,19 @@ error attrs =
                 [ fillRule "evenodd"
                 , clipRule "evenodd"
                 , d "M15 8C15 4.14 11.859 1 8 1C4.14 1 1 4.14 1 8C1 11.86 4.14 15 8 15C11.859 15 15 11.86 15 8ZM0 8C0 3.589 3.589 0 8 0C12.411 0 16 3.589 16 8C16 12.411 12.411 16 8 16C3.589 16 0 12.411 0 8ZM9.0064 11.9283C9.0064 12.4373 8.5944 12.8493 8.0864 12.8493C7.5784 12.8493 7.1664 12.4373 7.1664 11.9283C7.1664 11.4203 7.5784 11.0083 8.0864 11.0083C8.5944 11.0083 9.0064 11.4203 9.0064 11.9283ZM8.5 3C8.5 2.72386 8.27614 2.5 8 2.5C7.72386 2.5 7.5 2.72386 7.5 3L7.5 9C7.5 9.27614 7.72386 9.5 8 9.5C8.27614 9.5 8.5 9.27614 8.5 9V3Z"
+                , fill "currentColor"
+                ]
+                []
+            ]
+        ]
+
+
+cross : List (Attribute msg) -> Html msg
+cross attrs =
+    iconContainer (css [ Css.width (rem 1.385) ] :: attrs)
+        [ Svg.svg [ viewBox "0 0 24 24", fill "none" ]
+            [ Svg.path
+                [ d "M13.3015 12.0001L22.8092 21.4986C22.984 21.6719 23.0823 21.9079 23.0823 22.154C23.0823 22.4001 22.984 22.636 22.8092 22.8094C22.6359 22.9841 22.4 23.0824 22.1538 23.0824C21.9077 23.0824 21.6718 22.9841 21.4985 22.8094L12 13.3017L2.50154 22.8094C2.32822 22.9841 2.09228 23.0824 1.84615 23.0824C1.60003 23.0824 1.36409 22.9841 1.19077 22.8094C1.01602 22.636 0.917725 22.4001 0.917725 22.154C0.917725 21.9079 1.01602 21.6719 1.19077 21.4986L10.6985 12.0001L1.19077 2.50167C0.82881 2.13971 0.82881 1.55286 1.19077 1.1909C1.55273 0.828944 2.13958 0.828944 2.50154 1.1909L12 10.6986L21.4985 1.1909C21.8604 0.828944 22.4473 0.828944 22.8092 1.1909C23.1712 1.55286 23.1712 2.13971 22.8092 2.50167L13.3015 12.0001Z"
                 , fill "currentColor"
                 ]
                 []
@@ -286,17 +302,4 @@ confetti2 =
         , Svg.path [ d "M32.56 142.667L31.0533 160L47.1333 147.907C44.1691 147.612 41.2608 146.902 38.4933 145.8C36.4076 144.974 34.4181 143.924 32.56 142.667Z", fill "#3399FF" ] []
         , Svg.path [ d "M39.3067 64.9333L38.9334 69.1067L39.3067 64.9333Z", fill "#E6E4E3" ] []
         , Svg.path [ opacity "0.5", d "M108.333 101.893L107.747 102.333C103.64 105.253 97.5467 106.787 89.9067 106.333C84.327 105.973 78.8272 104.82 73.5733 102.907L31.0533 160L108.547 101.72L108.333 101.893Z", fill "#0000FF" ] []
-        ]
-
-
-cross : List (Attribute msg) -> Html msg
-cross attrs =
-    iconContainer attrs
-        [ Svg.svg [ viewBox "0 0 24 24", fill "none" ]
-            [ Svg.path
-                [ d "M13.3015 12.0001L22.8092 21.4986C22.984 21.6719 23.0823 21.9079 23.0823 22.154C23.0823 22.4001 22.984 22.636 22.8092 22.8094C22.6359 22.9841 22.4 23.0824 22.1538 23.0824C21.9077 23.0824 21.6718 22.9841 21.4985 22.8094L12 13.3017L2.50154 22.8094C2.32822 22.9841 2.09228 23.0824 1.84615 23.0824C1.60003 23.0824 1.36409 22.9841 1.19077 22.8094C1.01602 22.636 0.917725 22.4001 0.917725 22.154C0.917725 21.9079 1.01602 21.6719 1.19077 21.4986L10.6985 12.0001L1.19077 2.50167C0.82881 2.13971 0.82881 1.55286 1.19077 1.1909C1.55273 0.828944 2.13958 0.828944 2.50154 1.1909L12 10.6986L21.4985 1.1909C21.8604 0.828944 22.4473 0.828944 22.8092 1.1909C23.1712 1.55286 23.1712 2.13971 22.8092 2.50167L13.3015 12.0001Z"
-                , fill "currentColor"
-                ]
-                []
-            ]
         ]

@@ -125,6 +125,7 @@ view attrs (Checkbox config) =
                     , borderColor Colors.grayMedium
                         |> styleIf (config.hasError && List.member config.appearance [ Standard, ListStyle ])
                     , position relative
+                    , boxSizing borderBox
 
                     -- Styling the checkmark
                     , after
