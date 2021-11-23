@@ -15,6 +15,7 @@ import Css
     exposing
         ( Style
         , alignItems
+        , auto
         , backgroundColor
         , batch
         , border3
@@ -24,9 +25,11 @@ import Css
         , boxShadow4
         , boxSizing
         , center
+        , column
         , cursor
         , disabled
         , displayFlex
+        , flexDirection
         , focus
         , fontFamilies
         , fontSize
@@ -35,6 +38,7 @@ import Css
         , hover
         , int
         , left
+        , marginTop
         , none
         , num
         , opacity
@@ -118,7 +122,7 @@ view attributes children (Button config) =
         variantSpecificChildren =
             case config.variant of
                 Card ->
-                    [ Icons.arrowRight [ class "arrowicon", css [ width (rem 1), height (rem 1) ] ] ]
+                    [ Icons.arrowRight [ class "arrowicon", css [ width (rem 1), height (rem 1), marginTop auto ] ] ]
 
                 _ ->
                     []
@@ -224,6 +228,7 @@ variantStyle variant =
             in
             batch
                 [ displayFlex
+                , flexDirection column
                 , backgroundColor Colors.white
                 , textAlign left
                 , alignItems start
