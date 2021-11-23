@@ -21,7 +21,19 @@ module Nordea.Components.Text exposing
     , withHtmlTag
     )
 
-import Css exposing (Style, fontFamilies, fontSize, fontWeight, int, lineHeight, margin, normal, rem, zero)
+import Css
+    exposing
+        ( Style
+        , fontFamilies
+        , fontSize
+        , fontWeight
+        , int
+        , lineHeight
+        , margin
+        , normal
+        , rem
+        , zero
+        )
 import Html.Styled as Html exposing (Attribute, Html)
 import Html.Styled.Attributes exposing (css)
 

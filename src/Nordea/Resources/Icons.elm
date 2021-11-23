@@ -1,5 +1,7 @@
 module Nordea.Resources.Icons exposing
-    ( check
+    ( arrowLeft
+    , arrowRight
+    , check
     , chevronDown
     , chevronDownFilled
     , chevronUp
@@ -17,6 +19,7 @@ import Css
         , animationDuration
         , animationName
         , center
+        , deg
         , display
         , displayFlex
         , flex
@@ -27,6 +30,7 @@ import Css
         , marginRight
         , ms
         , rem
+        , rotateZ
         , zero
         )
 import Css.Animations as Animations exposing (keyframes)
@@ -35,7 +39,22 @@ import Html.Styled as Html exposing (Attribute, Html, div, styled)
 import Html.Styled.Attributes exposing (css)
 import Nordea.Resources.Colors as Colors
 import Svg.Styled as Svg exposing (Svg, rect, svg)
-import Svg.Styled.Attributes as SvgAttrs exposing (clipRule, cx, cy, d, fill, fillRule, height, r, rx, stroke, strokeWidth, viewBox, width)
+import Svg.Styled.Attributes as SvgAttrs
+    exposing
+        ( clipRule
+        , cx
+        , cy
+        , d
+        , fill
+        , fillRule
+        , height
+        , r
+        , rx
+        , stroke
+        , strokeWidth
+        , viewBox
+        , width
+        )
 
 
 
@@ -198,6 +217,26 @@ cross attrs =
                 , fill "currentColor"
                 ]
                 []
+            ]
+        ]
+
+
+arrowRight : List (Attribute msg) -> Html msg
+arrowRight attrs =
+    iconContainer attrs
+        [ Svg.svg [ viewBox "0 0 21 20", fill "none" ]
+            [ Svg.path [ d "M1 10.2367L10 10.1183L19 10", stroke "currentColor", strokeWidth "2" ] []
+            , Svg.path [ d "M13 4L19 10L13 16", stroke "currentColor", strokeWidth "2" ] []
+            ]
+        ]
+
+
+arrowLeft : List (Attribute msg) -> Html msg
+arrowLeft attrs =
+    iconContainer (css [ Css.transform (rotateZ (deg 180)) ] :: attrs)
+        [ Svg.svg [ viewBox "0 0 21 20", fill "none" ]
+            [ Svg.path [ d "M1 10.2367L10 10.1183L19 10", stroke "currentColor", strokeWidth "2" ] []
+            , Svg.path [ d "M13 4L19 10L13 16", stroke "currentColor", strokeWidth "2" ] []
             ]
         ]
 
