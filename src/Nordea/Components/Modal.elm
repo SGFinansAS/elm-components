@@ -17,19 +17,14 @@ import Css
         , displayFlex
         , fixed
         , flexDirection
-        , fontWeight
-        , height
         , hidden
         , int
         , justifyContent
         , left
-        , margin
         , marginLeft
         , maxWidth
-        , minHeight
         , minWidth
         , none
-        , normal
         , outline
         , overflow
         , padding
@@ -39,7 +34,6 @@ import Css
         , rem
         , solid
         , top
-        , width
         , zIndex
         )
 import Css.Global as Global
@@ -48,7 +42,6 @@ import Html.Styled.Attributes exposing (attribute, css, tabindex)
 import Html.Styled.Events as Events exposing (keyCode, on)
 import Json.Decode as Json
 import Nordea.Components.Button as NordeaButton
-import Nordea.Components.Card as Card
 import Nordea.Components.Text as Text
 import Nordea.Resources.Colors as Colors
 import Nordea.Resources.Icons as Icons
@@ -115,8 +108,7 @@ header onClickMsg title =
     in
     Html.div
         [ css
-            [ minHeight (rem 6)
-            , padding4 (rem 1.5) (rem 1.5) (rem 1.5) (rem 2.5)
+            [ padding4 (rem 1.5) (rem 1.5) (rem 1.5) (rem 2.5)
             , alignItems center
             , borderBottom3 (rem 0.0625) solid Colors.grayCool
             , displayFlex
@@ -133,6 +125,7 @@ contentContainer attrs children =
     Html.div (css [ padding (rem 2.5), displayFlex, flexDirection column ] :: attrs) children
 
 
+disableScrollOnBody : Html msg
 disableScrollOnBody =
     Global.global [ Global.body [ overflow hidden ] ]
 
