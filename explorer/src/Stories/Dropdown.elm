@@ -33,7 +33,7 @@ stories : UI a Msg {}
 stories =
     styledStoriesOf
         "Dropdown"
-        [ ( "Default"
+        [ ( "Standard"
           , \_ ->
                 Dropdown.init
                     [ { value = Leasing, text = financingVariantToString Leasing }
@@ -46,9 +46,36 @@ stories =
                     |> Dropdown.view []
           , {}
           )
-        , ( "With error"
+        , ( "Standard with error"
           , \_ ->
                 Dropdown.init
+                    [ { value = Leasing, text = financingVariantToString Leasing }
+                    , { value = Rent, text = financingVariantToString Rent }
+                    , { value = Loan, text = financingVariantToString Loan }
+                    , { value = HirePurchase, text = financingVariantToString HirePurchase }
+                    ]
+                    financingVariantToString
+                    (\_ -> NoOp)
+                    |> Dropdown.withHasError True
+                    |> Dropdown.view []
+          , {}
+          )
+        , ( "Simple"
+          , \_ ->
+                Dropdown.simple
+                    [ { value = Leasing, text = financingVariantToString Leasing }
+                    , { value = Rent, text = financingVariantToString Rent }
+                    , { value = Loan, text = financingVariantToString Loan }
+                    , { value = HirePurchase, text = financingVariantToString HirePurchase }
+                    ]
+                    financingVariantToString
+                    (\_ -> NoOp)
+                    |> Dropdown.view []
+          , {}
+          )
+        , ( "Simple with error"
+          , \_ ->
+                Dropdown.simple
                     [ { value = Leasing, text = financingVariantToString Leasing }
                     , { value = Rent, text = financingVariantToString Rent }
                     , { value = Loan, text = financingVariantToString Loan }
