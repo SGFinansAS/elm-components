@@ -27,8 +27,8 @@ init =
         }
 
 
-view : List (Html msg) -> Card msg -> Html msg
-view children (Card config) =
+view : List (Attribute msg) -> List (Html msg) -> Card msg -> Html msg
+view attrs children (Card config) =
     let
         cardStyle =
             [ borderRadius (rem 0.5)
@@ -43,6 +43,7 @@ view children (Card config) =
         ]
         [ config.title |> viewMaybe (\title -> cardTitle title)
         , cardContentContainer
+            attrs
             (Maybe.isJust config.title)
             children
         ]
@@ -62,18 +63,18 @@ cardTitle title =
         ]
 
 
-cardContentContainer : Bool -> List (Html msg) -> Html msg
-cardContentContainer hasTitle children =
+cardContentContainer : List (Attribute msg) -> Bool -> List (Html msg) -> Html msg
+cardContentContainer attrs hasTitle children =
     Html.div
-        [ css
+        (css
             [ if hasTitle then
                 padding4 (rem 1) (rem 2) (rem 2) (rem 2)
 
               else
                 padding (rem 2)
             , textAlign left
-            ]
-        ]
+            ] :: attrs)
+
         children
 
 

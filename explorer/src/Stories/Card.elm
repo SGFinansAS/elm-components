@@ -13,14 +13,14 @@ stories =
         [ ( "Default"
           , \_ ->
                 Card.init
-                    |> Card.view [ Html.text "Card content" ]
+                    |> Card.view [] [ Html.text "Card content" ]
           , {}
           )
         , ( "With shadow"
           , \_ ->
                 Card.init
                     |> Card.withShadow
-                    |> Card.view [ Html.text "Card content" ]
+                    |> Card.view [] [ Html.text "Card content" ]
           , {}
           )
         , ( "With title"
@@ -28,7 +28,7 @@ stories =
                 Card.init
                     |> Card.withTitle "Card title"
                     |> Card.withShadow
-                    |> Card.view [ Html.text "Card content" ]
+                    |> Card.view [] [ Html.text "Card content" ]
           , {}
           )
         ]
