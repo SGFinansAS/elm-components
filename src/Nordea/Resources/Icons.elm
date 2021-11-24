@@ -1,5 +1,7 @@
 module Nordea.Resources.Icons exposing
-    ( check
+    ( arrowLeft
+    , arrowRight
+    , check
     , chevronDown
     , chevronDownFilled
     , chevronUp
@@ -19,6 +21,7 @@ import Css
         , animationDuration
         , animationName
         , center
+        , deg
         , display
         , displayFlex
         , flex
@@ -29,6 +32,7 @@ import Css
         , marginRight
         , ms
         , rem
+        , rotateZ
         , zero
         )
 import Css.Animations as Animations exposing (keyframes)
@@ -37,7 +41,23 @@ import Html.Styled as Html exposing (Attribute, Html, div, styled)
 import Html.Styled.Attributes exposing (css)
 import Nordea.Resources.Colors as Colors
 import Svg.Styled as Svg exposing (Svg, rect, svg)
-import Svg.Styled.Attributes as SvgAttrs exposing (clipRule, cx, cy, d, fill, fillRule, height, opacity, r, rx, stroke, strokeWidth, viewBox, width)
+import Svg.Styled.Attributes as SvgAttrs
+    exposing
+        ( clipRule
+        , cx
+        , cy
+        , d
+        , fill
+        , fillRule
+        , height
+        , opacity
+        , r
+        , rx
+        , stroke
+        , strokeWidth
+        , viewBox
+        , width
+        )
 
 
 
@@ -197,6 +217,32 @@ cross attrs =
         [ Svg.svg [ viewBox "0 0 24 24", fill "none" ]
             [ Svg.path
                 [ d "M13.3015 12.0001L22.8092 21.4986C22.984 21.6719 23.0823 21.9079 23.0823 22.154C23.0823 22.4001 22.984 22.636 22.8092 22.8094C22.6359 22.9841 22.4 23.0824 22.1538 23.0824C21.9077 23.0824 21.6718 22.9841 21.4985 22.8094L12 13.3017L2.50154 22.8094C2.32822 22.9841 2.09228 23.0824 1.84615 23.0824C1.60003 23.0824 1.36409 22.9841 1.19077 22.8094C1.01602 22.636 0.917725 22.4001 0.917725 22.154C0.917725 21.9079 1.01602 21.6719 1.19077 21.4986L10.6985 12.0001L1.19077 2.50167C0.82881 2.13971 0.82881 1.55286 1.19077 1.1909C1.55273 0.828944 2.13958 0.828944 2.50154 1.1909L12 10.6986L21.4985 1.1909C21.8604 0.828944 22.4473 0.828944 22.8092 1.1909C23.1712 1.55286 23.1712 2.13971 22.8092 2.50167L13.3015 12.0001Z"
+                , fill "currentColor"
+                ]
+                []
+            ]
+        ]
+
+
+arrowRight : List (Attribute msg) -> Html msg
+arrowRight attrs =
+    iconContainer attrs
+        [ Svg.svg [ viewBox "0 0 14 14", fill "none" ]
+            [ Svg.path
+                [ d "M0.999999 7.50006C0.723856 7.50006 0.499999 7.2762 0.499999 7.00006C0.499999 6.72391 0.723857 6.50006 0.999999 6.50006L11.72 6.50006L6.16 1.37506C6.01488 1.25738 5.94748 1.06863 5.98523 0.885651C6.02299 0.702677 6.1596 0.556015 6.33944 0.505394C6.51928 0.454774 6.71234 0.508641 6.84 0.645056L13.34 6.64506C13.3755 6.68246 13.4058 6.72451 13.43 6.77006C13.43 6.80506 13.43 6.80506 13.43 6.80506C13.4857 6.93258 13.4857 7.07753 13.43 7.20506C13.43 7.21506 13.43 7.24006 13.43 7.24006C13.4058 7.2856 13.3755 7.32765 13.34 7.36506L6.84 13.3651C6.71234 13.5015 6.51928 13.5553 6.33944 13.5047C6.1596 13.4541 6.02299 13.3074 5.98523 13.1245C5.94748 12.9415 6.01488 12.7527 6.16 12.6351L11.72 7.50006L0.999999 7.50006Z"
+                , fill "currentColor"
+                ]
+                []
+            ]
+        ]
+
+
+arrowLeft : List (Attribute msg) -> Html msg
+arrowLeft attrs =
+    iconContainer attrs
+        [ Svg.svg [ viewBox "0 0 32 32", fill "none" ]
+            [ Svg.path
+                [ d "M28 15C28.5523 15 29 15.4477 29 16C29 16.5523 28.5523 17 28 17H6.56L17.68 27.25C17.9702 27.4853 18.105 27.8629 18.0295 28.2288C17.954 28.5948 17.6808 28.8881 17.3211 28.9893C16.9614 29.0906 16.5753 28.9828 16.32 28.71L3.32 16.71C3.24897 16.6352 3.18842 16.5511 3.14 16.46C3.14 16.39 3.14 16.39 3.14 16.39C3.02869 16.135 3.02869 15.8451 3.14 15.59C3.14 15.57 3.14 15.52 3.14 15.52C3.18842 15.4289 3.24897 15.3448 3.32 15.27L16.32 3.27C16.5753 2.99717 16.9614 2.88944 17.3211 2.99068C17.6808 3.09192 17.954 3.38525 18.0295 3.75119C18.105 4.11714 17.9702 4.49466 17.68 4.73L6.56 15H28Z"
                 , fill "currentColor"
                 ]
                 []
