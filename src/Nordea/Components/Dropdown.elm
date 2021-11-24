@@ -1,4 +1,4 @@
-module Nordea.Components.Dropdown exposing (Dropdown, init, view, withHasError, withSelectedValue)
+module Nordea.Components.Dropdown exposing (Dropdown, init, simple, view, withHasError, withSelectedValue)
 
 import Css
     exposing
@@ -48,6 +48,11 @@ import Nordea.Resources.Icons as Icon
 import Nordea.Themes as Themes
 
 
+type Variant
+    = Standard
+    | Simple
+
+
 type alias Option a =
     { value : a
     , text : String
@@ -61,11 +66,21 @@ type alias DropdownProperties a msg =
     , optionToString : a -> String
     , selectedValue : Maybe a
     , hasError : Bool
+    , variant : Variant
     }
 
 
 type Dropdown a msg
     = Dropdown (DropdownProperties a msg)
+
+
+simple : List (Option a) -> (a -> String) -> (a -> msg) -> Dropdown a msg
+simple options optionToString onInput =
+    let
+        (Dropdown config) =
+            init options optionToString onInput
+    in
+    Dropdown { config | variant = Simple }
 
 
 init : List (Option a) -> (a -> String) -> (a -> msg) -> Dropdown a msg
@@ -77,6 +92,7 @@ init options optionToString onInput =
         , optionToString = optionToString
         , selectedValue = Nothing
         , hasError = False
+        , variant = Standard
         }
 
 
@@ -126,7 +142,7 @@ view attrs (Dropdown config) =
         (css
             [ displayFlex
             , position relative
-            , border3 (rem 0.0625) solid Colors.grayMedium
+            , border3 (rem 0.0625) solid Colors.grayMedium |> styleIf (config.variant /= Simple || config.hasError)
             , borderColor Colors.redDark |> styleIf config.hasError
             , borderRadius (rem 0.25)
             , overflow hidden
@@ -155,16 +171,32 @@ view attrs (Dropdown config) =
                 ]
             ]
             (placeholder :: options)
-        , Icon.chevronDownFilled
-            [ css
-                [ position absolute
-                , top (pct 50)
-                , transform (translateY (pct -50))
-                , right (rem 0.25)
-                , pointerEvents none
-                , color Colors.grayCool
-                ]
-            ]
+        , case config.variant of
+            Standard ->
+                Icon.chevronDownFilled
+                    [ css
+                        [ position absolute
+                        , top (pct 50)
+                        , transform (translateY (pct -50))
+                        , right (rem 0.25)
+                        , pointerEvents none
+                        , color Colors.grayCool
+                        ]
+                    ]
+
+            Simple ->
+                Icon.chevronDown
+                    [ css
+                        [ position absolute
+                        , top (pct 50)
+                        , transform (translateY (pct -50))
+                        , right (rem 0.75)
+                        , width (rem 1.125) |> Css.important
+                        , height (rem 1.125)
+                        , pointerEvents none
+                        , color inherit
+                        ]
+                    ]
         ]
 
 
