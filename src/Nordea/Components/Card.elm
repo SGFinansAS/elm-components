@@ -1,6 +1,24 @@
 module Nordea.Components.Card exposing (..)
 
-import Css exposing (Style, backgroundColor, borderBottom3, borderRadius, column, displayFlex, flexDirection, fontSize, inherit, left, minHeight, padding, padding4, rem, solid, textAlign)
+import Css
+    exposing
+        ( Style
+        , backgroundColor
+        , borderBottom3
+        , borderRadius
+        , column
+        , displayFlex
+        , flexDirection
+        , fontSize
+        , inherit
+        , left
+        , minHeight
+        , padding
+        , padding4
+        , rem
+        , solid
+        , textAlign
+        )
 import Html.Styled as Html exposing (Attribute, Html)
 import Html.Styled.Attributes exposing (css)
 import Maybe.Extra as Maybe
