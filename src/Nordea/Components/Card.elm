@@ -47,9 +47,7 @@ view : List (Attribute msg) -> List (Html msg) -> Card msg -> Html msg
 view attrs children (Card config) =
     let
         cardStyle =
-            [ displayFlex
-            , flexDirection column
-            , borderRadius (rem 0.5)
+            [ borderRadius (rem 0.5)
             , backgroundColor Colors.white
             , Css.boxShadow4 (rem 0) (rem 0.25) (rem 2.5) Colors.grayLight
                 |> styleIf config.hasShadow
@@ -91,6 +89,8 @@ cardContentContainer attrs hasTitle children =
               else
                 padding (rem 2)
             , textAlign left
+            , displayFlex
+            , flexDirection column
             ]
             :: attrs
         )
