@@ -1,27 +1,8 @@
 module Nordea.Components.Card exposing (..)
 
-import Css
-    exposing
-        ( Style
-        , backgroundColor
-        , borderBottom3
-        , borderRadius
-        , column
-        , displayFlex
-        , flexDirection
-        , fontSize
-        , inherit
-        , left
-        , minHeight
-        , padding
-        , padding4
-        , rem
-        , solid
-        , textAlign
-        )
+import Css exposing (Style, auto, backgroundColor, borderBottom3, borderRadius, borderStyle, column, displayFlex, flexDirection, fontSize, height, left, margin2, marginBottom, none, padding, padding4, paddingBottom, rem, solid, textAlign, width)
 import Html.Styled as Html exposing (Attribute, Html)
 import Html.Styled.Attributes exposing (css)
-import Maybe.Extra as Maybe
 import Nordea.Components.Text as Text
 import Nordea.Html exposing (styleIf, viewMaybe)
 import Nordea.Resources.Colors as Colors
@@ -50,6 +31,10 @@ view attrs children (Card config) =
     let
         cardStyle =
             [ borderRadius (rem 0.5)
+            , padding (rem 2)
+            , textAlign left
+            , displayFlex
+            , flexDirection column
             , backgroundColor Colors.white
             , Css.boxShadow4 (rem 0) (rem 0.25) (rem 2.5) Colors.grayLight
                 |> styleIf config.hasShadow
@@ -59,25 +44,30 @@ view attrs children (Card config) =
         (css cardStyle
             :: attrs
         )
-        [ config.title |> viewMaybe (\title -> cardTitle title)
-        , cardContentContainer
-            []
-            (Maybe.isJust config.title)
-            children
-        ]
+        ((config.title |> viewMaybe (\title -> cardTitle title))
+            :: children
+        )
 
 
 cardTitle : String -> Html msg
 cardTitle title =
     Html.div
         [ css
-            [ padding4 (rem 2) (rem 2) (rem 1) (rem 2)
-            , fontSize (rem 1.125)
-            , borderBottom3 (rem 0.0625) solid Colors.grayCool
+            [ fontSize (rem 1.125)
             ]
         ]
         [ Text.bodyTextHeavy
             |> Text.view [] [ Html.text title ]
+        , Html.hr
+            [ css
+                [ width auto
+                , borderStyle none
+                , height (rem 0.0625)
+                , backgroundColor Colors.grayCool
+                , margin2 (rem 1) (rem -2)
+                ]
+            ]
+            []
         ]
 
 
@@ -93,7 +83,6 @@ cardContentContainer attrs hasTitle children =
             , textAlign left
             , displayFlex
             , flexDirection column
-            , minHeight inherit
             ]
             :: attrs
         )
