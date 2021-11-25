@@ -1,6 +1,6 @@
 module Nordea.Components.Card exposing (..)
 
-import Css exposing (Style, backgroundColor, borderBottom3, borderRadius, fontSize, left, padding, padding4, rem, solid, textAlign)
+import Css exposing (Style, backgroundColor, borderBottom3, borderRadius, column, displayFlex, flexDirection, fontSize, left, padding, padding4, rem, solid, textAlign)
 import Html.Styled as Html exposing (Attribute, Html)
 import Html.Styled.Attributes exposing (css)
 import Maybe.Extra as Maybe
@@ -31,19 +31,21 @@ view : List (Attribute msg) -> List (Html msg) -> Card msg -> Html msg
 view attrs children (Card config) =
     let
         cardStyle =
-            [ borderRadius (rem 0.5)
+            [ displayFlex
+            , flexDirection column
+            , borderRadius (rem 0.5)
             , backgroundColor Colors.white
             , Css.boxShadow4 (rem 0) (rem 0.25) (rem 2.5) Colors.grayLight
                 |> styleIf config.hasShadow
             ]
     in
     Html.div
-        [ css
-            cardStyle
-        ]
+        (css cardStyle
+            :: attrs
+        )
         [ config.title |> viewMaybe (\title -> cardTitle title)
         , cardContentContainer
-            attrs
+            []
             (Maybe.isJust config.title)
             children
         ]
@@ -73,8 +75,9 @@ cardContentContainer attrs hasTitle children =
               else
                 padding (rem 2)
             , textAlign left
-            ] :: attrs)
-
+            ]
+            :: attrs
+        )
         children
 
 
