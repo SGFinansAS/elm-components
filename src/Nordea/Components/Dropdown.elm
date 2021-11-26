@@ -40,7 +40,7 @@ import Css
 import Css.Global exposing (withAttribute)
 import Dict
 import Html.Styled as Html exposing (Attribute, Html, div, option, text)
-import Html.Styled.Attributes as Attrs exposing (css, selected, value)
+import Html.Styled.Attributes as Attrs exposing (css, disabled, selected, value)
 import Html.Styled.Events as Events exposing (on, targetValue)
 import Json.Decode as Decode
 import Nordea.Html exposing (styleIf, viewMaybe)
@@ -130,6 +130,7 @@ view attrs (Dropdown config) =
                         option
                             [ dropDownOption.value |> config.optionToString |> value
                             , selected (config.selectedValue == Just dropDownOption.value)
+                            , disabled dropDownOption.isDisabled
                             , css [ color Colors.black ]
                             ]
                             [ text dropDownOption.text ]
