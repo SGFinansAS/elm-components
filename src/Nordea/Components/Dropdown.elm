@@ -1,4 +1,4 @@
-module Nordea.Components.Dropdown exposing (Dropdown, init, simple, view, withHasError, withSelectedValue)
+module Nordea.Components.Dropdown exposing (Dropdown, init, optionInit, optionIsDisabled, simple, view, withHasError, withSelectedValue)
 
 import Css
     exposing
@@ -37,6 +37,7 @@ import Css
         , transparent
         , width
         )
+import Css.Global exposing (withAttribute)
 import Dict
 import Html.Styled as Html exposing (Attribute, Html, div, option, text)
 import Html.Styled.Attributes as Attrs exposing (css, selected, value)
@@ -56,7 +57,21 @@ type Variant
 type alias Option a =
     { value : a
     , text : String
+    , isDisabled : Bool
     }
+
+
+optionInit : { value : a, text : String } -> Option a
+optionInit { value, text } =
+    { value = value
+    , text = text
+    , isDisabled = False
+    }
+
+
+optionIsDisabled : Bool -> Option a -> Option a
+optionIsDisabled isDisabled option =
+    { option | isDisabled = isDisabled }
 
 
 type alias DropdownProperties a msg =
@@ -137,6 +152,9 @@ view attrs (Dropdown config) =
                                 Decode.succeed tag
                     )
                 |> Decode.map config.onInput
+
+        isDisabled =
+            List.member (Attrs.disabled True) attrs
     in
     div
         (css
@@ -151,6 +169,7 @@ view attrs (Dropdown config) =
         )
         [ Html.select
             [ Events.on "change" decoder
+            , Attrs.disabled isDisabled
             , css
                 [ height (rem 2.5)
                 , width (pct 100)
@@ -168,6 +187,7 @@ view attrs (Dropdown config) =
                 , lineHeight (rem 1.4)
                 , fontFamilies [ "Nordea Sans Small" ]
                 , color inherit
+                , withAttribute "disabled" [ color Colors.grayNordea, backgroundColor Colors.grayCool ]
                 ]
             ]
             (placeholder :: options)

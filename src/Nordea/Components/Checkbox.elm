@@ -31,6 +31,7 @@ import Css
         , center
         , cursor
         , deg
+        , disabled
         , display
         , displayFlex
         , firstOfType
@@ -62,6 +63,7 @@ import Css
         , width
         , zIndex
         )
+import Css.Global exposing (withAttribute)
 import Css.Transitions exposing (transition)
 import Html.Styled as Html exposing (Attribute, Html)
 import Html.Styled.Attributes as Attrs exposing (class, css, name, type_)
@@ -108,6 +110,9 @@ init name label onCheck =
 view : List (Attribute msg) -> Checkbox msg -> Html msg
 view attrs (Checkbox config) =
     let
+        isDisabled =
+            List.member (Attrs.disabled True) attrs
+
         checkbox =
             Html.span
                 [ class "nfe-checkbox"
@@ -118,7 +123,11 @@ view attrs (Checkbox config) =
                     , width (rem 1.25)
                     , backgroundColor Colors.white
                     , border3 (rem 0.125) solid Css.transparent
-                    , Themes.borderColor Themes.PrimaryColorLight Colors.blueNordea
+                    , if isDisabled then
+                        borderColor Colors.grayMedium
+
+                      else
+                        Themes.borderColor Themes.PrimaryColorLight Colors.blueNordea
                     , borderRadius (rem 0.125)
                     , borderColor Colors.redDark
                         |> styleIf (config.hasError && config.appearance == Simple)
@@ -137,7 +146,11 @@ view attrs (Checkbox config) =
                         , width (rem 0.5)
                         , height (rem 0.813)
                         , transforms [ rotate (deg 45) ]
-                        , border3 (rem 0.0625) solid Colors.white
+                        , if isDisabled then
+                            border3 (rem 0.0625) solid Colors.grayNordea
+
+                          else
+                            border3 (rem 0.0625) solid Colors.white
                         , borderWidth4 (rem 0) (rem 0.125) (rem 0.125) (rem 0)
                         , boxSizing borderBox
                         ]
@@ -183,18 +196,27 @@ view attrs (Checkbox config) =
 
                 Simple ->
                     Css.batch []
+
+        notDisabledSpecificStyling =
+            if isDisabled then
+                []
+
+            else
+                [ pseudoClass "hover .nfe-checkbox" [ Css.property "box-shadow" ("0rem 0rem 0rem 0.0625rem " ++ Themes.colorVariable Themes.SecondaryColor Colors.blueMedium) ]
+                , pseudoClass "focus-within .nfe-checkbox" [ Css.property "box-shadow" ("0rem 0rem 0rem 0.0625rem " ++ Themes.colorVariable Themes.SecondaryColor Colors.blueMedium) ]
+                , cursor pointer
+                ]
     in
     Html.label
         (css
-            [ display inlineFlex
-            , Css.property "gap" "0.5rem"
-            , alignItems center
-            , cursor pointer
-            , appearanceStyle
-            , position relative
-            , pseudoClass "hover .nfe-checkbox" [ Css.property "box-shadow" ("0rem 0rem 0rem 0.0625rem " ++ Themes.colorVariable Themes.SecondaryColor Colors.blueMedium) ]
-            , pseudoClass "focus-within .nfe-checkbox" [ Css.property "box-shadow" ("0rem 0rem 0rem 0.0625rem " ++ Themes.colorVariable Themes.SecondaryColor Colors.blueMedium) ]
-            ]
+            ([ display inlineFlex
+             , Css.property "gap" "0.5rem"
+             , alignItems center
+             , appearanceStyle
+             , position relative
+             ]
+                ++ notDisabledSpecificStyling
+            )
             :: attrs
         )
         [ Html.input
@@ -210,8 +232,12 @@ view attrs (Checkbox config) =
 
                 -- when <input> is checked, apply styles to sibling with class .nfe-checkbox
                 , pseudoClass "checked ~ .nfe-checkbox"
-                    [ Themes.backgroundColor Themes.PrimaryColorLight Colors.blueNordea
-                    , after [ display block ]
+                    [ after [ display block ]
+                    , if isDisabled then
+                        backgroundColor Colors.grayMedium
+
+                      else
+                        Themes.backgroundColor Themes.PrimaryColorLight Colors.blueNordea
                     ]
                 ]
             ]
