@@ -24,6 +24,7 @@ import Stories.Status as Status
 import Stories.StepIndicator as StepIndicator
 import Stories.Text as Header
 import Stories.TextInput as TextInput
+import Stories.Tooltip as Tooltip
 import UIExplorer
     exposing
         ( UIExplorerProgram
@@ -78,5 +79,6 @@ main =
         , ProgressBar.stories
         , ProgressBarStepper.stories
         , Error.stories
+        , Tooltip.stories
         , LottiePlayer.stories
         ]
