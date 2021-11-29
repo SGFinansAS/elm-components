@@ -82,9 +82,15 @@ view attributes children (Error config) =
                     ]
                     [ Html.text (texts.heading |> toI18NString) ]
             ]
-        , Html.div [ Attributes.css [ Css.marginBottom (rem 2) ] ]
+        , Html.div
+            [ Attributes.css
+                [ Css.marginBottom (rem 2)
+                , Css.maxWidth (rem 30)
+                , Css.textAlign Css.center
+                ]
+            ]
             [ Text.bodyTextLight
-                |> Text.view [ Attributes.css [ Css.maxWidth (rem 30), Css.textAlign Css.center ] ]
+                |> Text.view []
                     [ Html.text errorDescription
                     ]
             ]
