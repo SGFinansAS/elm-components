@@ -105,20 +105,24 @@ viewActionForInternalServerError config =
         errorActionText =
             texts.internalServerError.action |> config.translate
     in
-    Html.div
-        [ Attributes.css
-            [ Css.displayFlex
-            , Css.flexDirection Css.column
-            , Css.maxWidth (rem 30)
-            , Css.alignItems Css.center
-            ]
-        ]
-        [ Text.bodyTextLight
-            |> Text.view [ Attributes.css [ Css.paddingRight (rem 0.25), Css.textAlign Css.center ] ]
-                [ Html.text errorActionText
-                , FlatLink.default |> FlatLink.view [ href "mailto: kundeservice.nfe@nordea.com", Attributes.css [ Css.display Css.inlineBlock ] ] [ Html.text "kundeservice.nfe@nordea.com." ]
+    Text.bodyTextLight
+        |> Text.view
+            [ Attributes.css
+                [ Css.maxWidth (rem 30)
+                , Css.paddingRight (rem 0.25)
+                , Css.textAlign Css.center
                 ]
-        ]
+            ]
+            [ Html.text errorActionText
+            , FlatLink.default
+                |> FlatLink.view
+                    [ href "mailto: kundeservice.nfe@nordea.com"
+                    , Attributes.css
+                        [ Css.display Css.inlineBlock
+                        ]
+                    ]
+                    [ Html.text "kundeservice.nfe@nordea.com." ]
+            ]
 
 
 texts =
