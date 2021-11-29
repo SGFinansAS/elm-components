@@ -1,30 +1,36 @@
 module Stories.FeatureBox exposing (stories)
 
-import Html.Styled as Html
 import Config exposing (Msg(..))
-import Nordea.Components.FeatureBox as FeatureBox
+import Html.Styled as Html
+import Html.Styled.Events exposing (onClick)
 import Nordea.Components.Button as Button
+import Nordea.Components.FeatureBox as FeatureBox
 import Nordea.Resources.Icons as Icons
 import UIExplorer exposing (UI)
 import UIExplorer.Styled exposing (styledStoriesOf)
 
-stories : UI a Msg {}
-stories = 
+
+stories : UI Config.Config Msg {}
+stories =
     styledStoriesOf
         "FeatureBox"
         [ ( "FeatureBox"
-          , \_ ->
-                FeatureBox.init True NoOp  "New feature" "Place tolltip message here thats is over 2 lines max"
-                    |> FeatureBox.withIcon Icons.confetti2
-                    |> FeatureBox.withButton 
-                        (Button.primary
-                            |> Button.view [] [ Html.text "Click me" ]
-                        )
-                    |> FeatureBox.view 
-                    
+          , \model ->
+                Html.div []
+                    [ Button.primary
+                        |> Button.view [ onClick ToggleFeatureBox ] [ Html.text "Show FeatureBox" ]
+                    , if model.customModel.isFeatureBoxOpen then
+                        FeatureBox.init model.customModel.isFeatureBoxOpen ToggleFeatureBox "New feature" "Place tolltip message here thats is over 2 lines max"
+                            |> FeatureBox.withIcon Icons.confetti2
+                            |> FeatureBox.withButton
+                                (Button.primary
+                                    |> Button.view [] [ Html.text "Click me" ]
+                                )
+                            |> FeatureBox.view
+
+                      else
+                        Html.text ""
+                    ]
           , {}
           )
-
-          
         ]
-        
