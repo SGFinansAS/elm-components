@@ -32,7 +32,6 @@ import Css
         , marginRight
         , ms
         , rem
-        , rotateZ
         , zero
         )
 import Css.Animations as Animations exposing (keyframes)
