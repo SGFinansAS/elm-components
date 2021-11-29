@@ -3,9 +3,9 @@ module Stories.Label exposing (stories)
 import Config exposing (Msg(..))
 import Css exposing (column, displayFlex, flexDirection, marginRight, maxWidth, rem)
 import Html.Styled as Html exposing (text)
-import Html.Styled.Attributes as Attrs exposing (css)
+import Html.Styled.Attributes exposing (css)
 import Nordea.Components.Checkbox as Checkbox
-import Nordea.Components.Dropdown as Dropdown
+import Nordea.Components.Dropdown as Dropdown exposing (optionInit)
 import Nordea.Components.Label as Label
 import Nordea.Components.RadioButton as RadioButton
 import Nordea.Components.TextInput as TextInput
@@ -74,10 +74,10 @@ stories =
                     [ Label.init "Choose financingVariant" Label.InputLabel
                         |> Label.view []
                             [ Dropdown.init
-                                [ { value = Leasing, text = financingVariantToString Leasing }
-                                , { value = Rent, text = financingVariantToString Rent }
-                                , { value = Loan, text = financingVariantToString Loan }
-                                , { value = HirePurchase, text = financingVariantToString HirePurchase }
+                                [ optionInit { value = Leasing, text = financingVariantToString Leasing }
+                                , optionInit { value = Rent, text = financingVariantToString Rent }
+                                , optionInit { value = Loan, text = financingVariantToString Loan }
+                                , optionInit { value = HirePurchase, text = financingVariantToString HirePurchase }
                                 ]
                                 financingVariantToString
                                 (\_ -> NoOp)
@@ -87,10 +87,10 @@ stories =
                         |> Label.withErrorMessage (Just "Financing variant is required")
                         |> Label.view []
                             [ Dropdown.init
-                                [ { value = Leasing, text = financingVariantToString Leasing }
-                                , { value = Rent, text = financingVariantToString Rent }
-                                , { value = Loan, text = financingVariantToString Loan }
-                                , { value = HirePurchase, text = financingVariantToString HirePurchase }
+                                [ optionInit { value = Leasing, text = financingVariantToString Leasing }
+                                , optionInit { value = Rent, text = financingVariantToString Rent }
+                                , optionInit { value = Loan, text = financingVariantToString Loan }
+                                , optionInit { value = HirePurchase, text = financingVariantToString HirePurchase }
                                 ]
                                 financingVariantToString
                                 (\_ -> NoOp)

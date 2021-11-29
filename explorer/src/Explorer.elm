@@ -9,10 +9,15 @@ import Stories.Button as Button
 import Stories.Card as Card
 import Stories.Checkbox as Checkbox
 import Stories.Dropdown as Dropdown
+import Stories.Error as Error
+import Stories.FeatureBox as FeatureBox
 import Stories.FlatLink as FlatLink
 import Stories.Label as Label
+import Stories.LottiePlayer as LottiePlayer
 import Stories.Modal as Modal
 import Stories.NumberInput as NumberInput
+import Stories.ProgressBar as ProgressBar
+import Stories.ProgressBarStepper as ProgressBarStepper
 import Stories.RadioButton as RadioButton
 import Stories.Spinner as Spinner
 import Stories.Status as Status
@@ -66,9 +71,14 @@ main =
         , Accordion.stories
         , Spinner.stories
         , Label.stories
+        , FeatureBox.stories
         , Card.stories
         , Header.stories
         , Status.stories
         , Modal.stories
+        , ProgressBar.stories
+        , ProgressBarStepper.stories
+        , Error.stories
         , Tooltip.stories
+        , LottiePlayer.stories
         ]
