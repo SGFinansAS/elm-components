@@ -10,31 +10,31 @@ stories =
     styledStoriesOf
         "Tooltip"
         [ ( "Top"
-          , \_ -> div [] [ text "This is a ", Tooltip.init
+          , \_ -> div [] [ text "There is a tooltip ", Tooltip.init
                     |> Tooltip.withPlacement Top
-                    |> Tooltip.withContent [ text "That is a tooltip" ]
-                    |> Tooltip.view [ text "tooltip" ]]
+                    |> Tooltip.withContent [ text "This is a tooltip" ]
+                    |> Tooltip.view [ text "here" ]]
           , {}
           )
           ,( "Bottom"
-          , \_ -> div [] [ text "This is a ", Tooltip.init
+          , \_ -> div [] [ text "There is a tooltip ", Tooltip.init
                     |> Tooltip.withPlacement Bottom
-                    |> Tooltip.withContent [ text "That is a tooltip" ]
-                    |> Tooltip.view [ text "tooltip" ]]
+                    |> Tooltip.withContent [ text "This is a tooltip" ]
+                    |> Tooltip.view [ text "here" ]]
           , {}
           ),
           ( "Left"
-          , \_ -> div [] [ text "This is a ", Tooltip.init
+          , \_ -> div [] [ text "There is a tooltip ", Tooltip.init
                     |> Tooltip.withPlacement Left
-                    |> Tooltip.withContent [ text "That is a tooltip" ]
-                    |> Tooltip.view [ text "tooltip" ]]
+                    |> Tooltip.withContent [ text "This is a tooltip" ]
+                    |> Tooltip.view [ text "here" ]]
           , {}
           ),
           ( "Right"
-          , \_ -> div [] [ text "This is a ", Tooltip.init
+          , \_ -> div [] [ text "There is a tooltip ", Tooltip.init
                     |> Tooltip.withPlacement Right
-                    |> Tooltip.withContent [ text "That is a tooltip" ]
-                    |> Tooltip.view [ text "tooltip" ]]
+                    |> Tooltip.withContent [ text "This is a tooltip" ]
+                    |> Tooltip.view [ text "here" ]]
           , {}
           )
         ]
