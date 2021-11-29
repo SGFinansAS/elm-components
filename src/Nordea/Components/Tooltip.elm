@@ -15,15 +15,8 @@ type Placement
     | Right
 
 
-type Alignment
-    = Start
-    | Center
-    | End
-
-
 type alias Config msg =
     { placement : Placement
-    , alignment : Alignment
     , content : List (Html msg)
     }
 
@@ -36,7 +29,6 @@ init : Tooltip msg
 init =
     Tooltip
         { placement = Top
-        , alignment = Center
         , content = []
         }
 
@@ -44,11 +36,6 @@ init =
 withPlacement : Placement -> Tooltip msg -> Tooltip msg
 withPlacement placement (Tooltip config) =
     Tooltip { config | placement = placement }
-
-
-withAlignment : Alignment -> Tooltip msg -> Tooltip msg
-withAlignment alignment (Tooltip config) =
-    Tooltip { config | alignment = alignment }
 
 
 withContent : List (Html msg) -> Tooltip msg -> Tooltip msg
