@@ -13,6 +13,7 @@ import Stories.Error as Error
 import Stories.FeatureBox as FeatureBox
 import Stories.FlatLink as FlatLink
 import Stories.Label as Label
+import Stories.LottiePlayer as LottiePlayer
 import Stories.Modal as Modal
 import Stories.NumberInput as NumberInput
 import Stories.ProgressBar as ProgressBar
@@ -77,4 +78,5 @@ main =
         , ProgressBar.stories
         , ProgressBarStepper.stories
         , Error.stories
+        , LottiePlayer.stories
         ]
