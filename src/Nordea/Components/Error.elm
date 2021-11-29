@@ -11,12 +11,12 @@ import Svg.Styled as Svg exposing (Svg)
 import Svg.Styled.Attributes as SvgAttrs exposing (d)
 
 
-type alias Locale =
+type alias Translation =
     { no : String, se : String, dk : String } -> String
 
 
 type alias ErrorConfig =
-    { errorType : ErrorType, locale : Locale }
+    { errorType : ErrorType, translate : Translation }
 
 
 type ErrorType
@@ -28,26 +28,26 @@ type Error msg
     = Error ErrorConfig
 
 
-internalServerError : Locale -> Error msg
-internalServerError locale =
-    init { errorType = InternalServerError, locale = locale }
+internalServerError : Translation -> Error msg
+internalServerError translate =
+    init { errorType = InternalServerError, translate = translate }
 
 
-pageNotFound : Locale -> Error msg
+pageNotFound : Translation -> Error msg
 pageNotFound locale =
-    init { errorType = PageNotFound, locale = locale }
+    init { errorType = PageNotFound, translate = locale }
 
 
 init : ErrorConfig -> Error msg
 init config =
-    Error { locale = config.locale, errorType = config.errorType }
+    Error { translate = config.translate, errorType = config.errorType }
 
 
 view : List (Attribute msg) -> List (Html msg) -> Error msg -> Html msg
 view attributes children (Error config) =
     let
         toI18NString =
-            config.locale
+            config.translate
 
         errorDescription =
             if config.errorType == PageNotFound then
@@ -55,13 +55,6 @@ view attributes children (Error config) =
 
             else
                 texts.internalServerError.description |> toI18NString
-
-        errorAction =
-            if config.errorType == InternalServerError then
-                texts.internalServerError.action |> toI18NString
-
-            else
-                ""
     in
     Html.div
         [ Attributes.css
@@ -95,19 +88,23 @@ view attributes children (Error config) =
                     ]
             ]
         , Html.div [] [ errorSvg ]
-        , showIf
-            (config.errorType
-                == InternalServerError
-            )
-            (viewActionForInternalServerError errorAction)
+        , viewActionForInternalServerError config
+            |> showIf
+                (config.errorType
+                    == InternalServerError
+                )
         , Html.div
             (Attributes.css [ Css.maxWidth (rem 30) ] :: attributes)
             children
         ]
 
 
-viewActionForInternalServerError : String -> Html msg
-viewActionForInternalServerError actionText =
+viewActionForInternalServerError : ErrorConfig -> Html msg
+viewActionForInternalServerError config =
+    let
+        errorActionText =
+            texts.internalServerError.action |> config.translate
+    in
     Html.div
         [ Attributes.css
             [ Css.displayFlex
@@ -118,7 +115,7 @@ viewActionForInternalServerError actionText =
         ]
         [ Text.bodyTextLight
             |> Text.view [ Attributes.css [ Css.paddingRight (rem 0.25), Css.textAlign Css.center ] ]
-                [ Html.text actionText
+                [ Html.text errorActionText
                 , FlatLink.default |> FlatLink.view [ href "mailto: kundeservice.nfe@nordea.com", Attributes.css [ Css.display Css.inlineBlock ] ] [ Html.text "kundeservice.nfe@nordea.com." ]
                 ]
         ]
