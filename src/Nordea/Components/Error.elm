@@ -64,7 +64,7 @@ view attributes children (Error config) =
             , Css.alignItems Css.center
             ]
         ]
-        [ Html.div [ Attributes.css [ Css.marginBottom (rem 1) ] ]
+        ([ Html.div [ Attributes.css [ Css.marginBottom (rem 1) ] ]
             [ Text.headlineTwo
                 |> Text.withHtmlTag Html.h1
                 |> Text.view
@@ -72,7 +72,7 @@ view attributes children (Error config) =
                     ]
                     [ Html.text (texts.heading |> config.translate) ]
             ]
-        , Html.div
+         , Html.div
             [ Attributes.css
                 [ Css.marginBottom (rem 2)
                 , Css.maxWidth (rem 30)
@@ -84,16 +84,15 @@ view attributes children (Error config) =
                     [ Html.text errorDescription
                     ]
             ]
-        , Html.div [] [ errorSvg ]
-        , viewActionForInternalServerError config
+         , Html.div [] [ errorSvg ]
+         , viewActionForInternalServerError config
             |> showIf
                 (config.errorType
                     == InternalServerError
                 )
-        , Html.div
-            (Attributes.css [ Css.maxWidth (rem 30) ] :: attributes)
-            children
-        ]
+         ]
+            ++ children
+        )
 
 
 viewActionForInternalServerError : ErrorConfig -> Html msg
