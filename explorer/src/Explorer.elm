@@ -9,8 +9,9 @@ import Stories.Button as Button
 import Stories.Card as Card
 import Stories.Checkbox as Checkbox
 import Stories.Dropdown as Dropdown
-import Stories.FlatLink as FlatLink
+import Stories.Error as Error
 import Stories.FeatureBox as FeatureBox
+import Stories.FlatLink as FlatLink
 import Stories.Label as Label
 import Stories.Modal as Modal
 import Stories.NumberInput as NumberInput
@@ -75,4 +76,5 @@ main =
         , Modal.stories
         , ProgressBar.stories
         , ProgressBarStepper.stories
+        , Error.stories
         ]
