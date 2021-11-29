@@ -46,8 +46,8 @@ init config =
 view : List (Attribute msg) -> List (Html msg) -> Error msg -> Html msg
 view attributes children (Error config) =
     let
-        toI18NString textToTranslate =
-            config.locale textToTranslate
+        toI18NString =
+            config.locale
 
         errorDescription =
             if config.errorType == PageNotFound then
