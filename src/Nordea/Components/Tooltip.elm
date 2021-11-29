@@ -89,30 +89,30 @@ tooltipContentStyle placement =
     case placement of
         Top ->
             Css.batch
-                [ Css.bottom (rem -1)
-                , Css.left (pct 50)
-                , Css.transform (Css.translate2 (pct -50) (pct 100))
-                ]
-
-        Bottom ->
-            Css.batch
                 [ Css.top (rem -1)
                 , Css.left (pct 50)
                 , Css.transform (Css.translate2 (pct -50) (pct -100))
                 ]
 
-        Left ->
+        Bottom ->
             Css.batch
-                [ Css.right (rem -1)
-                , Css.top (pct 50)
-                , Css.transform (Css.translate2 (pct 100) (pct -50))
+                [ Css.bottom (rem -1)
+                , Css.left (pct 50)
+                , Css.transform (Css.translate2 (pct -50) (pct 100))
                 ]
 
-        Right ->
+        Left ->
             Css.batch
                 [ Css.left (rem -1)
                 , Css.top (pct 50)
                 , Css.transform (Css.translate2 (pct -100) (pct -50))
+                ]
+
+        Right ->
+            Css.batch
+                [ Css.right (rem -1)
+                , Css.top (pct 50)
+                , Css.transform (Css.translate2 (pct 100) (pct -50))
                 ]
 
 
@@ -121,28 +121,28 @@ arrowStyle placement =
     case placement of
         Top ->
             Css.batch
-                [ Css.top (rem -0.3125)
+                [ Css.bottom (rem -0.3125)
                 , Css.left (pct 50)
                 , Css.transforms [ Css.translateX (pct -50), Css.rotate (deg 45) ]
                 ]
 
         Bottom ->
             Css.batch
-                [ Css.bottom (rem -0.3125)
+                [ Css.top (rem -0.3125)
                 , Css.left (pct 50)
                 , Css.transforms [ Css.translateX (pct -50), Css.rotate (deg 45) ]
                 ]
 
         Left ->
             Css.batch
-                [ Css.left (rem -0.3125)
+                [ Css.right (rem -0.3125)
                 , Css.top (pct 50)
                 , Css.transforms [ Css.translateY (pct -50), Css.rotate (deg 45) ]
                 ]
 
         Right ->
             Css.batch
-                [ Css.right (rem -0.3125)
+                [ Css.left (rem -0.3125)
                 , Css.top (pct 50)
                 , Css.transforms [ Css.translateY (pct -50), Css.rotate (deg 45) ]
                 ]
