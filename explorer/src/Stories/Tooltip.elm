@@ -1,6 +1,6 @@
 module Stories.Tooltip exposing (stories)
 
-import Nordea.Components.Tooltip as Tooltip exposing (Placement(..), Alignment(..))
+import Nordea.Components.Tooltip as Tooltip exposing (Placement(..))
 import UIExplorer exposing (UI)
 import UIExplorer.Styled exposing (styledStoriesOf)
 import Html.Styled exposing (text, div)
