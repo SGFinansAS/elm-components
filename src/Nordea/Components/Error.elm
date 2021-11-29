@@ -46,15 +46,12 @@ init config =
 view : List (Attribute msg) -> List (Html msg) -> Error msg -> Html msg
 view attributes children (Error config) =
     let
-        toI18NString =
-            config.translate
-
         errorDescription =
             if config.errorType == PageNotFound then
-                texts.pageNotFound.description |> toI18NString
+                texts.pageNotFound.description |> config.translate
 
             else
-                texts.internalServerError.description |> toI18NString
+                texts.internalServerError.description |> config.translate
     in
     Html.div
         [ Attributes.css
@@ -73,7 +70,7 @@ view attributes children (Error config) =
                 |> Text.view
                     [ Attributes.css [ Css.textAlign Css.center ]
                     ]
-                    [ Html.text (texts.heading |> toI18NString) ]
+                    [ Html.text (texts.heading |> config.translate) ]
             ]
         , Html.div
             [ Attributes.css
