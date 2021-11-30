@@ -12,6 +12,7 @@ import Stories.Dropdown as Dropdown
 import Stories.Error as Error
 import Stories.FeatureBox as FeatureBox
 import Stories.FlatLink as FlatLink
+import Stories.InfoPanel as InfoPanel
 import Stories.Label as Label
 import Stories.LottiePlayer as LottiePlayer
 import Stories.Modal as Modal
@@ -81,4 +82,5 @@ main =
         , Error.stories
         , Tooltip.stories
         , LottiePlayer.stories
+        , InfoPanel.stories
         ]
