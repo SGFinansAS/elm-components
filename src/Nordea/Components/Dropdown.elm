@@ -100,19 +100,7 @@ simple options optionToString onInput =
 
 init : List { value : a, text : String } -> (a -> String) -> (a -> msg) -> Dropdown a msg
 init options optionToString onInput =
-    let
-        optionsWithDisabled =
-            List.map (\option -> optionInit option) options
-    in
-    Dropdown
-        { placeholder = Nothing
-        , onInput = onInput
-        , options = optionsWithDisabled
-        , optionToString = optionToString
-        , selectedValue = Nothing
-        , hasError = False
-        , variant = Standard
-        }
+    initWithOptionProperties (List.map optionInit options) optionToString onInput
 
 
 initWithOptionProperties : List (Option a) -> (a -> String) -> (a -> msg) -> Dropdown a msg
