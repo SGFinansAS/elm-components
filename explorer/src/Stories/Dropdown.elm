@@ -37,10 +37,10 @@ stories =
         [ ( "Standard"
           , \_ ->
                 Dropdown.init
-                    [ optionInit { value = Leasing, text = financingVariantToString Leasing }
-                    , optionInit { value = Rent, text = financingVariantToString Rent }
-                    , optionInit { value = Loan, text = financingVariantToString Loan }
-                    , optionInit { value = HirePurchase, text = financingVariantToString HirePurchase }
+                    [ { value = Leasing, text = financingVariantToString Leasing }
+                    , { value = Rent, text = financingVariantToString Rent }
+                    , { value = Loan, text = financingVariantToString Loan }
+                    , { value = HirePurchase, text = financingVariantToString HirePurchase }
                     ]
                     financingVariantToString
                     (\_ -> NoOp)
@@ -50,10 +50,10 @@ stories =
         , ( "Standard with error"
           , \_ ->
                 Dropdown.init
-                    [ optionInit { value = Leasing, text = financingVariantToString Leasing }
-                    , optionInit { value = Rent, text = financingVariantToString Rent }
-                    , optionInit { value = Loan, text = financingVariantToString Loan }
-                    , optionInit { value = HirePurchase, text = financingVariantToString HirePurchase }
+                    [ { value = Leasing, text = financingVariantToString Leasing }
+                    , { value = Rent, text = financingVariantToString Rent }
+                    , { value = Loan, text = financingVariantToString Loan }
+                    , { value = HirePurchase, text = financingVariantToString HirePurchase }
                     ]
                     financingVariantToString
                     (\_ -> NoOp)
@@ -64,10 +64,10 @@ stories =
         , ( "Simple"
           , \_ ->
                 Dropdown.simple
-                    [ optionInit { value = Leasing, text = financingVariantToString Leasing }
-                    , optionInit { value = Rent, text = financingVariantToString Rent }
-                    , optionInit { value = Loan, text = financingVariantToString Loan }
-                    , optionInit { value = HirePurchase, text = financingVariantToString HirePurchase }
+                    [ { value = Leasing, text = financingVariantToString Leasing }
+                    , { value = Rent, text = financingVariantToString Rent }
+                    , { value = Loan, text = financingVariantToString Loan }
+                    , { value = HirePurchase, text = financingVariantToString HirePurchase }
                     ]
                     financingVariantToString
                     (\_ -> NoOp)
@@ -77,10 +77,10 @@ stories =
         , ( "Simple with error"
           , \_ ->
                 Dropdown.simple
-                    [ optionInit { value = Leasing, text = financingVariantToString Leasing }
-                    , optionInit { value = Rent, text = financingVariantToString Rent }
-                    , optionInit { value = Loan, text = financingVariantToString Loan }
-                    , optionInit { value = HirePurchase, text = financingVariantToString HirePurchase }
+                    [ { value = Leasing, text = financingVariantToString Leasing }
+                    , { value = Rent, text = financingVariantToString Rent }
+                    , { value = Loan, text = financingVariantToString Loan }
+                    , { value = HirePurchase, text = financingVariantToString HirePurchase }
                     ]
                     financingVariantToString
                     (\_ -> NoOp)
@@ -91,10 +91,10 @@ stories =
         , ( "Disabled"
           , \_ ->
                 Dropdown.init
-                    [ optionInit { value = Leasing, text = financingVariantToString Leasing }
-                    , optionInit { value = Rent, text = financingVariantToString Rent }
-                    , optionInit { value = Loan, text = financingVariantToString Loan }
-                    , optionInit { value = HirePurchase, text = financingVariantToString HirePurchase }
+                    [ { value = Leasing, text = financingVariantToString Leasing }
+                    , { value = Rent, text = financingVariantToString Rent }
+                    , { value = Loan, text = financingVariantToString Loan }
+                    , { value = HirePurchase, text = financingVariantToString HirePurchase }
                     ]
                     financingVariantToString
                     (\_ -> NoOp)
@@ -103,7 +103,7 @@ stories =
           )
         , ( "With disabled options"
           , \_ ->
-                Dropdown.init
+                Dropdown.initWithOptionProperties
                     [ optionInit { value = Leasing, text = financingVariantToString Leasing }
                     , optionInit { value = Rent, text = financingVariantToString Rent }
                         |> optionIsDisabled True
