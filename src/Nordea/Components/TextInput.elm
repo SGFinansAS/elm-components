@@ -130,7 +130,7 @@ getStyles config =
                 Colors.grayMedium
     in
     [ fontSize (rem 1)
-    , height (rem 2.5)
+    , height (rem 3)
     , padding2 (rem 0.75) (rem 0.75)
     , borderRadius (rem 0.25)
     , border3 (rem 0.0625) solid borderColorStyle

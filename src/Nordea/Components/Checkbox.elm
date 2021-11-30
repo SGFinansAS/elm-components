@@ -61,7 +61,6 @@ import Css
         , transforms
         , transparent
         , width
-        , zIndex
         )
 import Css.Global exposing (withAttribute)
 import Css.Transitions exposing (transition)
@@ -167,8 +166,7 @@ view attrs (Checkbox config) =
                         , Themes.backgroundColor Themes.SecondaryColor Colors.blueCloud |> styleIf config.isChecked
                         , hover
                             [ Themes.borderColor Themes.PrimaryColorLight Colors.blueNordea |> styleIf (not config.hasError)
-                            , boxShadow5 (rem 0) (rem 0.25) (rem 0.25) (rem 0) Colors.black25
-                            , zIndex (int 1)
+                            , Themes.backgroundColor Themes.SecondaryColor Colors.blueCloud
                             ]
                         , transition [ Css.Transitions.borderColor 100, Css.Transitions.boxShadow 100 ]
                         ]
@@ -177,7 +175,8 @@ view attrs (Checkbox config) =
                 Standard ->
                     Css.batch
                         [ commonNonSimpleStyles
-                        , borderRadius (rem 0.5)
+                        , borderRadius (rem 0.25)
+                        , height (rem 3)
                         , borderColor Colors.grayMedium |> styleIf (not config.isChecked)
                         , borderColor Colors.redDark |> styleIf config.hasError
                         ]

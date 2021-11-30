@@ -4,12 +4,14 @@ import Css
     exposing
         ( Color
         , absolute
+        , alignItems
         , backgroundColor
         , border3
         , borderColor
         , borderRadius
         , borderStyle
         , boxShadow5
+        , center
         , color
         , displayFlex
         , focus
@@ -169,6 +171,7 @@ view attrs (Dropdown config) =
             , border3 (rem 0.0625) solid Colors.grayMedium |> styleIf (config.variant /= Simple || config.hasError)
             , borderColor Colors.redDark |> styleIf config.hasError
             , borderRadius (rem 0.25)
+            , alignItems center
             , overflow hidden
             ]
             :: attrs
@@ -177,7 +180,7 @@ view attrs (Dropdown config) =
             [ Events.on "change" decoder
             , Attrs.disabled isDisabled
             , css
-                [ height (rem 2.5)
+                [ height (rem 3)
                 , width (pct 100)
                 , property "appearance" "none"
                 , property "-moz-appearance" "none"

@@ -54,7 +54,6 @@ import Css
         , top
         , transparent
         , width
-        , zIndex
         )
 import Css.Transitions exposing (transition)
 import Html.Styled as Html exposing (Attribute, Html)
@@ -153,8 +152,7 @@ view attrs (RadioButton config) =
                         , Themes.backgroundColor Themes.SecondaryColor Colors.blueCloud |> styleIf config.isSelected
                         , hover
                             [ Themes.borderColor Themes.PrimaryColorLight Colors.blueNordea |> styleIf (not config.showError)
-                            , boxShadow5 (rem 0) (rem 0.25) (rem 0.25) (rem 0) Colors.black25
-                            , zIndex (int 1)
+                            , Themes.backgroundColor Themes.SecondaryColor Colors.blueCloud
                             ]
                         , transition [ Css.Transitions.borderColor 100, Css.Transitions.boxShadow 100 ]
                         ]
@@ -163,7 +161,8 @@ view attrs (RadioButton config) =
                 Standard ->
                     Css.batch
                         [ commonNonSimpleStyles
-                        , borderRadius (rem 0.5)
+                        , borderRadius (rem 0.25)
+                        , height (rem 3)
                         , borderColor Colors.grayMedium |> styleIf (not config.isSelected)
                         , borderColor Colors.redDark |> styleIf config.showError
                         ]
