@@ -164,10 +164,6 @@ view attrs (Checkbox config) =
                         [ padding2 (rem 0.75) (rem 1)
                         , border3 (rem 0.0625) solid transparent
                         , Themes.backgroundColor Themes.SecondaryColor Colors.blueCloud |> styleIf config.isChecked
-                        , hover
-                            [ Themes.borderColor Themes.PrimaryColorLight Colors.blueNordea |> styleIf (not config.hasError)
-                            , Themes.backgroundColor Themes.SecondaryColor Colors.blueCloud
-                            ]
                         , transition [ Css.Transitions.borderColor 100, Css.Transitions.boxShadow 100 ]
                         ]
             in
@@ -179,6 +175,10 @@ view attrs (Checkbox config) =
                         , height (rem 3)
                         , borderColor Colors.grayMedium |> styleIf (not config.isChecked)
                         , borderColor Colors.redDark |> styleIf config.hasError
+                        , hover
+                            [ Themes.borderColor Themes.PrimaryColorLight Colors.blueNordea |> styleIf (not config.hasError)
+                            , Themes.backgroundColor Themes.SecondaryColor Colors.blueCloud
+                            ]
                         ]
 
                 ListStyle ->
@@ -191,6 +191,7 @@ view attrs (Checkbox config) =
                         , Css.lastOfType [ borderBottomLeftRadius (rem 0.5), borderBottomRightRadius (rem 0.5) ]
                         , pseudoClass "not(label:first-of-type):not(:hover)" [ borderTopColor transparent ] |> styleIf (not config.isChecked)
                         , pseudoClass "not(label:first-of-type)" [ Css.marginTop (rem -0.0625) ]
+                        , hover [ Themes.backgroundColor Themes.SecondaryColor Colors.blueCloud ]
                         ]
 
                 Simple ->
