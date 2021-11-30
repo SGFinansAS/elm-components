@@ -1,4 +1,4 @@
-module Nordea.Components.Dropdown exposing (Dropdown, init, optionInit, optionIsDisabled, simple, view, withHasError, withSelectedValue)
+module Nordea.Components.Dropdown exposing (Dropdown, init, initWithOptionProperties, optionInit, optionIsDisabled, simple, view, withHasError, withSelectedValue)
 
 import Css
     exposing
@@ -89,7 +89,7 @@ type Dropdown a msg
     = Dropdown (DropdownProperties a msg)
 
 
-simple : List (Option a) -> (a -> String) -> (a -> msg) -> Dropdown a msg
+simple : List { value : a, text : String } -> (a -> String) -> (a -> msg) -> Dropdown a msg
 simple options optionToString onInput =
     let
         (Dropdown config) =
@@ -98,8 +98,13 @@ simple options optionToString onInput =
     Dropdown { config | variant = Simple }
 
 
-init : List (Option a) -> (a -> String) -> (a -> msg) -> Dropdown a msg
+init : List { value : a, text : String } -> (a -> String) -> (a -> msg) -> Dropdown a msg
 init options optionToString onInput =
+    initWithOptionProperties (List.map optionInit options) optionToString onInput
+
+
+initWithOptionProperties : List (Option a) -> (a -> String) -> (a -> msg) -> Dropdown a msg
+initWithOptionProperties options optionToString onInput =
     Dropdown
         { placeholder = Nothing
         , onInput = onInput
