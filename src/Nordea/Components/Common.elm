@@ -9,10 +9,7 @@ import Css
         , displayFlex
         , flex
         , flexBasis
-        , fontFamilies
-        , fontSize
         , justifyContent
-        , lineHeight
         , marginBottom
         , marginLeft
         , marginRight
@@ -25,7 +22,8 @@ import Css
 import Html.Styled as Html exposing (Attribute, Html, div, styled, text)
 import Html.Styled.Attributes exposing (css)
 import Maybe.Extra as Maybe
-import Nordea.Html as Html exposing (showIf)
+import Nordea.Components.Text as Text
+import Nordea.Html as Html exposing (showIf, styleIf)
 import Nordea.Resources.Colors as Colors
 import Nordea.Resources.Icons as Icons
 
@@ -52,18 +50,6 @@ type alias CharCounter =
     }
 
 
-{-| Should be replaced by common typography
--}
-bodyText : List (Attribute msg) -> List (Html msg) -> Html msg
-bodyText =
-    styled Html.span
-        [ fontSize (rem 0.875)
-        , fontFamilies [ "Nordea Sans Small" ]
-        , lineHeight (rem 1.5)
-        , color Colors.black
-        ]
-
-
 bottomInfo : InputProperties -> List (Html msg)
 bottomInfo config =
     let
@@ -71,8 +57,10 @@ bottomInfo config =
             config.charCounter
                 |> Html.viewMaybe
                     (\charCounter ->
-                        bodyText [ css [ marginLeft auto, color Colors.grayDark |> Css.important ] ]
-                            [ String.fromInt charCounter.current ++ "/" ++ String.fromInt charCounter.max |> text ]
+                        Text.textSmallLight
+                            |> Text.view
+                                [ css [ marginLeft auto, color Colors.grayDark ] ]
+                                [ String.fromInt charCounter.current ++ "/" ++ String.fromInt charCounter.max |> text ]
                     )
     in
     [ div
@@ -87,17 +75,17 @@ bottomInfo config =
         [ config.errorMessage
             |> Html.viewMaybe
                 (\errText ->
-                    div
-                        [ css
-                            [ displayFlex
-                            , alignItems center
-                            , color Colors.redDark
-                            , fontSize (rem 0.875)
+                    Text.textSmallLight
+                        |> Text.view
+                            [ css
+                                [ displayFlex
+                                , alignItems center
+                                , color Colors.redDark
+                                ]
                             ]
-                        ]
-                        [ Icons.error [ css [ marginRight (rem 0.5), flex none ] ]
-                        , text errText
-                        ]
+                            [ Icons.error [ css [ marginRight (rem 0.5), flex none ] ]
+                            , text errText
+                            ]
                 )
         , charCounterView
         ]
@@ -114,7 +102,8 @@ bottomInfo config =
         [ config.hintText
             |> Html.viewMaybe
                 (\hintText ->
-                    Html.div [ css [ color Colors.grayDark, fontSize (rem 0.875) ] ] [ text hintText ]
+                    Text.textSmallLight
+                        |> Text.view [ css [ color Colors.grayDark ] ] [ text hintText ]
                 )
         , charCounterView |> showIf (Maybe.isNothing config.errorMessage)
         ]
@@ -125,13 +114,6 @@ bottomInfo config =
 topInfo : InputProperties -> Html msg
 topInfo config =
     let
-        textStyle =
-            if Maybe.isJust config.errorMessage then
-                color Colors.redDark |> Css.important
-
-            else
-                color Colors.black
-
         toI18NString requirednessHint =
             case requirednessHint of
                 Mandatory translate ->
@@ -144,13 +126,17 @@ topInfo config =
                     string
     in
     div [ css [ displayFlex, justifyContent spaceBetween, marginBottom (rem 0.2) ] ]
-        [ bodyText [ css [ textStyle ] ] [ text config.labelText ]
+        [ Text.textSmallLight
+            |> Text.view
+                [ css [ color Colors.redDark |> styleIf (Maybe.isJust config.errorMessage) ] ]
+                [ text config.labelText ]
         , config.requirednessHint
             |> Html.viewMaybe
                 (\requirednessHint ->
-                    bodyText
-                        [ css [ color Colors.grayDark |> Css.important ] ]
-                        [ requirednessHint |> toI18NString |> text ]
+                    Text.textSmallLight
+                        |> Text.view
+                            [ css [ color Colors.grayDark ] ]
+                            [ requirednessHint |> toI18NString |> text ]
                 )
         ]
 
