@@ -1,6 +1,6 @@
 module UIExplorer.Styled exposing (StyledStories, StyledStory, styledStoriesOf)
 
-import Html.Styled exposing (Html, toUnstyled)
+import Html.Styled as Html exposing (Html, toUnstyled)
 import UIExplorer exposing (Model, UI, storiesOf)
 import UIExplorer.Unstyled exposing (Stories, Story)
 
@@ -25,4 +25,4 @@ toUnstyledStories stories =
 
 toUnstyledStory : StyledStory a b c -> Story a b c
 toUnstyledStory ( a, b, c ) =
-    ( a, \x -> toUnstyled (b x), c )
+    ( a, \x -> toUnstyled (Html.div [] [ b x ]), c )
