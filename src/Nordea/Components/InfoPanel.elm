@@ -16,11 +16,11 @@ view : List InfoPanelContent -> Html msg
 view panelInfoList =
     Html.div
         [ Attributes.css
-            [ Css.backgroundColor Colors.grayCool
+            [ Css.backgroundColor (Colors.grayCool |> Colors.withAlpha 0.5)
             , Css.maxWidth (rem 25)
             , Css.boxSizing Css.borderBox
             , Css.borderRadius (rem 0.5)
-            , Css.border3 (rem 0.125) Css.solid Colors.grayMedium
+            , Css.border3 (rem 0.0625) Css.solid Colors.grayMedium
             ]
         ]
         (panelInfoList |> List.map (\panelInfo -> viewLabelInfoBlock panelInfo))
@@ -31,7 +31,7 @@ viewLabelInfoBlock infoPanelContent =
     Html.div
         [ Attributes.css
             [ Css.padding2 (rem 0.75) (rem 0.5)
-            , pseudoClass "not(:last-child)" [ Css.borderBottom3 (rem 0.125) Css.solid Colors.grayMedium ]
+            , pseudoClass "not(:last-child)" [ Css.borderBottom3 (rem 0.0625) Css.solid Colors.grayMedium ]
             , Css.firstChild [ Css.fontWeight (int 500), Css.fontSize (rem 1.125) ]
             ]
         ]
