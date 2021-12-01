@@ -17,7 +17,7 @@ view panelInfoList =
     Html.div
         [ Attributes.css
             [ Css.backgroundColor Colors.grayCool
-            , Css.width (rem 25)
+            , Css.maxWidth (rem 25)
             , Css.boxSizing Css.borderBox
             , Css.borderRadius (rem 0.5)
             , Css.border3 (rem 0.125) Css.solid Colors.grayMedium
