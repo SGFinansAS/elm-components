@@ -9,28 +9,34 @@ module Nordea.Components.Table exposing
 
 import Css
     exposing
-        ( backgroundColor
+        ( alignSelf
+        , backgroundColor
         , borderBottom3
+        , center
         , column
         , displayFlex
+        , ellipsis
         , flexDirection
+        , height
+        , hidden
         , hover
-        , left
+        , noWrap
         , nthChild
-        , paddingBottom
-        , paddingLeft
-        , paddingTop
-        , px
+        , overflow
+        , padding
+        , padding4
         , rem
         , row
         , solid
-        , textAlign
+        , textOverflow
+        , whiteSpace
         )
-import Css.Global exposing (descendants, typeSelector)
+import Css.Global as Css exposing (typeSelector)
 import Html.Styled as Html exposing (Attribute, Html)
 import Html.Styled.Attributes exposing (css)
 import Nordea.Components.Text as Text
 import Nordea.Resources.Colors as Colors
+import Nordea.Themes as Themes
 
 
 view : List (Attribute msg) -> List (Html msg) -> Html msg
@@ -46,7 +52,13 @@ view attrs children =
 -}
 thead : List (Attribute msg) -> List (Html msg) -> Html msg
 thead attrs children =
-    Html.thead (css [ borderBottom3 (px 1) solid Colors.grayLight ] :: attrs)
+    Html.thead
+        (css
+            [ height (rem 3.0)
+            , borderBottom3 (rem 0.0625) solid Colors.grayLight
+            ]
+            :: attrs
+        )
         children
 
 
@@ -58,7 +70,6 @@ tr attrs children =
         (css
             [ displayFlex
             , flexDirection row
-            , hover [ backgroundColor Colors.blueCloud |> Css.important ]
             ]
             :: attrs
         )
@@ -69,7 +80,9 @@ tr attrs children =
 -}
 th : List (Attribute msg) -> List (Html msg) -> Html msg
 th attrs children =
-    Html.th (css [ paddingLeft (rem 1) ] :: attrs) children
+    Html.th
+        (css [ padding4 (rem 1.0) (rem 0.75) (rem 0.75) (rem 0.75) ] :: attrs)
+        [ Text.textSmallHeavy |> Text.view [] children ]
 
 
 {-| Groups the body content in a table
@@ -80,11 +93,11 @@ tbody attrs children =
         (css
             [ displayFlex
             , flexDirection column
-            , descendants
+            , Css.children
                 [ typeSelector "tr"
-                    [ nthChild "even"
-                        [ backgroundColor Colors.grayLightBorder
-                        ]
+                    [ height (rem 4.5)
+                    , hover [ Themes.backgroundColor Themes.SecondaryColor Colors.blueCloud |> Css.important ]
+                    , nthChild "even" [ backgroundColor Colors.grayLightBorder ]
                     ]
                 ]
             ]
@@ -94,19 +107,18 @@ tbody attrs children =
 
 
 {-| Defines a cell in a table
+When only simple text inside the table cell, the text type here should be Text.BodyTextSmall
 -}
 td : List (Attribute msg) -> List (Html msg) -> Html msg
 td attrs children =
     Html.td
         (css
-            [ textAlign left
-            , paddingBottom (rem 1)
-            , paddingLeft (rem 1)
-            , paddingTop (rem 1)
+            [ padding (rem 0.75)
+            , alignSelf center
+            , textOverflow ellipsis
+            , whiteSpace noWrap
+            , overflow hidden
             ]
             :: attrs
         )
-        [ Text.init Text.BodyTextSmall
-            |> Text.view []
-                children
-        ]
+        children

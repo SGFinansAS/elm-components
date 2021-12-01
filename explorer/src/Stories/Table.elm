@@ -1,6 +1,19 @@
 module Stories.Table exposing (stories)
 
+import Css
+    exposing
+        ( center
+        , column
+        , displayFlex
+        , flex
+        , flexDirection
+        , int
+        , rem
+        , textAlign
+        , width
+        )
 import Html.Styled as Html
+import Html.Styled.Attributes exposing (css)
 import Nordea.Components.Table as Table
 import UIExplorer exposing (UI)
 import UIExplorer.Styled exposing (styledStoriesOf)
@@ -12,44 +25,44 @@ stories =
         "Table"
         [ ( "Default"
           , \_ ->
-                Table.view []
+                Table.view [ css [ width (rem 60) ] ]
                     [ Table.thead []
                         [ Table.tr []
-                            [ Table.th [] [ Html.text "Referansenummer" ]
-                            , Table.th [] [ Html.text "Reg/serienummer" ]
-                            , Table.th [] [ Html.text "Kundenavn" ]
-                            , Table.th [] [ Html.text "Merke / Modell" ]
-                            , Table.th [] [ Html.text "Status" ]
+                            [ Table.th [ css [ flex (int 1) ] ] [ Html.text "Text" ]
+                            , Table.th [ css [ flex (int 1) ] ] [ Html.text "Text" ]
+                            , Table.th [ css [ flex (int 1) ] ] [ Html.text "Text" ]
+                            , Table.th [ css [ flex (int 1) ] ] [ Html.text "Text" ]
+                            , Table.th [ css [ flex (int 1) ] ] [ Html.text "Text" ]
                             ]
                         ]
                     , Table.tbody []
                         [ Table.tr []
-                            [ Table.td [] [ Html.text "1345937" ]
-                            , Table.td [] [ Html.text "AB3377" ]
-                            , Table.td [] [ Html.text "Davi Turbo AS" ]
-                            , Table.td [] [ Html.text "Best BMW'en" ]
-                            , Table.td [] [ Html.text "Innvilget" ]
+                            [ Table.td [ css [ flex (int 1), textAlign center ] ] [ Html.text "Text" ]
+                            , Table.td [ css [ flex (int 1), textAlign center ] ] [ Html.text "Text" ]
+                            , Table.td [ css [ flex (int 1), textAlign center ] ] [ Html.text "Text" ]
+                            , Table.td [ css [ flex (int 1), textAlign center ] ] [ Html.text "Text" ]
+                            , Table.td [ css [ flex (int 1), textAlign center ] ] [ Html.text "Text" ]
                             ]
                         , Table.tr []
-                            [ Table.td [] [ Html.text "1345937" ]
-                            , Table.td [] [ Html.text "AB3377" ]
-                            , Table.td [] [ Html.text "Davi Turbo AS" ]
-                            , Table.td [] [ Html.text "Best BMW'en" ]
-                            , Table.td [] [ Html.text "Innvilget" ]
+                            [ Table.td [ css [ flex (int 1), textAlign center ] ] [ Html.text "Text" ]
+                            , Table.td [ css [ flex (int 1), textAlign center ] ] [ Html.text "Text" ]
+                            , Table.td [ css [ flex (int 1), textAlign center ] ] [ Html.text "Text" ]
+                            , Table.td [ css [ flex (int 1), textAlign center ] ] [ Html.text "Text" ]
+                            , Table.td [ css [ flex (int 1), textAlign center ] ] [ Html.text "Text" ]
                             ]
                         , Table.tr []
-                            [ Table.td [] [ Html.text "1345937" ]
-                            , Table.td [] [ Html.text "AB3377" ]
-                            , Table.td [] [ Html.text "Davi Turbo AS" ]
-                            , Table.td [] [ Html.text "Best BMW'en" ]
-                            , Table.td [] [ Html.text "Innvilget" ]
+                            [ Table.td [ css [ flex (int 1), textAlign center ] ] [ Html.text "Text" ]
+                            , Table.td [ css [ flex (int 1), textAlign center ] ] [ Html.text "Text" ]
+                            , Table.td [ css [ flex (int 1), textAlign center ] ] [ Html.text "Text" ]
+                            , Table.td [ css [ flex (int 1), textAlign center ] ] [ Html.text "Text" ]
+                            , Table.td [ css [ flex (int 1), textAlign center ] ] [ Html.text "Text" ]
                             ]
                         , Table.tr []
-                            [ Table.td [] [ Html.text "1345937" ]
-                            , Table.td [] [ Html.text "AB3377" ]
-                            , Table.td [] [ Html.text "Davi Turbo AS" ]
-                            , Table.td [] [ Html.text "Best BMW'en" ]
-                            , Table.td [] [ Html.text "Innvilget" ]
+                            [ Table.td [ css [ flex (int 1), textAlign center ] ] [ Html.text "Text" ]
+                            , Table.td [ css [ flex (int 1), textAlign center ] ] [ Html.text "Text" ]
+                            , Table.td [ css [ flex (int 1), textAlign center ] ] [ Html.text "Text" ]
+                            , Table.td [ css [ flex (int 1), textAlign center ] ] [ Html.text "Text" ]
+                            , Table.td [ css [ flex (int 1), textAlign center ] ] [ Html.text "Text" ]
                             ]
                         ]
                     ]
