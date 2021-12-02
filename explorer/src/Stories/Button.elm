@@ -2,7 +2,9 @@ module Stories.Button exposing (stories)
 
 import Css
     exposing
-        ( column
+        ( color
+        , column
+        , displayFlex
         , flexDirection
         , justifyContent
         , marginBottom
@@ -17,6 +19,7 @@ import Html.Styled.Attributes exposing (css, disabled)
 import Nordea.Components.Button as Button
 import Nordea.Components.Status as Status
 import Nordea.Components.Text as Text
+import Nordea.Resources.Colors as Colors
 import Nordea.Resources.Icons as Icons
 import UIExplorer exposing (UI)
 import UIExplorer.Styled exposing (styledStoriesOf)
@@ -105,6 +108,17 @@ stories =
                             , Text.bodyTextSmall
                                 |> Text.view [ css [ marginBottom (rem 1) |> Css.important ] ]
                                     [ Html.text "Applications ready for e-signing" ]
+                            ]
+                    ]
+          , {}
+          )
+        , ( "SmallCard (clickable)"
+          , \_ ->
+                Html.div [ css [ children [ everything [ marginBottom (rem 1) ] ] ] ]
+                    [ Button.smallCard
+                        |> Button.view [ css [ width (rem 20) ] ]
+                            [ Text.textHeavy |> Text.view [ css [ displayFlex, marginBottom (rem 0.25), color Colors.grayEclipse ] ] [ Html.text "Some text goes here" ]
+                            , Text.textTiny |> Text.view [ css [ color Colors.grayEclipse ] ] [ Html.text "Some info text" ]
                             ]
                     ]
           , {}
