@@ -5,6 +5,7 @@ module Nordea.Components.Button exposing
     , card
     , primary
     , secondary
+    , smallCard
     , tertiary
     , view
     , withHtmlTag
@@ -14,6 +15,7 @@ module Nordea.Components.Button exposing
 import Css
     exposing
         ( Style
+        , absolute
         , alignItems
         , auto
         , backgroundColor
@@ -45,14 +47,21 @@ import Css
         , outline
         , padding
         , padding2
+        , paddingRight
+        , pct
         , pointer
         , pointerEvents
+        , position
+        , relative
         , rem
+        , right
         , solid
         , start
         , textAlign
+        , top
         , transforms
         , translateX
+        , translateY
         , width
         )
 import Css.Global exposing (children, descendants, everything, withClass)
@@ -73,6 +82,7 @@ type Variant
     | Secondary
     | Tertiary
     | Card
+    | SmallCard
 
 
 type alias Config msg =
@@ -112,6 +122,11 @@ card =
     init Card
 
 
+smallCard : Button msg
+smallCard =
+    init SmallCard
+
+
 
 -- VIEW
 
@@ -122,7 +137,10 @@ view attributes children (Button config) =
         variantSpecificChildren =
             case config.variant of
                 Card ->
-                    [ Icons.arrowRight [ class "arrowicon", css [ width (rem 1), height (rem 1), marginTop auto ] ] ]
+                    [ Icons.arrowRight [ class "arrowicon", css [ width (rem 1) ] ] ]
+
+                SmallCard ->
+                    [ Icons.arrowRight [ class "arrowicon", css [ width (rem 1) ] ] ]
 
                 _ ->
                     []
@@ -222,6 +240,7 @@ variantStyle variant =
                             [ withClass "arrowicon"
                                 [ transforms [ translateX movementLengthRight ]
                                 , transition [ Css.Transitions.transform3 150 0 easeOut ]
+                                , marginTop auto
                                 ]
                             ]
                         ]
@@ -234,6 +253,37 @@ variantStyle variant =
                 , alignItems start
                 , padding (rem 1)
                 , borderRadius (rem 0.75)
+                , borderStyle none
+                , boxShadow4 (rem 0) (rem 0.25) (rem 2.5) Colors.grayLight
+                , arrowIconMovement (rem 0)
+                , hover [ backgroundColor Colors.grayHover, arrowIconMovement (rem 1) ]
+                ]
+
+        SmallCard ->
+            let
+                arrowIconMovement movementLengthRight =
+                    descendants
+                        [ everything
+                            [ withClass "arrowicon"
+                                [ transforms [ translateY (pct -50), translateX movementLengthRight ]
+                                , transition [ Css.Transitions.transform3 150 0 easeOut ]
+                                , position absolute
+                                , top (pct 50)
+                                , right (rem 1.5)
+                                ]
+                            ]
+                        ]
+            in
+            batch
+                [ displayFlex
+                , flexDirection column
+                , position relative
+                , backgroundColor Colors.white
+                , textAlign left
+                , alignItems start
+                , padding (rem 1)
+                , paddingRight (rem 3.5)
+                , borderRadius (rem 0.5)
                 , borderStyle none
                 , boxShadow4 (rem 0) (rem 0.25) (rem 2.5) Colors.grayLight
                 , arrowIconMovement (rem 0)
