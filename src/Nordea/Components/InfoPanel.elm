@@ -31,6 +31,7 @@ viewLabelInfoBlock infoPanelContent =
     Html.div
         [ Attributes.css
             [ Css.padding2 (rem 0.75) (rem 0.5)
+            , Css.fontFamilies [ "Nordea Sans Small" ]
             , pseudoClass "not(:last-child)" [ Css.borderBottom3 (rem 0.0625) Css.solid Colors.grayMedium ]
             , Css.firstChild [ Css.fontWeight (int 500), Css.fontSize (rem 1.125) ]
             ]
