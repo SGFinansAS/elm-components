@@ -179,6 +179,28 @@ baseStyle =
 
 variantStyle : Variant -> Style
 variantStyle variant =
+    let
+        commonCardStyle =
+            batch
+                [ displayFlex
+                , flexDirection column
+                , position relative
+                , backgroundColor Colors.white
+                , textAlign left
+                , alignItems start
+                , padding (rem 1)
+                , borderRadius (rem 0.5)
+                , borderStyle none
+                , boxShadow4 (rem 0) (rem 0.25) (rem 2.5) Colors.grayLight
+                , descendants
+                    [ everything
+                        [ withClass "arrowicon"
+                            [ transition [ Css.Transitions.transform3 150 0 easeOut ] ]
+                        ]
+                    ]
+                , hover [ backgroundColor Colors.grayHover ]
+                ]
+    in
     case variant of
         Primary ->
             batch
@@ -239,24 +261,15 @@ variantStyle variant =
                         [ everything
                             [ withClass "arrowicon"
                                 [ transforms [ translateX movementLengthRight ]
-                                , transition [ Css.Transitions.transform3 150 0 easeOut ]
                                 , marginTop auto
                                 ]
                             ]
                         ]
             in
             batch
-                [ displayFlex
-                , flexDirection column
-                , backgroundColor Colors.white
-                , textAlign left
-                , alignItems start
-                , padding (rem 1)
-                , borderRadius (rem 0.75)
-                , borderStyle none
-                , boxShadow4 (rem 0) (rem 0.25) (rem 2.5) Colors.grayLight
+                [ commonCardStyle
                 , arrowIconMovement (rem 0)
-                , hover [ backgroundColor Colors.grayHover, arrowIconMovement (rem 1) ]
+                , hover [ arrowIconMovement (rem 1) ]
                 ]
 
         SmallCard ->
@@ -266,7 +279,6 @@ variantStyle variant =
                         [ everything
                             [ withClass "arrowicon"
                                 [ transforms [ translateY (pct -50), translateX movementLengthRight ]
-                                , transition [ Css.Transitions.transform3 150 0 easeOut ]
                                 , position absolute
                                 , top (pct 50)
                                 , right (rem 1.5)
@@ -275,19 +287,10 @@ variantStyle variant =
                         ]
             in
             batch
-                [ displayFlex
-                , flexDirection column
-                , position relative
-                , backgroundColor Colors.white
-                , textAlign left
-                , alignItems start
-                , padding (rem 1)
+                [ commonCardStyle
                 , paddingRight (rem 3.5)
-                , borderRadius (rem 0.5)
-                , borderStyle none
-                , boxShadow4 (rem 0) (rem 0.25) (rem 2.5) Colors.grayLight
                 , arrowIconMovement (rem 0)
-                , hover [ backgroundColor Colors.grayHover, arrowIconMovement (rem 1) ]
+                , hover [ arrowIconMovement (rem 1) ]
                 ]
 
 
