@@ -268,7 +268,6 @@ variantStyle variant =
                 , fontWeight normal
                 , fontSize (rem 1.375)
                 , lineHeight (rem 1.75)
-                , margin zero
                 ]
 
         TitleHeavy ->
@@ -277,7 +276,6 @@ variantStyle variant =
                 , fontWeight (int 500)
                 , fontSize (rem 1.375)
                 , lineHeight (rem 1.75)
-                , margin zero
                 ]
 
         BodyTextHeavy ->
@@ -313,7 +311,6 @@ variantStyle variant =
                 , fontWeight (int 500)
                 , fontSize (rem 1)
                 , lineHeight (rem 1.25)
-                , margin zero
                 ]
 
         TextLight ->
@@ -322,7 +319,6 @@ variantStyle variant =
                 , fontWeight normal
                 , fontSize (rem 1)
                 , lineHeight (rem 1.25)
-                , margin zero
                 ]
 
         TextSmallLight ->
@@ -331,7 +327,6 @@ variantStyle variant =
                 , fontWeight normal
                 , fontSize (rem 0.875)
                 , lineHeight (rem 1.125)
-                , margin zero
                 ]
 
         TextSmallHeavy ->
@@ -340,7 +335,6 @@ variantStyle variant =
                 , fontWeight (int 500)
                 , fontSize (rem 0.875)
                 , lineHeight (rem 1.125)
-                , margin zero
                 ]
 
         TextTiny ->
@@ -349,5 +343,4 @@ variantStyle variant =
                 , fontWeight normal
                 , fontSize (rem 0.8125)
                 , lineHeight (rem 1)
-                , margin zero
                 ]
