@@ -135,8 +135,6 @@ view attributes (TextInput config) =
                     , left (rem 0.7)
                     , top (pct 50)
                     , transform (translateY (pct -50))
-                    , displayFlex
-                    , alignItems center
                     , pointerEvents none
                     ]
                 ]
