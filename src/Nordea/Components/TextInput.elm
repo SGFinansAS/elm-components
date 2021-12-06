@@ -122,25 +122,36 @@ withSearchIcon condition (TextInput config) =
 
 view : List (Attribute msg) -> TextInput msg -> Html msg
 view attributes (TextInput config) =
-    Html.div [ css [ position relative ] ]
-        [ Html.span
-            [ css
-                [ position absolute
-                , left (rem 0.7)
-                , top (pct 50)
-                , transform (translateY (pct -50))
-                , displayFlex
-                , alignItems center
-                , pointerEvents none
+    if config.hasSearchIcon then
+        Html.div
+            (css [ displayFlex, position relative ]
+                :: attributes
+            )
+            [ Icons.search
+                [ css
+                    [ width (rem 1.4)
+                    , opacity (num 0.5)
+                    , position absolute
+                    , left (rem 0.7)
+                    , top (pct 50)
+                    , transform (translateY (pct -50))
+                    , displayFlex
+                    , alignItems center
+                    , pointerEvents none
+                    ]
                 ]
+                |> showIf config.hasSearchIcon
+            , styled input
+                (getStyles config)
+                (getAttributes config)
+                []
             ]
-            [ Icons.search [ css [ width (rem 1.4), opacity (num 0.5) ] ] ]
-            |> showIf config.hasSearchIcon
-        , styled input
+
+    else
+        styled input
             (getStyles config)
             (getAttributes config ++ attributes)
             []
-        ]
 
 
 getAttributes : Config msg -> List (Attribute msg)
