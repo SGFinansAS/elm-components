@@ -190,6 +190,7 @@ view attrs (RadioButton config) =
             , alignItems center
             , cursor pointer
             , minWidth fitContent
+            , boxSizing borderBox
             , appearanceStyle
             , position relative
             , pseudoClass "hover .nfe-radiomark:before" [ Css.property "box-shadow" ("0rem 0rem 0rem 0.0625rem " ++ Themes.colorVariable Themes.SecondaryColor Colors.blueMedium) ]

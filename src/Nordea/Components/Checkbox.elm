@@ -212,6 +212,7 @@ view attrs (Checkbox config) =
             ([ display inlineFlex
              , Css.property "gap" "0.5rem"
              , alignItems center
+             , boxSizing borderBox
              , appearanceStyle
              , position relative
              ]
