@@ -140,7 +140,6 @@ view attributes (TextInput config) =
                     , pointerEvents none
                     ]
                 ]
-                |> showIf config.hasSearchIcon
             , styled input
                 (getStyles config)
                 (getAttributes config)
