@@ -153,8 +153,6 @@ view (DropdownFilter options) attributes =
         ]
 
 
-{-| TODO fix height of input field
--}
 inputSearchView : Bool -> String -> (String -> msg) -> Maybe ( String, Bool -> msg ) -> Html msg
 inputSearchView hasFocus searchString onInput onFocus =
     Html.div
