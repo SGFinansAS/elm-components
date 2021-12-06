@@ -58,4 +58,11 @@ stories =
                     |> TextInput.view [ disabled True ]
           , {}
           )
+        , ( "With search icon"
+          , \_ ->
+                TextInput.init "Text"
+                    |> TextInput.withSearchIcon True
+                    |> TextInput.view []
+          , {}
+          )
         ]
