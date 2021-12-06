@@ -23,6 +23,7 @@ import Stories.RadioButton as RadioButton
 import Stories.Spinner as Spinner
 import Stories.Status as Status
 import Stories.StepIndicator as StepIndicator
+import Stories.Table as Table
 import Stories.Text as Header
 import Stories.TextInput as TextInput
 import Stories.Tooltip as Tooltip
@@ -77,6 +78,7 @@ main =
         , Header.stories
         , Status.stories
         , Modal.stories
+        , Table.stories
         , ProgressBar.stories
         , ProgressBarStepper.stories
         , Error.stories
