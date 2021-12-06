@@ -15,6 +15,8 @@ module Nordea.Components.Text exposing
     , textSmallHeavy
     , textSmallLight
     , textTiny
+    , textTinyHeavy
+    , textTinyLight
     , titleHeavy
     , titleLight
     , view
@@ -57,7 +59,8 @@ type Variant
     | TextLight
     | TextSmallLight
     | TextSmallHeavy
-    | TextTiny
+    | TextTinyLight
+    | TextTinyHeavy
 
 
 type alias Config msg =
@@ -138,9 +141,21 @@ textSmallHeavy =
     init TextSmallHeavy
 
 
+{-| Deprecated, use textTinyLight
+-}
 textTiny : Headline msg
 textTiny =
-    init TextTiny
+    init TextTinyLight
+
+
+textTinyLight : Headline msg
+textTinyLight =
+    init TextTinyLight
+
+
+textTinyHeavy : Headline msg
+textTinyHeavy =
+    init TextTinyHeavy
 
 
 init : Variant -> Headline msg
@@ -165,34 +180,37 @@ init variant =
                     Html.h4
 
                 TitleLight ->
-                    Html.span
+                    Html.div
 
                 TitleHeavy ->
-                    Html.span
+                    Html.div
 
                 BodyTextHeavy ->
-                    Html.span
+                    Html.div
 
                 BodyTextLight ->
-                    Html.span
+                    Html.div
 
                 BodyTextSmall ->
-                    Html.p
+                    Html.div
 
                 TextHeavy ->
-                    Html.span
+                    Html.div
 
                 TextLight ->
-                    Html.span
+                    Html.div
 
                 TextSmallLight ->
-                    Html.span
+                    Html.div
 
                 TextSmallHeavy ->
-                    Html.span
+                    Html.div
 
-                TextTiny ->
-                    Html.span
+                TextTinyLight ->
+                    Html.div
+
+                TextTinyHeavy ->
+                    Html.div
         }
 
 
@@ -337,10 +355,18 @@ variantStyle variant =
                 , lineHeight (rem 1.125)
                 ]
 
-        TextTiny ->
+        TextTinyLight ->
             Css.batch
                 [ fontFamilies [ "Nordea Sans Small" ]
                 , fontWeight normal
-                , fontSize (rem 0.8125)
+                , fontSize (rem 0.75)
+                , lineHeight (rem 1)
+                ]
+
+        TextTinyHeavy ->
+            Css.batch
+                [ fontFamilies [ "Nordea Sans Small" ]
+                , fontWeight (int 500)
+                , fontSize (rem 0.75)
                 , lineHeight (rem 1)
                 ]
