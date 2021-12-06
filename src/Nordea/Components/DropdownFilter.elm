@@ -179,7 +179,7 @@ inputSearchView hasFocus searchString onInput onFocus =
                     ]
                 , Css.borderRadius4 (Css.px 4) (Css.px 4) (Css.px 0) (Css.px 0)
                 , Css.boxShadow5 Css.inset (Css.px 0) (Css.px -1) (Css.px 0) Colors.grayLight
-
+                , Css.height (Css.px 48)
                 --, Css.fontSize (Css.rem 1.0)
                 --, Css.lineHeight (Css.rem 1.4)
                 ]
