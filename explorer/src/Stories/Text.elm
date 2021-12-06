@@ -71,8 +71,10 @@ stories =
                         |> Text.view [] [ text "Text small light" ]
                     , Text.textSmallHeavy
                         |> Text.view [] [ text "Text small heavy" ]
-                    , Text.textTiny
-                        |> Text.view [] [ text "Text tiny" ]
+                    , Text.textTinyLight
+                        |> Text.view [] [ text "Text tiny light" ]
+                    , Text.textTinyHeavy
+                        |> Text.view [] [ text "Text tiny heavy" ]
                     ]
           , {}
           )

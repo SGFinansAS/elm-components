@@ -9,7 +9,7 @@ fromSize : Float -> Style
 fromSize size =
     let
         fontFamily =
-            if size < 1.125 then
+            if size <= 1.375 then
                 "Nordea Sans Small"
 
             else
