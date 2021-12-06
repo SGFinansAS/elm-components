@@ -25,6 +25,7 @@ import Css
         , outline
         , overflow
         , padding4
+        , paddingRight
         , pct
         , pointerEvents
         , position
@@ -187,6 +188,7 @@ view attrs (Dropdown config) =
                 , property "-webkit-appearance" "none"
                 , backgroundColor transparent
                 , padding4 (rem 0.5) (rem 2) (rem 0.5) (rem 1)
+                , paddingRight (rem 3) |> styleIf (config.variant /= Simple)
                 , borderStyle none
                 , focus
                     [ Css.property "box-shadow" ("0rem 0rem 0rem 0.0625rem " ++ Themes.colorVariable Themes.SecondaryColor Colors.blueNordea)
