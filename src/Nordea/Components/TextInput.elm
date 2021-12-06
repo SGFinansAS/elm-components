@@ -14,13 +14,11 @@ import Css
     exposing
         ( Style
         , absolute
-        , alignItems
         , backgroundColor
         , border3
         , borderBox
         , borderRadius
         , boxSizing
-        , center
         , disabled
         , displayFlex
         , focus
@@ -48,7 +46,7 @@ import Html.Styled as Html exposing (Attribute, Html, input, styled)
 import Html.Styled.Attributes exposing (css, maxlength, pattern, placeholder, value)
 import Html.Styled.Events exposing (onInput)
 import Maybe.Extra as Maybe
-import Nordea.Html exposing (showIf, styleIf)
+import Nordea.Html exposing (styleIf)
 import Nordea.Resources.Colors as Colors
 import Nordea.Resources.Icons as Icons
 import Nordea.Themes as Themes
