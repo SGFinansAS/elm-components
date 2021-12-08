@@ -45,6 +45,7 @@ import Css
         , left
         , margin
         , marginTop
+        , minHeight
         , none
         , num
         , opacity
@@ -172,7 +173,7 @@ view attrs (Checkbox config) =
                     Css.batch
                         [ commonNonSimpleStyles
                         , borderRadius (rem 0.25)
-                        , height (rem 3)
+                        , minHeight (rem 3)
                         , borderColor Colors.grayMedium |> styleIf (not config.isChecked)
                         , borderColor Colors.redDark |> styleIf config.hasError
                         , hover
