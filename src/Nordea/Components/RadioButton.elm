@@ -18,7 +18,6 @@ import Css
         , before
         , block
         , border3
-        , borderBottomColor
         , borderBottomLeftRadius
         , borderBottomRightRadius
         , borderBox
@@ -32,16 +31,16 @@ import Css
         , center
         , cursor
         , display
-        , firstOfType
+        , fitContent
         , flex
         , flexBasis
         , height
         , hover
         , inlineFlex
         , int
-        , lastOfType
         , left
-        , marginTop
+        , minHeight
+        , minWidth
         , none
         , num
         , opacity
@@ -56,7 +55,6 @@ import Css
         , top
         , transparent
         , width
-        , zIndex
         )
 import Css.Transitions exposing (transition)
 import Html.Styled as Html exposing (Attribute, Html)
@@ -153,11 +151,6 @@ view attrs (RadioButton config) =
                         [ padding2 (rem 0.75) (rem 1)
                         , border3 (rem 0.0625) solid transparent
                         , Themes.backgroundColor Themes.SecondaryColor Colors.blueCloud |> styleIf config.isSelected
-                        , hover
-                            [ Themes.borderColor Themes.PrimaryColorLight Colors.blueNordea |> styleIf (not config.showError)
-                            , boxShadow5 (rem 0) (rem 0.25) (rem 0.25) (rem 0) Colors.black25
-                            , zIndex (int 1)
-                            ]
                         , transition [ Css.Transitions.borderColor 100, Css.Transitions.boxShadow 100 ]
                         ]
             in
@@ -165,9 +158,14 @@ view attrs (RadioButton config) =
                 Standard ->
                     Css.batch
                         [ commonNonSimpleStyles
-                        , borderRadius (rem 0.5)
+                        , borderRadius (rem 0.25)
+                        , minHeight (rem 3)
                         , borderColor Colors.grayMedium |> styleIf (not config.isSelected)
                         , borderColor Colors.redDark |> styleIf config.showError
+                        , hover
+                            [ Themes.borderColor Themes.PrimaryColorLight Colors.blueNordea |> styleIf (not config.showError)
+                            , Themes.backgroundColor Themes.SecondaryColor Colors.blueCloud
+                            ]
                         ]
 
                 ListStyle ->
@@ -180,6 +178,7 @@ view attrs (RadioButton config) =
                         , Css.lastOfType [ borderBottomLeftRadius (rem 0.5), borderBottomRightRadius (rem 0.5) ]
                         , pseudoClass "not(label:first-of-type):not(:hover)" [ borderTopColor transparent ] |> styleIf (not config.isSelected)
                         , pseudoClass "not(label:first-of-type)" [ Css.marginTop (rem -0.0625) ]
+                        , hover [ Themes.backgroundColor Themes.SecondaryColor Colors.blueCloud ]
                         ]
 
                 Simple ->
@@ -191,6 +190,8 @@ view attrs (RadioButton config) =
             , Css.property "gap" "0.5rem"
             , alignItems center
             , cursor pointer
+            , minWidth fitContent
+            , boxSizing borderBox
             , appearanceStyle
             , position relative
             , pseudoClass "hover .nfe-radiomark:before" [ Css.property "box-shadow" ("0rem 0rem 0rem 0.0625rem " ++ Themes.colorVariable Themes.SecondaryColor Colors.blueMedium) ]

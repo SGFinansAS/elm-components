@@ -16,11 +16,9 @@ import Css
         , backgroundColor
         , border3
         , borderBox
-        , borderColor
         , borderRadius
         , boxSizing
         , disabled
-        , em
         , focus
         , fontSize
         , height
@@ -142,10 +140,10 @@ getStyles config =
                 Colors.grayMedium
     in
     [ fontSize (rem 1)
-    , height (em 2.5)
-    , padding2 (em 0.75) (em 0.75)
-    , borderRadius (em 0.125)
-    , border3 (em 0.0625) solid borderColorStyle
+    , height (rem 3)
+    , padding2 (rem 0.75) (rem 0.75)
+    , borderRadius (rem 0.25)
+    , border3 (rem 0.0625) solid borderColorStyle
     , boxSizing borderBox
     , width (pct 100)
     , disabled [ backgroundColor Colors.grayWarm ]

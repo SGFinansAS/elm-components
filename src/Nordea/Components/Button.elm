@@ -5,15 +5,19 @@ module Nordea.Components.Button exposing
     , card
     , primary
     , secondary
+    , smallCard
     , tertiary
     , view
+    , withHtmlTag
     , withStyles
     )
 
 import Css
     exposing
         ( Style
+        , absolute
         , alignItems
+        , auto
         , backgroundColor
         , batch
         , border3
@@ -23,32 +27,49 @@ import Css
         , boxShadow4
         , boxSizing
         , center
+        , column
         , cursor
         , disabled
         , displayFlex
+        , flexDirection
         , focus
         , fontFamilies
         , fontSize
         , fontWeight
+        , height
         , hover
         , int
         , left
+        , marginTop
         , none
         , num
         , opacity
         , outline
         , padding
         , padding2
+        , paddingRight
+        , pct
         , pointer
         , pointerEvents
+        , position
+        , relative
         , rem
-        , scale
+        , right
         , solid
+        , start
         , textAlign
-        , transform
+        , top
+        , transforms
+        , translateX
+        , translateY
+        , width
         )
+import Css.Global exposing (children, descendants, everything, withClass)
+import Css.Transitions exposing (easeOut, transition)
 import Html.Styled as Html exposing (Attribute, Html)
+import Html.Styled.Attributes exposing (class, css)
 import Nordea.Resources.Colors as Colors
+import Nordea.Resources.Icons as Icons
 import Nordea.Themes as Themes
 
 
@@ -61,60 +82,76 @@ type Variant
     | Secondary
     | Tertiary
     | Card
+    | SmallCard
 
 
-type alias Config =
-    { variant : Variant, styles : List Style }
+type alias Config msg =
+    { variant : Variant
+    , styles : List Style
+    , htmlTag : List (Attribute msg) -> List (Html msg) -> Html msg
+    }
 
 
-type Button
-    = Button Config
+type Button msg
+    = Button (Config msg)
 
 
-init : Variant -> Button
+init : Variant -> Button msg
 init variant =
     Button
-        { variant = variant, styles = [] }
+        { variant = variant, styles = [], htmlTag = Html.button }
 
 
-primary : Button
+primary : Button msg
 primary =
     init Primary
 
 
-secondary : Button
+secondary : Button msg
 secondary =
     init Secondary
 
 
-tertiary : Button
+tertiary : Button msg
 tertiary =
     init Tertiary
 
 
-card : Button
+card : Button msg
 card =
     init Card
 
 
-withStyles : List Style -> Button -> Button
-withStyles styles (Button config) =
-    Button { config | styles = styles }
+smallCard : Button msg
+smallCard =
+    init SmallCard
 
 
 
 -- VIEW
 
 
-view : List (Attribute msg) -> List (Html msg) -> Button -> Html msg
+view : List (Attribute msg) -> List (Html msg) -> Button msg -> Html msg
 view attributes children (Button config) =
-    Html.styled Html.button
+    let
+        variantSpecificChildren =
+            case config.variant of
+                Card ->
+                    [ Icons.arrowRight [ class "arrowicon", css [ width (rem 1) ] ] ]
+
+                SmallCard ->
+                    [ Icons.arrowRight [ class "arrowicon", css [ width (rem 1) ] ] ]
+
+                _ ->
+                    []
+    in
+    Html.styled config.htmlTag
         [ baseStyle
         , variantStyle config.variant
         , batch config.styles
         ]
         attributes
-        children
+        (children ++ variantSpecificChildren)
 
 
 
@@ -142,6 +179,28 @@ baseStyle =
 
 variantStyle : Variant -> Style
 variantStyle variant =
+    let
+        commonCardStyle =
+            batch
+                [ displayFlex
+                , flexDirection column
+                , position relative
+                , backgroundColor Colors.white
+                , textAlign left
+                , alignItems start
+                , padding (rem 1)
+                , borderRadius (rem 0.5)
+                , borderStyle none
+                , boxShadow4 (rem 0) (rem 0.25) (rem 2.5) Colors.grayLight
+                , descendants
+                    [ everything
+                        [ withClass "arrowicon"
+                            [ transition [ Css.Transitions.transform3 150 0 easeOut ] ]
+                        ]
+                    ]
+                , hover [ backgroundColor Colors.grayHover ]
+                ]
+    in
     case variant of
         Primary ->
             batch
@@ -196,17 +255,59 @@ variantStyle variant =
                 ]
 
         Card ->
+            let
+                arrowIconMovement movementLengthRight =
+                    descendants
+                        [ everything
+                            [ withClass "arrowicon"
+                                [ transforms [ translateX movementLengthRight ]
+                                , marginTop auto
+                                ]
+                            ]
+                        ]
+            in
             batch
-                [ backgroundColor Colors.white
-                , textAlign left
-                , padding (rem 1)
-                , borderRadius (rem 0.75)
-                , borderStyle none
-                , boxShadow4 (rem 0) (rem 0.25) (rem 2.5) Colors.grayLight
-                , hover [ transform (scale 1.25) ]
+                [ commonCardStyle
+                , arrowIconMovement (rem 0)
+                , hover [ arrowIconMovement (rem 1) ]
+                ]
+
+        SmallCard ->
+            let
+                arrowIconMovement movementLengthRight =
+                    descendants
+                        [ everything
+                            [ withClass "arrowicon"
+                                [ transforms [ translateY (pct -50), translateX movementLengthRight ]
+                                , position absolute
+                                , top (pct 50)
+                                , right (rem 1.5)
+                                ]
+                            ]
+                        ]
+            in
+            batch
+                [ commonCardStyle
+                , paddingRight (rem 3.5)
+                , arrowIconMovement (rem 0)
+                , hover [ arrowIconMovement (rem 1) ]
                 ]
 
 
 buttonStyleForExport : Variant -> Style
 buttonStyleForExport variant =
     batch [ baseStyle, variantStyle variant ]
+
+
+
+-- EXTRAS
+
+
+withStyles : List Style -> Button msg -> Button msg
+withStyles styles (Button config) =
+    Button { config | styles = styles }
+
+
+withHtmlTag : (List (Attribute msg) -> List (Html msg) -> Html msg) -> Button msg -> Button msg
+withHtmlTag htmlTag (Button config) =
+    Button { config | htmlTag = htmlTag }

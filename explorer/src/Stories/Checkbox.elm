@@ -3,7 +3,7 @@ module Stories.Checkbox exposing (stories)
 import Config exposing (Msg(..))
 import Css exposing (column, displayFlex, flexDirection, maxWidth, rem)
 import Html.Styled as Html exposing (text)
-import Html.Styled.Attributes as Attrs exposing (css)
+import Html.Styled.Attributes as Attrs exposing (css, disabled)
 import Nordea.Components.Checkbox as Checkbox
 import UIExplorer exposing (UI)
 import UIExplorer.Styled exposing (styledStoriesOf)
@@ -86,6 +86,25 @@ stories =
                         |> Checkbox.withHasError True
                         |> Checkbox.withIsChecked True
                         |> Checkbox.view []
+                    ]
+          , {}
+          )
+        , ( "Simple disabled"
+          , \_ ->
+                Html.div [ css [ displayFlex, Css.property "gap" "1rem" ] ]
+                    [ Checkbox.init
+                        "simple"
+                        (text "Click me")
+                        (\_ -> NoOp)
+                        |> Checkbox.withAppearance Checkbox.Simple
+                        |> Checkbox.view [ disabled True ]
+                    , Checkbox.init
+                        "simple"
+                        (text "Click me")
+                        (\_ -> NoOp)
+                        |> Checkbox.withAppearance Checkbox.Simple
+                        |> Checkbox.withIsChecked True
+                        |> Checkbox.view [ disabled True ]
                     ]
           , {}
           )

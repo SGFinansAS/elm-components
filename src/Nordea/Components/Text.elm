@@ -15,15 +15,30 @@ module Nordea.Components.Text exposing
     , textSmallHeavy
     , textSmallLight
     , textTiny
+    , textTinyHeavy
+    , textTinyLight
     , titleHeavy
     , titleLight
     , view
     , withHtmlTag
     )
 
-import Css exposing (Style, fontFamilies, fontSize, fontWeight, int, lineHeight, margin, normal, rem, zero)
+import Css
+    exposing
+        ( Style
+        , fontFamilies
+        , fontSize
+        , fontWeight
+        , int
+        , lineHeight
+        , margin
+        , normal
+        , rem
+        , zero
+        )
 import Html.Styled as Html exposing (Attribute, Html)
 import Html.Styled.Attributes exposing (css)
+import Nordea.Resources.Fonts as Fonts
 
 
 
@@ -45,7 +60,8 @@ type Variant
     | TextLight
     | TextSmallLight
     | TextSmallHeavy
-    | TextTiny
+    | TextTinyLight
+    | TextTinyHeavy
 
 
 type alias Config msg =
@@ -126,9 +142,21 @@ textSmallHeavy =
     init TextSmallHeavy
 
 
+{-| Deprecated, use textTinyLight
+-}
 textTiny : Headline msg
 textTiny =
-    init TextTiny
+    init TextTinyLight
+
+
+textTinyLight : Headline msg
+textTinyLight =
+    init TextTinyLight
+
+
+textTinyHeavy : Headline msg
+textTinyHeavy =
+    init TextTinyHeavy
 
 
 init : Variant -> Headline msg
@@ -153,34 +181,37 @@ init variant =
                     Html.h4
 
                 TitleLight ->
-                    Html.span
+                    Html.div
 
                 TitleHeavy ->
-                    Html.span
+                    Html.div
 
                 BodyTextHeavy ->
-                    Html.span
+                    Html.div
 
                 BodyTextLight ->
-                    Html.span
+                    Html.div
 
                 BodyTextSmall ->
-                    Html.p
+                    Html.div
 
                 TextHeavy ->
-                    Html.span
+                    Html.div
 
                 TextLight ->
-                    Html.span
+                    Html.div
 
                 TextSmallLight ->
-                    Html.span
+                    Html.div
 
                 TextSmallHeavy ->
-                    Html.span
+                    Html.div
 
-                TextTiny ->
-                    Html.span
+                TextTinyLight ->
+                    Html.div
+
+                TextTinyHeavy ->
+                    Html.div
         }
 
 
@@ -207,135 +238,121 @@ variantStyle variant =
     case variant of
         HeadlineOne ->
             Css.batch
-                [ fontFamilies [ "Nordea Sans Large" ]
+                [ Fonts.fromSize 3
                 , fontWeight (int 500)
-                , fontSize (rem 3)
                 , lineHeight (rem 3.5)
                 , margin zero
                 ]
 
         HeadlineTwo ->
             Css.batch
-                [ fontFamilies [ "Nordea Sans Large" ]
+                [ Fonts.fromSize 2.5
                 , fontWeight (int 500)
-                , fontSize (rem 2.5)
                 , lineHeight (rem 2.75)
                 , margin zero
                 ]
 
         HeadlineThree ->
             Css.batch
-                [ fontFamilies [ "Nordea Sans Large" ]
+                [ Fonts.fromSize 2
                 , fontWeight (int 500)
-                , fontSize (rem 2)
                 , lineHeight (rem 2.25)
                 , margin zero
                 ]
 
         HeadlineFourLight ->
             Css.batch
-                [ fontFamilies [ "Nordea Sans Large" ]
+                [ Fonts.fromSize 1.625
                 , fontWeight normal
-                , fontSize (rem 1.625)
                 , lineHeight (rem 2)
                 , margin zero
                 ]
 
         HeadlineFourHeavy ->
             Css.batch
-                [ fontFamilies [ "Nordea Sans Large" ]
+                [ Fonts.fromSize 1.625
                 , fontWeight (int 500)
-                , fontSize (rem 1.625)
                 , lineHeight (rem 2)
                 , margin zero
                 ]
 
         TitleLight ->
             Css.batch
-                [ fontFamilies [ "Nordea Sans Small" ]
+                [ Fonts.fromSize 1.375
                 , fontWeight normal
-                , fontSize (rem 1.375)
                 , lineHeight (rem 1.75)
-                , margin zero
                 ]
 
         TitleHeavy ->
             Css.batch
-                [ fontFamilies [ "Nordea Sans Small" ]
+                [ Fonts.fromSize 1.375
                 , fontWeight (int 500)
                 , fontSize (rem 1.375)
                 , lineHeight (rem 1.75)
-                , margin zero
                 ]
 
         BodyTextHeavy ->
             Css.batch
-                [ fontFamilies [ "Nordea Sans Small" ]
+                [ Fonts.fromSize 1.125
                 , fontWeight (int 500)
-                , fontSize (rem 1.125)
                 , lineHeight (rem 1.5)
                 , margin zero
                 ]
 
         BodyTextLight ->
             Css.batch
-                [ fontFamilies [ "Nordea Sans Small" ]
+                [ Fonts.fromSize 1.125
                 , fontWeight normal
-                , fontSize (rem 1.125)
                 , lineHeight (rem 1.5)
                 , margin zero
                 ]
 
         BodyTextSmall ->
             Css.batch
-                [ fontFamilies [ "Nordea Sans Small" ]
+                [ Fonts.fromSize 1
                 , fontWeight normal
-                , fontSize (rem 1)
                 , lineHeight (rem 1.5)
                 , margin zero
                 ]
 
         TextHeavy ->
             Css.batch
-                [ fontFamilies [ "Nordea Sans Small" ]
+                [ Fonts.fromSize 1
                 , fontWeight (int 500)
-                , fontSize (rem 1)
                 , lineHeight (rem 1.25)
-                , margin zero
                 ]
 
         TextLight ->
             Css.batch
-                [ fontFamilies [ "Nordea Sans Small" ]
+                [ Fonts.fromSize 1
                 , fontWeight normal
-                , fontSize (rem 1)
                 , lineHeight (rem 1.25)
-                , margin zero
                 ]
 
         TextSmallLight ->
             Css.batch
-                [ fontFamilies [ "Nordea Sans Small" ]
+                [ Fonts.fromSize 0.875
                 , fontWeight normal
-                , fontSize (rem 0.875)
                 , lineHeight (rem 1.125)
-                , margin zero
                 ]
 
         TextSmallHeavy ->
             Css.batch
-                [ fontFamilies [ "Nordea Sans Small" ]
+                [ Fonts.fromSize 0.875
                 , fontWeight (int 500)
-                , fontSize (rem 0.875)
                 , lineHeight (rem 1.125)
-                , margin zero
                 ]
 
-        TextTiny ->
+        TextTinyLight ->
             Css.batch
-                [ fontFamilies [ "Nordea Sans Small" ]
+                [ Fonts.fromSize 0.75
                 , fontWeight normal
-                , fontSize (rem 0.8125)
                 , lineHeight (rem 1)
-                , margin zero
+                ]
+
+        TextTinyHeavy ->
+            Css.batch
+                [ Fonts.fromSize 0.75
+                , fontWeight (int 500)
+                , lineHeight (rem 1)
                 ]

@@ -17,6 +17,8 @@ type alias Config =
     , isModalOpen : Bool
     , searchComponentInput : Maybe String
     , searchHasFocus : Bool
+    , isFeatureBoxOpen : Bool
+        , isProgressBarCompleted : Bool
     }
 
 
@@ -27,6 +29,8 @@ type Msg
     | SearchComponentFocus Bool
     | NoOp
     | ToggleModal
+    | ToggleFeatureBox
+    | ToggleProgressBarCompleted
 
 
 init : Config
@@ -47,6 +51,8 @@ init =
     , searchComponentInput = Nothing
     , searchHasFocus = False
     , isModalOpen = True
+    , isFeatureBoxOpen = True
+    , isProgressBarCompleted = False
     }
 
 
@@ -73,3 +79,9 @@ update msg config =
 
         ToggleModal ->
             { config | isModalOpen = not config.isModalOpen }
+
+        ToggleFeatureBox ->
+            { config | isFeatureBoxOpen = not config.isFeatureBoxOpen }
+
+        ToggleProgressBarCompleted ->
+            { config | isProgressBarCompleted = not config.isProgressBarCompleted }

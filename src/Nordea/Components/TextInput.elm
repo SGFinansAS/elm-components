@@ -7,14 +7,48 @@ module Nordea.Components.TextInput exposing
     , withOnInput
     , withPattern
     , withPlaceholder
+    , withSearchIcon
     )
 
-import Css exposing (Style, backgroundColor, border3, borderBox, borderColor, borderRadius, boxSizing, disabled, em, focus, fontSize, height, none, outline, padding2, pct, rem, solid, width)
-import Html.Styled exposing (Attribute, Html, input, styled)
-import Html.Styled.Attributes exposing (maxlength, pattern, placeholder, value)
+import Css
+    exposing
+        ( Style
+        , absolute
+        , backgroundColor
+        , border3
+        , borderBox
+        , borderRadius
+        , boxSizing
+        , disabled
+        , displayFlex
+        , focus
+        , fontSize
+        , height
+        , left
+        , none
+        , num
+        , opacity
+        , outline
+        , padding2
+        , paddingLeft
+        , pct
+        , pointerEvents
+        , position
+        , relative
+        , rem
+        , solid
+        , top
+        , transform
+        , translateY
+        , width
+        )
+import Html.Styled as Html exposing (Attribute, Html, input, styled)
+import Html.Styled.Attributes exposing (css, maxlength, pattern, placeholder, value)
 import Html.Styled.Events exposing (onInput)
 import Maybe.Extra as Maybe
+import Nordea.Html exposing (styleIf)
 import Nordea.Resources.Colors as Colors
+import Nordea.Resources.Icons as Icons
 import Nordea.Themes as Themes
 
 
@@ -29,6 +63,7 @@ type alias Config msg =
     , showError : Bool
     , maxLength : Maybe Int
     , pattern : Maybe String
+    , hasSearchIcon : Bool
     }
 
 
@@ -45,6 +80,7 @@ init value =
         , showError = False
         , maxLength = Nothing
         , pattern = Nothing
+        , hasSearchIcon = False
         }
 
 
@@ -73,16 +109,44 @@ withError condition (TextInput config) =
     TextInput { config | showError = condition }
 
 
+withSearchIcon : Bool -> TextInput msg -> TextInput msg
+withSearchIcon condition (TextInput config) =
+    TextInput { config | hasSearchIcon = condition }
+
+
 
 -- VIEW
 
 
 view : List (Attribute msg) -> TextInput msg -> Html msg
 view attributes (TextInput config) =
-    styled input
-        (getStyles config)
-        (getAttributes config ++ attributes)
-        []
+    if config.hasSearchIcon then
+        Html.div
+            (css [ displayFlex, position relative ]
+                :: attributes
+            )
+            [ Icons.search
+                [ css
+                    [ width (rem 1.4)
+                    , opacity (num 0.5)
+                    , position absolute
+                    , left (rem 0.7)
+                    , top (pct 50)
+                    , transform (translateY (pct -50))
+                    , pointerEvents none
+                    ]
+                ]
+            , styled input
+                (getStyles config)
+                (getAttributes config)
+                []
+            ]
+
+    else
+        styled input
+            (getStyles config)
+            (getAttributes config ++ attributes)
+            []
 
 
 getAttributes : Config msg -> List (Attribute msg)
@@ -111,13 +175,14 @@ getStyles config =
                 Colors.grayMedium
     in
     [ fontSize (rem 1)
-    , height (em 2.5)
-    , padding2 (em 0.75) (em 0.75)
-    , borderRadius (em 0.125)
-    , border3 (em 0.0625) solid borderColorStyle
+    , height (rem 3)
+    , padding2 (rem 0.75) (rem 0.75)
+    , borderRadius (rem 0.25)
+    , border3 (rem 0.0625) solid borderColorStyle
     , boxSizing borderBox
     , width (pct 100)
     , disabled [ backgroundColor Colors.grayWarm ]
+    , paddingLeft (rem 2.5) |> styleIf config.hasSearchIcon
     , focus
         [ outline none
         , Themes.borderColor Themes.PrimaryColorLight Colors.blueNordea
