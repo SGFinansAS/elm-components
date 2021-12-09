@@ -9,6 +9,7 @@ import Stories.Button as Button
 import Stories.Card as Card
 import Stories.Checkbox as Checkbox
 import Stories.Dropdown as Dropdown
+import Stories.DropdownFilter as Search
 import Stories.Error as Error
 import Stories.FeatureBox as FeatureBox
 import Stories.FlatLink as FlatLink
@@ -67,6 +68,7 @@ main =
         , TextInput.stories
         , NumberInput.stories
         , Dropdown.stories
+        , Search.stories
         , Checkbox.stories
         , RadioButton.stories
         , StepIndicator.stories
