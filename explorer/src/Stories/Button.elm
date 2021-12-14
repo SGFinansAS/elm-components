@@ -35,9 +35,9 @@ stories =
                     [ Button.primary
                         |> Button.view [] [ text "Click me" ]
                     , Button.primary
-                        |> Button.view [] [ text "Click me", Icons.rightIcon Icons.info ]
+                        |> Button.view [] [ text "Click me", Icons.rightIcon (Icons.info []) ]
                     , Button.primary
-                        |> Button.view [] [ Icons.leftIcon Icons.info, text "Click me" ]
+                        |> Button.view [] [ Icons.leftIcon (Icons.info []), text "Click me" ]
                     ]
           , {}
           )
@@ -47,9 +47,9 @@ stories =
                     [ Button.primary
                         |> Button.view [ disabled True ] [ text "Click me" ]
                     , Button.primary
-                        |> Button.view [ disabled True ] [ text "Click me", Icons.rightIcon Icons.info ]
+                        |> Button.view [ disabled True ] [ text "Click me", Icons.rightIcon (Icons.info []) ]
                     , Button.primary
-                        |> Button.view [ disabled True ] [ Icons.leftIcon Icons.info, text "Click me" ]
+                        |> Button.view [ disabled True ] [ Icons.leftIcon (Icons.info []), text "Click me" ]
                     ]
           , {}
           )
@@ -59,9 +59,9 @@ stories =
                     [ Button.secondary
                         |> Button.view [] [ text "Click me" ]
                     , Button.secondary
-                        |> Button.view [] [ text "Click me", Icons.rightIcon Icons.info ]
+                        |> Button.view [] [ text "Click me", Icons.rightIcon (Icons.info []) ]
                     , Button.secondary
-                        |> Button.view [] [ Icons.leftIcon Icons.info, text "Click me" ]
+                        |> Button.view [] [ Icons.leftIcon (Icons.info []), text "Click me" ]
                     ]
           , {}
           )
@@ -71,9 +71,9 @@ stories =
                     [ Button.tertiary
                         |> Button.view [] [ text "Click me" ]
                     , Button.tertiary
-                        |> Button.view [] [ text "Click me", Icons.rightIcon Icons.info ]
+                        |> Button.view [] [ text "Click me", Icons.rightIcon (Icons.info []) ]
                     , Button.tertiary
-                        |> Button.view [] [ Icons.leftIcon Icons.info, text "Click me" ]
+                        |> Button.view [] [ Icons.leftIcon (Icons.info []), text "Click me" ]
                     ]
           , {}
           )
