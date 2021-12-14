@@ -7,13 +7,10 @@ import Css
         , borderRadius
         , display
         , ellipsis
-        , fontSize
         , hidden
         , inlineBlock
-        , lineHeight
         , overflow
         , padding
-        , pct
         , rem
         , textOverflow
         )
