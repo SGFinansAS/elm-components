@@ -35,11 +35,7 @@ import Css
         , solid
         , top
         , zIndex
-        , px
         , margin
-        , width
-        , height
-        , paddingTop
         )
 import Css.Global as Global
 import Html.Styled as Html exposing (Attribute, Html)
@@ -76,7 +72,7 @@ view config attrs children =
                         , maxWidth (rem 60)
                         , margin (auto)
                         , Media.withMedia
-                            [ Media.only Media.screen [ Media.maxWidth (px 750) ] ]
+                            [ Media.only Media.screen [ Media.maxWidth (rem 46.875) ] ]
                             [ borderRadius (rem 0) ]
                         ]
                     :: attrs
@@ -101,7 +97,7 @@ view config attrs children =
             , backgroundColor (Colors.black |> Colors.withAlpha 0.5)
             , zIndex (int 1)
             , Media.withMedia
-                [ Media.only Media.screen [ Media.maxWidth (px 750) ] ]
+                [ Media.only Media.screen [ Media.maxWidth (rem 46.875) ] ]
                 [ padding (rem 0) ]
             ]
         ]
