@@ -10,23 +10,23 @@ stories =
     styledStoriesOf
         "Status"
         [ ( "Green"
-          , \_ -> Status.green "Status"
+          , \_ -> Status.green "Status" []
           , {}
           )
         , ( "Red"
-          , \_ -> Status.red "Status"
+          , \_ -> Status.red "Status" []
           , {}
           )
         , ( "Gray"
-          , \_ -> Status.gray "Status"
+          , \_ -> Status.gray "Status" []
           , {}
           )
         , ( "Yellow"
-          , \_ -> Status.yellow "Status"
+          , \_ -> Status.yellow "Status" []
           , {}
           )
         , ( "Blue"
-          , \_ -> Status.blue "Status"
+          , \_ -> Status.blue "Status" []
           , {}
           )
         ]

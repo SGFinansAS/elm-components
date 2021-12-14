@@ -103,7 +103,7 @@ stories =
                             ]
                             [ Html.div
                                 [ css [ marginBottom (rem 2.0) ] ]
-                                [ Status.blue "Status" ]
+                                [ Status.blue "Status" [] ]
                             , Text.headlineTwo |> Text.view [] [ Html.text "10" ]
                             , Text.bodyTextSmall
                                 |> Text.view [ css [ marginBottom (rem 1) |> Css.important ] ]
