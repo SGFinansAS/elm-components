@@ -35,6 +35,11 @@ import Css
         , solid
         , top
         , zIndex
+        , px
+        , margin
+        , width
+        , height
+        , paddingTop
         )
 import Css.Global as Global
 import Html.Styled as Html exposing (Attribute, Html)
@@ -46,6 +51,7 @@ import Nordea.Components.Text as Text
 import Nordea.Resources.Colors as Colors
 import Nordea.Resources.Icons as Icons
 import Nordea.Themes as Themes
+import Css.Media as Media
 
 
 type alias ViewConfig msg =
@@ -68,6 +74,10 @@ view config attrs children =
                         , flexDirection column
                         , minWidth (rem 18)
                         , maxWidth (rem 60)
+                        , margin (auto)
+                        , Media.withMedia
+                            [ Media.only Media.screen [ Media.maxWidth (px 750) ] ]
+                            [ borderRadius (rem 0) ]
                         ]
                     :: attrs
                 )
@@ -81,15 +91,18 @@ view config attrs children =
             , left (rem 0)
             , top (rem 0)
             , bottom (rem 0)
-            , minWidth (pct 100)
             , outline none
             , overflow auto
             , displayFlex
+            , minWidth (pct 100)
             , justifyContent center
             , alignItems center
             , padding4 (rem 8) (rem 1) (rem 2) (rem 1)
             , backgroundColor (Colors.black |> Colors.withAlpha 0.5)
             , zIndex (int 1)
+            , Media.withMedia
+                [ Media.only Media.screen [ Media.maxWidth (px 750) ] ]
+                [ padding (rem 0) ]
             ]
         ]
         [ card, disableScrollOnBody ]
