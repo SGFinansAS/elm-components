@@ -64,7 +64,7 @@ view config attrs children =
                 (attribute "role" "dialog"
                     :: attribute "aria-modal" "true"
                     :: css
-                        [ borderRadius (rem 0.5)
+                        [ borderRadius (rem 0)
                         , backgroundColor Colors.white
                         , displayFlex
                         , flexDirection column
@@ -72,8 +72,8 @@ view config attrs children =
                         , maxWidth (rem 60)
                         , margin (auto)
                         , Media.withMedia
-                            [ Media.only Media.screen [ Media.maxWidth (rem 46.875) ] ]
-                            [ borderRadius (rem 0) ]
+                            [ Media.only Media.screen [ Media.minWidth (rem 47) ] ]
+                            [ borderRadius (rem 0.5) ]
                         ]
                     :: attrs
                 )
@@ -93,12 +93,12 @@ view config attrs children =
             , minWidth (pct 100)
             , justifyContent center
             , alignItems center
-            , padding4 (rem 8) (rem 1) (rem 2) (rem 1)
+            , padding (rem 0)
             , backgroundColor (Colors.black |> Colors.withAlpha 0.5)
             , zIndex (int 1)
             , Media.withMedia
-                [ Media.only Media.screen [ Media.maxWidth (rem 46.875) ] ]
-                [ padding (rem 0) ]
+                [ Media.only Media.screen [ Media.minWidth (rem 47) ] ]
+                [ padding4 (rem 8) (rem 1) (rem 2) (rem 1) ]
             ]
         ]
         [ card, disableScrollOnBody ]
