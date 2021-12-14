@@ -21,9 +21,9 @@ stories =
                     [ FlatLink.default
                         |> FlatLink.view [ href "/#Default/FlatLink/Default" ] [ text "Click me" ]
                     , FlatLink.default
-                        |> FlatLink.view [ href "/#Default/FlatLink/Default" ] [ text "Click me", Icons.rightIcon Icons.info ]
+                        |> FlatLink.view [ href "/#Default/FlatLink/Default" ] [ text "Click me", Icons.rightIcon (Icons.info []) ]
                     , FlatLink.default
-                        |> FlatLink.view [ href "/#Default/FlatLink/Default" ] [ Icons.leftIcon Icons.info, text "Click me" ]
+                        |> FlatLink.view [ href "/#Default/FlatLink/Default" ] [ Icons.leftIcon (Icons.info []), text "Click me" ]
                     ]
           , {}
           )
@@ -35,10 +35,10 @@ stories =
                         |> FlatLink.view [ href "/#Default/FlatLink/Default" ] [ text "Click me" ]
                     , FlatLink.default
                         |> FlatLink.withDisabled
-                        |> FlatLink.view [ href "/#Default/FlatLink/Default" ] [ text "Click me", Icons.rightIcon Icons.info ]
+                        |> FlatLink.view [ href "/#Default/FlatLink/Default" ] [ text "Click me", Icons.rightIcon (Icons.info []) ]
                     , FlatLink.default
                         |> FlatLink.withDisabled
-                        |> FlatLink.view [ href "/#Default/FlatLink/Default" ] [ Icons.leftIcon Icons.info, text "Click me" ]
+                        |> FlatLink.view [ href "/#Default/FlatLink/Default" ] [ Icons.leftIcon (Icons.info []), text "Click me" ]
                     ]
           , {}
           )
@@ -48,9 +48,9 @@ stories =
                     [ FlatLink.mini
                         |> FlatLink.view [ href "/#Default/FlatLink/Mini" ] [ text "Click me" ]
                     , FlatLink.mini
-                        |> FlatLink.view [ href "/#Default/FlatLink/Mini" ] [ text "Click me", Icons.rightIcon Icons.info ]
+                        |> FlatLink.view [ href "/#Default/FlatLink/Mini" ] [ text "Click me", Icons.rightIcon (Icons.info []) ]
                     , FlatLink.mini
-                        |> FlatLink.view [ href "/#Default/FlatLink/Mini" ] [ Icons.leftIcon Icons.info, text "Click me" ]
+                        |> FlatLink.view [ href "/#Default/FlatLink/Mini" ] [ Icons.leftIcon (Icons.info []), text "Click me" ]
                     ]
           , {}
           )
@@ -62,10 +62,10 @@ stories =
                         |> FlatLink.view [ href "/#Default/FlatLink/withButtonStyle" ] [ text "Click me" ]
                     , FlatLink.default
                         |> FlatLink.withButtonStyle ButtonVariant.Primary
-                        |> FlatLink.view [ href "/#Default/FlatLink/withButtonStyle" ] [ text "Click me", Icons.rightIcon Icons.info ]
+                        |> FlatLink.view [ href "/#Default/FlatLink/withButtonStyle" ] [ text "Click me", Icons.rightIcon (Icons.info []) ]
                     , FlatLink.default
                         |> FlatLink.withButtonStyle ButtonVariant.Primary
-                        |> FlatLink.view [ href "/#Default/FlatLink/withButtonStyle" ] [ Icons.leftIcon Icons.info, text "Click me" ]
+                        |> FlatLink.view [ href "/#Default/FlatLink/withButtonStyle" ] [ Icons.leftIcon (Icons.info []), text "Click me" ]
                     ]
           , {}
           )

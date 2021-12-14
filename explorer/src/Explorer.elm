@@ -13,6 +13,7 @@ import Stories.DropdownFilter as Search
 import Stories.Error as Error
 import Stories.FeatureBox as FeatureBox
 import Stories.FlatLink as FlatLink
+import Stories.InfoLabel as InfoLabel
 import Stories.InfoPanel as InfoPanel
 import Stories.Label as Label
 import Stories.LottiePlayer as LottiePlayer
@@ -87,4 +88,5 @@ main =
         , Tooltip.stories
         , LottiePlayer.stories
         , InfoPanel.stories
+        , InfoLabel.stories
         ]
