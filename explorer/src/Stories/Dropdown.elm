@@ -44,6 +44,7 @@ stories =
                     ]
                     financingVariantToString
                     (\_ -> NoOp)
+                    |> Dropdown.withPlaceholder "Choose financing variant"
                     |> Dropdown.view []
           , {}
           )
