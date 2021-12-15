@@ -3,6 +3,7 @@ module Nordea.Components.Button exposing
     , Variant(..)
     , buttonStyleForExport
     , card
+    , flatLinkStyle
     , primary
     , secondary
     , smallCard
@@ -58,10 +59,12 @@ import Css
         , solid
         , start
         , textAlign
+        , textDecoration
         , top
         , transforms
         , translateX
         , translateY
+        , underline
         , width
         )
 import Css.Global exposing (children, descendants, everything, withClass)
@@ -83,6 +86,7 @@ type Variant
     | Tertiary
     | Card
     | SmallCard
+    | FlatLinkStyle
 
 
 type alias Config msg =
@@ -125,6 +129,11 @@ card =
 smallCard : Button msg
 smallCard =
     init SmallCard
+
+
+flatLinkStyle : Button msg
+flatLinkStyle =
+    init FlatLinkStyle
 
 
 
@@ -291,6 +300,17 @@ variantStyle variant =
                 , paddingRight (rem 3.5)
                 , arrowIconMovement (rem 0)
                 , hover [ arrowIconMovement (rem 1) ]
+                ]
+
+        FlatLinkStyle ->
+            batch
+                [ textDecoration underline
+                , padding (rem 0)
+                , hover
+                    [ Themes.color Themes.PrimaryColorLight Colors.blueNordea
+                    ]
+                , focus
+                    [ outline none ]
                 ]
 
 
