@@ -1,4 +1,15 @@
-module Nordea.Components.Dropdown exposing (Dropdown, init, initWithOptionProperties, optionInit, optionIsDisabled, simple, view, withHasError, withSelectedValue)
+module Nordea.Components.Dropdown exposing
+    ( Dropdown
+    , init
+    , initWithOptionProperties
+    , optionInit
+    , optionIsDisabled
+    , simple
+    , view
+    , withHasError
+    , withPlaceholder
+    , withSelectedValue
+    )
 
 import Css
     exposing
@@ -10,7 +21,6 @@ import Css
         , borderColor
         , borderRadius
         , borderStyle
-        , boxShadow5
         , center
         , color
         , displayFlex
@@ -44,7 +54,7 @@ import Css.Global exposing (withAttribute)
 import Dict
 import Html.Styled as Html exposing (Attribute, Html, div, option, text)
 import Html.Styled.Attributes as Attrs exposing (css, disabled, selected, value)
-import Html.Styled.Events as Events exposing (on, targetValue)
+import Html.Styled.Events as Events exposing (targetValue)
 import Json.Decode as Decode
 import Nordea.Html exposing (styleIf, viewMaybe)
 import Nordea.Resources.Colors as Colors
@@ -125,10 +135,10 @@ view attrs (Dropdown config) =
         placeholder =
             config.placeholder
                 |> viewMaybe
-                    (\placeholderTxt ->
+                    (\placeholderText ->
                         option
-                            [ value "", selected True, Attrs.hidden True ]
-                            [ text placeholderTxt ]
+                            [ value "", disabled True, selected True, Attrs.hidden True ]
+                            [ Html.text placeholderText ]
                     )
 
         options =
@@ -141,7 +151,7 @@ view attrs (Dropdown config) =
                             , disabled dropDownOption.isDisabled
                             , css [ color Colors.black ]
                             ]
-                            [ text dropDownOption.text ]
+                            [ Html.text dropDownOption.text ]
                     )
 
         optionsDict =
@@ -234,6 +244,11 @@ view attrs (Dropdown config) =
 withSelectedValue : Maybe a -> Dropdown a msg -> Dropdown a msg
 withSelectedValue selectedValue (Dropdown config) =
     Dropdown { config | selectedValue = selectedValue }
+
+
+withPlaceholder : String -> Dropdown a msg -> Dropdown a msg
+withPlaceholder placeholder (Dropdown config) =
+    Dropdown { config | placeholder = Just placeholder }
 
 
 withHasError : Bool -> Dropdown a msg -> Dropdown a msg
