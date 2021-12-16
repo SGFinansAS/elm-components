@@ -21,6 +21,7 @@ import Css
         , auto
         , backgroundColor
         , batch
+        , border
         , border3
         , borderBox
         , borderRadius
@@ -64,6 +65,7 @@ import Css
         , transforms
         , translateX
         , translateY
+        , transparent
         , underline
         , width
         )
@@ -305,10 +307,13 @@ variantStyle variant =
         FlatLinkStyle ->
             batch
                 [ textDecoration underline
+                , fontSize (rem 0.875)
                 , padding (rem 0)
+                , Themes.color Themes.PrimaryColor Colors.blueDeep
+                , border (rem 0)
+                , backgroundColor transparent
                 , hover
-                    [ Themes.color Themes.PrimaryColorLight Colors.blueNordea
-                    ]
+                    [ Themes.color Themes.PrimaryColorLight Colors.blueNordea ]
                 , focus
                     [ outline none ]
                 ]
