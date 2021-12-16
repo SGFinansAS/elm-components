@@ -123,4 +123,16 @@ stories =
                     ]
           , {}
           )
+        , ( "With FlatLink style"
+          , \_ ->
+                Html.div [ css [ children [ everything [ marginBottom (rem 1) ] ] ] ]
+                    [ Button.flatLinkStyle
+                        |> Button.view [] [ text "Click me" ]
+                    , Button.flatLinkStyle
+                        |> Button.view [] [ text "Click me", Icons.rightIcon (Icons.info []) ]
+                    , Button.flatLinkStyle
+                        |> Button.view [] [ Icons.leftIcon (Icons.info []), text "Click me" ]
+                    ]
+          , {}
+          )
         ]
