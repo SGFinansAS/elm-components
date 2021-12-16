@@ -307,6 +307,7 @@ variantStyle variant =
         FlatLinkStyle ->
             batch
                 [ textDecoration underline
+                , fontSize (rem 0.875)
                 , padding (rem 0)
                 , Themes.color Themes.PrimaryColor Colors.blueDeep
                 , border (rem 0)
