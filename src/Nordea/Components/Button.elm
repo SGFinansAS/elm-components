@@ -13,7 +13,62 @@ module Nordea.Components.Button exposing
     , withStyles
     )
 
-import Css exposing (Style, absolute, alignItems, auto, backgroundColor, batch, border, border3, borderBox, borderRadius, borderStyle, boxShadow4, boxSizing, center, column, cursor, disabled, displayFlex, flexDirection, focus, fontFamilies, fontSize, fontWeight, height, hover, int, left, marginTop, none, num, opacity, outline, padding, padding2, paddingRight, pct, pointer, pointerEvents, position, relative, rem, right, solid, start, textAlign, textDecoration, top, transforms, translateX, translateY, transparent, underline, width)
+import Css
+    exposing
+        ( Style
+        , absolute
+        , alignItems
+        , auto
+        , backgroundColor
+        , batch
+        , border
+        , border3
+        , borderBox
+        , borderRadius
+        , borderStyle
+        , boxShadow4
+        , boxSizing
+        , center
+        , column
+        , cursor
+        , disabled
+        , displayFlex
+        , flexDirection
+        , focus
+        , fontFamilies
+        , fontSize
+        , fontWeight
+        , height
+        , hover
+        , int
+        , left
+        , marginTop
+        , none
+        , num
+        , opacity
+        , outline
+        , padding
+        , padding2
+        , paddingRight
+        , pct
+        , pointer
+        , pointerEvents
+        , position
+        , relative
+        , rem
+        , right
+        , solid
+        , start
+        , textAlign
+        , textDecoration
+        , top
+        , transforms
+        , translateX
+        , translateY
+        , transparent
+        , underline
+        , width
+        )
 import Css.Global exposing (children, descendants, everything, withClass)
 import Css.Transitions exposing (easeOut, transition)
 import Html.Styled as Html exposing (Attribute, Html)
