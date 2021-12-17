@@ -134,6 +134,11 @@ view (DropdownFilter options) attributes =
                     , Css.width (Css.pct 100)
                     , Css.top (Css.pct 100)
                     , Css.backgroundColor Colors.white
+                    , Css.borderBottom3 (Css.rem 0.0625) Css.solid Colors.grayMedium
+                    , Css.borderLeft3 (Css.rem 0.0625) Css.solid Colors.grayMedium
+                    , Css.borderRight3 (Css.rem 0.0625) Css.solid Colors.grayMedium
+                    , Css.borderBottomLeftRadius (Css.rem 0.25)
+                    , Css.borderBottomRightRadius (Css.rem 0.25)
                     ]
                 ]
                 (List.concatMap
