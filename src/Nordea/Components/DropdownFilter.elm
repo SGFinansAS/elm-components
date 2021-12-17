@@ -107,16 +107,11 @@ view (DropdownFilter options) attributes =
             [ Css.displayFlex
             , Css.flexDirection Css.column
             , Css.position Css.relative
-            , Css.border3 (Css.rem 0.0625) Css.solid Colors.grayMedium
-            , Css.borderColor Colors.redDark |> styleIf (options.hasError || showHasNoMatch)
-            , Css.borderRadius (Css.rem 0.25)
-            -- , Css.overflow Css.shown
-            , Css.position Css.relative
             ]
          ]
             ++ attributes
         )
-        [ inputSearchView options.hasFocus options.rawInputString options.onInput options.onFocus
+        [ inputSearchView (options.hasError || showHasNoMatch) options.hasFocus options.rawInputString options.onInput options.onFocus
         , if options.isLoading then
             Spinner.small []
 
@@ -165,8 +160,8 @@ view (DropdownFilter options) attributes =
         ]
 
 
-inputSearchView : Bool -> String -> (String -> msg) -> Maybe ( String, Bool -> msg ) -> Html msg
-inputSearchView hasFocus searchString onInput onFocus =
+inputSearchView : Bool -> Bool -> String -> (String -> msg) -> Maybe ( String, Bool -> msg ) -> Html msg
+inputSearchView hasError hasFocus searchString onInput onFocus =
     Html.div
         [ Attr.css
             [ Css.position Css.relative
@@ -179,6 +174,7 @@ inputSearchView hasFocus searchString onInput onFocus =
              , Attr.css
                 [ Css.padding4 (Css.px 4) (Css.px 4) (Css.px 4) (Css.px 16)
                 , Css.border3 (Css.px 1) Css.solid Colors.grayMedium
+                , Css.borderColor Colors.redDark |> styleIf hasError
                 , Css.width (Css.pct 100)
 
                 -- Style
