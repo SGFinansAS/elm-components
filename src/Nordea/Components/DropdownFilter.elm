@@ -183,7 +183,10 @@ inputSearchView hasError hasFocus searchString onInput onFocus =
                     [ Css.outline Css.none
                     , Css.border3 (Css.px 1) Css.solid Colors.blueNordea
                     ]
-                , Css.borderRadius4 (Css.px 4) (Css.px 4) (Css.px 0) (Css.px 0)
+                , if hasFocus then
+                    Css.borderRadius4 (Css.px 4) (Css.px 4) (Css.px 0) (Css.px 0)
+                  else
+                    Css.borderRadius4 (Css.px 4) (Css.px 4) (Css.px 4) (Css.px 4)
                 , Css.boxShadow5 Css.inset (Css.px 0) (Css.px -1) (Css.px 0) Colors.grayLight
                 , Css.height (Css.px 48)
                 --, Css.fontSize (Css.rem 1.0)
