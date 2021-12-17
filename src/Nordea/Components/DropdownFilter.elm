@@ -110,7 +110,8 @@ view (DropdownFilter options) attributes =
             , Css.border3 (Css.rem 0.0625) Css.solid Colors.grayMedium
             , Css.borderColor Colors.redDark |> styleIf (options.hasError || showHasNoMatch)
             , Css.borderRadius (Css.rem 0.25)
-            , Css.overflow Css.hidden
+            -- , Css.overflow Css.shown
+            , Css.position Css.relative
             ]
          ]
             ++ attributes
@@ -127,6 +128,12 @@ view (DropdownFilter options) attributes =
                 [ Attr.css
                     [ Css.listStyle Css.none
                     , Css.padding3 (Css.px 3) (Css.px 1) (Css.px 12)
+                    , Css.position Css.absolute
+                    , Css.zIndex (Css.int 1)
+                    , Css.display Css.block
+                    , Css.width (Css.pct 100)
+                    , Css.top (Css.pct 100)
+                    , Css.backgroundColor Colors.white
                     ]
                 ]
                 (List.concatMap

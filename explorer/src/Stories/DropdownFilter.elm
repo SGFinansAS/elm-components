@@ -88,9 +88,10 @@ stories =
                             (Maybe.withDefault "" model.customModel.searchComponentInput)
                             |> DropdownFilter.withFocusHandling "explorer" model.customModel.searchHasFocus SearchComponentFocus
                 in
-                DropdownFilter.view
-                    defaultOptions
-                    []
+                Html.div [] [
+                  (DropdownFilter.view defaultOptions [])
+                  , Html.text "Some text"
+                ]
           , {}
           )
         , ( "interactive with async"
