@@ -33,8 +33,9 @@ import Css
         , normal
         , rem
         )
+import Css.Global as Css
 import Html.Styled as Html exposing (Attribute, Html)
-import Html.Styled.Attributes exposing (css)
+import Html.Styled.Attributes as Attributes
 import Nordea.Resources.Fonts as Fonts
 
 
@@ -223,7 +224,14 @@ withHtmlTag htmlTag (Headline config) =
 
 view : List (Attribute msg) -> List (Html msg) -> Headline msg -> Html msg
 view attributes children (Headline config) =
-    config.htmlTag (css [ variantStyle config.variant ] :: attributes) children
+    config.htmlTag ([ Attributes.css [ variantStyle config.variant ], Attributes.class "nordea-text" ] ++ attributes)
+        (Css.global
+            [ Css.selector ":where(h1.nordea-text), :where(h2.nordea-text), :where(h3.nordea-text), :where(h4.nordea-text), :where(h5.nordea-text), :where(h6.nordea-text), :where(p.nordea-text)"
+                [ Css.margin Css.zero
+                ]
+            ]
+            :: children
+        )
 
 
 
