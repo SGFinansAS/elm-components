@@ -26,18 +26,16 @@ module Nordea.Components.Text exposing
 import Css
     exposing
         ( Style
-        , fontFamilies
         , fontSize
         , fontWeight
         , int
         , lineHeight
-        , margin
         , normal
         , rem
-        , zero
         )
+import Css.Global as Css
 import Html.Styled as Html exposing (Attribute, Html)
-import Html.Styled.Attributes exposing (css)
+import Html.Styled.Attributes as Attributes
 import Nordea.Resources.Fonts as Fonts
 
 
@@ -226,7 +224,14 @@ withHtmlTag htmlTag (Headline config) =
 
 view : List (Attribute msg) -> List (Html msg) -> Headline msg -> Html msg
 view attributes children (Headline config) =
-    config.htmlTag (css [ variantStyle config.variant ] :: attributes) children
+    config.htmlTag ([ Attributes.css [ variantStyle config.variant ], Attributes.class "nordea-text" ] ++ attributes)
+        (Css.global
+            [ Css.selector ":where(h1.nordea-text), :where(h2.nordea-text), :where(h3.nordea-text), :where(h4.nordea-text), :where(h5.nordea-text), :where(h6.nordea-text), :where(p.nordea-text)"
+                [ Css.margin Css.zero
+                ]
+            ]
+            :: children
+        )
 
 
 
@@ -241,7 +246,6 @@ variantStyle variant =
                 [ Fonts.fromSize 3
                 , fontWeight (int 500)
                 , lineHeight (rem 3.5)
-                , margin zero
                 ]
 
         HeadlineTwo ->
@@ -249,7 +253,6 @@ variantStyle variant =
                 [ Fonts.fromSize 2.5
                 , fontWeight (int 500)
                 , lineHeight (rem 2.75)
-                , margin zero
                 ]
 
         HeadlineThree ->
@@ -257,7 +260,6 @@ variantStyle variant =
                 [ Fonts.fromSize 2
                 , fontWeight (int 500)
                 , lineHeight (rem 2.25)
-                , margin zero
                 ]
 
         HeadlineFourLight ->
@@ -265,7 +267,6 @@ variantStyle variant =
                 [ Fonts.fromSize 1.625
                 , fontWeight normal
                 , lineHeight (rem 2)
-                , margin zero
                 ]
 
         HeadlineFourHeavy ->
@@ -273,7 +274,6 @@ variantStyle variant =
                 [ Fonts.fromSize 1.625
                 , fontWeight (int 500)
                 , lineHeight (rem 2)
-                , margin zero
                 ]
 
         TitleLight ->
@@ -296,7 +296,6 @@ variantStyle variant =
                 [ Fonts.fromSize 1.125
                 , fontWeight (int 500)
                 , lineHeight (rem 1.5)
-                , margin zero
                 ]
 
         BodyTextLight ->
@@ -304,7 +303,6 @@ variantStyle variant =
                 [ Fonts.fromSize 1.125
                 , fontWeight normal
                 , lineHeight (rem 1.5)
-                , margin zero
                 ]
 
         BodyTextSmall ->
@@ -312,7 +310,6 @@ variantStyle variant =
                 [ Fonts.fromSize 1
                 , fontWeight normal
                 , lineHeight (rem 1.5)
-                , margin zero
                 ]
 
         TextHeavy ->

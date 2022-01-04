@@ -15,7 +15,7 @@ stories =
         "Text"
         [ ( "Headlines"
           , \_ ->
-                Html.div [ css [ children [ everything [ marginBottom (rem 2) |> Css.important ] ] ] ]
+                Html.div [ css [ children [ everything [ marginBottom (rem 2) ] ] ] ]
                     [ Text.headlineOne
                         |> Text.view [] [ text "Headline one" ]
                     , Text.headlineOne
