@@ -2,14 +2,15 @@ module Nordea.Components.TextArea exposing
     ( TextArea
     , init
     , view
-    , withPlaceholder
     , withError
     , withOnInput
+    , withPlaceholder
     )
 
 import Css
     exposing
         ( Style
+        , auto
         , backgroundColor
         , border3
         , borderBox
@@ -19,20 +20,19 @@ import Css
         , displayFlex
         , focus
         , fontSize
+        , hidden
+        , lineHeight
+        , maxWidth
         , none
         , outline
+        , overflow
         , padding4
         , relative
         , rem
-        , solid
-        , maxWidth
         , resize
-        , overflow
-        , hidden
-        , auto
-        , lineHeight
+        , solid
         )
-import Html.Styled as Html exposing (Attribute, Html, styled, textarea, text)
+import Html.Styled as Html exposing (Attribute, Html, styled, text, textarea)
 import Html.Styled.Attributes exposing (css, placeholder, value)
 import Html.Styled.Events exposing (onInput)
 import Maybe.Extra as Maybe
@@ -67,17 +67,22 @@ init value =
         , showError = False
         }
 
+
 withOnInput : (String -> msg) -> TextArea msg -> TextArea msg
 withOnInput onInput (TextArea config) =
     TextArea { config | onInput = Just onInput }
+
 
 withPlaceholder : String -> TextArea msg -> TextArea msg
 withPlaceholder placeholder (TextArea config) =
     TextArea { config | placeholder = Just placeholder }
 
+
 withError : Bool -> TextArea msg -> TextArea msg
 withError condition (TextArea config) =
     TextArea { config | showError = condition }
+
+
 
 -- VIEW
 
@@ -89,6 +94,7 @@ view attributes (TextArea config) =
         (getAttributes config ++ attributes)
         []
 
+
 getAttributes : Config msg -> List (Attribute msg)
 getAttributes config =
     Maybe.values
@@ -96,6 +102,8 @@ getAttributes config =
         , config.onInput |> Maybe.map onInput
         , config.placeholder |> Maybe.map placeholder
         ]
+
+
 
 -- STYLES
 
