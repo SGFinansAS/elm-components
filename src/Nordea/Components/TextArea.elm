@@ -4,12 +4,12 @@ module Nordea.Components.TextArea exposing
     , view
     , withPlaceholder
     , withError
+    , withOnInput
     )
 
 import Css
     exposing
         ( Style
-        , absolute
         , backgroundColor
         , border3
         , borderBox
@@ -19,23 +19,12 @@ import Css
         , displayFlex
         , focus
         , fontSize
-        , height
-        , left
         , none
-        , num
-        , opacity
         , outline
         , padding4
-        , paddingLeft
-        , pct
-        , pointerEvents
-        , position
         , relative
         , rem
         , solid
-        , top
-        , transform
-        , translateY
         , maxWidth
         , resize
         , overflow
@@ -43,8 +32,8 @@ import Css
         , auto
         , lineHeight
         )
-import Html.Styled as Html exposing (Attribute, Html, input, styled, textarea, text)
-import Html.Styled.Attributes exposing (css, maxlength, pattern, placeholder, value)
+import Html.Styled as Html exposing (Attribute, Html, styled, textarea, text)
+import Html.Styled.Attributes exposing (css, placeholder, value)
 import Html.Styled.Events exposing (onInput)
 import Maybe.Extra as Maybe
 import Nordea.Html exposing (styleIf)
@@ -77,6 +66,10 @@ init value =
         , placeholder = Nothing
         , showError = False
         }
+
+withOnInput : (String -> msg) -> TextArea msg -> TextArea msg
+withOnInput onInput (TextArea config) =
+    TextArea { config | onInput = Just onInput }
 
 withPlaceholder : String -> TextArea msg -> TextArea msg
 withPlaceholder placeholder (TextArea config) =
@@ -125,7 +118,7 @@ getStyles config =
     , disabled [ backgroundColor Colors.grayWarm ]
     , lineHeight (rem 1.5)
     , resize none
-    , overflow hidden
+    , overflow auto
     , focus
         [ outline none
         , Themes.borderColor Themes.PrimaryColorLight Colors.blueNordea
