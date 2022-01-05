@@ -16,7 +16,7 @@ fromSize size =
                 "Nordea Sans Large"
     in
     Css.batch
-        [ Css.fontFamilies [ fontFamily ]
+        [ Css.fontFamilies [ fontFamily, "sans-serif" ]
         , Css.fontSize (Css.rem size)
         ]
 
