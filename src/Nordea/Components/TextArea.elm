@@ -18,6 +18,7 @@ import Css
         , disabled
         , displayFlex
         , focus
+        , fontFamilies
         , fontSize
         , hidden
         , lineHeight
@@ -37,6 +38,7 @@ import Html.Styled.Events exposing (onInput)
 import Maybe.Extra as Maybe
 import Nordea.Html exposing (styleIf)
 import Nordea.Resources.Colors as Colors
+import Nordea.Resources.Fonts as Fonts
 import Nordea.Resources.Icons as Icons
 import Nordea.Themes as Themes
 
@@ -111,8 +113,12 @@ getStyles config =
 
             else
                 Colors.grayMedium
+
+        fontSizeNum =
+            1
     in
-    [ fontSize (rem 1)
+    [ fontSize (rem fontSizeNum)
+    , Fonts.fromSize fontSizeNum
     , padding4 (rem 0.5) (rem 0.75) (rem 0.5) (rem 0.75)
     , borderRadius (rem 0.25)
     , border3 (rem 0.0625) solid borderColorStyle
