@@ -1,10 +1,10 @@
 module Stories.TextArea exposing (stories)
 
-import Html.Styled.Attributes exposing (disabled)
+import Html.Styled.Attributes exposing (disabled, css)
 import Nordea.Components.TextArea as TextArea
 import UIExplorer exposing (UI)
 import UIExplorer.Styled exposing (styledStoriesOf)
-
+import Css exposing (width, pct, height, rem)
 
 stories : UI a b {}
 stories =
@@ -26,7 +26,7 @@ stories =
         , ( "Filled"
           , \_ ->
                 TextArea.init loremIpsumText
-                    |> TextArea.view []
+                    |> TextArea.view [ css [ width (pct 100), height (rem 10)]]
           , {}
           )
         , ( "Error"

@@ -25,7 +25,7 @@ import Css
         , num
         , opacity
         , outline
-        , padding2
+        , padding4
         , paddingLeft
         , pct
         , pointerEvents
@@ -36,7 +36,12 @@ import Css
         , top
         , transform
         , translateY
-        , width
+        , maxWidth
+        , resize
+        , overflow
+        , hidden
+        , auto
+        , lineHeight
         )
 import Html.Styled as Html exposing (Attribute, Html, input, styled, textarea, text)
 import Html.Styled.Attributes exposing (css, maxlength, pattern, placeholder, value)
@@ -86,7 +91,7 @@ withError condition (TextArea config) =
 
 view : List (Attribute msg) -> TextArea msg -> Html msg
 view attributes (TextArea config) =
-    styled input
+    styled textarea
         (getStyles config)
         (getAttributes config ++ attributes)
         []
@@ -113,13 +118,14 @@ getStyles config =
                 Colors.grayMedium
     in
     [ fontSize (rem 1)
-    , height (rem 3)
-    , padding2 (rem 0.75) (rem 0.75)
+    , padding4 (rem 0.5) (rem 0.75) (rem 0.5) (rem 0.75)
     , borderRadius (rem 0.25)
     , border3 (rem 0.0625) solid borderColorStyle
     , boxSizing borderBox
-    , width (pct 100)
     , disabled [ backgroundColor Colors.grayWarm ]
+    , lineHeight (rem 1.5)
+    , resize none
+    , overflow hidden
     , focus
         [ outline none
         , Themes.borderColor Themes.PrimaryColorLight Colors.blueNordea
