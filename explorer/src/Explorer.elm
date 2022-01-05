@@ -29,6 +29,7 @@ import Stories.Table as Table
 import Stories.Text as Header
 import Stories.TextInput as TextInput
 import Stories.Tooltip as Tooltip
+import Stories.TextArea as TextArea
 import UIExplorer
     exposing
         ( UIExplorerProgram
@@ -89,4 +90,5 @@ main =
         , LottiePlayer.stories
         , InfoPanel.stories
         , InfoLabel.stories
+        , TextArea.stories
         ]
