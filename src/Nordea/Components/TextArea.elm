@@ -113,12 +113,8 @@ getStyles config =
 
             else
                 Colors.grayMedium
-
-        fontSizeNum =
-            1
     in
-    [ fontSize (rem fontSizeNum)
-    , Fonts.fromSize fontSizeNum
+    [ Fonts.fromSize 1
     , padding4 (rem 0.5) (rem 0.75) (rem 0.5) (rem 0.75)
     , borderRadius (rem 0.25)
     , border3 (rem 0.0625) solid borderColorStyle
