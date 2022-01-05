@@ -1,7 +1,7 @@
 module Stories.TextArea exposing (stories)
 
 import Html.Styled.Attributes exposing (disabled)
-import Nordea.Components.TextInput as TextInput
+import Nordea.Components.TextArea as TextArea
 import UIExplorer exposing (UI)
 import UIExplorer.Styled exposing (styledStoriesOf)
 
@@ -12,37 +12,32 @@ stories =
         "TextArea"
         [ ( "Empty"
           , \_ ->
-                TextInput.init "Text"
-                    |> TextInput.view []
+                TextArea.init "Text"
+                    |> TextArea.view []
           , {}
           )
         , ( "Focus"
           , \_ ->
-                TextInput.init "Text"
-                    |> TextInput.view [ disabled True ]
+                TextArea.init "Text"
+                    |> TextArea.view [ disabled True ]
           , {}
           )
         , ( "Filled"
           , \_ ->
-                TextInput.init ""
-                    |> TextInput.withPlaceholder "Text"
-                    |> TextInput.view []
+                TextArea.init ""
+                    |> TextArea.view []
           , {}
           )
         , ( "Error"
           , \_ ->
-                TextInput.init ""
-                    |> TextInput.withPlaceholder "Type something"
-                    |> TextInput.withMaxLength 3
-                    |> TextInput.view []
+                TextArea.init ""
+                    |> TextArea.view []
           , {}
           )
         , ( "Disabled"
           , \_ ->
-                TextInput.init ""
-                    |> TextInput.withPlaceholder "Type something"
-                    |> TextInput.withPattern "\\d*"
-                    |> TextInput.view []
+                TextArea.init ""
+                    |> TextArea.view []
           , {}
           )
         ]
