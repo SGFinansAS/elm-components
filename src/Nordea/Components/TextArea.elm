@@ -3,7 +3,6 @@ module Nordea.Components.TextArea exposing
     , init
     , view
     , withError
-    , withOnInput
     , withPlaceholder
     )
 
@@ -33,7 +32,7 @@ import Css
         , solid
         )
 import Html.Styled as Html exposing (Attribute, Html, styled, text, textarea)
-import Html.Styled.Attributes exposing (css, placeholder, value)
+import Html.Styled.Attributes exposing (css, pattern, placeholder, value)
 import Html.Styled.Events exposing (onInput)
 import Maybe.Extra as Maybe
 import Nordea.Html exposing (styleIf)
@@ -66,11 +65,6 @@ init value =
         , placeholder = Nothing
         , showError = False
         }
-
-
-withOnInput : (String -> msg) -> TextArea msg -> TextArea msg
-withOnInput onInput (TextArea config) =
-    TextArea { config | onInput = Just onInput }
 
 
 withPlaceholder : String -> TextArea msg -> TextArea msg
