@@ -2,8 +2,8 @@ module Nordea.Components.TextArea exposing
     ( TextArea
     , init
     , view
-    , withOnInput
     , withError
+    , withOnInput
     , withPlaceholder
     )
 
@@ -69,9 +69,11 @@ init value =
         , showError = False
         }
 
+
 withOnInput : (String -> msg) -> TextArea msg -> TextArea msg
 withOnInput onInput (TextArea config) =
     TextArea { config | onInput = Just onInput }
+
 
 withPlaceholder : String -> TextArea msg -> TextArea msg
 withPlaceholder placeholder (TextArea config) =
