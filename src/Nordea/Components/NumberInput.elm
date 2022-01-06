@@ -22,10 +22,14 @@ import Css
         , focus
         , fontSize
         , height
+        , margin
         , none
         , outline
         , padding2
         , pct
+        , property
+        , pseudoElement
+        , px
         , rem
         , right
         , solid
@@ -143,6 +147,9 @@ getStyles config =
     in
     [ fontSize (rem 1)
     , height (rem 3)
+    , pseudoElement "-webkit-outer-spin-button" [ property "-webkit-appearance" "none", margin (px 0) ]
+    , pseudoElement "-webkit-inner-spin-button" [ property "-webkit-appearance" "none", margin (px 0) ]
+    , property "-moz-appearance" "textfield"
     , textAlign right
     , padding2 (rem 0.75) (rem 0.75)
     , borderRadius (rem 0.25)
