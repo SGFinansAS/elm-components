@@ -27,7 +27,7 @@ import Css
         , none
         , outline
         , overflow
-        , padding4
+        , padding2
         , relative
         , rem
         , resize
@@ -121,7 +121,7 @@ getStyles config =
                 Colors.grayMedium
     in
     [ Fonts.fromSize 1
-    , padding4 (rem 0.5) (rem 0.75) (rem 0.5) (rem 0.75)
+    , padding2 (rem 0.5) (rem 0.75)
     , borderRadius (rem 0.25)
     , border3 (rem 0.0625) solid borderColorStyle
     , boxSizing borderBox
