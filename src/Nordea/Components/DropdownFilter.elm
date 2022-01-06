@@ -127,6 +127,8 @@ view (DropdownFilter options) attributes =
                 [ Attr.css
                     [ Css.listStyle Css.none
                     , Css.padding3 (Css.px 3) (Css.px 1) (Css.px 12)
+                    , Css.maxHeight (Css.rem 16.75)
+                    , Css.overflowY Css.auto
                     ]
                 ]
                 (List.concatMap
