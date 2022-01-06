@@ -196,16 +196,19 @@ inputSearchView hasFocus searchString onInput onFocus =
                     , Css.right (Css.rem 0.75)
                     , Css.width (Css.rem 1.125) |> Css.important
                     , Css.height (Css.rem 1.125)
-                    , Css.pointerEvents Css.none
+                    , Css.cursor Css.pointer
                     , Css.color Css.inherit
                     ]
                 ]
           in
-          if hasFocus then
-            Icon.chevronUp attributes
-
+          if String.length searchString > 0 then
+              Icon.cross attributes
           else
-            Icon.chevronDown attributes
+            if hasFocus then
+              Icon.chevronUp attributes
+
+            else
+              Icon.chevronDown attributes
         ]
 
 
