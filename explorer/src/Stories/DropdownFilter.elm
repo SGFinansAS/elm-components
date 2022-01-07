@@ -5,7 +5,8 @@ import Html.Styled as Html
 import Nordea.Components.DropdownFilter as DropdownFilter
 import UIExplorer exposing (UI)
 import UIExplorer.Styled exposing (styledStoriesOf)
-
+import Css
+import Html.Styled.Attributes exposing (css)
 
 financingVariantToString : FinancingVariant -> String
 financingVariantToString financingVariant =
@@ -31,11 +32,16 @@ stories =
               , items =
                     [ { value = Loan, text = financingVariantToString Loan }
                     , { value = HirePurchase, text = financingVariantToString HirePurchase }
+                    , { value = HirePurchase, text = financingVariantToString HirePurchase }
+                    , { value = HirePurchase, text = financingVariantToString HirePurchase }
+
                     ]
               }
             , { header = "Oor this"
               , items =
                     [ { value = Leasing, text = financingVariantToString Leasing }
+                    , { value = Rent, text = financingVariantToString Rent }
+                    , { value = Rent, text = financingVariantToString Rent }
                     , { value = Rent, text = financingVariantToString Rent }
                     ]
               }
@@ -52,6 +58,7 @@ stories =
                             SearchComponentSelected
                             searchResult
                             (Maybe.withDefault "" model.customModel.searchComponentInput)
+                            OnCross
                 in
                 DropdownFilter.view
                     defaultOptions
@@ -70,6 +77,7 @@ stories =
                             SearchComponentSelected
                             removedGroups
                             (Maybe.withDefault "" model.customModel.searchComponentInput)
+                            OnCross
                             |> DropdownFilter.withFocusState True
                 in
                 DropdownFilter.view
@@ -86,6 +94,7 @@ stories =
                             SearchComponentSelected
                             searchResult
                             (Maybe.withDefault "" model.customModel.searchComponentInput)
+                            OnCross
                             |> DropdownFilter.withFocusHandling "explorer" model.customModel.searchHasFocus SearchComponentFocus
                 in
                 DropdownFilter.view
@@ -98,4 +107,5 @@ stories =
                 Html.text "TODO debouncer and RemoteData"
           , {}
           )
+        
         ]
