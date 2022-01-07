@@ -27,7 +27,7 @@ type Msg
     | SearchComponentInput String
     | SearchComponentSelected (Item FinancingVariant)
     | SearchComponentFocus Bool
-    | OnCross
+    | OnClickClearSearchComponentInput
     | NoOp
     | ToggleModal
     | ToggleFeatureBox
@@ -75,7 +75,7 @@ update msg config =
         SearchComponentFocus value ->
             { config | searchHasFocus = value }
 
-        OnCross ->
+        OnClickClearSearchComponentInput ->
             let
                 emptySearchString = case config.searchComponentInput of
                     Just string ->

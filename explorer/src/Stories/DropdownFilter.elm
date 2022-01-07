@@ -58,7 +58,7 @@ stories =
                             SearchComponentSelected
                             searchResult
                             (Maybe.withDefault "" model.customModel.searchComponentInput)
-                            OnCross
+                            OnClickClearSearchComponentInput
                 in
                 DropdownFilter.view
                     defaultOptions
@@ -77,7 +77,7 @@ stories =
                             SearchComponentSelected
                             removedGroups
                             (Maybe.withDefault "" model.customModel.searchComponentInput)
-                            OnCross
+                            OnClickClearSearchComponentInput
                             |> DropdownFilter.withFocusState True
                 in
                 DropdownFilter.view
@@ -94,7 +94,7 @@ stories =
                             SearchComponentSelected
                             searchResult
                             (Maybe.withDefault "" model.customModel.searchComponentInput)
-                            OnCross
+                            OnClickClearSearchComponentInput
                             |> DropdownFilter.withFocusHandling "explorer" model.customModel.searchHasFocus SearchComponentFocus
                 in
                 DropdownFilter.view
@@ -107,5 +107,5 @@ stories =
                 Html.text "TODO debouncer and RemoteData"
           , {}
           )
-        
+
         ]
