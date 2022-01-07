@@ -78,12 +78,7 @@ update msg config =
         OnClickClearSearchComponentInput ->
             let
                 emptySearchString =
-                    case config.searchComponentInput of
-                        Just string ->
-                            Just ""
-
-                        Nothing ->
-                            Nothing
+                    config.searchComponentInput |> Maybe.map (\_ -> "")
             in
             { config | searchComponentInput = emptySearchString }
 
