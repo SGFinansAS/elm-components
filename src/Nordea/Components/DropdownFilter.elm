@@ -72,7 +72,6 @@ init onSearchHandler onSelectedValue searchItems rawInputString onClickClearInpu
         }
 
 
-
 view : DropdownFilter a msg -> List (Html.Attribute msg) -> Html msg
 view (DropdownFilter options) attributes =
     let
@@ -184,6 +183,7 @@ inputSearchView hasFocus searchString onInput onFocus onClickClearInput =
                 , Css.boxShadow5 Css.inset (Css.px 0) (Css.px -1) (Css.px 0) Colors.grayLight
                 , Css.height (Css.px 48)
                 , Css.paddingRight (Css.rem 2)
+
                 --, Css.fontSize (Css.rem 1.0)
                 --, Css.lineHeight (Css.rem 1.4)
                 ]
@@ -206,13 +206,13 @@ inputSearchView hasFocus searchString onInput onFocus onClickClearInput =
                 ]
           in
           if String.length searchString > 0 then
-              Icon.cross (attributes ++ [Events.onClick onClickClearInput])
-          else
-            if hasFocus then
-              Icon.chevronUp attributes
+            Icon.cross (attributes ++ [ Events.onClick onClickClearInput ])
 
-            else
-              Icon.chevronDown attributes
+          else if hasFocus then
+            Icon.chevronUp attributes
+
+          else
+            Icon.chevronDown attributes
         ]
 
 

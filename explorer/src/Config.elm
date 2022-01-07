@@ -18,7 +18,7 @@ type alias Config =
     , searchComponentInput : Maybe String
     , searchHasFocus : Bool
     , isFeatureBoxOpen : Bool
-        , isProgressBarCompleted : Bool
+    , isProgressBarCompleted : Bool
     }
 
 
@@ -77,14 +77,14 @@ update msg config =
 
         OnClickClearSearchComponentInput ->
             let
-                emptySearchString = case config.searchComponentInput of
-                    Just string ->
-                        Just ""
+                emptySearchString =
+                    case config.searchComponentInput of
+                        Just string ->
+                            Just ""
 
-                    Nothing ->
-                        Nothing
+                        Nothing ->
+                            Nothing
             in
-
             { config | searchComponentInput = emptySearchString }
 
         NoOp ->

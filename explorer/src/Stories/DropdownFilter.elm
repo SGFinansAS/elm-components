@@ -1,12 +1,13 @@
 module Stories.DropdownFilter exposing (stories)
 
 import Config exposing (Config, FinancingVariant(..), Msg(..))
+import Css
 import Html.Styled as Html
+import Html.Styled.Attributes exposing (css)
 import Nordea.Components.DropdownFilter as DropdownFilter
 import UIExplorer exposing (UI)
 import UIExplorer.Styled exposing (styledStoriesOf)
-import Css
-import Html.Styled.Attributes exposing (css)
+
 
 financingVariantToString : FinancingVariant -> String
 financingVariantToString financingVariant =
@@ -34,7 +35,6 @@ stories =
                     , { value = HirePurchase, text = financingVariantToString HirePurchase }
                     , { value = HirePurchase, text = financingVariantToString HirePurchase }
                     , { value = HirePurchase, text = financingVariantToString HirePurchase }
-
                     ]
               }
             , { header = "Oor this"
@@ -107,5 +107,4 @@ stories =
                 Html.text "TODO debouncer and RemoteData"
           , {}
           )
-
         ]
