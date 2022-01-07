@@ -37,7 +37,7 @@ type alias DropdownFilterProperties a msg =
     { searchItems : List (ItemGroup a)
     , onInput : String -> msg
     , onSelectedValue : Item a -> msg
-    , onCross : msg
+    , onClickClearInput : msg
     , rawInputString : String
     , filterValues : String -> String -> Bool
     , onFocus : Maybe ( String, Bool -> msg )
@@ -57,12 +57,12 @@ type DropdownFilter a msg
 
 -}
 init : (String -> msg) -> (Item a -> msg) -> List (ItemGroup a) -> String -> msg -> DropdownFilter a msg
-init onSearchHandler onSelectedValue searchItems rawInputString onCross =
+init onSearchHandler onSelectedValue searchItems rawInputString onClickClearInput =
     DropdownFilter
         { searchItems = searchItems
         , onInput = onSearchHandler
         , onSelectedValue = onSelectedValue
-        , onCross = onCross
+        , onClickClearInput = onClickClearInput
         , filterValues = \searchString -> \value -> String.contains (String.toLower searchString) (String.toLower value)
         , rawInputString = rawInputString
         , onFocus = Nothing
@@ -118,7 +118,7 @@ view (DropdownFilter options) attributes =
          ]
             ++ attributes
         )
-        [ inputSearchView options.hasFocus options.rawInputString options.onInput options.onFocus options.onCross
+        [ inputSearchView options.hasFocus options.rawInputString options.onInput options.onFocus options.onClickClearInput
         , if options.isLoading then
             Spinner.small []
 
@@ -159,7 +159,7 @@ view (DropdownFilter options) attributes =
 
 
 inputSearchView : Bool -> String -> (String -> msg) -> Maybe ( String, Bool -> msg ) -> msg -> Html msg
-inputSearchView hasFocus searchString onInput onFocus onCross =
+inputSearchView hasFocus searchString onInput onFocus onClickClearInput =
     Html.div
         [ Attr.css
             [ Css.position Css.relative
@@ -206,7 +206,7 @@ inputSearchView hasFocus searchString onInput onFocus onCross =
                 ]
           in
           if String.length searchString > 0 then
-              Icon.cross (attributes ++ [Events.onClick onCross])
+              Icon.cross (attributes ++ [Events.onClick onClickClearInput])
           else
             if hasFocus then
               Icon.chevronUp attributes
