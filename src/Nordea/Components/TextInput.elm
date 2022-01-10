@@ -19,6 +19,7 @@ import Css
         , borderBox
         , borderRadius
         , boxSizing
+        , color
         , disabled
         , displayFlex
         , focus
@@ -121,15 +122,25 @@ withSearchIcon condition (TextInput config) =
 view : List (Attribute msg) -> TextInput msg -> Html msg
 view attributes (TextInput config) =
     if config.hasSearchIcon then
+        let
+            iconColor =
+                if config.showError then
+                    Colors.redDark
+
+                else
+                    Colors.blueNordea
+        in
         Html.div
             (css [ displayFlex, position relative ]
                 :: attributes
             )
             [ Icons.search
                 [ css
-                    [ width (rem 1.4)
+                    [ width (rem 1)
+                    , height (rem 1)
                     , opacity (num 0.5)
                     , position absolute
+                    , color iconColor
                     , left (rem 0.7)
                     , top (pct 50)
                     , transform (translateY (pct -50))
@@ -182,7 +193,7 @@ getStyles config =
     , boxSizing borderBox
     , width (pct 100)
     , disabled [ backgroundColor Colors.grayWarm ]
-    , paddingLeft (rem 2.5) |> styleIf config.hasSearchIcon
+    , paddingLeft (rem 2) |> styleIf config.hasSearchIcon
     , focus
         [ outline none
         , Themes.borderColor Themes.PrimaryColorLight Colors.blueNordea
