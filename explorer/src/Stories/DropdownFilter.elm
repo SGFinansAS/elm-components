@@ -1,7 +1,9 @@
 module Stories.DropdownFilter exposing (stories)
 
 import Config exposing (Config, FinancingVariant(..), Msg(..))
+import Css
 import Html.Styled as Html
+import Html.Styled.Attributes exposing (css)
 import Nordea.Components.DropdownFilter as DropdownFilter
 import UIExplorer exposing (UI)
 import UIExplorer.Styled exposing (styledStoriesOf)
@@ -31,11 +33,15 @@ stories =
               , items =
                     [ { value = Loan, text = financingVariantToString Loan }
                     , { value = HirePurchase, text = financingVariantToString HirePurchase }
+                    , { value = HirePurchase, text = financingVariantToString HirePurchase }
+                    , { value = HirePurchase, text = financingVariantToString HirePurchase }
                     ]
               }
             , { header = "Oor this"
               , items =
                     [ { value = Leasing, text = financingVariantToString Leasing }
+                    , { value = Rent, text = financingVariantToString Rent }
+                    , { value = Rent, text = financingVariantToString Rent }
                     , { value = Rent, text = financingVariantToString Rent }
                     ]
               }
@@ -52,6 +58,7 @@ stories =
                             SearchComponentSelected
                             searchResult
                             (Maybe.withDefault "" model.customModel.searchComponentInput)
+                            OnClickClearSearchComponentInput
                 in
                 DropdownFilter.view
                     defaultOptions
@@ -70,6 +77,7 @@ stories =
                             SearchComponentSelected
                             removedGroups
                             (Maybe.withDefault "" model.customModel.searchComponentInput)
+                            OnClickClearSearchComponentInput
                             |> DropdownFilter.withFocusState True
                 in
                 DropdownFilter.view
@@ -86,6 +94,7 @@ stories =
                             SearchComponentSelected
                             searchResult
                             (Maybe.withDefault "" model.customModel.searchComponentInput)
+                            OnClickClearSearchComponentInput
                             |> DropdownFilter.withFocusHandling "explorer" model.customModel.searchHasFocus SearchComponentFocus
                 in
                 Html.div [] [

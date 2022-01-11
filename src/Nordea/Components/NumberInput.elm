@@ -19,6 +19,7 @@ import Css
         , borderRadius
         , boxSizing
         , disabled
+        , display
         , focus
         , fontSize
         , height
@@ -26,8 +27,13 @@ import Css
         , outline
         , padding2
         , pct
+        , property
+        , pseudoElement
+        , px
         , rem
+        , right
         , solid
+        , textAlign
         , width
         )
 import Html.Styled exposing (Attribute, Html, input, styled)
@@ -141,6 +147,10 @@ getStyles config =
     in
     [ fontSize (rem 1)
     , height (rem 3)
+    , pseudoElement "-webkit-outer-spin-button" [ display none ]
+    , pseudoElement "-webkit-inner-spin-button" [ display none ]
+    , property "-moz-appearance" "textfield"
+    , textAlign right
     , padding2 (rem 0.75) (rem 0.75)
     , borderRadius (rem 0.25)
     , border3 (rem 0.0625) solid borderColorStyle

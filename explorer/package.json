@@ -2,7 +2,8 @@
   "name": "explorer",
   "scripts": {
     "start": "elm-live src/Explorer.elm --open --dir=public --start-page=index.html -- --output=public/explorer.js --debug",
-    "build": "elm make src/Explorer.elm --output=public/explorer.js && shx cp -r ../static/fonts ./public"
+    "build": "elm make src/Explorer.elm --output=public/explorer.js && shx cp -r ../static/fonts ./public",
+    "link-fonts": "ln -s ../../static/fonts ./public/fonts"
   },
   "devDependencies": {
     "elm": "^0.19.1-5",

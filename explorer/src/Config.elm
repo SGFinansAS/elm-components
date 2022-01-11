@@ -18,7 +18,7 @@ type alias Config =
     , searchComponentInput : Maybe String
     , searchHasFocus : Bool
     , isFeatureBoxOpen : Bool
-        , isProgressBarCompleted : Bool
+    , isProgressBarCompleted : Bool
     }
 
 
@@ -27,6 +27,7 @@ type Msg
     | SearchComponentInput String
     | SearchComponentSelected (Item FinancingVariant)
     | SearchComponentFocus Bool
+    | OnClickClearSearchComponentInput
     | NoOp
     | ToggleModal
     | ToggleFeatureBox
@@ -73,6 +74,13 @@ update msg config =
 
         SearchComponentFocus value ->
             { config | searchHasFocus = value }
+
+        OnClickClearSearchComponentInput ->
+            let
+                emptySearchString =
+                    config.searchComponentInput |> Maybe.map (\_ -> "")
+            in
+            { config | searchComponentInput = emptySearchString }
 
         NoOp ->
             config
