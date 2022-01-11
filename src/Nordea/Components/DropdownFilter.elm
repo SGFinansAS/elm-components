@@ -37,6 +37,7 @@ type alias DropdownFilterProperties a msg =
     { searchItems : List (ItemGroup a)
     , onInput : String -> msg
     , onSelectedValue : Item a -> msg
+    , onClickClearInput : msg
     , rawInputString : String
     , filterValues : String -> String -> Bool
     , onFocus : Maybe ( String, Bool -> msg )
@@ -55,12 +56,13 @@ type DropdownFilter a msg
   - TODO handle isSearching - use with RemoteData to show that new data is loading
 
 -}
-init : (String -> msg) -> (Item a -> msg) -> List (ItemGroup a) -> String -> DropdownFilter a msg
-init onSearchHandler onSelectedValue searchItems rawInputString =
+init : (String -> msg) -> (Item a -> msg) -> List (ItemGroup a) -> String -> msg -> DropdownFilter a msg
+init onSearchHandler onSelectedValue searchItems rawInputString onClickClearInput =
     DropdownFilter
         { searchItems = searchItems
         , onInput = onSearchHandler
         , onSelectedValue = onSelectedValue
+        , onClickClearInput = onClickClearInput
         , filterValues = \searchString -> \value -> String.contains (String.toLower searchString) (String.toLower value)
         , rawInputString = rawInputString
         , onFocus = Nothing
@@ -115,7 +117,7 @@ view (DropdownFilter options) attributes =
          ]
             ++ attributes
         )
-        [ inputSearchView options.hasFocus options.rawInputString options.onInput options.onFocus
+        [ inputSearchView options.hasFocus options.rawInputString options.onInput options.onFocus options.onClickClearInput
         , if options.isLoading then
             Spinner.small []
 
@@ -127,6 +129,8 @@ view (DropdownFilter options) attributes =
                 [ Attr.css
                     [ Css.listStyle Css.none
                     , Css.padding3 (Css.px 3) (Css.px 1) (Css.px 12)
+                    , Css.maxHeight (Css.rem 16.75)
+                    , Css.overflowY Css.auto
                     ]
                 ]
                 (List.concatMap
@@ -153,8 +157,8 @@ view (DropdownFilter options) attributes =
         ]
 
 
-inputSearchView : Bool -> String -> (String -> msg) -> Maybe ( String, Bool -> msg ) -> Html msg
-inputSearchView hasFocus searchString onInput onFocus =
+inputSearchView : Bool -> String -> (String -> msg) -> Maybe ( String, Bool -> msg ) -> msg -> Html msg
+inputSearchView hasFocus searchString onInput onFocus onClickClearInput =
     Html.div
         [ Attr.css
             [ Css.position Css.relative
@@ -178,6 +182,8 @@ inputSearchView hasFocus searchString onInput onFocus =
                 , Css.borderRadius4 (Css.px 4) (Css.px 4) (Css.px 0) (Css.px 0)
                 , Css.boxShadow5 Css.inset (Css.px 0) (Css.px -1) (Css.px 0) Colors.grayLight
                 , Css.height (Css.px 48)
+                , Css.paddingRight (Css.rem 2)
+
                 --, Css.fontSize (Css.rem 1.0)
                 --, Css.lineHeight (Css.rem 1.4)
                 ]
@@ -194,12 +200,15 @@ inputSearchView hasFocus searchString onInput onFocus =
                     , Css.right (Css.rem 0.75)
                     , Css.width (Css.rem 1.125) |> Css.important
                     , Css.height (Css.rem 1.125)
-                    , Css.pointerEvents Css.none
+                    , Css.cursor Css.pointer
                     , Css.color Css.inherit
                     ]
                 ]
           in
-          if hasFocus then
+          if String.length searchString > 0 then
+            Icon.cross (attributes ++ [ Events.onClick onClickClearInput ])
+
+          else if hasFocus then
             Icon.chevronUp attributes
 
           else
