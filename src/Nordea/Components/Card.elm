@@ -31,7 +31,7 @@ view attrs children (Card config) =
     let
         cardStyle =
             [ borderRadius (rem 0.5)
-            , padding (rem 2)
+            , padding (rem 1.5)
             , textAlign left
             , displayFlex
             , flexDirection column
@@ -64,29 +64,11 @@ cardTitle title =
                 , borderStyle none
                 , height (rem 0.0625)
                 , backgroundColor Colors.grayCool
-                , margin2 (rem 1) (rem -2)
+                , margin2 (rem 1) (rem -1.5)
                 ]
             ]
             []
         ]
-
-
-cardContentContainer : List (Attribute msg) -> Bool -> List (Html msg) -> Html msg
-cardContentContainer attrs hasTitle children =
-    Html.div
-        (css
-            [ if hasTitle then
-                padding4 (rem 1) (rem 2) (rem 2) (rem 2)
-
-              else
-                padding (rem 2)
-            , textAlign left
-            , displayFlex
-            , flexDirection column
-            ]
-            :: attrs
-        )
-        children
 
 
 withTitle : String -> Card msg -> Card msg
