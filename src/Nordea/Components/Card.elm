@@ -31,7 +31,7 @@ view attrs children (Card config) =
     let
         cardStyle =
             [ borderRadius (rem 0.5)
-            , padding (rem 2)
+            , padding (rem 1.5)
             , textAlign left
             , displayFlex
             , flexDirection column
