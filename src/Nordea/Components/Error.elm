@@ -98,8 +98,10 @@ view attributes children (Error config) =
 viewActionForInternalServerError : ErrorConfig -> Html msg
 viewActionForInternalServerError config =
     let
-        errorActionText =
-            texts.internalServerError.action |> config.translate
+        ( errorActionText, customerServiceEmail ) =
+            ( texts.internalServerError.action |> config.translate
+            , texts.customerServiceEmail |> config.translate
+            )
     in
     Text.bodyTextLight
         |> Text.view
@@ -112,12 +114,12 @@ viewActionForInternalServerError config =
             [ Html.text errorActionText
             , FlatLink.default
                 |> FlatLink.view
-                    [ href "mailto: kundeservice.nfe@nordea.com"
+                    [ href (String.append "mailto:" customerServiceEmail)
                     , Attributes.css
                         [ Css.display Css.inlineBlock
                         ]
                     ]
-                    [ Html.text "kundeservice.nfe@nordea.com." ]
+                    [ Html.text customerServiceEmail ]
             ]
 
 
@@ -145,6 +147,11 @@ texts =
             , se = "Anledningen till att du har kommit hit kan vara att det är något fel på länken, eller att sidan har raderats."
             , dk = "Grunden til at du er kommet hertil kan være, at der er noget galt med linket, eller at siden er blevet slettet."
             }
+        }
+    , customerServiceEmail =
+        { no = "kundeservice.no@nordeafinance.com"
+        , se = "eq-kundeportal.se@nordeafinance.com"
+        , dk = "kundeservice.dk@nordeafinance.com"
         }
     }
 
