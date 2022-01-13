@@ -98,11 +98,10 @@ view attributes children (Error config) =
 viewActionForInternalServerError : ErrorConfig -> Html msg
 viewActionForInternalServerError config =
     let
-        errorActionText =
-            texts.internalServerError.action |> config.translate
-
-        customerServiceEmail =
-            texts.customerServiceEmail |> config.translate
+        ( errorActionText, customerServiceEmail ) =
+            ( texts.internalServerError.action |> config.translate
+            , texts.customerServiceEmail |> config.translate
+            )
     in
     Text.bodyTextLight
         |> Text.view
