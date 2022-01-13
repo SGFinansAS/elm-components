@@ -114,7 +114,7 @@ viewActionForInternalServerError config =
             [ Html.text errorActionText
             , FlatLink.default
                 |> FlatLink.view
-                    [ href (String.append "mailto" customerServiceEmail)
+                    [ href (String.append "mailto:" customerServiceEmail)
                     , Attributes.css
                         [ Css.display Css.inlineBlock
                         ]
