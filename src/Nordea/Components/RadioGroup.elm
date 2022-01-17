@@ -26,7 +26,7 @@ init label =
 
 view : List (Attribute msg) -> List (Html msg) -> RadioGroup -> Html msg
 view attrs contents (RadioGroup properties) =
-    Html.fieldset attrs
+    Html.fieldset [ css [ Css.borderStyle Css.none, Css.padding (rem 0) ] ]
         ([ Html.legend [ css [ marginBottom (rem 0.5) ] ] [ Html.text properties.label ]
          , Html.div [ css [ displayFlex, flexWrap wrap, flexDirection row, Css.property "gap" "1rem" ] ] contents
          ]
