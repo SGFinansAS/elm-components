@@ -109,15 +109,11 @@ view (DropdownFilter options) attributes =
             [ Css.displayFlex
             , Css.flexDirection Css.column
             , Css.position Css.relative
-            , Css.border3 (Css.rem 0.0625) Css.solid Colors.grayMedium
-            , Css.borderColor Colors.redDark |> styleIf (options.hasError || showHasNoMatch)
-            , Css.borderRadius (Css.rem 0.25)
-            , Css.overflow Css.hidden
             ]
          ]
             ++ attributes
         )
-        [ inputSearchView options.hasFocus options.rawInputString options.onInput options.onFocus options.onClickClearInput
+        [ inputSearchView (options.hasError || showHasNoMatch) options.hasFocus options.rawInputString options.onInput options.onFocus options.onClickClearInput
         , if options.isLoading then
             Spinner.small []
 
@@ -131,6 +127,17 @@ view (DropdownFilter options) attributes =
                     , Css.padding3 (Css.px 3) (Css.px 1) (Css.px 12)
                     , Css.maxHeight (Css.rem 16.75)
                     , Css.overflowY Css.auto
+                    , Css.position Css.absolute
+                    , Css.zIndex (Css.int 1)
+                    , Css.display Css.block
+                    , Css.width (Css.pct 100)
+                    , Css.top (Css.pct 100)
+                    , Css.backgroundColor Colors.white
+                    , Css.borderBottom3 (Css.rem 0.0625) Css.solid Colors.grayMedium
+                    , Css.borderLeft3 (Css.rem 0.0625) Css.solid Colors.grayMedium
+                    , Css.borderRight3 (Css.rem 0.0625) Css.solid Colors.grayMedium
+                    , Css.borderBottomLeftRadius (Css.rem 0.25)
+                    , Css.borderBottomRightRadius (Css.rem 0.25)
                     ]
                 ]
                 (List.concatMap
@@ -157,8 +164,8 @@ view (DropdownFilter options) attributes =
         ]
 
 
-inputSearchView : Bool -> String -> (String -> msg) -> Maybe ( String, Bool -> msg ) -> msg -> Html msg
-inputSearchView hasFocus searchString onInput onFocus onClickClearInput =
+inputSearchView : Bool -> Bool -> String -> (String -> msg) -> Maybe ( String, Bool -> msg ) -> msg -> Html msg
+inputSearchView hasError hasFocus searchString onInput onFocus onClickClearInput =
     Html.div
         [ Attr.css
             [ Css.position Css.relative
@@ -171,6 +178,7 @@ inputSearchView hasFocus searchString onInput onFocus onClickClearInput =
              , Attr.css
                 [ Css.padding4 (Css.px 4) (Css.px 4) (Css.px 4) (Css.px 16)
                 , Css.border3 (Css.px 1) Css.solid Colors.grayMedium
+                , Css.borderColor Colors.redDark |> styleIf hasError
                 , Css.width (Css.pct 100)
 
                 -- Style
@@ -179,7 +187,10 @@ inputSearchView hasFocus searchString onInput onFocus onClickClearInput =
                     [ Css.outline Css.none
                     , Css.border3 (Css.px 1) Css.solid Colors.blueNordea
                     ]
-                , Css.borderRadius4 (Css.px 4) (Css.px 4) (Css.px 0) (Css.px 0)
+                , if hasFocus then
+                    Css.borderRadius4 (Css.px 4) (Css.px 4) (Css.px 0) (Css.px 0)
+                  else
+                    Css.borderRadius4 (Css.px 4) (Css.px 4) (Css.px 4) (Css.px 4)
                 , Css.boxShadow5 Css.inset (Css.px 0) (Css.px -1) (Css.px 0) Colors.grayLight
                 , Css.height (Css.px 48)
                 , Css.paddingRight (Css.rem 2)
