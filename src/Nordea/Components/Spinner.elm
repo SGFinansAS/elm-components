@@ -1,4 +1,4 @@
-module Nordea.Components.Spinner exposing (small)
+module Nordea.Components.Spinner exposing (custom, small)
 
 import Css exposing (Style, color, height, rem, width)
 import Html.Styled exposing (Attribute, Html, div)
@@ -11,3 +11,8 @@ import Nordea.Themes as Themes
 small : List (Attribute msg) -> Html msg
 small attrs =
     Icons.spinner (css [ width (rem 3.75), Themes.color Themes.PrimaryColor Colors.blueDeep ] :: attrs)
+
+
+custom : List (Attribute msg) -> Html msg
+custom attrs =
+    Icons.spinner (css [ Themes.color Themes.PrimaryColor Colors.blueDeep ] :: attrs)
