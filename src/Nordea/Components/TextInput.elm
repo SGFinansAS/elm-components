@@ -45,7 +45,7 @@ import Css
         )
 import Html.Styled as Html exposing (Attribute, Html, input, styled)
 import Html.Styled.Attributes exposing (css, maxlength, pattern, placeholder, value)
-import Html.Styled.Events exposing (onInput)
+import Html.Styled.Events exposing (onInput, onBlur)
 import Maybe.Extra as Maybe
 import Nordea.Html exposing (styleIf)
 import Nordea.Resources.Colors as Colors
@@ -65,6 +65,7 @@ type alias Config msg =
     , maxLength : Maybe Int
     , pattern : Maybe String
     , hasSearchIcon : Bool
+    , onBlur: Maybe msg
     }
 
 
@@ -82,6 +83,7 @@ init value =
         , maxLength = Nothing
         , pattern = Nothing
         , hasSearchIcon = False
+        , onBlur = Nothing
         }
 
 
@@ -115,6 +117,9 @@ withSearchIcon condition (TextInput config) =
     TextInput { config | hasSearchIcon = condition }
 
 
+withOnBlur : msg -> TextInput msg -> TextInput msg
+withOnBlur msg (TextInput config) =
+    TextInput { config | onBlur = Just msg }
 
 -- VIEW
 
@@ -168,8 +173,8 @@ getAttributes config =
         , config.placeholder |> Maybe.map placeholder
         , config.maxLength |> Maybe.map maxlength
         , config.pattern |> Maybe.map pattern
+        , config.onBlur |> Maybe.map onBlur
         ]
-
 
 
 -- STYLES
