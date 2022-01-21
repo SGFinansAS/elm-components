@@ -43,6 +43,13 @@ stories =
                     |> TextArea.view [ disabled True ]
           , {}
           )
+        , ( "Max length 3"
+          , \_ ->
+                TextArea.init ""
+                    |> TextArea.withMaxLength 3
+                    |> TextArea.view[]
+          , {}
+          )
         ]
 
 
