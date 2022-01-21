@@ -185,7 +185,7 @@ greenDark =
 
 red : Color
 red =
-    hex "#3FC6161"
+    hex "#FC6161"
 
 
 redDark : Color
