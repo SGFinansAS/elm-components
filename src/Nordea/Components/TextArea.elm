@@ -5,6 +5,8 @@ module Nordea.Components.TextArea exposing
     , withError
     , withOnInput
     , withPlaceholder
+    , withOnBlur
+    , withMaxLength
     )
 
 import Css
@@ -34,8 +36,8 @@ import Css
         , solid
         )
 import Html.Styled as Html exposing (Attribute, Html, styled, text, textarea)
-import Html.Styled.Attributes exposing (css, pattern, placeholder, value)
-import Html.Styled.Events exposing (onInput)
+import Html.Styled.Attributes exposing (css, maxlength, pattern, placeholder, value)
+import Html.Styled.Events exposing (onInput, onBlur)
 import Maybe.Extra as Maybe
 import Nordea.Html exposing (styleIf)
 import Nordea.Resources.Colors as Colors
@@ -53,6 +55,8 @@ type alias Config msg =
     , onInput : Maybe (String -> msg)
     , placeholder : Maybe String
     , showError : Bool
+    , onBlur: Maybe msg
+    , maxLength: Maybe Int
     }
 
 
@@ -67,6 +71,8 @@ init value =
         , onInput = Nothing
         , placeholder = Nothing
         , showError = False
+        , onBlur = Nothing
+        , maxLength = Nothing
         }
 
 
@@ -84,6 +90,15 @@ withError : Bool -> TextArea msg -> TextArea msg
 withError condition (TextArea config) =
     TextArea { config | showError = condition }
 
+
+withOnBlur : msg -> TextArea msg -> TextArea msg
+withOnBlur onBlur (TextArea config)=
+    TextArea {config | onBlur = Just onBlur}
+
+
+withMaxLength : Int -> TextArea msg -> TextArea msg
+withMaxLength maxLength (TextArea config)=
+    TextArea {config | maxLength = Just maxLength}
 
 
 -- VIEW
@@ -103,6 +118,8 @@ getAttributes config =
         [ Just config.value |> Maybe.map value
         , config.onInput |> Maybe.map onInput
         , config.placeholder |> Maybe.map placeholder
+        , config.onBlur |> Maybe.map onBlur
+        , config.maxLength |> Maybe.map maxlength
         ]
 
 
