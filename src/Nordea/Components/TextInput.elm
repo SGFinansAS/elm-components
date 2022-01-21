@@ -8,6 +8,8 @@ module Nordea.Components.TextInput exposing
     , withPattern
     , withPlaceholder
     , withSearchIcon
+    , withOnBlur
+    , withOnEnterPress
     )
 
 import Css
@@ -45,7 +47,8 @@ import Css
         )
 import Html.Styled as Html exposing (Attribute, Html, input, styled)
 import Html.Styled.Attributes exposing (css, maxlength, pattern, placeholder, value)
-import Html.Styled.Events exposing (onInput, onBlur)
+import Html.Styled.Events exposing (keyCode, on, onBlur, onInput)
+import Json.Decode as Json
 import Maybe.Extra as Maybe
 import Nordea.Html exposing (styleIf)
 import Nordea.Resources.Colors as Colors
@@ -66,6 +69,7 @@ type alias Config msg =
     , pattern : Maybe String
     , hasSearchIcon : Bool
     , onBlur: Maybe msg
+    , onEnterPress: Maybe msg
     }
 
 
@@ -84,6 +88,7 @@ init value =
         , pattern = Nothing
         , hasSearchIcon = False
         , onBlur = Nothing
+        , onEnterPress = Nothing
         }
 
 
@@ -120,6 +125,25 @@ withSearchIcon condition (TextInput config) =
 withOnBlur : msg -> TextInput msg -> TextInput msg
 withOnBlur msg (TextInput config) =
     TextInput { config | onBlur = Just msg }
+
+
+withOnEnterPress : msg -> TextInput msg -> TextInput msg
+withOnEnterPress msg (TextInput config) =
+    TextInput { config | onEnterPress = Just msg }
+
+
+onEnterPress : msg -> Attribute msg
+onEnterPress msg =
+    let
+        isEnter code =
+            if code == 13 then
+                Json.succeed msg
+
+            else
+                Json.fail "not ENTER"
+    in
+    on "keydown" (Json.andThen isEnter keyCode)
+
 
 -- VIEW
 
@@ -174,6 +198,7 @@ getAttributes config =
         , config.maxLength |> Maybe.map maxlength
         , config.pattern |> Maybe.map pattern
         , config.onBlur |> Maybe.map onBlur
+        , config.onEnterPress |> Maybe.map onEnterPress
         ]
 
 
