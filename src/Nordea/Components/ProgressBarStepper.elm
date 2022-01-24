@@ -80,6 +80,6 @@ strings =
         { no = "Neste: "
         , se = "Nästa: "
         , dk = "Næste: "
-        , en = "Next"
+        , en = "Next: "
         }
     }
