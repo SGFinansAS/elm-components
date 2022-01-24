@@ -27,14 +27,10 @@ import Stories.Status as Status
 import Stories.StepIndicator as StepIndicator
 import Stories.Table as Table
 import Stories.Text as Header
+import Stories.TextArea as TextArea
 import Stories.TextInput as TextInput
 import Stories.Tooltip as Tooltip
-import Stories.TextArea as TextArea
-import UIExplorer
-    exposing
-        ( UIExplorerProgram
-        , explore
-        )
+import UIExplorer exposing (UIExplorerProgram)
 
 
 type alias Model =
@@ -54,16 +50,19 @@ viewEnhancer _ stories =
         ]
 
 
-main : UIExplorerProgram Config Msg {}
+main : UIExplorerProgram Config Msg {} ()
 main =
-    explore
+    UIExplorer.explore
         { customModel = Config.init
         , customHeader = Nothing
         , update = update
+        , init = \() a -> a
+        , enableDarkMode = False
         , subscriptions = \_ -> Sub.none
         , viewEnhancer = viewEnhancer
         , menuViewEnhancer = \_ v -> v
         , onModeChanged = Nothing
+        , documentTitle = Nothing
         }
         [ Button.stories
         , FlatLink.stories
