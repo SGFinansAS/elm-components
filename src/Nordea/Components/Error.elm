@@ -2,7 +2,8 @@ module Nordea.Components.Error exposing (internalServerError, pageNotFound, view
 
 import Css
     exposing
-        ( alignItems
+        ( Style
+        , alignItems
         , backgroundColor
         , center
         , column
@@ -22,137 +23,139 @@ import Css
         , width
         )
 import Html.Styled as Html exposing (Attribute, Html)
-import Html.Styled.Attributes as Attributes exposing (css, href)
-import Maybe.Extra exposing (isJust)
+import Html.Styled.Attributes exposing (css, href)
 import Nordea.Components.FlatLink as FlatLink
 import Nordea.Components.Text as Text
-import Nordea.Html exposing (showIf)
 import Nordea.Resources.Colors as Colors
 import Nordea.Resources.Icons as Icons
-import Svg.Styled as Svg exposing (Svg)
-import Svg.Styled.Attributes as SvgAttrs exposing (d)
 
 
 type alias Translation =
     { no : String, se : String, dk : String, en : String } -> String
 
 
-type alias ErrorConfig =
-    { errorType : ErrorType
-    , supportEmail : Maybe String
+type alias InternalServerErrorConfig =
+    { supportEmail : String
     , translate : Translation
     }
 
 
-type ErrorType
-    = InternalServerError
-    | PageNotFound
+type alias PageNotFoundErrorConfig =
+    { translate : Translation }
 
 
-type Error msg
-    = Error ErrorConfig
+type Error
+    = InternalServerError InternalServerErrorConfig
+    | PageNotFound PageNotFoundErrorConfig
 
 
-internalServerError : Translation -> String -> Error msg
+internalServerError : Translation -> String -> Error
 internalServerError translate supportEmail =
-    init
-        { errorType = InternalServerError
-        , supportEmail = Just supportEmail
+    InternalServerError
+        { supportEmail = supportEmail
         , translate = translate
         }
 
 
-pageNotFound : Translation -> Error msg
+pageNotFound : Translation -> Error
 pageNotFound translate =
-    init
-        { errorType = PageNotFound
-        , supportEmail = Nothing
-        , translate = translate
+    PageNotFound
+        { translate = translate
         }
 
 
-init : ErrorConfig -> Error msg
-init config =
-    Error
-        { translate = config.translate
-        , supportEmail = config.supportEmail
-        , errorType = config.errorType
-        }
+view : List (Attribute msg) -> List (Html msg) -> Error -> Html msg
+view attributes children error =
+    case error of
+        InternalServerError config ->
+            viewInternalServerError attributes children config
+
+        PageNotFound config ->
+            viewPageNotFoundError attributes children config
 
 
-view : List (Attribute msg) -> List (Html msg) -> Error msg -> Html msg
-view attributes children (Error config) =
-    let
-        errorDescription =
-            case config.errorType of
-                PageNotFound ->
-                    texts.pageNotFound.description |> config.translate
-
-                InternalServerError ->
-                    texts.internalServerError.description |> config.translate
-    in
+viewInternalServerError : List (Attribute msg) -> List (Html msg) -> InternalServerErrorConfig -> Html msg
+viewInternalServerError attributes children config =
     Html.div
-        ([ css
-            [ backgroundColor Colors.white
-            , width (pct 100)
-            , height (vh 100)
-            , padding (rem 1.5)
-            , displayFlex
-            , flexDirection column
-            , alignItems center
-            ]
-         ]
-            ++ attributes
-        )
-        ([ Text.headlineTwo
-            |> Text.withHtmlTag Html.h1
-            |> Text.view
-                [ css [ textAlign center, marginBottom (rem 1) ] ]
-                [ Html.text (texts.heading |> config.translate) ]
-         , Text.bodyTextLight
-            |> Text.view
-                [ css
-                    [ marginBottom (rem 2)
-                    , maxWidth (rem 30)
-                    , textAlign center
-                    ]
-                ]
-                [ Html.text errorDescription ]
+        ([ css [ errorContainerStyle ] ] ++ attributes)
+        ([ viewHeading (texts.heading |> config.translate)
+         , viewDescription (texts.internalServerError.description |> config.translate)
          , Icons.errorSvg [ css [ width (rem 30) ] ]
          , viewActionForInternalServerError config
-            |> showIf (config.errorType == InternalServerError && isJust config.supportEmail)
          ]
             ++ children
         )
 
 
-viewActionForInternalServerError : ErrorConfig -> Html msg
+viewPageNotFoundError : List (Attribute msg) -> List (Html msg) -> PageNotFoundErrorConfig -> Html msg
+viewPageNotFoundError attributes children config =
+    Html.div
+        ([ css [ errorContainerStyle ] ] ++ attributes)
+        ([ viewHeading (texts.heading |> config.translate)
+         , viewDescription (texts.pageNotFound.description |> config.translate)
+         , Icons.errorSvg [ css [ width (rem 30) ] ]
+         ]
+            ++ children
+        )
+
+
+errorContainerStyle : Style
+errorContainerStyle =
+    Css.batch
+        [ backgroundColor Colors.white
+        , width (pct 100)
+        , height (vh 100)
+        , padding (rem 1.5)
+        , displayFlex
+        , flexDirection column
+        , alignItems center
+        ]
+
+
+viewHeading : String -> Html msg
+viewHeading heading =
+    Text.headlineTwo
+        |> Text.withHtmlTag Html.h1
+        |> Text.view
+            [ css [ textAlign center, marginBottom (rem 1) ] ]
+            [ Html.text heading ]
+
+
+viewDescription : String -> Html msg
+viewDescription description =
+    Text.bodyTextLight
+        |> Text.view
+            [ css
+                [ marginBottom (rem 2)
+                , maxWidth (rem 30)
+                , textAlign center
+                ]
+            ]
+            [ Html.text description ]
+
+
+viewActionForInternalServerError : InternalServerErrorConfig -> Html msg
 viewActionForInternalServerError config =
     let
         errorActionText =
             texts.internalServerError.action |> config.translate
     in
-    case config.supportEmail of
-        Nothing ->
-            Nordea.Html.nothing
-
-        Just supportEmail ->
-            Text.bodyTextLight
-                |> Text.view
-                    [ css
-                        [ maxWidth (rem 30)
-                        , paddingRight (rem 0.25)
-                        , textAlign center
-                        ]
+    Text.bodyTextLight
+        |> Text.view
+            [ css
+                [ maxWidth (rem 30)
+                , paddingRight (rem 0.25)
+                , textAlign center
+                ]
+            ]
+            [ Html.text errorActionText
+            , FlatLink.default
+                |> FlatLink.view
+                    [ href ("mailto:" ++ config.supportEmail)
+                    , css [ display inlineBlock ]
                     ]
-                    [ Html.text errorActionText
-                    , FlatLink.default
-                        |> FlatLink.view
-                            [ href ("mailto:" ++ supportEmail)
-                            , css [ display inlineBlock ]
-                            ]
-                            [ Html.text supportEmail ]
-                    ]
+                    [ Html.text config.supportEmail ]
+            ]
 
 
 texts =
