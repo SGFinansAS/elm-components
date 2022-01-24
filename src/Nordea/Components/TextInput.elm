@@ -10,6 +10,7 @@ module Nordea.Components.TextInput exposing
     , withSearchIcon
     , withOnBlur
     , withOnEnterPress
+    , withIsDisabled
     )
 
 import Css
@@ -70,6 +71,7 @@ type alias Config msg =
     , hasSearchIcon : Bool
     , onBlur: Maybe msg
     , onEnterPress: Maybe msg
+    , isDisabled: Bool
     }
 
 
@@ -89,6 +91,7 @@ init value =
         , hasSearchIcon = False
         , onBlur = Nothing
         , onEnterPress = Nothing
+        , isDisabled = False
         }
 
 
@@ -143,6 +146,11 @@ onEnterPress msg =
                 Json.fail "not ENTER"
     in
     on "keydown" (Json.andThen isEnter keyCode)
+
+
+withIsDisabled : TextInput msg -> TextInput msg
+withIsDisabled (TextInput config) =
+    TextInput { config | isDisabled = True }
 
 
 -- VIEW
