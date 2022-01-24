@@ -8,37 +8,16 @@ module Nordea.Components.NumberInput exposing
     , withOnInput
     , withPlaceholder
     , withStep
+    , withOnBlur
+    , withFormatter
+    , withIsDisabled
     )
 
-import Css
-    exposing
-        ( Style
-        , backgroundColor
-        , border3
-        , borderBox
-        , borderRadius
-        , boxSizing
-        , disabled
-        , display
-        , focus
-        , fontSize
-        , height
-        , none
-        , outline
-        , padding2
-        , pct
-        , property
-        , pseudoElement
-        , px
-        , rem
-        , right
-        , solid
-        , textAlign
-        , width
-        )
+import Css exposing ( Style, backgroundColor, border3, borderBox, borderRadius, boxSizing, disabled, display, focus, fontSize, height, none, outline, padding2, pct, property, pseudoElement, px, rem, right, solid, textAlign, width)
+
 import Html.Styled exposing (Attribute, Html, input, styled)
 import Html.Styled.Attributes as Attributes exposing (placeholder, step, type_, value)
-import Html.Styled.Events exposing (onInput)
+import Html.Styled.Events exposing (onInput, onBlur)
 import Maybe.Extra as Maybe
 import Nordea.Resources.Colors as Colors
 import Nordea.Themes as Themes
@@ -56,6 +35,9 @@ type alias Config msg =
     , placeholder : Maybe String
     , onInput : Maybe (String -> msg)
     , showError : Bool
+    , onBlur: Maybe msg
+    , formatter: Maybe (Float -> String)
+    , isDisabled: Bool
     }
 
 
@@ -73,6 +55,9 @@ init value =
         , placeholder = Nothing
         , onInput = Nothing
         , showError = False
+        , onBlur = Nothing
+        , formatter = Nothing
+        , isDisabled = False
         }
 
 
@@ -106,6 +91,20 @@ withError condition (NumberInput config) =
     NumberInput { config | showError = condition }
 
 
+withOnBlur : msg -> NumberInput msg -> NumberInput msg
+withOnBlur msg (NumberInput config) =
+    NumberInput { config | onBlur = Just msg }
+
+
+withFormatter : Maybe (Float -> String) -> NumberInput msg -> NumberInput msg
+withFormatter formatter (NumberInput config) =
+    NumberInput { config | formatter = formatter }
+
+
+withIsDisabled : Bool -> NumberInput msg -> NumberInput msg
+withIsDisabled val (NumberInput config) =
+    NumberInput { config | isDisabled = val }
+
 
 -- VIEW
 
@@ -120,16 +119,24 @@ view attributes (NumberInput config) =
 
 getAttributes : Config msg -> List (Attribute msg)
 getAttributes config =
+    let
+        format value =
+            if  value == "" then
+                ""
+            else
+                Maybe.map2(\formatter val -> val |> formatter) config.formatter (value |> String.toFloat)
+                |> Maybe.withDefault value
+    in
     Maybe.values
         [ Just "number" |> Maybe.map type_
-        , Just config.value |> Maybe.map value
         , config.min |> Maybe.map String.fromFloat |> Maybe.map Attributes.min
         , config.max |> Maybe.map String.fromFloat |> Maybe.map Attributes.max
         , config.step |> Maybe.map String.fromFloat |> Maybe.map step
         , config.placeholder |> Maybe.map placeholder
         , config.onInput |> Maybe.map onInput
+        , config.onBlur |> Maybe.map onBlur
+        , Just config.value |> Maybe.map format |> Maybe.map value
         ]
-
 
 
 -- STYLES
