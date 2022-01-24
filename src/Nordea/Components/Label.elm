@@ -54,8 +54,8 @@ type LabelType
 
 
 type RequirednessHint
-    = Mandatory ({ no : String, se : String, dk : String } -> String)
-    | Optional ({ no : String, se : String, dk : String } -> String)
+    = Mandatory ({ no : String, se : String, dk : String, en : String } -> String)
+    | Optional ({ no : String, se : String, dk : String, en : String } -> String)
     | Custom String
 
 

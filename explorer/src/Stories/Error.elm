@@ -16,14 +16,7 @@ stories =
         "Error"
         [ ( "Internal server error"
           , \_ ->
-                Error.internalServerError .no
-                    |> Error.view [] []
-          , {}
-          )
-        , ( "Internal server error (custom email)"
-          , \_ ->
-                Error.internalServerError .no
-                    |> Error.withCustomSupportEmail "jonas.ueland@nordea.com"
+                Error.internalServerError .no "contact.us@nordea.com"
                     |> Error.view [] []
           , {}
           )
