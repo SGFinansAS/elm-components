@@ -25,7 +25,7 @@ import Nordea.Resources.Colors as Colors
 type alias ViewConfig =
     { steps : List String
     , currentStep : Int
-    , nextLabel : { no : String, se : String, dk : String } -> String
+    , nextLabel : { no : String, se : String, dk : String, en : String } -> String
     }
 
 
@@ -80,5 +80,6 @@ strings =
         { no = "Neste: "
         , se = "Nästa: "
         , dk = "Næste: "
+        , en = "Next"
         }
     }
