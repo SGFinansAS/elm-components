@@ -17,7 +17,7 @@ import Css exposing ( Style, backgroundColor, border3, borderBox, borderRadius, 
 
 import Html.Styled exposing (Attribute, Html, input, styled)
 import Html.Styled.Attributes as Attributes exposing (placeholder, step, type_, value)
-import Html.Styled.Events exposing (onInput,onBlur)
+import Html.Styled.Events exposing (onInput, onBlur)
 import Maybe.Extra as Maybe
 import Nordea.Resources.Colors as Colors
 import Nordea.Themes as Themes
@@ -125,11 +125,10 @@ getAttributes config =
                 ""
             else
                 Maybe.map2(\formatter val -> val |> formatter) config.formatter (value |> String.toFloat)
-                |> Maybe.withDefault ""
+                |> Maybe.withDefault value
     in
     Maybe.values
         [ Just "number" |> Maybe.map type_
-        , Just config.value |> Maybe.map value
         , config.min |> Maybe.map String.fromFloat |> Maybe.map Attributes.min
         , config.max |> Maybe.map String.fromFloat |> Maybe.map Attributes.max
         , config.step |> Maybe.map String.fromFloat |> Maybe.map step
