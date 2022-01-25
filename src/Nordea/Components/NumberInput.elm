@@ -124,11 +124,17 @@ getAttributes config =
             if  value == "" then
                 ""
             else
-                Maybe.map2(\formatter val -> val |> formatter) config.formatter (value |> String.toFloat)
-                |> Maybe.withDefault value
+                Maybe.map2(\formatter val -> val |> formatter)
+                    config.formatter
+                    (value
+                     |> String.replace "," "."
+                     |> String.replace " " ""
+                     |> String.toFloat
+                     )
+                     |> Maybe.withDefault value
     in
     Maybe.values
-        [ Just "number" |> Maybe.map type_
+        [ Just "text" |> Maybe.map type_
         , config.min |> Maybe.map String.fromFloat |> Maybe.map Attributes.min
         , config.max |> Maybe.map String.fromFloat |> Maybe.map Attributes.max
         , config.step |> Maybe.map String.fromFloat |> Maybe.map step
