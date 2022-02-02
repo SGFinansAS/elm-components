@@ -270,8 +270,8 @@ search attrs =
 
 questionMark : List (Attribute msg) -> Html msg
 questionMark attrs =
-    iconContainer attrs
-        [Svg.svg [ viewBox "0 0 32 39", fill "none" ]
+    iconContainer (css [ Css.width (rem 1.385) ] :: attrs)
+        [Svg.svg [ viewBox "0 0 32 32", fill "none" ]
             [ Svg.path
                 [ fillRule "evenodd"
                 , clipRule "evenodd"
