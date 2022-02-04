@@ -55,7 +55,9 @@ import Css
         , top
         , transparent
         , width
+        , important
         )
+import Css.Global exposing (descendants, typeSelector)
 import Css.Transitions exposing (transition)
 import Html.Styled as Html exposing (Attribute, Html)
 import Html.Styled.Attributes as Attrs exposing (css, name, type_)
@@ -196,6 +198,10 @@ view attrs (RadioButton config) =
             , position relative
             , pseudoClass "hover .nfe-radiomark:before" [ Css.property "box-shadow" ("0rem 0rem 0rem 0.0625rem " ++ Themes.colorVariable Themes.SecondaryColor Colors.blueMedium) ]
             , pseudoClass "focus-within .nfe-radiomark:before" [ Css.property "box-shadow" ("0rem 0rem 0rem 0.0625rem " ++ Themes.colorVariable Themes.SecondaryColor Colors.blueMedium) ]
+            , descendants
+                [ typeSelector "span"
+                    [ Themes.color Themes.PrimaryColorLight Colors.black |> important ]
+                ]
             ]
             :: attrs
         )
