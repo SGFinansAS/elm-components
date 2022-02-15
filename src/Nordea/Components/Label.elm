@@ -26,6 +26,7 @@ import Css
         , pct
         , pseudoClass
         , rem
+        , width
         , wrap
         )
 import Css.Global exposing (descendants, everything, typeSelector)
@@ -137,7 +138,7 @@ view attrs children (Label config) =
                 ]
                 attrs
                 ((legend
-                    [ css [ padding (rem 0), flexBasis (pct 100), Css.Global.children [ everything [ flexBasis (pct 100) ] ] ] ]
+                    [ css [ width (pct 100), padding (rem 0), Css.Global.children [ everything [ flexBasis (pct 100) ] ] ] ]
                     [ topInfo commonConfig ]
                     |> showIf (not (String.isEmpty config.labelText) || Maybe.isJust config.requirednessHint)
                  )
