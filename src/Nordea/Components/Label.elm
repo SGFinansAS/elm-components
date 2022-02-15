@@ -11,7 +11,24 @@ module Nordea.Components.Label exposing
     , withShowFocusOutline
     )
 
-import Css exposing (Style, border, column, displayFlex, flexBasis, flexDirection, flexWrap, marginInlineEnd, marginInlineStart, padding, pct, pseudoClass, rem, width, wrap)
+import Css
+    exposing
+        ( Style
+        , border
+        , column
+        , displayFlex
+        , flexBasis
+        , flexDirection
+        , flexWrap
+        , marginInlineEnd
+        , marginInlineStart
+        , padding
+        , pct
+        , pseudoClass
+        , rem
+        , width
+        , wrap
+        )
 import Css.Global exposing (descendants, everything, typeSelector)
 import Html.Styled
     exposing
