@@ -11,23 +11,7 @@ module Nordea.Components.Label exposing
     , withShowFocusOutline
     )
 
-import Css
-    exposing
-        ( Style
-        , border
-        , column
-        , displayFlex
-        , flexBasis
-        , flexDirection
-        , flexWrap
-        , marginInlineEnd
-        , marginInlineStart
-        , padding
-        , pct
-        , pseudoClass
-        , rem
-        , wrap
-        )
+import Css exposing (Style, border, column, displayFlex, flexBasis, flexDirection, flexWrap, marginInlineEnd, marginInlineStart, padding, pct, pseudoClass, rem, width, wrap)
 import Css.Global exposing (descendants, everything, typeSelector)
 import Html.Styled
     exposing
@@ -137,7 +121,7 @@ view attrs children (Label config) =
                 ]
                 attrs
                 ((legend
-                    [ css [ padding (rem 0), flexBasis (pct 100), Css.Global.children [ everything [ flexBasis (pct 100) ] ] ] ]
+                    [ css [ width (pct 100), padding (rem 0), flexBasis (pct 100), Css.Global.children [ everything [ flexBasis (pct 100) ] ] ] ]
                     [ topInfo commonConfig ]
                     |> showIf (not (String.isEmpty config.labelText) || Maybe.isJust config.requirednessHint)
                  )
