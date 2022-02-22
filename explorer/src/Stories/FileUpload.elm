@@ -13,9 +13,13 @@ import UIExplorer.Styled exposing (styledStoriesOf)
 
 stories : UI Config.Config Msg {}
 stories =
+    let
+        supportedFileTypes =
+            FileUpload.Only [ FileUpload.Pdf, FileUpload.Jpeg, FileUpload.Png ]
+    in
     styledStoriesOf
         "FileUpload"
-        [ ( "Standard (Single file)"
+        [ ( "Large (Single file)"
           , \model ->
                 Html.div [ css [ displayFlex, flexDirection column, maxWidth (rem 30) ] ]
                     [ Label.init "Some file document" Label.InputLabel
@@ -23,7 +27,7 @@ stories =
                         |> Label.view []
                             [ FileUpload.init .no OnFilesSelected OnDragEnterFileUpload OnDragLeaveFileUpload
                                 |> FileUpload.withIsHovering model.customModel.isHoveringFileUpload
-                                |> FileUpload.withAcceptedFileTypes (FileUpload.Only [ FileUpload.Pdf, FileUpload.Jpeg, FileUpload.Png ])
+                                |> FileUpload.withAcceptedFileTypes supportedFileTypes
                                 |> FileUpload.view
                             ]
                     , FileUpload.uploadedFilesView model.customModel.selectedFiles RemoveFile .no [ css [ marginTop (rem 1) ] ]
@@ -31,7 +35,7 @@ stories =
                     ]
           , {}
           )
-        , ( "Standard (Multiple files)"
+        , ( "Large (Multiple files)"
           , \model ->
                 Html.div [ css [ displayFlex, flexDirection column, maxWidth (rem 30) ] ]
                     [ Label.init "Some file document" Label.InputLabel
@@ -39,7 +43,7 @@ stories =
                         |> Label.view []
                             [ FileUpload.init .no OnFilesSelected OnDragEnterFileUpload OnDragLeaveFileUpload
                                 |> FileUpload.withIsHovering model.customModel.isHoveringFileUpload
-                                |> FileUpload.withAcceptedFileTypes (FileUpload.Only [ FileUpload.Pdf, FileUpload.Jpeg, FileUpload.Png ])
+                                |> FileUpload.withAcceptedFileTypes supportedFileTypes
                                 |> FileUpload.withAllowMultipleFiles True
                                 |> FileUpload.view
                             ]
@@ -48,7 +52,7 @@ stories =
                     ]
           , {}
           )
-        , ( "With error"
+        , ( "Large with error"
           , \model ->
                 Html.div [ css [ displayFlex, flexDirection column, maxWidth (rem 30) ] ]
                     [ Label.init "Some file document" Label.InputLabel
@@ -57,8 +61,46 @@ stories =
                         |> Label.view []
                             [ FileUpload.init .no OnFilesSelected OnDragEnterFileUpload OnDragLeaveFileUpload
                                 |> FileUpload.withIsHovering model.customModel.isHoveringFileUpload
-                                |> FileUpload.withAcceptedFileTypes (FileUpload.Only [ FileUpload.Pdf, FileUpload.Jpeg, FileUpload.Png ])
+                                |> FileUpload.withAcceptedFileTypes supportedFileTypes
                                 |> FileUpload.withAllowMultipleFiles True
+                                |> FileUpload.view
+                            ]
+                    , FileUpload.uploadedFilesView model.customModel.selectedFiles RemoveFile .no [ css [ marginTop (rem 1) ] ]
+                        |> showIf (not (List.isEmpty model.customModel.selectedFiles))
+                    ]
+          , {}
+          )
+        , ( "Small"
+          , \model ->
+                Html.div [ css [ displayFlex, flexDirection column, maxWidth (rem 30) ] ]
+                    [ Label.init "Some file document" Label.InputLabel
+                        |> Label.withRequirednessHint (Just (Label.Optional .no))
+                        |> Label.withHintText (FileUpload.supportedFileTypesText .no supportedFileTypes)
+                        |> Label.view []
+                            [ FileUpload.init .no OnFilesSelected OnDragEnterFileUpload OnDragLeaveFileUpload
+                                |> FileUpload.withIsHovering model.customModel.isHoveringFileUpload
+                                |> FileUpload.withAcceptedFileTypes supportedFileTypes
+                                |> FileUpload.withAllowMultipleFiles True
+                                |> FileUpload.withAppearance FileUpload.Small
+                                |> FileUpload.view
+                            ]
+                    , FileUpload.uploadedFilesView model.customModel.selectedFiles RemoveFile .no [ css [ marginTop (rem 1) ] ]
+                        |> showIf (not (List.isEmpty model.customModel.selectedFiles))
+                    ]
+          , {}
+          )
+        , ( "Small with error"
+          , \model ->
+                Html.div [ css [ displayFlex, flexDirection column, maxWidth (rem 30) ] ]
+                    [ Label.init "Some file document" Label.InputLabel
+                        |> Label.withRequirednessHint (Just (Label.Optional .no))
+                        |> Label.withErrorMessage (FileUpload.supportedFileTypesText .no supportedFileTypes)
+                        |> Label.view []
+                            [ FileUpload.init .no OnFilesSelected OnDragEnterFileUpload OnDragLeaveFileUpload
+                                |> FileUpload.withIsHovering model.customModel.isHoveringFileUpload
+                                |> FileUpload.withAcceptedFileTypes supportedFileTypes
+                                |> FileUpload.withAllowMultipleFiles True
+                                |> FileUpload.withAppearance FileUpload.Small
                                 |> FileUpload.view
                             ]
                     , FileUpload.uploadedFilesView model.customModel.selectedFiles RemoveFile .no [ css [ marginTop (rem 1) ] ]

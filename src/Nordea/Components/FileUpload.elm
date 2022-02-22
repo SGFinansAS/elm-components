@@ -6,6 +6,7 @@ module Nordea.Components.FileUpload exposing
     , init
     , onFilesDropped
     , preventDefaultOn
+    , supportedFileTypesText
     , uploadedFilesView
     , view
     , withAcceptedFileTypes
@@ -68,6 +69,7 @@ import Css
         , relative
         , rem
         , right
+        , row
         , solid
         , spaceBetween
         , top
@@ -107,6 +109,10 @@ type Appearance
     | Small
 
 
+type alias Translate =
+    { no : String, se : String, dk : String, en : String } -> String
+
+
 type FileUpload msg
     = FileUpload (Config msg)
 
@@ -116,7 +122,7 @@ type alias Config msg =
     , onDragEnter : msg
     , onDragLeave : msg
     , files : List File
-    , translate : { no : String, se : String, dk : String, en : String } -> String
+    , translate : Translate
     , allowMultiple : Bool
     , onFilesSelected : File -> List File -> msg
     , accept : AcceptFileType
@@ -124,7 +130,7 @@ type alias Config msg =
     }
 
 
-init : ({ no : String, se : String, dk : String, en : String } -> String) -> (File -> List File -> msg) -> msg -> msg -> FileUpload msg
+init : Translate -> (File -> List File -> msg) -> msg -> msg -> FileUpload msg
 init translate onFilesSelected onDragEnter onDragLeave =
     FileUpload
         { isHovering = False
@@ -162,38 +168,6 @@ view (FileUpload config) =
                                         "image/png"
                             )
                         |> String.join ","
-
-        fileTypesAsString =
-            case config.accept of
-                Any ->
-                    Nothing
-
-                Only mimeTypes ->
-                    mimeTypes
-                        |> List.map
-                            (\mimeType ->
-                                case mimeType of
-                                    Pdf ->
-                                        "PDF"
-
-                                    Jpeg ->
-                                        "JPEG"
-
-                                    Png ->
-                                        "PNG"
-                            )
-                        |> List.reverse
-                        |> List.indexedMap
-                            (\i e ->
-                                if i == 0 then
-                                    config.translate strings.and ++ e
-
-                                else
-                                    e
-                            )
-                        |> List.reverse
-                        |> String.join ", "
-                        |> Just
     in
     Html.div
         [ onFilesDropped config.onFilesSelected
@@ -201,12 +175,22 @@ view (FileUpload config) =
         , preventDefaultOn "dragleave" config.onDragLeave
         , css
             [ displayFlex
-            , flexDirection column
-            , justifyContent center
+            , case config.appearance of
+                Large ->
+                    Css.batch
+                        [ flexDirection column
+                        , justifyContent center
+                        , height (rem 8.375)
+                        , padding2 (rem 1.5) (rem 2)
+                        ]
+
+                Small ->
+                    Css.batch
+                        [ flexDirection row
+                        , padding2 (rem 0.75) (rem 1)
+                        , justifyContent center |> styleIf config.isHovering
+                        ]
             , alignItems center
-            , padding2 (rem 1.5) (rem 2)
-            , alignItems center
-            , height (rem 8.375)
             , cursor pointer
             , pseudoClass "focus-within" [ border3 (rem 0.125) dashed Colors.blueDeep ]
             , if config.isHovering then
@@ -222,7 +206,17 @@ view (FileUpload config) =
                     ]
             ]
         ]
-        [ Icon.upload [ css [ Themes.color Themes.PrimaryColorLight Colors.blueNordea, marginBottom (rem 1) ] ]
+        [ Icon.upload
+            [ css
+                [ Themes.color Themes.PrimaryColorLight Colors.blueNordea
+                , case config.appearance of
+                    Large ->
+                        marginBottom (rem 1)
+
+                    Small ->
+                        marginRight (rem 1)
+                ]
+            ]
             |> showIf (not config.isHovering)
         , Text.bodyTextSmall
             |> Text.view [ css [ color Colors.grayNordea ] ]
@@ -233,14 +227,14 @@ view (FileUpload config) =
                 , Html.text (config.translate strings.uploadDescription3)
                 ]
             |> showIf (not config.isHovering)
-        , fileTypesAsString
+        , supportedFileTypesText config.translate config.accept
             |> viewMaybe
-                (\fileTypes ->
+                (\supportedFileTypes ->
                     Text.textTinyLight
                         |> Text.view [ css [ color Colors.grayNordea, marginTop (rem 0.5) ] ]
-                            [ Html.text (config.translate strings.acceptedFileTypes), Html.text fileTypes ]
+                            [ Html.text supportedFileTypes ]
                 )
-            |> showIf (not config.isHovering)
+            |> showIf (not config.isHovering && config.appearance == Large)
         , Text.bodyTextSmall
             |> Text.view [ css [ Themes.color Themes.PrimaryColorLight Colors.blueNordea ] ]
                 [ Html.text (config.translate strings.dropToUploadFile) ]
@@ -257,7 +251,7 @@ view (FileUpload config) =
         ]
 
 
-uploadedFilesView : List File -> (File -> msg) -> ({ no : String, se : String, dk : String, en : String } -> String) -> List (Attribute msg) -> Html msg
+uploadedFilesView : List File -> (File -> msg) -> Translate -> List (Attribute msg) -> Html msg
 uploadedFilesView files onClickRemove translate attrs =
     let
         fileSizeToString fileSize =
@@ -321,6 +315,41 @@ uploadedFilesView files onClickRemove translate attrs =
                     )
             )
         ]
+
+
+supportedFileTypesText : Translate -> AcceptFileType -> Maybe String
+supportedFileTypesText translate accept =
+    case accept of
+        Any ->
+            Nothing
+
+        Only mimeTypes ->
+            mimeTypes
+                |> List.map
+                    (\mimeType ->
+                        case mimeType of
+                            Pdf ->
+                                "PDF"
+
+                            Jpeg ->
+                                "JPEG"
+
+                            Png ->
+                                "PNG"
+                    )
+                |> List.reverse
+                |> List.indexedMap
+                    (\i e ->
+                        if i == 0 then
+                            translate strings.and ++ e
+
+                        else
+                            e
+                    )
+                |> List.reverse
+                |> String.join ", "
+                |> (\fileTypes -> translate strings.acceptedFileTypes ++ fileTypes)
+                |> Just
 
 
 withAcceptedFileTypes : AcceptFileType -> FileUpload msg -> FileUpload msg
