@@ -142,7 +142,16 @@ view (FileUpload config) =
                         |> String.join ","
     in
     Html.div
-        [ onFilesDropped config.onFilesSelected
+        [ onFilesDropped
+            (\first rest ->
+                config.onFilesSelected first
+                    (if config.allowMultiple then
+                        rest
+
+                     else
+                        []
+                    )
+            )
         , preventDefaultOn "dragover" config.onDragEnter
         , preventDefaultOn "dragleave" config.onDragLeave
         , css
@@ -279,6 +288,7 @@ uploadedFilesView files onClickRemove translate attrs =
                                 , css
                                     [ borderStyle none
                                     , Css.property "appearance" "none"
+                                    , cursor pointer
                                     , padding2 (rem 0.75) (rem 1.25)
                                     , margin2 (rem -0.75) (rem -1.25)
                                     ]
@@ -395,19 +405,19 @@ strings =
         }
     , uploadDescription2 =
         { no = "bla"
-        , se = "bläddra"
+        , se = "bla"
         , dk = "bla"
         , en = "browse"
         }
     , uploadDescription3 =
         { no = " for å laste opp"
-        , se = " för att ladda upp"
+        , se = " for å laste opp"
         , dk = " for å laste opp"
         , en = " to upload"
         }
     , acceptedFileTypes =
         { no = "Godkjente filtyper: "
-        , se = "Godkända filtyper: "
+        , se = "Godkjente filtyper: "
         , dk = "Godkjente filtyper: "
         , en = "Accepted file types: "
         }
@@ -419,13 +429,13 @@ strings =
         }
     , dropToUploadFile =
         { no = "Slipp filen for å laste opp"
-        , se = "Släpp filen för att ladda upp"
+        , se = "Slipp filen for å laste opp"
         , dk = "Slipp filen for å laste opp"
         , en = "Drop the file to upload"
         }
     , uploadedFiles =
         { no = "Opplastede filer:"
-        , se = "Uppladdade filer:"
+        , se = "Opplastede filer:"
         , dk = "Opplastede filer:"
         , en = "Uploaded files:"
         }
