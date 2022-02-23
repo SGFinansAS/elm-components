@@ -323,7 +323,7 @@ supportedFileTypesText translate accept =
                 |> List.reverse
                 |> List.indexedMap
                     (\i e ->
-                        if i == 0 then
+                        if i == 0 && List.length mimeTypes > 1 then
                             translate strings.and ++ e
 
                         else
