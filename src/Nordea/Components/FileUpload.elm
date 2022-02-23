@@ -142,7 +142,16 @@ view (FileUpload config) =
                         |> String.join ","
     in
     Html.div
-        [ onFilesDropped config.onFilesSelected
+        [ onFilesDropped
+            (\first rest ->
+                config.onFilesSelected first
+                    (if config.allowMultiple then
+                        rest
+
+                     else
+                        []
+                    )
+            )
         , preventDefaultOn "dragover" config.onDragEnter
         , preventDefaultOn "dragleave" config.onDragLeave
         , css
@@ -279,6 +288,7 @@ uploadedFilesView files onClickRemove translate attrs =
                                 , css
                                     [ borderStyle none
                                     , Css.property "appearance" "none"
+                                    , cursor pointer
                                     , padding2 (rem 0.75) (rem 1.25)
                                     , margin2 (rem -0.75) (rem -1.25)
                                     ]
@@ -313,7 +323,7 @@ supportedFileTypesText translate accept =
                 |> List.reverse
                 |> List.indexedMap
                     (\i e ->
-                        if i == 0 then
+                        if i == 0 && List.length mimeTypes > 1 then
                             translate strings.and ++ e
 
                         else
