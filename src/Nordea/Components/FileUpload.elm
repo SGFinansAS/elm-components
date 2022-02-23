@@ -163,17 +163,18 @@ view (FileUpload config) =
                         , justifyContent center |> styleIf config.isHovering
                         ]
             , alignItems center
+            , borderRadius (rem 0.25)
             , cursor pointer
-            , pseudoClass "focus-within" [ border3 (rem 0.125) dashed Colors.blueDeep ]
+            , pseudoClass "focus-within" [ border3 (rem 0.0625) dashed Colors.blueDeep ]
             , if config.isHovering then
                 Css.batch
-                    [ border3 (rem 0.125) dashed Colors.blueDeep
+                    [ border3 (rem 0.0625) dashed Colors.blueDeep
                     , Themes.backgroundColor Themes.SecondaryColor Colors.blueCloud
                     ]
 
               else
                 Css.batch
-                    [ border3 (rem 0.125) dashed Colors.grayMedium
+                    [ border3 (rem 0.0625) dashed Colors.grayMedium
                     , hover [ backgroundColor Colors.grayCool ]
                     ]
             ]
