@@ -14,10 +14,6 @@ For using elm-review and adding new rules see -> <https://github.com/jfmengels/n
 -}
 
 import NoBooleanCase
-import NoUnused.CustomTypeConstructors
-import NoUnused.Dependencies
-import NoUnused.Exports
-import NoUnused.Modules
 import NoUnused.Parameters
 import NoUnused.Patterns
 import NoUnused.Variables
