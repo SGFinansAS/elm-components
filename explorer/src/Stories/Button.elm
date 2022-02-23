@@ -25,10 +25,6 @@ import UIExplorer exposing (UI)
 import UIExplorer.Styled exposing (styledStoriesOf)
 
 
-myVal =
-    1
-
-
 stories : UI a b {}
 stories =
     styledStoriesOf
