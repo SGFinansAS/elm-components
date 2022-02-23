@@ -17,13 +17,10 @@ module Nordea.Components.FileUpload exposing
 
 import Css
     exposing
-        ( Color
-        , absolute
+        ( absolute
         , alignItems
-        , auto
         , backgroundColor
         , border3
-        , borderColor
         , borderRadius
         , borderStyle
         , center
@@ -34,18 +31,11 @@ import Css
         , displayFlex
         , flex
         , flexDirection
-        , focus
-        , fontFamilies
-        , fontSize
         , height
-        , hidden
         , hover
-        , inherit
         , justifyContent
-        , lineHeight
         , listStyle
         , listStyleType
-        , margin
         , margin2
         , marginBottom
         , marginRight
@@ -53,38 +43,20 @@ import Css
         , none
         , num
         , opacity
-        , outline
-        , overflow
         , padding
         , padding2
-        , padding3
-        , padding4
-        , paddingRight
-        , pct
         , pointer
-        , pointerEvents
         , position
-        , property
         , pseudoClass
-        , relative
         , rem
-        , right
         , row
-        , solid
-        , spaceBetween
-        , top
-        , transform
-        , translateY
-        , transparent
         , width
         )
-import Css.Global exposing (withAttribute)
-import Dict
 import File exposing (File)
-import Html.Styled as Html exposing (Attribute, Html, div, option, text)
-import Html.Styled.Attributes as Attrs exposing (accept, css, disabled, multiple, selected, type_, value)
-import Html.Styled.Events as Events exposing (targetValue)
-import Json.Decode as Decode exposing (Decoder)
+import Html.Styled as Html exposing (Attribute, Html)
+import Html.Styled.Attributes exposing (accept, css, multiple, type_, value)
+import Html.Styled.Events as Events
+import Json.Decode as Decode
 import Nordea.Components.Text as Text
 import Nordea.Html exposing (showIf, styleIf, viewMaybe)
 import Nordea.Resources.Colors as Colors
@@ -255,22 +227,22 @@ uploadedFilesView : List File -> (File -> msg) -> Translate -> List (Attribute m
 uploadedFilesView files onClickRemove translate attrs =
     let
         fileSizeToString fileSize =
-            if fileSize < 1024 then
+            if fileSize < 1000 then
                 String.fromInt fileSize ++ " bytes"
 
-            else if fileSize < 1024 * 1024 then
+            else if fileSize < 1000 ^ 2 then
                 (toFloat fileSize / 1024)
                     |> Round.round 0
                     |> (\str -> str ++ " KB")
 
-            else if fileSize < 1024 * 1024 * 1024 then
-                (toFloat fileSize / (1024 * 1024))
+            else if fileSize < 1000 ^ 3 then
+                (toFloat fileSize / (1000 ^ 2))
                     |> Round.round 1
                     |> String.replace "." ","
                     |> (\str -> str ++ " MB")
 
             else
-                (toFloat fileSize / (1024 * 1024 * 1024))
+                (toFloat fileSize / (1000 ^ 3))
                     |> Round.round 2
                     |> String.replace "." ","
                     |> (\str -> str ++ " GB")

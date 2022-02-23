@@ -26,7 +26,6 @@ import Css
         , borderTopColor
         , borderTopLeftRadius
         , borderTopRightRadius
-        , boxShadow5
         , boxSizing
         , center
         , cursor
@@ -36,8 +35,8 @@ import Css
         , flexBasis
         , height
         , hover
+        , important
         , inlineFlex
-        , int
         , left
         , minHeight
         , minWidth
@@ -55,7 +54,6 @@ import Css
         , top
         , transparent
         , width
-        , important
         )
 import Css.Global exposing (descendants, typeSelector)
 import Css.Transitions exposing (transition)

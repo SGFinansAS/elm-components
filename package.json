@@ -1,0 +1,11 @@
+{
+  "name": "elm-components",
+  "license": "UNLICENSED",
+  "scripts": {
+    "lint": "yarn run elm-review --fix",
+    "verify-lint": "yarn run elm-review"
+  },
+  "devDependencies": {
+    "elm-review": "^2.7.0"
+  }
+}

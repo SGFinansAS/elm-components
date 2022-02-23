@@ -3,21 +3,20 @@ module Nordea.Components.NumberInput exposing
     , init
     , view
     , withError
+    , withFormatter
+    , withIsDisabled
     , withMax
     , withMin
+    , withOnBlur
     , withOnInput
     , withPlaceholder
     , withStep
-    , withOnBlur
-    , withFormatter
-    , withIsDisabled
     )
 
-import Css exposing ( Style, backgroundColor, border3, borderBox, borderRadius, boxSizing, disabled, display, focus, fontSize, height, none, outline, padding2, pct, property, pseudoElement, px, rem, right, solid, textAlign, width)
-
+import Css exposing (Style, backgroundColor, border3, borderBox, borderRadius, boxSizing, disabled, display, focus, fontSize, height, none, outline, padding2, pct, property, pseudoElement, rem, right, solid, textAlign, width)
 import Html.Styled exposing (Attribute, Html, input, styled)
 import Html.Styled.Attributes as Attributes exposing (placeholder, step, type_, value)
-import Html.Styled.Events exposing (onInput, onBlur)
+import Html.Styled.Events exposing (onBlur, onInput)
 import Maybe.Extra as Maybe
 import Nordea.Resources.Colors as Colors
 import Nordea.Themes as Themes
@@ -35,9 +34,9 @@ type alias Config msg =
     , placeholder : Maybe String
     , onInput : Maybe (String -> msg)
     , showError : Bool
-    , onBlur: Maybe msg
-    , formatter: Maybe (Float -> String)
-    , isDisabled: Bool
+    , onBlur : Maybe msg
+    , formatter : Maybe (Float -> String)
+    , isDisabled : Bool
     }
 
 
@@ -106,6 +105,7 @@ withIsDisabled val (NumberInput config) =
     NumberInput { config | isDisabled = val }
 
 
+
 -- VIEW
 
 
@@ -121,17 +121,18 @@ getAttributes : Config msg -> List (Attribute msg)
 getAttributes config =
     let
         format value =
-            if  value == "" then
+            if value == "" then
                 ""
+
             else
-                Maybe.map2(\formatter val -> val |> formatter)
+                Maybe.map2 (\formatter val -> val |> formatter)
                     config.formatter
                     (value
-                     |> String.replace "," "."
-                     |> String.replace " " ""
-                     |> String.toFloat
-                     )
-                     |> Maybe.withDefault value
+                        |> String.replace "," "."
+                        |> String.replace " " ""
+                        |> String.toFloat
+                    )
+                    |> Maybe.withDefault value
     in
     Maybe.values
         [ Just "text" |> Maybe.map type_
@@ -143,6 +144,7 @@ getAttributes config =
         , config.onBlur |> Maybe.map onBlur
         , Just config.value |> Maybe.map format |> Maybe.map value
         ]
+
 
 
 -- STYLES

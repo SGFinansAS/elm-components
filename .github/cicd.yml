@@ -1,0 +1,38 @@
+name: CICD
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  integrate-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup Elm cache
+        uses: actions/cache@v2.1.7
+        with:
+          path: ~/.elm
+          key: ${{ runner.os }}-elm-${{ hashFiles('**/elm.json') }}
+          restore-keys: ${{ runner.os }}-elm-
+
+      - name: Setup node
+        uses: actions/setup-node@v2.5.1
+        with:
+          node-version: 14.18.0
+          cache: yarn
+
+      - name: Install dependencies
+        run: yarn install --immutable --immutable-cache
+
+      # Formatting, linting and rules
+      - name: Validate Elm code formatting
+        run: yarn run elm-format src/ --validate
+
+      - name: Elm review
+        run: yarn run elm-review

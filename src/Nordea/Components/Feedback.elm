@@ -2,41 +2,26 @@ module Nordea.Components.Feedback exposing (floatingButton, view)
 
 import Css
     exposing
-        ( alignItems
-        , alignSelf
-        , auto
+        ( auto
         , backgroundColor
-        , border3
         , borderBottomLeftRadius
         , borderBottomRightRadius
         , borderRadius
         , borderTopLeftRadius
         , borderTopRightRadius
         , boxShadow4
-        , center
         , column
         , deg
         , displayFlex
         , fixed
-        , flex
         , flexDirection
-        , flexStart
         , focus
-        , fontWeight
-        , height
         , hover
         , int
-        , lineHeight
-        , margin
-        , marginBottom
         , marginLeft
-        , marginRight
-        , marginTop
         , maxHeight
         , minHeight
         , none
-        , normal
-        , num
         , outline
         , overflow
         , padding
@@ -46,7 +31,6 @@ import Css
         , rem
         , right
         , rotateZ
-        , solid
         , top
         , transforms
         , translateX
@@ -57,12 +41,10 @@ import Css
         )
 import Css.Transitions exposing (transition)
 import Html.Styled as Html exposing (Attribute, Html)
-import Html.Styled.Attributes exposing (css, title)
+import Html.Styled.Attributes exposing (css)
 import Html.Styled.Events exposing (onClick)
-import Nordea.Components.Button as Button
 import Nordea.Resources.Colors as Colors
 import Nordea.Resources.Fonts as Fonts
-import Nordea.Resources.Icons as Icons
 import Nordea.Themes as Themes
 
 

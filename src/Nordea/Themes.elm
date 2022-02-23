@@ -8,7 +8,6 @@ module Nordea.Themes exposing
     )
 
 import Css
-import Dict
 import Nordea.Css as Css
 
 

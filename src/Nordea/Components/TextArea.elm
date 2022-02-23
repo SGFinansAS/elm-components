@@ -3,10 +3,10 @@ module Nordea.Components.TextArea exposing
     , init
     , view
     , withError
+    , withMaxLength
+    , withOnBlur
     , withOnInput
     , withPlaceholder
-    , withOnBlur
-    , withMaxLength
     )
 
 import Css
@@ -19,30 +19,22 @@ import Css
         , borderRadius
         , boxSizing
         , disabled
-        , displayFlex
         , focus
-        , fontFamilies
-        , fontSize
-        , hidden
         , lineHeight
-        , maxWidth
         , none
         , outline
         , overflow
         , padding2
-        , relative
         , rem
         , resize
         , solid
         )
-import Html.Styled as Html exposing (Attribute, Html, styled, text, textarea)
-import Html.Styled.Attributes exposing (css, maxlength, pattern, placeholder, value)
-import Html.Styled.Events exposing (onInput, onBlur)
+import Html.Styled exposing (Attribute, Html, styled, textarea)
+import Html.Styled.Attributes exposing (maxlength, placeholder, value)
+import Html.Styled.Events exposing (onBlur, onInput)
 import Maybe.Extra as Maybe
-import Nordea.Html exposing (styleIf)
 import Nordea.Resources.Colors as Colors
 import Nordea.Resources.Fonts as Fonts
-import Nordea.Resources.Icons as Icons
 import Nordea.Themes as Themes
 
 
@@ -55,8 +47,8 @@ type alias Config msg =
     , onInput : Maybe (String -> msg)
     , placeholder : Maybe String
     , showError : Bool
-    , onBlur: Maybe msg
-    , maxLength: Maybe Int
+    , onBlur : Maybe msg
+    , maxLength : Maybe Int
     }
 
 
@@ -92,13 +84,14 @@ withError condition (TextArea config) =
 
 
 withOnBlur : msg -> TextArea msg -> TextArea msg
-withOnBlur onBlur (TextArea config)=
-    TextArea {config | onBlur = Just onBlur}
+withOnBlur onBlur (TextArea config) =
+    TextArea { config | onBlur = Just onBlur }
 
 
 withMaxLength : Int -> TextArea msg -> TextArea msg
-withMaxLength maxLength (TextArea config)=
-    TextArea {config | maxLength = Just maxLength}
+withMaxLength maxLength (TextArea config) =
+    TextArea { config | maxLength = Just maxLength }
+
 
 
 -- VIEW
