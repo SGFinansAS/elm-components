@@ -3,7 +3,7 @@ module Stories.FileUpload exposing (stories)
 import Config exposing (Msg(..))
 import Css exposing (column, displayFlex, flexDirection, marginTop, maxWidth, rem)
 import Html.Styled as Html
-import Html.Styled.Attributes exposing (css, disabled)
+import Html.Styled.Attributes exposing (css)
 import Nordea.Components.FileUpload as FileUpload
 import Nordea.Components.Label as Label
 import Nordea.Html exposing (showIf)

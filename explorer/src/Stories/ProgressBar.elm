@@ -1,9 +1,9 @@
 module Stories.ProgressBar exposing (stories)
 
 import Config exposing (Msg(..))
-import Css exposing (column, displayFlex, flexDirection, marginBottom, rem)
+import Css exposing (marginBottom, rem)
 import Css.Global exposing (children, everything)
-import Html.Styled as Html exposing (text)
+import Html.Styled as Html
 import Html.Styled.Attributes exposing (css)
 import Html.Styled.Events exposing (onClick)
 import Nordea.Components.Button as Button

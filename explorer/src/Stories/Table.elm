@@ -3,10 +3,7 @@ module Stories.Table exposing (stories)
 import Css
     exposing
         ( center
-        , column
-        , displayFlex
         , flex
-        , flexDirection
         , int
         , rem
         , textAlign

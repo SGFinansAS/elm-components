@@ -47,7 +47,7 @@ stories =
           , \_ ->
                 TextArea.init ""
                     |> TextArea.withMaxLength 3
-                    |> TextArea.view[]
+                    |> TextArea.view []
           , {}
           )
         ]
