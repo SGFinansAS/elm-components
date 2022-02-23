@@ -4,12 +4,12 @@ module Nordea.Components.TextInput exposing
     , view
     , withError
     , withMaxLength
+    , withOnBlur
+    , withOnEnterPress
     , withOnInput
     , withPattern
     , withPlaceholder
     , withSearchIcon
-    , withOnBlur
-    , withOnEnterPress
     )
 
 import Css
@@ -68,8 +68,8 @@ type alias Config msg =
     , maxLength : Maybe Int
     , pattern : Maybe String
     , hasSearchIcon : Bool
-    , onBlur: Maybe msg
-    , onEnterPress: Maybe msg
+    , onBlur : Maybe msg
+    , onEnterPress : Maybe msg
     }
 
 
@@ -145,6 +145,7 @@ onEnterPress msg =
     on "keydown" (Json.andThen isEnter keyCode)
 
 
+
 -- VIEW
 
 
@@ -200,6 +201,7 @@ getAttributes config =
         , config.onBlur |> Maybe.map onBlur
         , config.onEnterPress |> Maybe.map onEnterPress
         ]
+
 
 
 -- STYLES
