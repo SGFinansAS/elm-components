@@ -13,8 +13,7 @@ module Nordea.Components.Dropdown exposing
 
 import Css
     exposing
-        ( Color
-        , absolute
+        ( absolute
         , alignItems
         , backgroundColor
         , border3

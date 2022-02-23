@@ -3,11 +3,15 @@
   "scripts": {
     "start": "elm-live src/Explorer.elm --open --dir=public --start-page=index.html -- --output=public/explorer.js --debug",
     "build": "elm make src/Explorer.elm --output=public/explorer.js && shx cp -r ../static/fonts ./public",
-    "link-fonts": "ln -s ../../static/fonts ./public/fonts"
+    "link-fonts": "ln -s ../../static/fonts ./public/fonts",
+    "lint": "yarn run elm-review --fix",
+    "verify-lint": "yarn run elm-review"
   },
   "devDependencies": {
     "elm": "^0.19.1-5",
+    "elm-format": "^0.8.5",
     "elm-live": "^4.0.2",
+    "elm-review": "^2.7.0",
     "shx": "^0.3.4"
   }
 }

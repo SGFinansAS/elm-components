@@ -26,25 +26,18 @@ import Css
         , borderTopLeftRadius
         , borderTopRightRadius
         , borderWidth4
-        , boxShadow5
         , boxSizing
         , center
         , cursor
         , deg
-        , disabled
         , display
         , displayFlex
-        , firstOfType
         , flex
         , flexBasis
         , height
         , hover
         , inlineFlex
-        , int
-        , lastOfType
         , left
-        , margin
-        , marginTop
         , minHeight
         , none
         , num
@@ -63,7 +56,6 @@ import Css
         , transparent
         , width
         )
-import Css.Global exposing (withAttribute)
 import Css.Transitions exposing (transition)
 import Html.Styled as Html exposing (Attribute, Html)
 import Html.Styled.Attributes as Attrs exposing (class, css, name, type_)

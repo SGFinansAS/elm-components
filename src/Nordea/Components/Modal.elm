@@ -21,6 +21,7 @@ import Css
         , int
         , justifyContent
         , left
+        , margin
         , marginLeft
         , maxWidth
         , minWidth
@@ -35,9 +36,9 @@ import Css
         , solid
         , top
         , zIndex
-        , margin
         )
 import Css.Global as Global
+import Css.Media as Media
 import Html.Styled as Html exposing (Attribute, Html)
 import Html.Styled.Attributes exposing (attribute, css, tabindex)
 import Html.Styled.Events as Events exposing (keyCode, on)
@@ -47,7 +48,6 @@ import Nordea.Components.Text as Text
 import Nordea.Resources.Colors as Colors
 import Nordea.Resources.Icons as Icons
 import Nordea.Themes as Themes
-import Css.Media as Media
 
 
 type alias ViewConfig msg =
@@ -70,7 +70,7 @@ view config attrs children =
                         , flexDirection column
                         , minWidth (rem 18)
                         , maxWidth (rem 60)
-                        , margin (auto)
+                        , margin auto
                         , Media.withMedia
                             [ Media.only Media.screen [ Media.minWidth (rem 47) ] ]
                             [ borderRadius (rem 0.5) ]

@@ -15,7 +15,6 @@ import Css
         , borderBox
         , boxSizing
         , center
-        , color
         , cursor
         , displayFlex
         , fitContent

@@ -5,7 +5,7 @@ import Css exposing (column, displayFlex, flexDirection, marginRight, maxWidth, 
 import Html.Styled as Html exposing (text)
 import Html.Styled.Attributes exposing (css)
 import Nordea.Components.Checkbox as Checkbox
-import Nordea.Components.Dropdown as Dropdown exposing (optionInit)
+import Nordea.Components.Dropdown as Dropdown
 import Nordea.Components.Label as Label
 import Nordea.Components.RadioButton as RadioButton
 import Nordea.Components.TextInput as TextInput

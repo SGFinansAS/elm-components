@@ -1,7 +1,7 @@
 module Nordea.Components.Spinner exposing (custom, small)
 
-import Css exposing (Style, color, height, rem, width)
-import Html.Styled exposing (Attribute, Html, div)
+import Css exposing (rem, width)
+import Html.Styled exposing (Attribute, Html)
 import Html.Styled.Attributes exposing (css)
 import Nordea.Resources.Colors as Colors
 import Nordea.Resources.Icons as Icons

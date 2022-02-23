@@ -1,5 +1,6 @@
 module Config exposing (Config, FinancingVariant(..), Msg(..), init, update)
 
+import File exposing (File)
 import Html.Styled as Html
 import Nordea.Components.Accordion as Accordion exposing (Accordion)
 import Nordea.Components.DropdownFilter exposing (Item)
@@ -19,6 +20,8 @@ type alias Config =
     , searchHasFocus : Bool
     , isFeatureBoxOpen : Bool
     , isProgressBarCompleted : Bool
+    , isHoveringFileUpload : Bool
+    , selectedFiles : List File
     }
 
 
@@ -32,6 +35,10 @@ type Msg
     | ToggleModal
     | ToggleFeatureBox
     | ToggleProgressBarCompleted
+    | OnDragEnterFileUpload
+    | OnDragLeaveFileUpload
+    | OnFilesSelected File (List File)
+    | RemoveFile File
 
 
 init : Config
@@ -54,6 +61,8 @@ init =
     , isModalOpen = True
     , isFeatureBoxOpen = True
     , isProgressBarCompleted = False
+    , isHoveringFileUpload = False
+    , selectedFiles = []
     }
 
 
@@ -93,3 +102,15 @@ update msg config =
 
         ToggleProgressBarCompleted ->
             { config | isProgressBarCompleted = not config.isProgressBarCompleted }
+
+        OnDragEnterFileUpload ->
+            { config | isHoveringFileUpload = True }
+
+        OnDragLeaveFileUpload ->
+            { config | isHoveringFileUpload = False }
+
+        OnFilesSelected first rest ->
+            { config | selectedFiles = (first :: rest) ++ config.selectedFiles, isHoveringFileUpload = False }
+
+        RemoveFile file ->
+            { config | selectedFiles = config.selectedFiles |> List.filter ((/=) file) }

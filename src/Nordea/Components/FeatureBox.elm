@@ -8,8 +8,7 @@ module Nordea.Components.FeatureBox exposing
 
 import Css
     exposing
-        ( Style
-        , alignItems
+        ( alignItems
         , auto
         , backgroundColor
         , bottom
@@ -58,7 +57,7 @@ import Nordea.Html as Html exposing (showIf)
 import Nordea.Resources.Colors as Colors
 import Nordea.Resources.Icons as Icons
 import Nordea.Themes as Themes
-import Svg.Styled as Svg exposing (Svg)
+import Svg.Styled exposing (Svg)
 
 
 type alias Config msg =

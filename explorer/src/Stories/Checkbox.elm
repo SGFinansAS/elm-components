@@ -3,7 +3,7 @@ module Stories.Checkbox exposing (stories)
 import Config exposing (Msg(..))
 import Css exposing (column, displayFlex, flexDirection, maxWidth, rem)
 import Html.Styled as Html exposing (text)
-import Html.Styled.Attributes as Attrs exposing (css, disabled)
+import Html.Styled.Attributes exposing (css, disabled)
 import Nordea.Components.Checkbox as Checkbox
 import UIExplorer exposing (UI)
 import UIExplorer.Styled exposing (styledStoriesOf)

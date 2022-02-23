@@ -1,11 +1,6 @@
 module Stories.ProgressBarStepper exposing (stories)
 
 import Config exposing (Msg(..))
-import Css exposing (column, displayFlex, flexDirection, marginBottom, rem)
-import Css.Global exposing (children, everything)
-import Html.Styled as Html exposing (text)
-import Html.Styled.Attributes exposing (css)
-import Html.Styled.Events exposing (onClick)
 import Nordea.Components.ProgressBarStepper as ProgressBarStepper
 import UIExplorer exposing (UI)
 import UIExplorer.Styled exposing (styledStoriesOf)

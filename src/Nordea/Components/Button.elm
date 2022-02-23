@@ -38,7 +38,6 @@ import Css
         , fontFamilies
         , fontSize
         , fontWeight
-        , height
         , hover
         , int
         , left

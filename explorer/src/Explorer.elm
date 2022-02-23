@@ -12,6 +12,7 @@ import Stories.Dropdown as Dropdown
 import Stories.DropdownFilter as Search
 import Stories.Error as Error
 import Stories.FeatureBox as FeatureBox
+import Stories.FileUpload as FileUpload
 import Stories.FlatLink as FlatLink
 import Stories.InfoLabel as InfoLabel
 import Stories.InfoPanel as InfoPanel
@@ -90,4 +91,5 @@ main =
         , InfoPanel.stories
         , InfoLabel.stories
         , TextArea.stories
+        , FileUpload.stories
         ]

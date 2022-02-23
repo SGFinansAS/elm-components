@@ -1,6 +1,6 @@
 module Nordea.Components.RadioGroup exposing (init, view, withErrorMessage)
 
-import Css exposing (displayFlex, flexDirection, flexWrap, lineHeight, marginBottom, rem, row, wrap)
+import Css exposing (displayFlex, flexDirection, flexWrap, marginBottom, rem, row, wrap)
 import Html.Styled as Html exposing (Attribute, Html)
 import Html.Styled.Attributes exposing (css)
 import Nordea.Components.Common as Common

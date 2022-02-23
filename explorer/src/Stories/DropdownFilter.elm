@@ -1,9 +1,7 @@
 module Stories.DropdownFilter exposing (stories)
 
 import Config exposing (Config, FinancingVariant(..), Msg(..))
-import Css
 import Html.Styled as Html
-import Html.Styled.Attributes exposing (css)
 import Nordea.Components.DropdownFilter as DropdownFilter
 import UIExplorer exposing (UI)
 import UIExplorer.Styled exposing (styledStoriesOf)
@@ -97,14 +95,14 @@ stories =
                             OnClickClearSearchComponentInput
                             |> DropdownFilter.withFocusHandling "explorer" model.customModel.searchHasFocus SearchComponentFocus
                 in
-                Html.div [] [
-                  (DropdownFilter.view defaultOptions [])
-                  , Html.text "Some text"
-                ]
+                Html.div []
+                    [ DropdownFilter.view defaultOptions []
+                    , Html.text "Some text"
+                    ]
           , {}
           )
         , ( "interactive with async"
-          , \model ->
+          , \_ ->
                 Html.text "TODO debouncer and RemoteData"
           , {}
           )

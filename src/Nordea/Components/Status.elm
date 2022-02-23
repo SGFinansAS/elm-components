@@ -2,8 +2,7 @@ module Nordea.Components.Status exposing (blue, gray, green, red, yellow)
 
 import Css
     exposing
-        ( Color
-        , backgroundColor
+        ( backgroundColor
         , borderRadius
         , display
         , ellipsis
