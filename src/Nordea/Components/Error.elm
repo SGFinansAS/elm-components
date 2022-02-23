@@ -169,13 +169,13 @@ texts =
         { description =
             { no = "Grunnen til at du har kommet hit kan være at det er noen nettverksproblemer eller at noe er galt hos oss."
             , se = "Anledningen till att du har kommit hit kan vara att det är några nätverksproblem eller att något är fel på oss."
-            , dk = "Grunden til at du er kommet hertil kan være at der er nogle netværksproblemer eller at der er noget galt med os."
+            , dk = "Grunden til at du er kommet hertil kan være at der er nogle netværksproblemer eller at der er noget galt hos os."
             , en = "The reason why you ended up here could be due to network issues or that something is wrong in our systems."
             }
         , action =
             { no = "Prøv å oppdatere siden eller kontakt oss på "
             , se = "Försök att uppdatera sidan eller kontakta oss på "
-            , dk = "Prøv å oppdatere siden eller kontakt oss på "
+            , dk = "Prøv at opdatere siden eller kontakt os på "
             , en = "Please try to refresh the page or contact us on "
             }
         }
