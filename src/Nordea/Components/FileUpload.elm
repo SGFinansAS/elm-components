@@ -405,19 +405,19 @@ strings =
         }
     , uploadDescription2 =
         { no = "bla"
-        , se = "bla"
+        , se = "bläddra"
         , dk = "bla"
         , en = "browse"
         }
     , uploadDescription3 =
         { no = " for å laste opp"
-        , se = " for å laste opp"
+        , se = " för att ladda upp"
         , dk = " for å laste opp"
         , en = " to upload"
         }
     , acceptedFileTypes =
         { no = "Godkjente filtyper: "
-        , se = "Godkjente filtyper: "
+        , se = "Godkända filtyper: "
         , dk = "Godkjente filtyper: "
         , en = "Accepted file types: "
         }
@@ -429,13 +429,13 @@ strings =
         }
     , dropToUploadFile =
         { no = "Slipp filen for å laste opp"
-        , se = "Slipp filen for å laste opp"
+        , se = "Släpp filen för att ladda upp"
         , dk = "Slipp filen for å laste opp"
         , en = "Drop the file to upload"
         }
     , uploadedFiles =
         { no = "Opplastede filer:"
-        , se = "Opplastede filer:"
+        , se = "Uppladdade filer:"
         , dk = "Opplastede filer:"
         , en = "Uploaded files:"
         }
