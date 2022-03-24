@@ -113,6 +113,8 @@ getAttributes config =
         , config.placeholder |> Maybe.map placeholder
         , config.onBlur |> Maybe.map onBlur
         , config.maxLength |> Maybe.map maxlength
+
+        -- Disable the Grammarly browser extension to avoid crashing Elm.
         , Just (Attrs.attribute "data-gramm" "false")
         , Just (Attrs.attribute "data-gramm_editor" "false")
         , Just (Attrs.attribute "data-enable-grammarly" "false")
