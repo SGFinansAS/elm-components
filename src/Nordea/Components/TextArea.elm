@@ -30,7 +30,7 @@ import Css
         , solid
         )
 import Html.Styled exposing (Attribute, Html, styled, textarea)
-import Html.Styled.Attributes exposing (maxlength, placeholder, value)
+import Html.Styled.Attributes as Attrs exposing (maxlength, placeholder, value)
 import Html.Styled.Events exposing (onBlur, onInput)
 import Maybe.Extra as Maybe
 import Nordea.Resources.Colors as Colors
@@ -113,6 +113,9 @@ getAttributes config =
         , config.placeholder |> Maybe.map placeholder
         , config.onBlur |> Maybe.map onBlur
         , config.maxLength |> Maybe.map maxlength
+        , Just (Attrs.attribute "data-gramm" "false")
+        , Just (Attrs.attribute "data-gramm_editor" "false")
+        , Just (Attrs.attribute "data-enable-grammarly" "false")
         ]
 
 
