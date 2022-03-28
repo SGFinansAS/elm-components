@@ -10,7 +10,8 @@ module Nordea.Components.TextInput exposing
     , withPattern
     , withPlaceholder
     , withSearchIcon
-    , withSmallSize)
+    , withSmallSize
+    )
 
 import Css exposing (Style, absolute, backgroundColor, border3, borderBox, borderRadius, boxSizing, color, disabled, displayFlex, focus, fontSize, height, left, none, num, opacity, outline, padding2, paddingLeft, pct, pointerEvents, position, relative, rem, solid, top, transform, translateY, width)
 import Html.Styled as Html exposing (Attribute, Html, input, styled)
