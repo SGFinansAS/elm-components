@@ -105,13 +105,12 @@ view (DropdownFilter options) attributes =
                 ]
     in
     Html.div
-        ([ Attr.css
+        (Attr.css
             [ Css.displayFlex
             , Css.flexDirection Css.column
             , Css.position Css.relative
             ]
-         ]
-            ++ attributes
+            :: attributes
         )
         [ inputSearchView (options.hasError || showHasNoMatch) options.hasFocus options.rawInputString options.onInput options.onFocus options.onClickClearInput
         , if options.isLoading then

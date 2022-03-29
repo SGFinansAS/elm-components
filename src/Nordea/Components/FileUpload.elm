@@ -57,6 +57,7 @@ import Html.Styled as Html exposing (Attribute, Html)
 import Html.Styled.Attributes exposing (accept, css, multiple, type_, value)
 import Html.Styled.Events as Events
 import Json.Decode as Decode
+import Nordea.Components.Common exposing (Translation)
 import Nordea.Components.Text as Text
 import Nordea.Html exposing (showIf, styleIf, viewMaybe)
 import Nordea.Resources.Colors as Colors
@@ -82,7 +83,7 @@ type Appearance
 
 
 type alias Translate =
-    { no : String, se : String, dk : String, en : String } -> String
+    Translation -> String
 
 
 type FileUpload msg
@@ -320,16 +321,14 @@ supportedFileTypesText translate accept =
                             Png ->
                                 "PNG"
                     )
-                |> List.reverse
                 |> List.indexedMap
                     (\i e ->
-                        if i == 0 && List.length mimeTypes > 1 then
+                        if i > 0 && i + 1 == List.length mimeTypes then
                             translate strings.and ++ e
 
                         else
                             e
                     )
-                |> List.reverse
                 |> String.join ", "
                 |> (\fileTypes -> translate strings.acceptedFileTypes ++ fileTypes)
                 |> Just

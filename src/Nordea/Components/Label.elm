@@ -42,7 +42,7 @@ import Html.Styled
         )
 import Html.Styled.Attributes exposing (css)
 import Maybe.Extra as Maybe
-import Nordea.Components.Common as Common exposing (CharCounter, RequirednessHint, bottomInfo, topInfo)
+import Nordea.Components.Common as Common exposing (CharCounter, RequirednessHint, Translation, bottomInfo, topInfo)
 import Nordea.Html exposing (showIf, styleIf)
 import Nordea.Resources.Colors as Colors
 import Nordea.Themes as Themes
@@ -55,8 +55,8 @@ type LabelType
 
 
 type RequirednessHint
-    = Mandatory ({ no : String, se : String, dk : String, en : String } -> String)
-    | Optional ({ no : String, se : String, dk : String, en : String } -> String)
+    = Mandatory (Translation -> String)
+    | Optional (Translation -> String)
     | Custom String
 
 
@@ -94,18 +94,19 @@ view attrs children (Label config) =
         commonConfig =
             let
                 fromLabelRequirednessHint requirednessHint =
-                    case requirednessHint of
-                        Just (Mandatory a) ->
-                            Just (Common.Mandatory a)
+                    requirednessHint
+                        |> Maybe.map
+                            (\hint ->
+                                case hint of
+                                    Mandatory a ->
+                                        Common.Mandatory a
 
-                        Just (Optional a) ->
-                            Just (Common.Optional a)
+                                    Optional a ->
+                                        Common.Optional a
 
-                        Just (Custom a) ->
-                            Just (Common.Custom a)
-
-                        Nothing ->
-                            Nothing
+                                    Custom a ->
+                                        Common.Custom a
+                            )
             in
             { labelText = config.labelText
             , requirednessHint = config.requirednessHint |> fromLabelRequirednessHint

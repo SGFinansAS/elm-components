@@ -24,24 +24,21 @@ import Css
         )
 import Html.Styled as Html exposing (Attribute, Html)
 import Html.Styled.Attributes exposing (css, href)
+import Nordea.Components.Common exposing (Translation)
 import Nordea.Components.FlatLink as FlatLink
 import Nordea.Components.Text as Text
 import Nordea.Resources.Colors as Colors
 import Nordea.Resources.Icons as Icons
 
 
-type alias Translation =
-    { no : String, se : String, dk : String, en : String } -> String
-
-
 type alias InternalServerErrorConfig =
     { supportEmail : String
-    , translate : Translation
+    , translate : Translation -> String
     }
 
 
 type alias PageNotFoundErrorConfig =
-    { translate : Translation }
+    { translate : Translation -> String }
 
 
 type Error
@@ -49,7 +46,7 @@ type Error
     | PageNotFound PageNotFoundErrorConfig
 
 
-internalServerError : Translation -> String -> Error
+internalServerError : (Translation -> String) -> String -> Error
 internalServerError translate supportEmail =
     InternalServerError
         { supportEmail = supportEmail
@@ -57,7 +54,7 @@ internalServerError translate supportEmail =
         }
 
 
-pageNotFound : Translation -> Error
+pageNotFound : (Translation -> String) -> Error
 pageNotFound translate =
     PageNotFound
         { translate = translate
@@ -77,7 +74,7 @@ view attributes children error =
 viewInternalServerError : List (Attribute msg) -> List (Html msg) -> InternalServerErrorConfig -> Html msg
 viewInternalServerError attributes children config =
     Html.div
-        ([ css [ errorContainerStyle ] ] ++ attributes)
+        (css [ errorContainerStyle ] :: attributes)
         ([ viewHeading (texts.heading |> config.translate)
          , viewDescription (texts.internalServerError.description |> config.translate)
          , Icons.errorSvg [ css [ width (rem 30) ] ]
@@ -90,7 +87,7 @@ viewInternalServerError attributes children config =
 viewPageNotFoundError : List (Attribute msg) -> List (Html msg) -> PageNotFoundErrorConfig -> Html msg
 viewPageNotFoundError attributes children config =
     Html.div
-        ([ css [ errorContainerStyle ] ] ++ attributes)
+        (css [ errorContainerStyle ] :: attributes)
         ([ viewHeading (texts.heading |> config.translate)
          , viewDescription (texts.pageNotFound.description |> config.translate)
          , Icons.errorSvg [ css [ width (rem 30) ] ]
@@ -158,6 +155,7 @@ viewActionForInternalServerError config =
             ]
 
 
+texts : { heading : Translation, internalServerError : { description : Translation, action : Translation }, pageNotFound : { description : Translation } }
 texts =
     { heading =
         { no = "Oops! Her var det ikke mye å hente"

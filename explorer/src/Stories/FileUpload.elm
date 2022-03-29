@@ -52,6 +52,22 @@ stories =
                     ]
           , {}
           )
+        , ( "Large (only one supported file type)"
+          , \model ->
+                Html.div [ css [ displayFlex, flexDirection column, maxWidth (rem 30) ] ]
+                    [ Label.init "Some file document" Label.InputLabel
+                        |> Label.withRequirednessHint (Just (Label.Optional .no))
+                        |> Label.view []
+                            [ FileUpload.init .no OnFilesSelected OnDragEnterFileUpload OnDragLeaveFileUpload
+                                |> FileUpload.withIsHovering model.customModel.isHoveringFileUpload
+                                |> FileUpload.withAcceptedFileTypes (FileUpload.Only [ FileUpload.Png ])
+                                |> FileUpload.view
+                            ]
+                    , FileUpload.uploadedFilesView model.customModel.selectedFiles RemoveFile .no [ css [ marginTop (rem 1) ] ]
+                        |> showIf (not (List.isEmpty model.customModel.selectedFiles))
+                    ]
+          , {}
+          )
         , ( "Large with error"
           , \model ->
                 Html.div [ css [ displayFlex, flexDirection column, maxWidth (rem 30) ] ]

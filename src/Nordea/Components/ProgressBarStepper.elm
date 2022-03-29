@@ -16,6 +16,7 @@ import Css
 import Html.Styled as Html exposing (Attribute, Html)
 import Html.Styled.Attributes exposing (css)
 import List.Extra as List
+import Nordea.Components.Common exposing (Translation)
 import Nordea.Components.ProgressBar as ProgressBar
 import Nordea.Components.Text as Text
 import Nordea.Html exposing (viewMaybe)
@@ -25,10 +26,11 @@ import Nordea.Resources.Colors as Colors
 type alias ViewConfig =
     { steps : List String
     , currentStep : Int
-    , nextLabel : { no : String, se : String, dk : String, en : String } -> String
+    , nextLabel : Translation -> String
     }
 
 
+init : { r | steps : b, currentStep : c, nextLabel : d } -> { steps : b, currentStep : c, nextLabel : d }
 init { steps, currentStep, nextLabel } =
     { steps = steps
     , currentStep = currentStep
@@ -75,6 +77,7 @@ view attrs { steps, currentStep, nextLabel } =
         ]
 
 
+strings : { next : Translation }
 strings =
     { next =
         { no = "Neste: "
