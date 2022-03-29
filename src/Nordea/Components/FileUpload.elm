@@ -320,16 +320,14 @@ supportedFileTypesText translate accept =
                             Png ->
                                 "PNG"
                     )
-                |> List.reverse
                 |> List.indexedMap
                     (\i e ->
-                        if i == 0 && List.length mimeTypes > 1 then
+                        if i > 0 && i + 1 == List.length mimeTypes then
                             translate strings.and ++ e
 
                         else
                             e
                     )
-                |> List.reverse
                 |> String.join ", "
                 |> (\fileTypes -> translate strings.acceptedFileTypes ++ fileTypes)
                 |> Just
