@@ -10,6 +10,7 @@ module Nordea.Components.TextInput exposing
     , withPattern
     , withPlaceholder
     , withSearchIcon
+    , withSmallSize
     )
 
 import Css exposing (Style, absolute, backgroundColor, border3, borderBox, borderRadius, boxSizing, color, disabled, displayFlex, focus, fontSize, height, left, none, num, opacity, outline, padding2, paddingLeft, pct, pointerEvents, position, relative, rem, solid, top, transform, translateY, width)
@@ -38,7 +39,13 @@ type alias Config msg =
     , hasSearchIcon : Bool
     , onBlur : Maybe msg
     , onEnterPress : Maybe msg
+    , size : Size
     }
+
+
+type Size
+    = Small
+    | Large
 
 
 type TextInput msg
@@ -57,6 +64,7 @@ init value =
         , hasSearchIcon = False
         , onBlur = Nothing
         , onEnterPress = Nothing
+        , size = Large
         }
 
 
@@ -98,6 +106,11 @@ withOnBlur msg (TextInput config) =
 withOnEnterPress : msg -> TextInput msg -> TextInput msg
 withOnEnterPress msg (TextInput config) =
     TextInput { config | onEnterPress = Just msg }
+
+
+withSmallSize : TextInput msg -> TextInput msg
+withSmallSize (TextInput config) =
+    TextInput { config | size = Small }
 
 
 onEnterPress : msg -> Attribute msg
@@ -186,7 +199,14 @@ getStyles config =
                 Colors.grayMedium
     in
     [ fontSize (rem 1)
-    , height (rem 3)
+    , height
+        (case config.size of
+            Small ->
+                rem 2.5625
+
+            Large ->
+                rem 3
+        )
     , padding2 (rem 0.75) (rem 0.75)
     , borderRadius (rem 0.25)
     , border3 (rem 0.0625) solid borderColorStyle |> Css.important
