@@ -1,6 +1,6 @@
 module Nordea.Components.Card exposing (..)
 
-import Css exposing (Style, auto, backgroundColor, borderBottom3, borderRadius, borderStyle, column, displayFlex, flexDirection, fontSize, height, left, margin2, marginBottom, none, padding, padding4, paddingBottom, rem, solid, textAlign, width)
+import Css exposing (auto, backgroundColor, borderRadius, borderStyle, column, displayFlex, flexDirection, fontSize, height, left, margin2, none, padding, rem, textAlign, width)
 import Html.Styled as Html exposing (Attribute, Html)
 import Html.Styled.Attributes exposing (css)
 import Nordea.Components.Text as Text

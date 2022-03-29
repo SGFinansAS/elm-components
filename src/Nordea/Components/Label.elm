@@ -95,18 +95,19 @@ view attrs children (Label config) =
         commonConfig =
             let
                 fromLabelRequirednessHint requirednessHint =
-                    case requirednessHint of
-                        Just (Mandatory a) ->
-                            Just (Common.Mandatory a)
+                    requirednessHint
+                        |> Maybe.map
+                            (\hint ->
+                                case hint of
+                                    Mandatory a ->
+                                        Common.Mandatory a
 
-                        Just (Optional a) ->
-                            Just (Common.Optional a)
+                                    Optional a ->
+                                        Common.Optional a
 
-                        Just (Custom a) ->
-                            Just (Common.Custom a)
-
-                        Nothing ->
-                            Nothing
+                                    Custom a ->
+                                        Common.Custom a
+                            )
             in
             { labelText = config.labelText
             , requirednessHint = config.requirednessHint |> fromLabelRequirednessHint

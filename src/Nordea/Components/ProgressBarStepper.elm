@@ -30,6 +30,7 @@ type alias ViewConfig =
     }
 
 
+init : { r | steps : b, currentStep : c, nextLabel : d } -> { steps : b, currentStep : c, nextLabel : d }
 init { steps, currentStep, nextLabel } =
     { steps = steps
     , currentStep = currentStep

@@ -74,7 +74,7 @@ view attributes children error =
 viewInternalServerError : List (Attribute msg) -> List (Html msg) -> InternalServerErrorConfig -> Html msg
 viewInternalServerError attributes children config =
     Html.div
-        ([ css [ errorContainerStyle ] ] ++ attributes)
+        (css [ errorContainerStyle ] :: attributes)
         ([ viewHeading (texts.heading |> config.translate)
          , viewDescription (texts.internalServerError.description |> config.translate)
          , Icons.errorSvg [ css [ width (rem 30) ] ]
@@ -87,7 +87,7 @@ viewInternalServerError attributes children config =
 viewPageNotFoundError : List (Attribute msg) -> List (Html msg) -> PageNotFoundErrorConfig -> Html msg
 viewPageNotFoundError attributes children config =
     Html.div
-        ([ css [ errorContainerStyle ] ] ++ attributes)
+        (css [ errorContainerStyle ] :: attributes)
         ([ viewHeading (texts.heading |> config.translate)
          , viewDescription (texts.pageNotFound.description |> config.translate)
          , Icons.errorSvg [ css [ width (rem 30) ] ]
