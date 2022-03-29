@@ -62,6 +62,7 @@ import Nordea.Html exposing (showIf, styleIf, viewMaybe)
 import Nordea.Resources.Colors as Colors
 import Nordea.Resources.Icons as Icon
 import Nordea.Themes as Themes
+import Nordea.Types exposing (Translation)
 import Round
 
 
@@ -82,7 +83,7 @@ type Appearance
 
 
 type alias Translate =
-    { no : String, se : String, dk : String, en : String } -> String
+    Translation -> String
 
 
 type FileUpload msg
@@ -394,6 +395,15 @@ onSelectFiles msg =
     Events.on "change" filesDecoder
 
 
+strings :
+    { uploadDescription1 : Translation
+    , uploadDescription2 : Translation
+    , uploadDescription3 : Translation
+    , acceptedFileTypes : Translation
+    , and : Translation
+    , dropToUploadFile : Translation
+    , uploadedFiles : Translation
+    }
 strings =
     { uploadDescription1 =
         { no = "Dra filen hit eller "

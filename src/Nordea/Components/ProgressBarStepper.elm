@@ -20,12 +20,13 @@ import Nordea.Components.ProgressBar as ProgressBar
 import Nordea.Components.Text as Text
 import Nordea.Html exposing (viewMaybe)
 import Nordea.Resources.Colors as Colors
+import Nordea.Types exposing (Translation)
 
 
 type alias ViewConfig =
     { steps : List String
     , currentStep : Int
-    , nextLabel : { no : String, se : String, dk : String, en : String } -> String
+    , nextLabel : Translation -> String
     }
 
 
@@ -75,6 +76,7 @@ view attrs { steps, currentStep, nextLabel } =
         ]
 
 
+strings : { next : Translation }
 strings =
     { next =
         { no = "Neste: "

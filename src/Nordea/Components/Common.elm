@@ -19,18 +19,19 @@ import Css
         , rem
         , spaceBetween
         )
-import Html.Styled as Html exposing (Attribute, Html, div, styled, text)
+import Html.Styled as Html exposing (Html, div, text)
 import Html.Styled.Attributes exposing (css)
 import Maybe.Extra as Maybe
 import Nordea.Components.Text as Text
 import Nordea.Html as Html exposing (showIf, styleIf)
 import Nordea.Resources.Colors as Colors
 import Nordea.Resources.Icons as Icons
+import Nordea.Types exposing (Translation)
 
 
 type RequirednessHint
-    = Mandatory ({ no : String, se : String, dk : String, en : String } -> String)
-    | Optional ({ no : String, se : String, dk : String, en : String } -> String)
+    = Mandatory (Translation -> String)
+    | Optional (Translation -> String)
     | Custom String
 
 
@@ -141,6 +142,7 @@ topInfo config =
         ]
 
 
+strings : { mandatory : Translation, optional : Translation }
 strings =
     { mandatory =
         { no = "Påkrevd"

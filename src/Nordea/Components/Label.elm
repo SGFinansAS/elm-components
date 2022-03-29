@@ -46,6 +46,7 @@ import Nordea.Components.Common as Common exposing (CharCounter, RequirednessHin
 import Nordea.Html exposing (showIf, styleIf)
 import Nordea.Resources.Colors as Colors
 import Nordea.Themes as Themes
+import Nordea.Types exposing (Translation)
 
 
 type LabelType
@@ -55,8 +56,8 @@ type LabelType
 
 
 type RequirednessHint
-    = Mandatory ({ no : String, se : String, dk : String, en : String } -> String)
-    | Optional ({ no : String, se : String, dk : String, en : String } -> String)
+    = Mandatory (Translation -> String)
+    | Optional (Translation -> String)
     | Custom String
 
 

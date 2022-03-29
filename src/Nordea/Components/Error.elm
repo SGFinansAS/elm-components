@@ -28,20 +28,17 @@ import Nordea.Components.FlatLink as FlatLink
 import Nordea.Components.Text as Text
 import Nordea.Resources.Colors as Colors
 import Nordea.Resources.Icons as Icons
-
-
-type alias Translation =
-    { no : String, se : String, dk : String, en : String } -> String
+import Nordea.Types exposing (Translation)
 
 
 type alias InternalServerErrorConfig =
     { supportEmail : String
-    , translate : Translation
+    , translate : Translation -> String
     }
 
 
 type alias PageNotFoundErrorConfig =
-    { translate : Translation }
+    { translate : Translation -> String }
 
 
 type Error
@@ -49,7 +46,7 @@ type Error
     | PageNotFound PageNotFoundErrorConfig
 
 
-internalServerError : Translation -> String -> Error
+internalServerError : (Translation -> String) -> String -> Error
 internalServerError translate supportEmail =
     InternalServerError
         { supportEmail = supportEmail
@@ -57,7 +54,7 @@ internalServerError translate supportEmail =
         }
 
 
-pageNotFound : Translation -> Error
+pageNotFound : (Translation -> String) -> Error
 pageNotFound translate =
     PageNotFound
         { translate = translate
@@ -158,6 +155,7 @@ viewActionForInternalServerError config =
             ]
 
 
+texts : { heading : Translation, internalServerError : { description : Translation, action : Translation }, pageNotFound : { description : Translation } }
 texts =
     { heading =
         { no = "Oops! Her var det ikke mye å hente"
