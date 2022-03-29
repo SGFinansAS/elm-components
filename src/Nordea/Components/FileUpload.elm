@@ -57,12 +57,12 @@ import Html.Styled as Html exposing (Attribute, Html)
 import Html.Styled.Attributes exposing (accept, css, multiple, type_, value)
 import Html.Styled.Events as Events
 import Json.Decode as Decode
+import Nordea.Components.Common exposing (Translation)
 import Nordea.Components.Text as Text
 import Nordea.Html exposing (showIf, styleIf, viewMaybe)
 import Nordea.Resources.Colors as Colors
 import Nordea.Resources.Icons as Icon
 import Nordea.Themes as Themes
-import Nordea.Types exposing (Translation)
 import Round
 
 

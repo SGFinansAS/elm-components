@@ -26,7 +26,10 @@ import Nordea.Components.Text as Text
 import Nordea.Html as Html exposing (showIf, styleIf)
 import Nordea.Resources.Colors as Colors
 import Nordea.Resources.Icons as Icons
-import Nordea.Types exposing (Translation)
+
+
+type alias Translation =
+    { no : String, se : String, dk : String, en : String }
 
 
 type RequirednessHint

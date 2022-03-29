@@ -42,11 +42,10 @@ import Html.Styled
         )
 import Html.Styled.Attributes exposing (css)
 import Maybe.Extra as Maybe
-import Nordea.Components.Common as Common exposing (CharCounter, RequirednessHint, bottomInfo, topInfo)
+import Nordea.Components.Common as Common exposing (CharCounter, RequirednessHint, Translation, bottomInfo, topInfo)
 import Nordea.Html exposing (showIf, styleIf)
 import Nordea.Resources.Colors as Colors
 import Nordea.Themes as Themes
-import Nordea.Types exposing (Translation)
 
 
 type LabelType

@@ -16,11 +16,11 @@ import Css
 import Html.Styled as Html exposing (Attribute, Html)
 import Html.Styled.Attributes exposing (css)
 import List.Extra as List
+import Nordea.Components.Common exposing (Translation)
 import Nordea.Components.ProgressBar as ProgressBar
 import Nordea.Components.Text as Text
 import Nordea.Html exposing (viewMaybe)
 import Nordea.Resources.Colors as Colors
-import Nordea.Types exposing (Translation)
 
 
 type alias ViewConfig =
