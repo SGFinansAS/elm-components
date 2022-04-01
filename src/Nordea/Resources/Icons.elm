@@ -86,17 +86,19 @@ rightIcon icon =
 -- Inline SVG Icons
 
 
-check : Svg msg
-check =
-    svg
-        [ width "1em", height "1em", viewBox "0 0 16 12" ]
-        [ Svg.path
-            [ fillRule "evenodd"
-            , clipRule "evenodd"
-            , d "M15.8284 1.41421L14.4142 0L5.91421 8.5L1.41421 4L0 5.41421L4.5 9.91421L4.48531 9.92891L5.89952 11.3431L15.8284 1.41421Z"
-            , fill "currentColor"
+check : List (Attribute msg) -> Svg msg
+check attrs =
+    iconContainer attrs
+        [ svg
+            [ width "1em", height "1em", viewBox "0 0 16 12" ]
+            [ Svg.path
+                [ fillRule "evenodd"
+                , clipRule "evenodd"
+                , d "M15.8284 1.41421L14.4142 0L5.91421 8.5L1.41421 4L0 5.41421L4.5 9.91421L4.48531 9.92891L5.89952 11.3431L15.8284 1.41421Z"
+                , fill "currentColor"
+                ]
+                []
             ]
-            []
         ]
 
 
