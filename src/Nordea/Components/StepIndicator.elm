@@ -104,7 +104,7 @@ viewStepItem currentStep ( item, stepName ) =
         styled li
             listStylesLi
             []
-            [ styled div divStylesActive [] [ Icons.check ]
+            [ styled div divStylesActive [] [ Icons.check [] ]
             , styled p textStyles [] [ text stepName ]
             , showIf (item /= 1) viewLineActive
             ]
