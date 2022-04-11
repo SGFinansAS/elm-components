@@ -112,7 +112,7 @@ header onClickMsg title =
                 |> NordeaButton.view
                     [ Events.onClick onClick, css [ alignItems center, marginLeft auto ] ]
                     [ Icons.cross
-                        [ css [ Themes.color Themes.PrimaryColor Colors.blueDeep ] ]
+                        [ css [ Themes.color Themes.PrimaryColor Colors.blueDeep, Css.width (rem 1.385) ] ]
                     ]
     in
     Html.div

@@ -214,7 +214,7 @@ inputSearchView hasError hasFocus searchString onInput onFocus onClickClearInput
                 ]
           in
           if String.length searchString > 0 then
-            Icon.cross (attributes ++ [ Events.onClick onClickClearInput ])
+            Icon.cross (attributes ++ [ Events.onClick onClickClearInput, Attr.css [ Css.width (Css.rem 1.385) ] ])
 
           else if hasFocus then
             Icon.chevronUp attributes
