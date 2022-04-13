@@ -1,9 +1,9 @@
-module Nordea.Components.InfoLabel exposing (InfoLabel, update, init, Msg, withText, withTitle, view, warning, openableView)
+module Nordea.Components.InfoLabel exposing (InfoLabel, Msg, init, openableView, update, view, warning, withText, withTitle)
 
 import Css exposing (Style, backgroundColor, borderRadius, column, displayFlex, fitContent, flexDirection, height, hidden, marginBottom, marginRight, marginTop, maxWidth, overflow, padding, property, rem, row, width)
-import Html.Styled.Events as Events
 import Html.Styled as Html exposing (Attribute, Html)
 import Html.Styled.Attributes exposing (css)
+import Html.Styled.Events as Events
 import Json.Decode as Decode
 import Nordea.Components.Common exposing (Translation)
 import Nordea.Components.FlatLink as FlatLink
@@ -28,9 +28,9 @@ type Msg
 
 
 type alias Config =
-    { text: Maybe String
-    , open: Bool
-    , title: Maybe String
+    { text : Maybe String
+    , open : Bool
+    , title : Maybe String
     }
 
 
@@ -45,7 +45,7 @@ init =
 
 withText : String -> InfoLabel -> InfoLabel
 withText text (InfoLabel config) =
-    InfoLabel { config | text  = Just text }
+    InfoLabel { config | text = Just text }
 
 
 withTitle : String -> InfoLabel -> InfoLabel
@@ -53,11 +53,11 @@ withTitle title (InfoLabel config) =
     InfoLabel { config | title = Just title }
 
 
-update: Msg -> InfoLabel -> InfoLabel
+update : Msg -> InfoLabel -> InfoLabel
 update msg (InfoLabel config) =
     case msg of
-     OpenText ->
-        InfoLabel { config | open = not config.open }
+        OpenText ->
+            InfoLabel { config | open = not config.open }
 
 
 view : List (Attribute msg) -> List (Html msg) -> Html msg
@@ -80,8 +80,8 @@ warning attrs children =
         ]
 
 
-openableView :  (Translation -> String) -> List (Attribute Msg) -> InfoLabel -> Html Msg
-openableView language attrs (InfoLabel config)  =
+openableView : (Translation -> String) -> List (Attribute Msg) -> InfoLabel -> Html Msg
+openableView language attrs (InfoLabel config) =
     let
         iconButton =
             let
@@ -90,36 +90,42 @@ openableView language attrs (InfoLabel config)  =
                         |> Maybe.map
                             (\name ->
                                 case name of
-                                     ReadMore translate ->
-                                          translate strings.readMore
-                                     Close translate ->
-                                          translate strings.close
-                                     Custom string ->
-                                          string
-                            )
+                                    ReadMore translate ->
+                                        translate strings.readMore
 
+                                    Close translate ->
+                                        translate strings.close
+
+                                    Custom string ->
+                                        string
+                            )
             in
             if config.open then
                 [ Text.bodyTextHeavy
-                    |> Text.view [] [ Html.text ( Just ( Close language ) |> toI18NString |> Maybe.withDefault "Close") ], Icon.rightIcon (Icon.chevronUp []) ]
+                    |> Text.view [] [ Html.text (Just (Close language) |> toI18NString |> Maybe.withDefault "Close") ]
+                , Icon.rightIcon (Icon.chevronUp [])
+                ]
 
             else
                 [ Text.bodyTextHeavy
-                    |> Text.view [] [ Html.text (Just ( ReadMore language ) |> toI18NString |> Maybe.withDefault "Read more") ], Icon.rightIcon (Icon.chevronDown []) ]
+                    |> Text.view [] [ Html.text (Just (ReadMore language) |> toI18NString |> Maybe.withDefault "Read more") ]
+                , Icon.rightIcon (Icon.chevronDown [])
+                ]
 
         style =
             if config.open then
                 css []
+
             else
-                css [ overflow hidden
+                css
+                    [ overflow hidden
                     , property "display" "-webkit-box"
                     , property "-webkit-box-orient" "vertical"
                     , property "-webkit-line-clamp" "2"
                     ]
-
     in
     Html.div
-        ( css
+        (css
             [ Themes.backgroundColor Themes.SecondaryColor Colors.blueCloud
             , displayFlex
             , flexDirection row
@@ -127,15 +133,20 @@ openableView language attrs (InfoLabel config)  =
             , borderRadius (rem 0.5)
             , maxWidth fitContent
             ]
-            :: attrs )
+            :: attrs
+        )
         [ Icon.info [ css [ width (rem 1.5), height (rem 1.5), marginRight (rem 0.5) ] ]
-        , Html.div[ css [ displayFlex , flexDirection column ] ]
+        , Html.div [ css [ displayFlex, flexDirection column ] ]
             [ Text.bodyTextHeavy
                 |> Text.view [ css [ marginBottom (rem 0.5) ] ] [ Html.text (config.title |> Maybe.withDefault "") ]
             , Text.bodyTextSmall
                 |> Text.view [ style ] [ Html.text (config.text |> Maybe.withDefault "") ]
             , FlatLink.default
-                |> FlatLink.view [ css [ marginTop (rem 1) ], onMouseDownSelect OpenText ] iconButton
+                |> FlatLink.view
+                    [ css [ marginTop (rem 1) ]
+                    , onMouseDownSelect OpenText
+                    ]
+                    iconButton
             ]
         ]
 
@@ -171,4 +182,3 @@ strings =
         , en = "Close"
         }
     }
-
