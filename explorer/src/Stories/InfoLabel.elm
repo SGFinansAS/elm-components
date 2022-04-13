@@ -22,10 +22,10 @@ stories =
           , {}
           )
         , ( "InfoLabel that is openable"
-           , \model ->
+          , \model ->
                 model.customModel.infoLabel
                     |> InfoLabel.openableView .no []
                     |> Html.map InfoLabelMsg
-           , {}
+          , {}
           )
         ]
