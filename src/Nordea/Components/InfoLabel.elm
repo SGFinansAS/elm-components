@@ -1,6 +1,6 @@
 module Nordea.Components.InfoLabel exposing (InfoLabel, Msg, init, openableView, update, view, warning, withText, withTitle)
 
-import Css exposing (Style, backgroundColor, borderRadius, column, displayFlex, fitContent, flexDirection, height, hidden, marginBottom, marginRight, marginTop, maxWidth, overflow, padding, property, rem, row, width)
+import Css exposing (backgroundColor, borderRadius, column, displayFlex, fitContent, flexDirection, height, hidden, marginBottom, marginRight, marginTop, maxWidth, overflow, padding, property, rem, row, width)
 import Html.Styled as Html exposing (Attribute, Html)
 import Html.Styled.Attributes exposing (css)
 import Html.Styled.Events as Events
