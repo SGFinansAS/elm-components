@@ -1,6 +1,6 @@
 module Stories.InfoLabel exposing (stories)
 
-import Config exposing (Config, Msg)
+import Config exposing (Config, Msg(..))
 import Html.Styled as Html
 import Nordea.Components.InfoLabel as InfoLabel
 import UIExplorer exposing (UI)
@@ -20,5 +20,12 @@ stories =
           , \_ ->
                 InfoLabel.warning [] [ Html.text "This is an important warning." ]
           , {}
+          )
+        , ( "InfoLabel that is openable"
+           , \model ->
+                model.customModel.infoLabel
+                    |> InfoLabel.openableView .no []
+                    |> Html.map InfoLabelMsg
+           , {}
           )
         ]
