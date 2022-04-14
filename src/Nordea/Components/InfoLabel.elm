@@ -8,6 +8,7 @@ import Json.Decode as Decode
 import Nordea.Components.Common exposing (Translation)
 import Nordea.Components.FlatLink as FlatLink
 import Nordea.Components.Text as Text
+import Nordea.Html
 import Nordea.Resources.Colors as Colors
 import Nordea.Resources.Icons as Icon
 import Nordea.Themes as Themes
@@ -113,7 +114,7 @@ openableView language attrs (InfoLabel config) =
                 ]
 
         style =
-            if config.open then
+            if config.open || String.length (config.text |> Maybe.withDefault "") < 600 then
                 css []
 
             else
@@ -141,12 +142,16 @@ openableView language attrs (InfoLabel config) =
                 |> Text.view [ css [ marginBottom (rem 0.5) ] ] [ Html.text (config.title |> Maybe.withDefault "") ]
             , Text.bodyTextSmall
                 |> Text.view [ style ] [ Html.text (config.text |> Maybe.withDefault "") ]
-            , FlatLink.default
-                |> FlatLink.view
-                    [ css [ marginTop (rem 1) ]
-                    , onMouseDownSelect OpenText
-                    ]
-                    iconButton
+            , if String.length (config.text |> Maybe.withDefault "") > 600 then
+                FlatLink.default
+                    |> FlatLink.view
+                        [ css [ marginTop (rem 1) ]
+                        , onMouseDownSelect OpenText
+                        ]
+                        iconButton
+
+              else
+                Nordea.Html.nothing
             ]
         ]
 

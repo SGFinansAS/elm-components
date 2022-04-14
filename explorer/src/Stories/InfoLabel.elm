@@ -21,7 +21,7 @@ stories =
                 InfoLabel.warning [] [ Html.text "This is an important warning." ]
           , {}
           )
-        , ( "InfoLabel that is openable"
+        , ( "InfoLabel with Read more button"
           , \model ->
                 model.customModel.infoLabel
                     |> InfoLabel.openableView .no []
