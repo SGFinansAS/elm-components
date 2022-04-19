@@ -114,7 +114,7 @@ openableView language attrs (InfoLabel config) =
                 ]
 
         style =
-            if config.open || String.length (config.text |> Maybe.withDefault "") < 600 then
+            if config.open || String.length (config.text |> Maybe.withDefault "") < 450 then
                 css []
 
             else
@@ -142,7 +142,7 @@ openableView language attrs (InfoLabel config) =
                 |> Text.view [ css [ marginBottom (rem 0.5) ] ] [ Html.text (config.title |> Maybe.withDefault "") ]
             , Text.bodyTextLight
                 |> Text.view [ style ] [ Html.text (config.text |> Maybe.withDefault "") ]
-            , if String.length (config.text |> Maybe.withDefault "") > 600 then
+            , if String.length (config.text |> Maybe.withDefault "") > 450 then
                 FlatLink.mini
                     |> FlatLink.view
                         [ css [ marginTop (rem 1) ]
