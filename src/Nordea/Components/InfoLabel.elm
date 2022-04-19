@@ -140,10 +140,10 @@ openableView language attrs (InfoLabel config) =
         , Html.div [ css [ displayFlex, flexDirection column ] ]
             [ Text.bodyTextHeavy
                 |> Text.view [ css [ marginBottom (rem 0.5) ] ] [ Html.text (config.title |> Maybe.withDefault "") ]
-            , Text.bodyTextSmall
+            , Text.bodyTextLight
                 |> Text.view [ style ] [ Html.text (config.text |> Maybe.withDefault "") ]
             , if String.length (config.text |> Maybe.withDefault "") > 600 then
-                FlatLink.default
+                FlatLink.mini
                     |> FlatLink.view
                         [ css [ marginTop (rem 1) ]
                         , onMouseDownSelect OpenText
