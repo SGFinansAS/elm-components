@@ -65,31 +65,31 @@ main =
         , onModeChanged = Nothing
         , documentTitle = Nothing
         }
-        [ Button.stories
-        , FlatLink.stories
-        , TextInput.stories
-        , NumberInput.stories
+        [ Accordion.stories
+        , Button.stories
+        , Card.stories
+        , Checkbox.stories
         , Dropdown.stories
         , Search.stories
-        , Checkbox.stories
-        , RadioButton.stories
-        , StepIndicator.stories
-        , Accordion.stories
-        , Spinner.stories
-        , Label.stories
+        , Error.stories
         , FeatureBox.stories
-        , Card.stories
-        , Header.stories
-        , Status.stories
+        , FileUpload.stories
+        , FlatLink.stories
+        , InfoLabel.stories
+        , InfoPanel.stories
+        , Label.stories
+        , LottiePlayer.stories
         , Modal.stories
-        , Table.stories
+        , NumberInput.stories
         , ProgressBar.stories
         , ProgressBarStepper.stories
-        , Error.stories
-        , Tooltip.stories
-        , LottiePlayer.stories
-        , InfoPanel.stories
-        , InfoLabel.stories
+        , RadioButton.stories
+        , Spinner.stories
+        , Status.stories
+        , StepIndicator.stories
+        , Table.stories
+        , Header.stories
         , TextArea.stories
-        , FileUpload.stories
+        , TextInput.stories
+        , Tooltip.stories
         ]
