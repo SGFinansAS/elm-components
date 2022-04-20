@@ -1,4 +1,4 @@
-module Nordea.Components.InfoLabel exposing (InfoLabel, Msg, init, openableView, update, view, warning, withText, withTitle)
+module Nordea.Components.InfoLabel exposing (InfoLabel, Msg, init, openableView, update, view, warning, withIsOpen, withText, withTitle)
 
 import Css exposing (backgroundColor, borderRadius, column, displayFlex, fitContent, flexDirection, height, hidden, marginBottom, marginRight, marginTop, maxWidth, overflow, padding, property, rem, row, width)
 import Html.Styled as Html exposing (Attribute, Html)
@@ -52,6 +52,11 @@ withText text (InfoLabel config) =
 withTitle : String -> InfoLabel -> InfoLabel
 withTitle title (InfoLabel config) =
     InfoLabel { config | title = Just title }
+
+
+withIsOpen : Bool -> InfoLabel -> InfoLabel
+withIsOpen open (InfoLabel config) =
+    InfoLabel { config | open = not open }
 
 
 update : Msg -> InfoLabel -> InfoLabel
