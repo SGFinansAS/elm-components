@@ -53,7 +53,7 @@ viewEnhancer _ stories =
 
 main : UIExplorerProgram Config Msg {} ()
 main =
-    UIExplorer.explore
+    UIExplorer.exploreWithCategories
         { customModel = Config.init
         , customHeader = Nothing
         , update = update
@@ -65,31 +65,36 @@ main =
         , onModeChanged = Nothing
         , documentTitle = Nothing
         }
-        [ Accordion.stories
-        , Button.stories
-        , Card.stories
-        , Checkbox.stories
-        , Dropdown.stories
-        , Search.stories
-        , Error.stories
-        , FeatureBox.stories
-        , FileUpload.stories
-        , FlatLink.stories
-        , InfoLabel.stories
-        , InfoPanel.stories
-        , Label.stories
-        , LottiePlayer.stories
-        , Modal.stories
-        , NumberInput.stories
-        , ProgressBar.stories
-        , ProgressBarStepper.stories
-        , RadioButton.stories
-        , Spinner.stories
-        , Status.stories
-        , StepIndicator.stories
-        , Table.stories
-        , Header.stories
-        , TextArea.stories
-        , TextInput.stories
-        , Tooltip.stories
-        ]
+        (UIExplorer.createCategories
+            |> UIExplorer.category "Tokens"
+                [ Header.stories
+                ]
+            |> UIExplorer.category "Components"
+                [ Accordion.stories
+                , Button.stories
+                , Card.stories
+                , Checkbox.stories
+                , Dropdown.stories
+                , Search.stories
+                , Error.stories
+                , FeatureBox.stories
+                , FileUpload.stories
+                , FlatLink.stories
+                , InfoLabel.stories
+                , InfoPanel.stories
+                , Label.stories
+                , LottiePlayer.stories
+                , Modal.stories
+                , NumberInput.stories
+                , ProgressBar.stories
+                , ProgressBarStepper.stories
+                , RadioButton.stories
+                , Spinner.stories
+                , Status.stories
+                , StepIndicator.stories
+                , Table.stories
+                , TextArea.stories
+                , TextInput.stories
+                , Tooltip.stories
+                ]
+        )
