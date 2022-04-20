@@ -20,7 +20,9 @@ import Css
         , fitContent
         , focus
         , fontSize
+        , fontWeight
         , hover
+        , int
         , lineHeight
         , maxWidth
         , none
@@ -116,6 +118,7 @@ baseStyle =
         , Themes.color Themes.PrimaryColor Colors.blueDeep
         , hover [ Themes.color Themes.PrimaryColorLight Colors.blueNordea ]
         , focus [ Themes.color Themes.PrimaryColorLight Colors.blueNordea ]
+        , fontWeight (int 500)
         ]
 
 
