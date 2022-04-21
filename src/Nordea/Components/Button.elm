@@ -10,6 +10,7 @@ module Nordea.Components.Button exposing
     , tertiary
     , view
     , withHtmlTag
+    , withLoading
     , withStyles
     )
 
@@ -72,6 +73,7 @@ import Css.Global exposing (children, descendants, everything, withClass)
 import Css.Transitions exposing (easeOut, transition)
 import Html.Styled as Html exposing (Attribute, Html)
 import Html.Styled.Attributes exposing (class, css)
+import Nordea.Components.Spinner as Spinner
 import Nordea.Resources.Colors as Colors
 import Nordea.Resources.Icons as Icons
 import Nordea.Themes as Themes
@@ -94,6 +96,7 @@ type alias Config msg =
     { variant : Variant
     , styles : List Style
     , htmlTag : List (Attribute msg) -> List (Html msg) -> Html msg
+    , isLoading : Bool
     }
 
 
@@ -104,7 +107,7 @@ type Button msg
 init : Variant -> Button msg
 init variant =
     Button
-        { variant = variant, styles = [], htmlTag = Html.button }
+        { variant = variant, styles = [], htmlTag = Html.button, isLoading = False }
 
 
 primary : Button msg
@@ -161,7 +164,12 @@ view attributes children (Button config) =
         , batch config.styles
         ]
         attributes
-        (children ++ variantSpecificChildren)
+        (if config.isLoading then
+            [ Spinner.small [ css [ Css.color (Css.hex "#FFFFFF") ] ] ]
+
+         else
+            children ++ variantSpecificChildren
+        )
 
 
 
@@ -335,3 +343,8 @@ withStyles styles (Button config) =
 withHtmlTag : (List (Attribute msg) -> List (Html msg) -> Html msg) -> Button msg -> Button msg
 withHtmlTag htmlTag (Button config) =
     Button { config | htmlTag = htmlTag }
+
+
+withLoading : Bool -> Button msg -> Button msg
+withLoading isLoading (Button config) =
+    Button { config | isLoading = isLoading }

@@ -135,4 +135,16 @@ stories =
                     ]
           , {}
           )
+        , ( "Loading"
+        , \_ ->
+            Html.div [ css [ children [ everything [ marginBottom (rem 1) ] ] ] ]
+                    [ Button.primary
+                        |> Button.view [] [ text "Click me" ]
+                    , Button.primary
+                        |> Button.withLoading True
+                        |> Button.view [] [ text "Loading" ]
+                    ]
+          , {}
+
+        )
         ]
