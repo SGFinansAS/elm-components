@@ -29,7 +29,7 @@ type Msg
 
 
 type alias Config =
-    { text : Maybe String
+    { text : List String
     , open : Bool
     , title : Maybe String
     }
@@ -38,15 +38,15 @@ type alias Config =
 init : InfoLabel
 init =
     InfoLabel
-        { text = Nothing
+        { text = []
         , open = False
         , title = Nothing
         }
 
 
-withText : String -> InfoLabel -> InfoLabel
-withText text (InfoLabel config) =
-    InfoLabel { config | text = Just text }
+withText : List String -> InfoLabel -> InfoLabel
+withText textList (InfoLabel config) =
+    InfoLabel { config | text = textList }
 
 
 withTitle : String -> InfoLabel -> InfoLabel
@@ -119,7 +119,7 @@ openableView language attrs (InfoLabel config) =
                 ]
 
         style =
-            if config.open || String.length (config.text |> Maybe.withDefault "") < 450 then
+            if config.open || charCount config.text < 450 then
                 css []
 
             else
@@ -145,12 +145,11 @@ openableView language attrs (InfoLabel config) =
         , Html.div [ css [ displayFlex, flexDirection column ] ]
             [ Text.bodyTextHeavy
                 |> Text.view [ css [ marginBottom (rem 0.5) ] ] [ Html.text (config.title |> Maybe.withDefault "") ]
-            , Text.bodyTextLight
-                |> Text.view [ style ] [ Html.text (config.text |> Maybe.withDefault "") ]
-            , if String.length (config.text |> Maybe.withDefault "") > 450 then
+            , Html.div [ style ] (config.text |> List.map (\str -> Text.bodyTextLight |> Text.view [ css [ marginBottom (rem 1) ] ] [ Html.text str ]))
+            , if charCount config.text > 450 then
                 FlatLink.mini
                     |> FlatLink.view
-                        [ css [ marginTop (rem 1) ]
+                        [ css [ marginTop (rem 0.5) ]
                         , onMouseDownSelect OpenText
                         ]
                         iconButton
@@ -192,3 +191,8 @@ strings =
         , en = "Close"
         }
     }
+
+
+charCount : List String -> Int
+charCount list =
+    List.map String.length list |> List.foldl (+) 0
