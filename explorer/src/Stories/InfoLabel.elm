@@ -3,6 +3,7 @@ module Stories.InfoLabel exposing (stories)
 import Config exposing (Config, Msg(..))
 import Html.Styled as Html
 import Nordea.Components.InfoLabel as InfoLabel
+import Nordea.Html
 import UIExplorer exposing (UI)
 import UIExplorer.Styled exposing (styledStoriesOf)
 
@@ -24,7 +25,7 @@ stories =
         , ( "InfoLabel with Read more button"
           , \model ->
                 model.customModel.infoLabel
-                    |> InfoLabel.openableView .no []
+                    |> InfoLabel.openableView .no [] Nordea.Html.nothing
                     |> Html.map InfoLabelMsg
           , {}
           )

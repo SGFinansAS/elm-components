@@ -86,8 +86,8 @@ warning attrs children =
         ]
 
 
-openableView : (Translation -> String) -> List (Attribute Msg) -> InfoLabel -> Html Msg
-openableView language attrs (InfoLabel config) =
+openableView : (Translation -> String) -> List (Attribute Msg) -> Html Msg -> InfoLabel -> Html Msg
+openableView language attrs children (InfoLabel config) =
     let
         iconButton =
             let
@@ -119,7 +119,7 @@ openableView language attrs (InfoLabel config) =
                 ]
 
         style =
-            if config.open || charCount config.text < 450 then
+            if config.open || charCount config.text < 345 then
                 css []
 
             else
@@ -145,8 +145,14 @@ openableView language attrs (InfoLabel config) =
         , Html.div [ css [ displayFlex, flexDirection column ] ]
             [ Text.bodyTextHeavy
                 |> Text.view [ css [ marginBottom (rem 0.5) ] ] [ Html.text (config.title |> Maybe.withDefault "") ]
-            , Html.div [ style ] (config.text |> List.map (\str -> Text.bodyTextLight |> Text.view [ css [ marginBottom (rem 1) ] ] [ Html.text str ]))
-            , if charCount config.text > 450 then
+            , Html.div [ style ]
+                (config.text |> List.map (\str -> Text.bodyTextLight |> Text.view [ css [ marginBottom (rem 1) ] ] [ Html.text str ]))
+            , if config.open then
+                children
+
+              else
+                Nordea.Html.nothing
+            , if charCount config.text > 345 then
                 FlatLink.mini
                     |> FlatLink.view
                         [ css [ marginTop (rem 0.5) ]
