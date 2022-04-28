@@ -1,5 +1,8 @@
 # elm-components
 
+## Running locally
+From project root run `(cd explorer/; yarn start)`. This will start the application at `localhost:8000`
+
 ## Integration
 
 - Take a look at https://github.com/SGFinansAS/sgfinans24beta/pull/649 and https://github.com/SGFinansAS/sgfinans24beta/pull/656
