@@ -14,6 +14,7 @@ import Stories.Error as Error
 import Stories.FeatureBox as FeatureBox
 import Stories.FileUpload as FileUpload
 import Stories.FlatLink as FlatLink
+import Stories.Icons as Icons
 import Stories.InfoLabel as InfoLabel
 import Stories.InfoPanel as InfoPanel
 import Stories.Label as Label
@@ -68,6 +69,7 @@ main =
         (UIExplorer.createCategories
             |> UIExplorer.category "Tokens"
                 [ Header.stories
+                , Icons.stories
                 ]
             |> UIExplorer.category "Components"
                 [ Accordion.stories

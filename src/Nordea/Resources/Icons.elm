@@ -10,6 +10,7 @@ module Nordea.Resources.Icons exposing
     , cross
     , error
     , errorSvg
+    , filledCheckmark
     , info
     , leftIcon
     , pdf
@@ -18,6 +19,7 @@ module Nordea.Resources.Icons exposing
     , search
     , spinner
     , trash
+    , unfilledMark
     , upload
     )
 
@@ -44,7 +46,7 @@ import Css.Global exposing (children, everything)
 import Html.Styled as Html exposing (Attribute, Html, div, styled)
 import Html.Styled.Attributes exposing (css)
 import Nordea.Resources.Colors as Colors
-import Svg.Styled as Svg exposing (Svg, rect, svg)
+import Svg.Styled as Svg exposing (Svg, ellipse, rect, svg)
 import Svg.Styled.Attributes as SvgAttrs
     exposing
         ( clipRule
@@ -57,6 +59,7 @@ import Svg.Styled.Attributes as SvgAttrs
         , opacity
         , r
         , rx
+        , ry
         , stroke
         , strokeWidth
         , viewBox
@@ -96,6 +99,46 @@ check attrs =
                 , clipRule "evenodd"
                 , d "M15.8284 1.41421L14.4142 0L5.91421 8.5L1.41421 4L0 5.41421L4.5 9.91421L4.48531 9.92891L5.89952 11.3431L15.8284 1.41421Z"
                 , fill "currentColor"
+                ]
+                []
+            ]
+        ]
+
+
+filledCheckmark : List (Attribute msg) -> Html msg
+filledCheckmark attrs =
+    iconContainer attrs
+        [ Svg.svg [ viewBox "0 0 24 24", fill "none" ]
+            [ Svg.circle [ cx "12", cy "12", r "12", fill (Colors.toString Colors.green) ] []
+            , Svg.path
+                [ fillRule "evenodd"
+                , clipRule "evenodd"
+                , d "M12 24C5.37258 24 0 18.6274 0 12C0 5.37258 5.37258 0 12 0C18.6274 0 24 5.37258 24 12C24 18.6274 18.6274 24 12 24ZM12 1.5C6.20101 1.5 1.5 6.20101 1.5 12C1.5 17.799 6.20101 22.5 12 22.5C17.799 22.5 22.5 17.799 22.5 12C22.5 6.20101 17.799 1.5 12 1.5ZM6.915 13.6725L9.75 16.5L17.25 9.525C17.4469 9.34279 17.5317 9.06936 17.4724 8.8077C17.4131 8.54604 17.2187 8.33591 16.9624 8.25645C16.7061 8.177 16.4269 8.24029 16.23 8.4225L9.7875 14.4225L7.9725 12.615C7.67493 12.3602 7.23135 12.3773 6.95433 12.6543C6.6773 12.9314 6.66017 13.3749 6.915 13.6725Z"
+                , fill "black"
+                ]
+                []
+            ]
+        ]
+
+
+unfilledMark : List (Attribute msg) -> Svg msg
+unfilledMark attrs =
+    iconContainer attrs
+        [ svg
+            [ viewBox "0 0 24 24", fill "none" ]
+            [ ellipse
+                [ cx "12.0161"
+                , cy "12"
+                , rx "11.9849"
+                , ry "12"
+                , fill "#E3E3E3"
+                ]
+                []
+            , Svg.path
+                [ fillRule "evenodd"
+                , clipRule "evenodd"
+                , d "M0 12C0 18.6274 5.37258 24 12 24C18.6274 24 24 18.6274 24 12C24 5.37258 18.6274 0 12 0C5.37258 0 0 5.37258 0 12ZM1.5 12C1.5 6.20101 6.20101 1.5 12 1.5C17.799 1.5 22.5 6.20101 22.5 12C22.5 17.799 17.799 22.5 12 22.5C6.20101 22.5 1.5 17.799 1.5 12Z"
+                , fill "black"
                 ]
                 []
             ]
