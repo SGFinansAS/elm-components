@@ -1,10 +1,30 @@
 module Nordea.Components.Card exposing (..)
 
-import Css exposing (auto, backgroundColor, borderRadius, borderStyle, column, displayFlex, flexDirection, fontSize, height, left, margin2, none, padding, rem, textAlign, width)
+import Css
+    exposing
+        ( auto
+        , backgroundColor
+        , border3
+        , borderRadius
+        , borderStyle
+        , column
+        , displayFlex
+        , flexDirection
+        , fontSize
+        , height
+        , left
+        , margin2
+        , none
+        , padding
+        , rem
+        , solid
+        , textAlign
+        , width
+        )
 import Html.Styled as Html exposing (Attribute, Html)
 import Html.Styled.Attributes exposing (css)
 import Nordea.Components.Text as Text
-import Nordea.Html exposing (styleIf, viewMaybe)
+import Nordea.Html as Html exposing (styleIf, viewMaybe)
 import Nordea.Resources.Colors as Colors
 
 
@@ -69,6 +89,20 @@ cardTitle title =
             ]
             []
         ]
+
+
+infoBox : List (Attribute msg) -> List (Html msg) -> Html msg
+infoBox attrs content =
+    Html.column
+        ([ css
+            [ borderRadius (rem 0.5)
+            , border3 (rem 0.0625) solid Colors.grayLight
+            , padding (rem 1)
+            ]
+         ]
+            ++ attrs
+        )
+        content
 
 
 withTitle : String -> Card msg -> Card msg

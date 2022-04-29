@@ -1,12 +1,36 @@
-module Nordea.Html exposing (nothing, showIf, styleIf, viewIfNotEmpty, viewMaybe)
+module Nordea.Html exposing
+    ( column
+    , nothing
+    , row
+    , showIf
+    , styleIf
+    , viewIfNotEmpty
+    , viewMaybe
+    )
 
-import Css exposing (Style)
-import Html.Styled as Html exposing (Html)
+import Css exposing (Style, displayFlex, flexDirection)
+import Html.Styled as Html exposing (Attribute, Html, div, styled)
 
 
 nothing : Html msg
 nothing =
     Html.text ""
+
+
+column : List (Attribute msg) -> List (Html msg) -> Html msg
+column =
+    styled div
+        [ displayFlex
+        , flexDirection Css.column
+        ]
+
+
+row : List (Attribute msg) -> List (Html msg) -> Html msg
+row =
+    styled div
+        [ displayFlex
+        , flexDirection Css.row
+        ]
 
 
 viewMaybe : (a -> Html msg) -> Maybe a -> Html msg
