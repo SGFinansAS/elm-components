@@ -99,7 +99,7 @@ view attrs config =
 
         svgCircle stroke progress_ =
             let
-                circleProgess =
+                circleProgress =
                     if config.isCompleted then
                         100
 
@@ -126,7 +126,7 @@ view attrs config =
                     , stroke
                     , Css.property "stroke-linecap" "round"
                     , Css.property "stroke-dasharray" (circumference |> String.fromFloat)
-                    , Css.property "stroke-dashoffset" (circumference - (circumference * circleProgess) / 100 |> String.fromFloat)
+                    , Css.property "stroke-dashoffset" (circumference - (circumference * circleProgress) / 100 |> String.fromFloat)
                     , transitions
                         [ transition "stroke-dashoffset" dashOffsetAnimDuration "ease-in-out" 0
                         , transition "stroke" (animDurationMs / 2) "ease-in-out" (partAnimDuration * (toFloat distanceToMax + 1))
@@ -202,7 +202,7 @@ view attrs config =
                 Just customCenterLabel ->
                     Html.span [ Attrs.css [ containerStyle ] ] [ customCenterLabel ]
 
-                _ ->
+                Nothing ->
                     List.range 0 maxProgress
                         |> List.indexedMap
                             (\i percent ->
