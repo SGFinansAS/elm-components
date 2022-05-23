@@ -25,6 +25,7 @@ type alias Config =
     , selectedFiles : List File
     , infoLabel : InfoLabel
     , sliderInputValue : String
+    , isToggled : Bool
     }
 
 
@@ -44,6 +45,8 @@ type Msg
     | RemoveFile File
     | InfoLabelMsg InfoLabel.Msg
     | SliderMsg String
+    | ToggleToggle
+
 
 
 init : Config
@@ -68,6 +71,7 @@ init =
     , isProgressBarCompleted = False
     , isHoveringFileUpload = False
     , selectedFiles = []
+    , isToggled = False
     , infoLabel =
         InfoLabel.init
             |> InfoLabel.withTitle "This is a title of below text"
@@ -129,5 +133,10 @@ update msg config =
         RemoveFile file ->
             { config | selectedFiles = config.selectedFiles |> List.filter ((/=) file) }
 
+
         SliderMsg value ->
             { config | sliderInputValue = value }
+            
+        ToggleToggle ->
+            { config | isToggled = not config.isToggled }
+

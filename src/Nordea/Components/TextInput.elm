@@ -2,6 +2,7 @@ module Nordea.Components.TextInput exposing
     ( TextInput
     , init
     , view
+    , withCurrency
     , withError
     , withMaxLength
     , withOnBlur
@@ -13,12 +14,14 @@ module Nordea.Components.TextInput exposing
     , withSmallSize
     )
 
-import Css exposing (Style, absolute, backgroundColor, border3, borderBox, borderRadius, boxSizing, color, disabled, displayFlex, focus, fontSize, height, left, none, num, opacity, outline, padding2, paddingLeft, pct, pointerEvents, position, relative, rem, solid, top, transform, translateY, width)
+import Css exposing (Style, absolute, backgroundColor, border3, borderBox, borderRadius, boxSizing, color, disabled, displayFlex, focus, fontSize, height, left, none, num, opacity, outline, padding2, paddingLeft, pct, pointerEvents, position, relative, rem, right, solid, top, transform, translateY, width)
 import Html.Styled as Html exposing (Attribute, Html, input, styled)
 import Html.Styled.Attributes exposing (css, maxlength, pattern, placeholder, value)
 import Html.Styled.Events exposing (keyCode, on, onBlur, onInput)
 import Json.Decode as Json
 import Maybe.Extra as Maybe
+import Nordea.Components.Text as Text
+import Nordea.Css as NordeaCss
 import Nordea.Html exposing (styleIf)
 import Nordea.Resources.Colors as Colors
 import Nordea.Resources.Icons as Icons
@@ -40,6 +43,7 @@ type alias Config msg =
     , onBlur : Maybe msg
     , onEnterPress : Maybe msg
     , size : Size
+    , currency : Maybe String
     }
 
 
@@ -65,6 +69,7 @@ init value =
         , onBlur = Nothing
         , onEnterPress = Nothing
         , size = Large
+        , currency = Nothing
         }
 
 
@@ -111,6 +116,11 @@ withOnEnterPress msg (TextInput config) =
 withSmallSize : TextInput msg -> TextInput msg
 withSmallSize (TextInput config) =
     TextInput { config | size = Small }
+
+
+withCurrency : String -> TextInput msg -> TextInput msg
+withCurrency currency (TextInput config) =
+    TextInput { config | currency = Just currency }
 
 
 onEnterPress : msg -> Attribute msg
@@ -162,13 +172,38 @@ view attributes (TextInput config) =
                 (getStyles config)
                 (getAttributes config)
                 []
+            , viewCurrency config
             ]
 
     else
-        styled input
-            (getStyles config)
-            (getAttributes config ++ attributes)
-            []
+        Html.div
+            (css [ displayFlex, position relative ]
+                :: attributes
+            )
+            [ styled input
+                (getStyles config)
+                (getAttributes config ++ attributes)
+                []
+            , viewCurrency config
+            ]
+
+
+viewCurrency : Config msg -> Html msg
+viewCurrency config =
+    let
+        currency =
+            config.currency |> Maybe.withDefault "" |> String.slice 0 3 |> String.toUpper
+    in
+    Html.div
+        [ css
+            [ position absolute
+            , right (rem 0.7)
+            , top (pct 30)
+            ]
+        ]
+        [ Text.textHeavy
+            |> Text.view [] [ Html.text currency ]
+        ]
 
 
 getAttributes : Config msg -> List (Attribute msg)
@@ -202,10 +237,10 @@ getStyles config =
     , height
         (case config.size of
             Small ->
-                rem 2.5625
+                NordeaCss.smallInputHeight
 
             Large ->
-                rem 3
+                NordeaCss.standardInputHeight
         )
     , padding2 (rem 0.75) (rem 0.75)
     , borderRadius (rem 0.25)
