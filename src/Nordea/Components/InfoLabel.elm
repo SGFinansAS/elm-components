@@ -146,7 +146,7 @@ openableView language attrs children (InfoLabel config) =
             [ Text.bodyTextHeavy
                 |> Text.view [ css [ marginBottom (rem 0.5) ] ] [ Html.text (config.title |> Maybe.withDefault "") ]
             , Html.div [ style ]
-                (config.text |> List.map (\str -> Text.bodyTextLight |> Text.view [ css [ marginBottom (rem 1) ] ] [ Html.text str ]))
+                (config.text |> List.map (\str -> Text.bodyTextSmall |> Text.withHtmlTag Html.p |> Text.view [ css [ marginBottom (rem 1) ] ] [ Html.text str ]))
             , if config.open then
                 children
 
