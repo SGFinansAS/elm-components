@@ -24,6 +24,7 @@ type alias Config =
     , isHoveringFileUpload : Bool
     , selectedFiles : List File
     , infoLabel : InfoLabel
+    , isToggled : Bool
     }
 
 
@@ -42,6 +43,7 @@ type Msg
     | OnFilesSelected File (List File)
     | RemoveFile File
     | InfoLabelMsg InfoLabel.Msg
+    | ToggleToggle
 
 
 init : Config
@@ -66,6 +68,7 @@ init =
     , isProgressBarCompleted = False
     , isHoveringFileUpload = False
     , selectedFiles = []
+    , isToggled = False
     , infoLabel =
         InfoLabel.init
             |> InfoLabel.withTitle "This is a title of below text"
@@ -125,3 +128,6 @@ update msg config =
 
         RemoveFile file ->
             { config | selectedFiles = config.selectedFiles |> List.filter ((/=) file) }
+
+        ToggleToggle ->
+            { config | isToggled = not config.isToggled }

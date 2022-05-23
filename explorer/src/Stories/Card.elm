@@ -41,8 +41,7 @@ stories =
                     |> Card.withTitle "Card title"
                     |> Card.withShadow
                     |> Card.view []
-                        [ Html.text "Card content"
-                        , Card.infoBox [ css [ Css.property "gap" "1rem" ] ]
+                        [ Card.infoBox [ css [ Css.property "gap" "1rem" ] ]
                             [ Html.row [ css [ alignItems center, Css.property "gap" "0.5rem" ] ]
                                 [ Icons.filledCheckmark [ css [ width (rem 1.5) ] ]
                                 , Html.text "Some completed task"

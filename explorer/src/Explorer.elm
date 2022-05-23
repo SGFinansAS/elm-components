@@ -18,6 +18,7 @@ import Stories.FlatLink as FlatLink
 import Stories.Icons as Icons
 import Stories.InfoLabel as InfoLabel
 import Stories.InfoPanel as InfoPanel
+import Stories.InformationDetails as InformationDetails
 import Stories.Label as Label
 import Stories.LottiePlayer as LottiePlayer
 import Stories.Modal as Modal
@@ -32,6 +33,7 @@ import Stories.Table as Table
 import Stories.Text as Text
 import Stories.TextArea as TextArea
 import Stories.TextInput as TextInput
+import Stories.Toggle as Toggle
 import Stories.Tooltip as Tooltip
 import UIExplorer exposing (UIExplorerProgram)
 
@@ -86,6 +88,7 @@ main =
                 , FlatLink.stories
                 , InfoLabel.stories
                 , InfoPanel.stories
+                , InformationDetails.stories
                 , Label.stories
                 , LottiePlayer.stories
                 , Modal.stories
@@ -99,6 +102,7 @@ main =
                 , Table.stories
                 , TextArea.stories
                 , TextInput.stories
+                , Toggle.stories
                 , Tooltip.stories
                 ]
         )
