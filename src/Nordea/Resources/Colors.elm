@@ -37,6 +37,7 @@ module Nordea.Resources.Colors exposing
     , mediumGray
     , nordeaBlue
     , nordeaGray
+    , purple
     , red
     , redDark
     , redStatus
@@ -330,6 +331,11 @@ transparent =
 withAlpha : Float -> Color -> Color
 withAlpha alpha color =
     rgba color.red color.green color.blue alpha
+
+
+purple : Color
+purple =
+    hex "#7E15D1"
 
 
 toString : Css.Color -> String
