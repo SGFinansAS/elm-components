@@ -17,7 +17,6 @@ import Stories.FlatLink as FlatLink
 import Stories.Icons as Icons
 import Stories.InfoLabel as InfoLabel
 import Stories.InfoPanel as InfoPanel
-import Stories.InlineLink as InlineLink
 import Stories.Label as Label
 import Stories.LottiePlayer as LottiePlayer
 import Stories.Modal as Modal
@@ -83,7 +82,6 @@ main =
                 , FeatureBox.stories
                 , FileUpload.stories
                 , FlatLink.stories
-                , InlineLink.stories
                 , InfoLabel.stories
                 , InfoPanel.stories
                 , Label.stories

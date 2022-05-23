@@ -1,7 +1,9 @@
 module Nordea.Components.FlatLink exposing
     ( FlatLink
     , default
+    , inline
     , mini
+    , outer
     , view
     , withButtonStyle
     , withDisabled
@@ -22,6 +24,7 @@ import Css
         , fontSize
         , fontWeight
         , hover
+        , inlineFlex
         , int
         , lineHeight
         , maxWidth
@@ -33,10 +36,13 @@ import Css
         , rem
         , textDecoration
         , underline
+        , visited
         )
 import Html.Styled as Html exposing (Attribute, Html)
+import Html.Styled.Attributes exposing (href)
 import Nordea.Components.Button as Button
 import Nordea.Resources.Colors as Colors
+import Nordea.Resources.Icons as Icons
 import Nordea.Themes as Themes
 
 
@@ -101,6 +107,47 @@ view attributes children (FlatLink config) =
         ]
         attributes
         children
+
+
+inline : String -> String -> Html msg
+inline url text =
+    view [ href url ]
+        [ Html.text text ]
+        (FlatLink
+            { styles =
+                [ Css.display inlineFlex
+                , Css.fontWeight Css.inherit
+                , Themes.color Themes.PrimaryColor Colors.blueNordea
+                , hover [ Themes.color Themes.PrimaryColorLight Colors.blueDeep ]
+                , focus [ Themes.color Themes.PrimaryColorLight Colors.blueDeep ]
+                , visited [ Themes.color Themes.PrimaryColorLight Colors.purple ]
+                ]
+            , isDisabled = Just False
+            , variant = Default
+            }
+        )
+
+
+outer : String -> String -> Html msg
+outer url text =
+    view [ href url ]
+        [ Html.text text, Icons.rightIcon (Icons.info []) ]
+        (FlatLink
+            { styles =
+                [ Css.fontWeight Css.inherit
+                , Themes.color Themes.PrimaryColor Colors.blueNordea
+                , textDecoration none
+                , hover
+                    [ Themes.color Themes.PrimaryColorLight Colors.blueDeep
+                    , textDecoration underline
+                    ]
+                , focus [ Themes.color Themes.PrimaryColorLight Colors.blueDeep ]
+                , visited [ Themes.color Themes.PrimaryColorLight Colors.purple ]
+                ]
+            , isDisabled = Just False
+            , variant = Default
+            }
+        )
 
 
 

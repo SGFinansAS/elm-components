@@ -69,4 +69,19 @@ stories =
                     ]
           , {}
           )
+        , ( "inline"
+          , \_ ->
+                Html.div [ css [ children [ everything [ marginBottom (rem 1) ] ] ] ]
+                    [ text "This is an "
+                    , FlatLink.inline "/#Default/FlatLink/inline" "inline"
+                    , text " link."
+                    ]
+          , {}
+          )
+        , ( "outer"
+          , \_ ->
+                Html.div [ css [ children [ everything [ marginBottom (rem 1) ] ] ] ]
+                    [ FlatLink.outer "/#Default/FlatLink/outer" "Outgoing link" ]
+          , {}
+          )
         ]
