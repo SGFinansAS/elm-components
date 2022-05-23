@@ -111,10 +111,10 @@ view attributes children (FlatLink config) =
         children
 
 
-inline : String -> String -> Html msg
-inline url text =
-    view [ href url ]
-        [ Html.text text ]
+inline : List (Attribute msg) -> List (Html msg) -> Html msg
+inline attrs children =
+    view attrs
+        children
         (FlatLink
             { styles =
                 [ Css.display inlineFlex
@@ -122,18 +122,20 @@ inline url text =
                 , Themes.color Themes.PrimaryColor Colors.blueNordea
                 , hover [ Themes.color Themes.PrimaryColorLight Colors.blueDeep ]
                 , focus [ Themes.color Themes.PrimaryColorLight Colors.blueDeep ]
-                , visited [ Themes.color Themes.PrimaryColorLight Colors.purple ]
+                , visited [ Css.color Colors.purple ]
                 ]
-            , isDisabled = Just False
+            , isDisabled = Just (List.member (Html.Styled.Attributes.disabled True) attrs)
             , variant = Default
             }
         )
 
 
-outer : String -> String -> Html msg
-outer url text =
-    view [ href url ]
-        [ Html.text text, Icons.rightIcon (Icons.outerLink [ css [ width (rem 1), height (rem 1) ] ]) ]
+outer : List (Attribute msg) -> List (Html msg) -> Html msg
+outer attrs children =
+    view attrs
+        (children
+            ++ [ Icons.rightIcon (Icons.outerLink [ css [ width (rem 1), height (rem 1) ] ]) ]
+        )
         (FlatLink
             { styles =
                 [ Css.fontWeight Css.inherit
@@ -144,9 +146,9 @@ outer url text =
                     , textDecoration underline
                     ]
                 , focus [ Themes.color Themes.PrimaryColorLight Colors.blueDeep ]
-                , visited [ Themes.color Themes.PrimaryColorLight Colors.purple ]
+                , visited [ Css.color Colors.purple ]
                 ]
-            , isDisabled = Just False
+            , isDisabled = Just (List.member (Html.Styled.Attributes.disabled True) attrs)
             , variant = Default
             }
         )

@@ -73,7 +73,7 @@ stories =
           , \_ ->
                 Html.div [ css [ children [ everything [ marginBottom (rem 1) ] ] ] ]
                     [ text "This is an "
-                    , FlatLink.inline "/#Default/FlatLink/inline" "inline"
+                    , FlatLink.inline [ href "/#Default/FlatLink/inline" ] [ text "inline" ]
                     , text " link."
                     ]
           , {}
@@ -81,7 +81,7 @@ stories =
         , ( "outer"
           , \_ ->
                 Html.div [ css [ children [ everything [ marginBottom (rem 1) ] ] ] ]
-                    [ FlatLink.outer "/#Default/FlatLink/outer" "Outgoing link" ]
+                    [ FlatLink.outer [ href "/#Default/FlatLink/outer" ] [ text "Outgoing link" ] ]
           , {}
           )
         ]
