@@ -10,6 +10,7 @@ module Nordea.Components.NumberInput exposing
     , withOnBlur
     , withOnInput
     , withPlaceholder
+    , withSmallSize
     , withStep
     )
 
@@ -38,7 +39,13 @@ type alias Config msg =
     , onBlur : Maybe msg
     , formatter : Maybe (Float -> String)
     , isDisabled : Bool
+    , variant : Variant
     }
+
+
+type Variant
+    = Small
+    | Standard
 
 
 type NumberInput msg
@@ -58,6 +65,7 @@ init value =
         , onBlur = Nothing
         , formatter = Nothing
         , isDisabled = False
+        , variant = Standard
         }
 
 
@@ -104,6 +112,11 @@ withFormatter formatter (NumberInput config) =
 withIsDisabled : Bool -> NumberInput msg -> NumberInput msg
 withIsDisabled val (NumberInput config) =
     NumberInput { config | isDisabled = val }
+
+
+withSmallSize : NumberInput msg -> NumberInput msg
+withSmallSize (NumberInput config) =
+    NumberInput { config | variant = Small }
 
 
 
@@ -160,9 +173,17 @@ getStyles config =
 
             else
                 Colors.grayMedium
+
+        inputHeight =
+            case config.variant of
+                Standard ->
+                    NordeaCss.standardInputHeight
+
+                Small ->
+                    NordeaCss.smallInputHeight
     in
     [ fontSize (rem 1)
-    , height NordeaCss.standardInputHeight
+    , height inputHeight
     , pseudoElement "-webkit-outer-spin-button" [ display none ]
     , pseudoElement "-webkit-inner-spin-button" [ display none ]
     , property "-moz-appearance" "textfield"
