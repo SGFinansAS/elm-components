@@ -8,6 +8,7 @@ import Stories.Accordion as Accordion
 import Stories.Button as Button
 import Stories.Card as Card
 import Stories.Checkbox as Checkbox
+import Stories.Colors as Colors
 import Stories.Dropdown as Dropdown
 import Stories.DropdownFilter as Search
 import Stories.Error as Error
@@ -29,7 +30,7 @@ import Stories.Spinner as Spinner
 import Stories.Status as Status
 import Stories.StepIndicator as StepIndicator
 import Stories.Table as Table
-import Stories.Text as Header
+import Stories.Text as Text
 import Stories.TextArea as TextArea
 import Stories.TextInput as TextInput
 import Stories.Toggle as Toggle
@@ -70,7 +71,8 @@ main =
         }
         (UIExplorer.createCategories
             |> UIExplorer.category "Tokens"
-                [ Header.stories
+                [ Colors.stories
+                , Text.stories
                 , Icons.stories
                 ]
             |> UIExplorer.category "Components"

@@ -7,6 +7,15 @@ module Nordea.Resources.Colors exposing
     , blueHaas
     , blueMedium
     , blueNordea
+    , cloudBlue
+    , coolGray
+    , darkGray
+    , darkGreen
+    , darkRed
+    , darkYellow
+    , darkestGray
+    , deepBlue
+    , eclipse
     , gray
     , grayCool
     , grayDark
@@ -22,6 +31,12 @@ module Nordea.Resources.Colors exposing
     , green
     , greenDark
     , greenStatus
+    , haasBlue
+    , lightGray
+    , mediumBlue
+    , mediumGray
+    , nordeaBlue
+    , nordeaGray
     , red
     , redDark
     , redStatus
@@ -34,26 +49,78 @@ module Nordea.Resources.Colors exposing
     , yellowStatus
     )
 
-import Css exposing (Color, ColorValue, NonMixable, hex, rgba)
-
-
-transparent : ColorValue NonMixable
-transparent =
-    Css.transparent
-
-
-withAlpha : Float -> Color -> Color
-withAlpha alpha color =
-    rgba color.red color.green color.blue alpha
+import Css
+    exposing
+        ( Color
+        , ColorValue
+        , NonMixable
+        , hex
+        , rgba
+        )
 
 
 
--- B&W
+-- PRIMARY COLORS
 
 
-white : Color
-white =
-    hex "#FFFFFF"
+{-| Deprecated, use deepBlue
+-}
+blueDeep : Color
+blueDeep =
+    hex "#00005E"
+
+
+deepBlue : Color
+deepBlue =
+    hex "#00005E"
+
+
+{-| Deprecated, use deepBlue
+-}
+blueNordea : Color
+blueNordea =
+    hex "#0000A0"
+
+
+nordeaBlue : Color
+nordeaBlue =
+    hex "#0000A0"
+
+
+{-| Deprecated, use deepBlue
+-}
+blueMedium : Color
+blueMedium =
+    hex "#83B8ED"
+
+
+mediumBlue : Color
+mediumBlue =
+    hex "#83B8ED"
+
+
+{-| Deprecated, use haasBlue
+-}
+blueHaas : Color
+blueHaas =
+    hex "#AED5FF"
+
+
+haasBlue : Color
+haasBlue =
+    hex "#AED5FF"
+
+
+{-| Deprecated, use deepBlue
+-}
+blueCloud : Color
+blueCloud =
+    hex "#DCEDFF"
+
+
+cloudBlue : Color
+cloudBlue =
+    hex "#DCEDFF"
 
 
 black : Color
@@ -61,32 +128,51 @@ black =
     hex "#000000"
 
 
-black25 : Color
-black25 =
-    rgba 0 0 0 0.25
-
-
-
--- Gray
-
-
+{-| Deprecated, use darkestGray
+-}
 grayDarkest : Color
 grayDarkest =
     hex "#151515"
 
 
+darkestGray : Color
+darkestGray =
+    hex "#151515"
+
+
+{-| Deprecated, use eclipse
+-}
 grayEclipse : Color
 grayEclipse =
     hex "#383838"
 
 
+eclipse : Color
+eclipse =
+    hex "#383838"
+
+
+{-| Deprecated, use darkGray
+-}
 grayDark : Color
 grayDark =
     hex "#5A575C"
 
 
+darkGray : Color
+darkGray =
+    hex "#5A575C"
+
+
+{-| Deprecated, use nordeaGray
+-}
 grayNordea : Color
 grayNordea =
+    hex "#8B8A8D"
+
+
+nordeaGray : Color
+nordeaGray =
     hex "#8B8A8D"
 
 
@@ -95,13 +181,85 @@ gray =
     hex "#9E9E9E"
 
 
+{-| Deprecated, use mediumGray
+-}
 grayMedium : Color
 grayMedium =
     hex "#C9C7C7"
 
 
+mediumGray : Color
+mediumGray =
+    hex "#C9C7C7"
+
+
+{-| Deprecated, use lightGray
+-}
 grayLight : Color
 grayLight =
+    hex "#E3E3E3"
+
+
+{-| Deprecated, use coolGray
+-}
+grayCool : Color
+grayCool =
+    hex "#F1F2F4"
+
+
+coolGray : Color
+coolGray =
+    hex "#F1F2F4"
+
+
+white : Color
+white =
+    hex "#FFFFFF"
+
+
+{-| Deprecated, use darkRed
+-}
+redDark : Color
+redDark =
+    hex "#E70404"
+
+
+darkRed : Color
+darkRed =
+    hex "#E70404"
+
+
+{-| Deprecated, use darkGreen
+-}
+greenDark : Color
+greenDark =
+    hex "#0D8268"
+
+
+darkGreen : Color
+darkGreen =
+    hex "#0D8268"
+
+
+{-| Deprecated, use darkYellow
+-}
+yellowDark : Color
+yellowDark =
+    hex "#FFCF3D"
+
+
+darkYellow : Color
+darkYellow =
+    hex "#FFCF3D"
+
+
+black25 : Color
+black25 =
+    rgba 0 0 0 0.25
+
+
+lightGray : Color
+lightGray =
     hex "#E3E3E3"
 
 
@@ -115,11 +273,6 @@ grayLightBorder =
     hex "#E5E5EE33"
 
 
-grayCool : Color
-grayCool =
-    hex "#F1F2F4"
-
-
 grayWarm : Color
 grayWarm =
     hex "#F4F2F1"
@@ -128,35 +281,6 @@ grayWarm =
 grayHover : Color
 grayHover =
     hex "#F5F6F7"
-
-
-
--- Blue
-
-
-blueDeep : Color
-blueDeep =
-    hex "#00005E"
-
-
-blueNordea : Color
-blueNordea =
-    hex "#0000A0"
-
-
-blueMedium : Color
-blueMedium =
-    hex "#83B8ED"
-
-
-blueHaas : Color
-blueHaas =
-    hex "#AED5FF"
-
-
-blueCloud : Color
-blueCloud =
-    hex "#DCEDFF"
 
 
 blueCloudStatus : Color
@@ -178,19 +302,9 @@ greenStatus =
     hex "#78D1BE"
 
 
-greenDark : Color
-greenDark =
-    hex "#0D8268"
-
-
 red : Color
 red =
     hex "#FC6161"
-
-
-redDark : Color
-redDark =
-    hex "#E70404"
 
 
 redStatus : Color
@@ -208,9 +322,14 @@ yellowStatus =
     hex "#FEDC76"
 
 
-yellowDark : Color
-yellowDark =
-    hex "#FFCF3D"
+transparent : ColorValue NonMixable
+transparent =
+    Css.transparent
+
+
+withAlpha : Float -> Color -> Color
+withAlpha alpha color =
+    rgba color.red color.green color.blue alpha
 
 
 toString : Css.Color -> String
