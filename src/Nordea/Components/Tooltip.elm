@@ -142,6 +142,8 @@ view2 children (Tooltip config) =
         ]
         -- Added contenteditable to make it have focus events so focus
         -- system can work
+        -- TOdo remove onfocusAttrs here after we we dont have focus to allow normal
+        -- clicks
         (Focus.onFocusAttrs config.onFocus ++ [ Attr.contenteditable True ])
         (children
             ++ (case config.overrideShow of
