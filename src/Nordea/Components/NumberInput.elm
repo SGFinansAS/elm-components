@@ -10,6 +10,7 @@ module Nordea.Components.NumberInput exposing
     , withOnBlur
     , withOnInput
     , withPlaceholder
+    , withSmallSize
     , withStep
     )
 
@@ -18,6 +19,7 @@ import Html.Styled exposing (Attribute, Html, input, styled)
 import Html.Styled.Attributes as Attributes exposing (placeholder, step, type_, value)
 import Html.Styled.Events exposing (onBlur, onInput)
 import Maybe.Extra as Maybe
+import Nordea.Css as NordeaCss
 import Nordea.Resources.Colors as Colors
 import Nordea.Themes as Themes
 
@@ -37,7 +39,13 @@ type alias Config msg =
     , onBlur : Maybe msg
     , formatter : Maybe (Float -> String)
     , isDisabled : Bool
+    , variant : Variant
     }
+
+
+type Variant
+    = Small
+    | Standard
 
 
 type NumberInput msg
@@ -57,6 +65,7 @@ init value =
         , onBlur = Nothing
         , formatter = Nothing
         , isDisabled = False
+        , variant = Standard
         }
 
 
@@ -103,6 +112,11 @@ withFormatter formatter (NumberInput config) =
 withIsDisabled : Bool -> NumberInput msg -> NumberInput msg
 withIsDisabled val (NumberInput config) =
     NumberInput { config | isDisabled = val }
+
+
+withSmallSize : NumberInput msg -> NumberInput msg
+withSmallSize (NumberInput config) =
+    NumberInput { config | variant = Small }
 
 
 
@@ -159,9 +173,17 @@ getStyles config =
 
             else
                 Colors.grayMedium
+
+        inputHeight =
+            case config.variant of
+                Standard ->
+                    NordeaCss.standardInputHeight
+
+                Small ->
+                    NordeaCss.smallInputHeight
     in
     [ fontSize (rem 1)
-    , height (rem 3)
+    , height inputHeight
     , pseudoElement "-webkit-outer-spin-button" [ display none ]
     , pseudoElement "-webkit-inner-spin-button" [ display none ]
     , property "-moz-appearance" "textfield"
