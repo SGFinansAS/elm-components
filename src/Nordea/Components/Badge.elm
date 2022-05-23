@@ -23,7 +23,6 @@ import Html.Styled as Html exposing (Attribute, Html)
 import Html.Styled.Attributes exposing (css)
 import Nordea.Components.Text as Text
 import Nordea.Resources.Colors as Colors
-import Nordea.Resources.Icons as Icons
 
 
 type Notification
