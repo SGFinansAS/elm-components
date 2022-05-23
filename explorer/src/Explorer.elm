@@ -24,6 +24,7 @@ import Stories.NumberInput as NumberInput
 import Stories.ProgressBar as ProgressBar
 import Stories.ProgressBarStepper as ProgressBarStepper
 import Stories.RadioButton as RadioButton
+import Stories.Slider as Slider
 import Stories.Spinner as Spinner
 import Stories.Status as Status
 import Stories.StepIndicator as StepIndicator
@@ -91,6 +92,7 @@ main =
                 , ProgressBar.stories
                 , ProgressBarStepper.stories
                 , RadioButton.stories
+                , Slider.stories
                 , Spinner.stories
                 , Status.stories
                 , StepIndicator.stories
