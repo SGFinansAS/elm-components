@@ -16,12 +16,6 @@ stories =
                     |> NumberInput.view []
           , {}
           )
-        , ( "Default (Disabled)"
-          , \_ ->
-                NumberInput.init "0"
-                    |> NumberInput.view [ disabled True ]
-          , {}
-          )
         , ( "Placeholder"
           , \_ ->
                 NumberInput.init ""
