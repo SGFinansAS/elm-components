@@ -1,6 +1,5 @@
 module Config exposing (Config, FinancingVariant(..), Msg(..), init, update)
 
-import File exposing (File)
 import Html.Styled as Html
 import Nordea.Components.Accordion as Accordion exposing (Accordion)
 import Nordea.Components.DropdownFilter exposing (Item)
@@ -46,7 +45,6 @@ type Msg
     | InfoLabelMsg InfoLabel.Msg
     | SliderMsg String
     | ToggleToggle
-
 
 
 init : Config
@@ -133,10 +131,8 @@ update msg config =
         RemoveFile file ->
             { config | selectedFiles = config.selectedFiles |> List.filter ((/=) file) }
 
-
         SliderMsg value ->
             { config | sliderInputValue = value }
-            
+
         ToggleToggle ->
             { config | isToggled = not config.isToggled }
-
