@@ -1,9 +1,7 @@
 module Stories.Badge exposing (stories)
 
-import Css exposing (marginBottom, rem, width)
-import Css.Global exposing (children, everything)
-import Html.Styled as Html exposing (text)
-import Html.Styled.Attributes exposing (css, href)
+import Css exposing (rem, width)
+import Html.Styled.Attributes exposing (css)
 import Nordea.Components.Badge as Badge
 import Nordea.Resources.Icons as Icons
 import UIExplorer exposing (UI)
