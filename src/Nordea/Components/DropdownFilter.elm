@@ -272,7 +272,7 @@ withIsLoading isLoading (DropdownFilter config) =
 onFocusAttrs : Maybe ( String, Bool -> msg ) -> List (Attribute msg)
 onFocusAttrs hasFocusAndId =
     let
-        hasFocus =
+        maybeOnFocus =
             Maybe.map Tuple.second hasFocusAndId
 
         groupAttr =
@@ -280,12 +280,12 @@ onFocusAttrs hasFocusAndId =
                 |> Maybe.map groupIdAttribute
 
         onFocusAttribute =
-            hasFocus
-                |> Maybe.map (\f -> f True |> Events.onFocus)
+            maybeOnFocus
+                |> Maybe.map (\onFocus -> Events.onFocus (onFocus True))
 
         onBlurAttribute =
-            hasFocus
-                |> Maybe.map (\f -> f False |> onGroupBlur)
+            maybeOnFocus
+                |> Maybe.map (\onFocus -> onGroupBlur (onFocus False))
     in
     Maybe.values [ onFocusAttribute, onBlurAttribute, groupAttr ]
 
