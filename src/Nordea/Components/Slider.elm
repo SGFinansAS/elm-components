@@ -5,6 +5,7 @@ module Nordea.Components.Slider exposing
     , withError
     , withMax
     , withMin
+    , withShowInterval
     , withStep
     )
 
@@ -23,6 +24,8 @@ import Css
         , flexDirection
         , height
         , int
+        , justifyContent
+        , margin2
         , marginBottom
         , marginTop
         , pct
@@ -31,10 +34,11 @@ import Css
         , pseudoElement
         , rem
         , row
+        , spaceBetween
         , transparent
         , width
         )
-import Html.Styled as Html exposing (Attribute, Html, div, input, label)
+import Html.Styled as Html exposing (Attribute, Html, div, input, label, span)
 import Html.Styled.Attributes exposing (css, for, name, type_)
 import Html.Styled.Events exposing (onInput)
 import Nordea.Components.NumberInput as NumberInput
@@ -57,6 +61,7 @@ type alias Config msg =
     , isDisabled : Bool
     , labelString : String
     , description : String
+    , showInterval : Bool
     }
 
 
@@ -76,6 +81,7 @@ init value min max labelString description onInput =
         , isDisabled = False
         , labelString = labelString
         , description = description
+        , showInterval = False
         }
 
 
@@ -97,6 +103,11 @@ withStep step (Slider config) =
 withError : Bool -> Slider msg -> Slider msg
 withError condition (Slider config) =
     Slider { config | showError = condition }
+
+
+withShowInterval : Bool -> Slider msg -> Slider msg
+withShowInterval value (Slider config) =
+    Slider { config | showInterval = value }
 
 
 
@@ -132,6 +143,12 @@ view attributes (Slider config) =
             , css [ sliderStyle (Slider config) ]
             ]
             []
+        , if config.showInterval then
+            div [ css [ displayFlex, flexDirection row, justifyContent spaceBetween, marginTop (rem 1) ] ]
+                (List.range (config.min |> ceiling) (config.max |> ceiling) |> List.map (\number -> span [] [ Html.text (String.fromInt number) ]))
+
+          else
+            Html.text ""
         ]
 
 

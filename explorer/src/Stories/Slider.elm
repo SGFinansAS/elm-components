@@ -16,4 +16,11 @@ stories =
                     |> Slider.view []
           , {}
           )
+        , ( "With Interval"
+          , \model ->
+                Slider.init model.customModel.sliderInputValue 1 10 "Select loan period" "(1-10 years)" SliderMsg
+                    |> Slider.withShowInterval True
+                    |> Slider.view []
+          , {}
+          )
         ]
