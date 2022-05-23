@@ -23,6 +23,7 @@ import Css
         , focus
         , fontSize
         , fontWeight
+        , height
         , hover
         , inlineFlex
         , int
@@ -37,9 +38,10 @@ import Css
         , textDecoration
         , underline
         , visited
+        , width
         )
 import Html.Styled as Html exposing (Attribute, Html)
-import Html.Styled.Attributes exposing (href)
+import Html.Styled.Attributes exposing (css, href)
 import Nordea.Components.Button as Button
 import Nordea.Resources.Colors as Colors
 import Nordea.Resources.Icons as Icons
@@ -131,7 +133,7 @@ inline url text =
 outer : String -> String -> Html msg
 outer url text =
     view [ href url ]
-        [ Html.text text, Icons.rightIcon (Icons.info []) ]
+        [ Html.text text, Icons.rightIcon (Icons.outerLink [ css [ width (rem 1), height (rem 1) ] ]) ]
         (FlatLink
             { styles =
                 [ Css.fontWeight Css.inherit
