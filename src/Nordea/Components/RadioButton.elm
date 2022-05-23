@@ -84,6 +84,7 @@ type Appearance
     = Standard
     | Simple
     | ListStyle
+    | Small
 
 
 init : String -> Html msg -> msg -> RadioButton msg
@@ -144,30 +145,25 @@ view attrs (RadioButton config) =
                 ]
                 []
 
+        padding =
+            case config.appearance of
+                Small ->
+                    rem 0.5
+
+                _ ->
+                    rem 0.75
+
         appearanceStyle =
             let
                 commonNonSimpleStyles =
                     Css.batch
-                        [ padding2 (rem 0.75) (rem 1)
+                        [ padding2 padding (rem 1)
                         , border3 (rem 0.0625) solid transparent
                         , Themes.backgroundColor Themes.SecondaryColor Colors.blueCloud |> styleIf config.isSelected
                         , transition [ Css.Transitions.borderColor 100, Css.Transitions.boxShadow 100 ]
                         ]
             in
             case config.appearance of
-                Standard ->
-                    Css.batch
-                        [ commonNonSimpleStyles
-                        , borderRadius (rem 0.25)
-                        , minHeight (rem 3)
-                        , borderColor Colors.grayMedium |> styleIf (not config.isSelected)
-                        , borderColor Colors.redDark |> styleIf config.showError
-                        , hover
-                            [ Themes.borderColor Themes.PrimaryColorLight Colors.blueNordea |> styleIf (not config.showError)
-                            , Themes.backgroundColor Themes.SecondaryColor Colors.blueCloud
-                            ]
-                        ]
-
                 ListStyle ->
                     Css.batch
                         [ commonNonSimpleStyles
@@ -183,6 +179,19 @@ view attrs (RadioButton config) =
 
                 Simple ->
                     Css.batch []
+
+                _ ->
+                    Css.batch
+                        [ commonNonSimpleStyles
+                        , borderRadius (rem 0.25)
+                        , minHeight (rem 2.5)
+                        , borderColor Colors.grayMedium |> styleIf (not config.isSelected)
+                        , borderColor Colors.redDark |> styleIf config.showError
+                        , hover
+                            [ Themes.borderColor Themes.PrimaryColorLight Colors.blueNordea |> styleIf (not config.showError)
+                            , Themes.backgroundColor Themes.SecondaryColor Colors.blueCloud
+                            ]
+                        ]
     in
     Html.label
         (css
