@@ -5,6 +5,7 @@ module Nordea.Components.Dropdown exposing
     , optionInit
     , optionIsDisabled
     , simple
+    , small
     , view
     , withHasError
     , withPlaceholder
@@ -65,6 +66,7 @@ import Nordea.Themes as Themes
 type Variant
     = Standard
     | Simple
+    | Small
 
 
 type alias Option a =
@@ -109,6 +111,15 @@ simple options optionToString onInput =
             init options optionToString onInput
     in
     Dropdown { config | variant = Simple }
+
+
+small : List { value : a, text : String } -> (a -> String) -> (a -> msg) -> Dropdown a msg
+small options optionToString onInput =
+    let
+        (Dropdown config) =
+            init options optionToString onInput
+    in
+    Dropdown { config | variant = Small }
 
 
 init : List { value : a, text : String } -> (a -> String) -> (a -> msg) -> Dropdown a msg
@@ -174,6 +185,17 @@ view attrs (Dropdown config) =
 
         isDisabled =
             List.member (Attrs.disabled True) attrs
+
+        dropdownHeight =
+            case config.variant of
+                Standard ->
+                    NordeaCss.standardInputHeight
+
+                Simple ->
+                    NordeaCss.standardInputHeight
+
+                Small ->
+                    NordeaCss.smallInputHeight
     in
     div
         (css
@@ -191,7 +213,7 @@ view attrs (Dropdown config) =
             [ Events.on "change" decoder
             , Attrs.disabled isDisabled
             , css
-                [ height NordeaCss.standardInputHeight
+                [ height dropdownHeight
                 , width (pct 100)
                 , property "appearance" "none"
                 , property "-moz-appearance" "none"
@@ -212,8 +234,8 @@ view attrs (Dropdown config) =
                 ]
             ]
             (placeholder :: options)
-        , case config.variant of
-            Standard ->
+        , let
+            standardIcon =
                 Icon.chevronDownFilled
                     [ css
                         [ position absolute
@@ -224,6 +246,13 @@ view attrs (Dropdown config) =
                         , color Colors.grayCool
                         ]
                     ]
+          in
+          case config.variant of
+            Standard ->
+                standardIcon
+
+            Small ->
+                standardIcon
 
             Simple ->
                 Icon.chevronDown
