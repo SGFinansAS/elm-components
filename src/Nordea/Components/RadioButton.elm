@@ -2,6 +2,7 @@ module Nordea.Components.RadioButton exposing
     ( Appearance(..)
     , RadioButton
     , init
+    , small
     , view
     , withAppearance
     , withHasError
@@ -65,6 +66,11 @@ import Nordea.Resources.Colors as Colors
 import Nordea.Themes as Themes
 
 
+type Size
+    = DefaultSize
+    | Small
+
+
 type alias InputProperties msg =
     { name : String
     , label : Html msg
@@ -73,6 +79,7 @@ type alias InputProperties msg =
     , isSelected : Bool
     , appearance : Appearance
     , showError : Bool
+    , size : Size
     }
 
 
@@ -96,7 +103,13 @@ init name label onCheck =
         , isSelected = False
         , appearance = Standard
         , showError = False
+        , size = DefaultSize
         }
+
+
+small : RadioButton msg -> RadioButton msg
+small (RadioButton config) =
+    RadioButton { config | size = Small }
 
 
 view : List (Attribute msg) -> RadioButton msg -> Html msg
@@ -144,11 +157,19 @@ view attrs (RadioButton config) =
                 ]
                 []
 
+        padding =
+            case config.size of
+                DefaultSize ->
+                    rem 0.75
+
+                Small ->
+                    rem 0.5
+
         appearanceStyle =
             let
                 commonNonSimpleStyles =
                     Css.batch
-                        [ padding2 (rem 0.75) (rem 1)
+                        [ padding2 padding (rem 1)
                         , border3 (rem 0.0625) solid transparent
                         , Themes.backgroundColor Themes.SecondaryColor Colors.blueCloud |> styleIf config.isSelected
                         , transition [ Css.Transitions.borderColor 100, Css.Transitions.boxShadow 100 ]
@@ -159,7 +180,7 @@ view attrs (RadioButton config) =
                     Css.batch
                         [ commonNonSimpleStyles
                         , borderRadius (rem 0.25)
-                        , minHeight (rem 3)
+                        , minHeight (rem 2.5)
                         , borderColor Colors.grayMedium |> styleIf (not config.isSelected)
                         , borderColor Colors.redDark |> styleIf config.showError
                         , hover

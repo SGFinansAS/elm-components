@@ -31,6 +31,25 @@ stories =
                     ]
           , {}
           )
+        , ( "Small"
+          , \_ ->
+                Html.div [ css [ displayFlex, Css.property "gap" "1rem" ] ]
+                    [ RadioButton.init
+                        "simple"
+                        (text "Click me")
+                        NoOp
+                        |> RadioButton.small
+                        |> RadioButton.view []
+                    , RadioButton.init
+                        "simple"
+                        (text "Click me")
+                        NoOp
+                        |> RadioButton.small
+                        |> RadioButton.withIsSelected True
+                        |> RadioButton.view []
+                    ]
+          , {}
+          )
         , ( "Standard with error"
           , \_ ->
                 Html.div [ css [ displayFlex, Css.property "gap" "1rem" ] ]
