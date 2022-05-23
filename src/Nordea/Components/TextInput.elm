@@ -19,6 +19,7 @@ import Html.Styled.Attributes exposing (css, maxlength, pattern, placeholder, va
 import Html.Styled.Events exposing (keyCode, on, onBlur, onInput)
 import Json.Decode as Json
 import Maybe.Extra as Maybe
+import Nordea.Css as NordeaCss
 import Nordea.Html exposing (styleIf)
 import Nordea.Resources.Colors as Colors
 import Nordea.Resources.Icons as Icons
@@ -202,10 +203,10 @@ getStyles config =
     , height
         (case config.size of
             Small ->
-                rem 2.5625
+                NordeaCss.smallInputHeight
 
             Large ->
-                rem 3
+                NordeaCss.standardInputHeight
         )
     , padding2 (rem 0.75) (rem 0.75)
     , borderRadius (rem 0.25)
