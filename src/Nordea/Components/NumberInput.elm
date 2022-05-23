@@ -18,6 +18,7 @@ import Html.Styled exposing (Attribute, Html, input, styled)
 import Html.Styled.Attributes as Attributes exposing (placeholder, step, type_, value)
 import Html.Styled.Events exposing (onBlur, onInput)
 import Maybe.Extra as Maybe
+import Nordea.Css as NordeaCss
 import Nordea.Resources.Colors as Colors
 import Nordea.Themes as Themes
 
@@ -161,7 +162,7 @@ getStyles config =
                 Colors.grayMedium
     in
     [ fontSize (rem 1)
-    , height (rem 3)
+    , height NordeaCss.standardInputHeight
     , pseudoElement "-webkit-outer-spin-button" [ display none ]
     , pseudoElement "-webkit-inner-spin-button" [ display none ]
     , property "-moz-appearance" "textfield"
