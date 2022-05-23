@@ -117,4 +117,18 @@ stories =
                     |> Dropdown.view []
           , {}
           )
+        , ( "Small"
+          , \_ ->
+                Dropdown.small
+                    [ { value = Leasing, text = financingVariantToString Leasing }
+                    , { value = Rent, text = financingVariantToString Rent }
+                    , { value = Loan, text = financingVariantToString Loan }
+                    , { value = HirePurchase, text = financingVariantToString HirePurchase }
+                    ]
+                    financingVariantToString
+                    (\_ -> NoOp)
+                    |> Dropdown.withPlaceholder "Choose financing variant"
+                    |> Dropdown.view []
+          , {}
+          )
         ]
