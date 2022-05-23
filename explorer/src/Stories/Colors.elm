@@ -21,7 +21,7 @@ import Css
 import Html.Styled as Html
 import Html.Styled.Attributes exposing (css)
 import Nordea.Components.Text as Text
-import Nordea.Resources.Colors as Colors exposing (blueCloud)
+import Nordea.Resources.Colors as Colors
 import UIExplorer exposing (UI)
 import UIExplorer.Styled exposing (styledStoriesOf)
 
