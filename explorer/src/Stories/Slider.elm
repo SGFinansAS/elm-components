@@ -10,9 +10,16 @@ stories : UI Config Msg {}
 stories =
     styledStoriesOf
         "Slider"
-        [ ( "Default"
+        [ ( "Simple"
           , \model ->
                 Slider.init model.customModel.sliderInputValue 1 10 "Select loan period" "(1-10 years)" SliderMsg
+                    |> Slider.view []
+          , {}
+          )
+        , ( "With NumberInput"
+          , \model ->
+                Slider.init model.customModel.sliderInputValue 1 10 "Select loan period" "(1-10 years)" SliderMsg
+                    |> Slider.withShowNumberInput True
                     |> Slider.view []
           , {}
           )

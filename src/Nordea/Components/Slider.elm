@@ -6,6 +6,7 @@ module Nordea.Components.Slider exposing
     , withMax
     , withMin
     , withShowInterval
+    , withShowNumberInput
     , withStep
     )
 
@@ -43,6 +44,7 @@ import Html.Styled.Attributes exposing (css, for, name, type_)
 import Html.Styled.Events exposing (onInput)
 import Nordea.Components.NumberInput as NumberInput
 import Nordea.Components.Text as NordeaText
+import Nordea.Html exposing (showIf)
 import Nordea.Resources.Colors as Colors
 import Nordea.Themes as Themes
 
@@ -62,6 +64,7 @@ type alias Config msg =
     , labelString : String
     , description : String
     , showInterval : Bool
+    , showNumberInput : Bool
     }
 
 
@@ -82,6 +85,7 @@ init value min max labelString description onInput =
         , labelString = labelString
         , description = description
         , showInterval = False
+        , showNumberInput = False
         }
 
 
@@ -110,6 +114,11 @@ withShowInterval value (Slider config) =
     Slider { config | showInterval = value }
 
 
+withShowNumberInput : Bool -> Slider msg -> Slider msg
+withShowNumberInput value (Slider config) =
+    Slider { config | showNumberInput = value }
+
+
 
 -- VIEW
 
@@ -124,13 +133,15 @@ view attributes (Slider config) =
                 , NordeaText.textTinyLight
                     |> NordeaText.view [ css [ color Colors.grayNordea ] ] [ Html.text config.description ]
                 ]
-            , NumberInput.init (config.value |> String.fromFloat)
-                |> NumberInput.withMin config.min
-                |> NumberInput.withMax config.max
-                |> NumberInput.withStep (config.step |> Maybe.withDefault 1)
-                |> NumberInput.withOnInput config.onInput
-                |> NumberInput.withError (config.value > config.max || config.value < config.min)
-                |> NumberInput.view [ name "rangeInput", css [ flex (int 1) ] ]
+            , showIf config.showNumberInput
+                (NumberInput.init (config.value |> String.fromFloat)
+                    |> NumberInput.withMin config.min
+                    |> NumberInput.withMax config.max
+                    |> NumberInput.withStep (config.step |> Maybe.withDefault 1)
+                    |> NumberInput.withOnInput config.onInput
+                    |> NumberInput.withError (config.value > config.max || config.value < config.min)
+                    |> NumberInput.view [ name "rangeInput", css [ flex (int 1) ] ]
+                )
             ]
         , input
             [ name "rangeInput"
@@ -143,12 +154,10 @@ view attributes (Slider config) =
             , css [ sliderStyle (Slider config) ]
             ]
             []
-        , if config.showInterval then
-            div [ css [ displayFlex, flexDirection row, justifyContent spaceBetween, marginTop (rem 1) ] ]
+        , showIf config.showInterval
+            (div [ css [ displayFlex, flexDirection row, justifyContent spaceBetween, margin2 (rem 1) (rem 0.25) ] ]
                 (List.range (config.min |> ceiling) (config.max |> ceiling) |> List.map (\number -> span [] [ Html.text (String.fromInt number) ]))
-
-          else
-            Html.text ""
+            )
         ]
 
 
