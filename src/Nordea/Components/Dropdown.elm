@@ -234,23 +234,24 @@ view attrs (Dropdown config) =
             ]
             (placeholder :: options)
         , let
-            standardIconCss =
-                [ css
-                    [ position absolute
-                    , top (pct 50)
-                    , transform (translateY (pct -50))
-                    , right (rem 0.25)
-                    , pointerEvents none
-                    , color Colors.grayCool
+            standardIcon =
+                Icon.chevronDownFilled
+                    [ css
+                        [ position absolute
+                        , top (pct 50)
+                        , transform (translateY (pct -50))
+                        , right (rem 0.25)
+                        , pointerEvents none
+                        , color Colors.grayCool
+                        ]
                     ]
-                ]
           in
           case config.variant of
             Standard ->
-                Icon.chevronDownFilled standardIconCss
+                standardIcon
 
             Small ->
-                Icon.chevronDownFilled standardIconCss
+                standardIcon
 
             Simple ->
                 Icon.chevronDown
