@@ -56,11 +56,13 @@ import Css
         , relative
         , rem
         , right
+        , scale2
         , solid
         , start
         , textAlign
         , textDecoration
         , top
+        , transform
         , transforms
         , translateX
         , translateY
@@ -210,6 +212,16 @@ variantStyle variant =
                     ]
                 , hover [ backgroundColor Colors.grayHover ]
                 ]
+
+        hoverTransition =
+            Css.batch
+                [ transition
+                    [ Css.Transitions.transform3 300 0 easeOut
+                    , Css.Transitions.backgroundColor3 300 0 easeOut
+                    , Css.Transitions.color3 300 0 easeOut
+                    ]
+                , hover [ transform (scale2 1.05 1.05) ]
+                ]
     in
     case variant of
         Primary ->
@@ -227,6 +239,7 @@ variantStyle variant =
                     , Themes.color Themes.SecondaryColor Colors.blueHaas
                     , Css.property "box-shadow" ("0rem 0rem 0rem 0.25rem " ++ Themes.colorVariable Themes.SecondaryColor Colors.blueHaas)
                     ]
+                , hoverTransition
                 ]
 
         Secondary ->
@@ -245,6 +258,7 @@ variantStyle variant =
                     , Themes.color Themes.PrimaryColor Colors.blueDeep
                     , Css.property "box-shadow" ("0rem 0rem 0rem 0.125rem " ++ Themes.colorVariable Themes.PrimaryColor Colors.blueDeep)
                     ]
+                , hoverTransition
                 ]
 
         Tertiary ->
@@ -262,6 +276,7 @@ variantStyle variant =
                     , Themes.color Themes.PrimaryColor Colors.blueDeep
                     , Css.property "box-shadow" ("0rem 0rem 0rem 0.25rem " ++ Themes.colorVariable Themes.SecondaryColor Colors.blueHaas)
                     ]
+                , hoverTransition
                 ]
 
         Card ->

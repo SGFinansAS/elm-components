@@ -16,12 +16,6 @@ stories =
                     |> NumberInput.view []
           , {}
           )
-        , ( "Default (Disabled)"
-          , \_ ->
-                NumberInput.init "0"
-                    |> NumberInput.view [ disabled True ]
-          , {}
-          )
         , ( "Placeholder"
           , \_ ->
                 NumberInput.init ""
@@ -50,6 +44,13 @@ stories =
           , \_ ->
                 NumberInput.init "0"
                     |> NumberInput.view [ disabled True ]
+          , {}
+          )
+        , ( "Small"
+          , \_ ->
+                NumberInput.init "0"
+                    |> NumberInput.withSmallSize
+                    |> NumberInput.view []
           , {}
           )
         ]

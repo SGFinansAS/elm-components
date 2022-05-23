@@ -18,6 +18,7 @@ stories =
                 Html.div [ css [ displayFlex, Css.property "gap" "1rem", children [ everything [ marginBottom (rem 2) ] ] ] ]
                     [ Icons.filledCheckmark [ css [ width (rem 1.5) ] ]
                     , Icons.unfilledMark [ css [ width (rem 1.5) ] ]
+                    , Icons.questionMark [ css [ width (rem 1.5) ] ]
                     ]
           , {}
           )
