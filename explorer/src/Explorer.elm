@@ -14,10 +14,10 @@ import Stories.Error as Error
 import Stories.FeatureBox as FeatureBox
 import Stories.FileUpload as FileUpload
 import Stories.FlatLink as FlatLink
-import Stories.InlineLink as InlineLink
 import Stories.Icons as Icons
 import Stories.InfoLabel as InfoLabel
 import Stories.InfoPanel as InfoPanel
+import Stories.InlineLink as InlineLink
 import Stories.Label as Label
 import Stories.LottiePlayer as LottiePlayer
 import Stories.Modal as Modal
