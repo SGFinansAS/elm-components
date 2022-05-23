@@ -5,6 +5,7 @@ module Nordea.Components.Dropdown exposing
     , optionInit
     , optionIsDisabled
     , simple
+    , small
     , view
     , withHasError
     , withPlaceholder
@@ -64,6 +65,7 @@ import Nordea.Themes as Themes
 type Variant
     = Standard
     | Simple
+    | Small
 
 
 type alias Option a =
@@ -108,6 +110,15 @@ simple options optionToString onInput =
             init options optionToString onInput
     in
     Dropdown { config | variant = Simple }
+
+
+small : List { value : a, text : String } -> (a -> String) -> (a -> msg) -> Dropdown a msg
+small options optionToString onInput =
+    let
+        (Dropdown config) =
+            init options optionToString onInput
+    in
+    Dropdown { config | variant = Small }
 
 
 init : List { value : a, text : String } -> (a -> String) -> (a -> msg) -> Dropdown a msg
@@ -173,6 +184,17 @@ view attrs (Dropdown config) =
 
         isDisabled =
             List.member (Attrs.disabled True) attrs
+
+        dropdownHeight =
+            case config.variant of
+                Standard ->
+                    rem 3
+
+                Simple ->
+                    rem 3
+
+                Small ->
+                    rem 2.5
     in
     div
         (css
@@ -190,7 +212,7 @@ view attrs (Dropdown config) =
             [ Events.on "change" decoder
             , Attrs.disabled isDisabled
             , css
-                [ height (rem 3)
+                [ height dropdownHeight
                 , width (pct 100)
                 , property "appearance" "none"
                 , property "-moz-appearance" "none"
@@ -211,18 +233,24 @@ view attrs (Dropdown config) =
                 ]
             ]
             (placeholder :: options)
-        , case config.variant of
-            Standard ->
-                Icon.chevronDownFilled
-                    [ css
-                        [ position absolute
-                        , top (pct 50)
-                        , transform (translateY (pct -50))
-                        , right (rem 0.25)
-                        , pointerEvents none
-                        , color Colors.grayCool
-                        ]
+        , let
+            standardIconCss =
+                [ css
+                    [ position absolute
+                    , top (pct 50)
+                    , transform (translateY (pct -50))
+                    , right (rem 0.25)
+                    , pointerEvents none
+                    , color Colors.grayCool
                     ]
+                ]
+          in
+          case config.variant of
+            Standard ->
+                Icon.chevronDownFilled standardIconCss
+
+            Small ->
+                Icon.chevronDownFilled standardIconCss
 
             Simple ->
                 Icon.chevronDown
