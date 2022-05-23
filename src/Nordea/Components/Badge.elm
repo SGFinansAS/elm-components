@@ -31,6 +31,7 @@ type Notification
     | Generic
 
 
+view : List (Attribute msg) -> List (Html msg) -> Notification -> Html msg
 view attrs children config =
     let
         textContent =
@@ -42,27 +43,23 @@ view attrs children config =
                     "•"
     in
     Html.div
-        [ css
-            [ position relative
-            ]
-        ]
-        ((Text.bodyTextHeavy
-            |> Text.view
-                [ css
-                    [ displayFlex
-                    , alignItems center
-                    , justifyContent center
-                    , position absolute
-                    , left (rem -0.5)
-                    , bottom (rem -0.5)
-                    , width (rem 2)
-                    , height (rem 2)
-                    , backgroundColor Colors.darkRed
-                    , borderRadius (pct 50)
-                    , color Colors.white
-                    ]
+        (css [ position relative ] :: attrs)
+        (Text.view
+            [ css
+                [ displayFlex
+                , alignItems center
+                , justifyContent center
+                , position absolute
+                , left (rem -0.5)
+                , bottom (rem -0.5)
+                , width (rem 2)
+                , height (rem 2)
+                , backgroundColor Colors.darkRed
+                , borderRadius (pct 50)
+                , color Colors.white
                 ]
-                [ Html.text textContent ]
-         )
+            ]
+            [ Html.text textContent ]
+            Text.bodyTextHeavy
             :: children
         )
