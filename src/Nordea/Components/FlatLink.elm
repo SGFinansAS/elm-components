@@ -119,9 +119,9 @@ inline attrs children =
             { styles =
                 [ Css.display inlineFlex
                 , Css.fontWeight Css.inherit
-                , Themes.color Themes.PrimaryColor Colors.blueNordea
-                , hover [ Themes.color Themes.PrimaryColorLight Colors.blueDeep ]
-                , focus [ Themes.color Themes.PrimaryColorLight Colors.blueDeep ]
+                , Themes.color Themes.PrimaryColorLight Colors.blueNordea
+                , hover [ Themes.color Themes.PrimaryColor Colors.blueDeep ]
+                , focus [ Themes.color Themes.PrimaryColor Colors.blueDeep ]
                 , visited [ Css.color Colors.purple ]
                 ]
             , isDisabled = Just (List.member (Html.Styled.Attributes.disabled True) attrs)
@@ -139,13 +139,13 @@ outer attrs children =
         (FlatLink
             { styles =
                 [ Css.fontWeight Css.inherit
-                , Themes.color Themes.PrimaryColor Colors.blueNordea
+                , Themes.color Themes.PrimaryColorLight Colors.blueNordea
                 , textDecoration none
                 , hover
-                    [ Themes.color Themes.PrimaryColorLight Colors.blueDeep
+                    [ Themes.color Themes.PrimaryColor Colors.blueDeep
                     , textDecoration underline
                     ]
-                , focus [ Themes.color Themes.PrimaryColorLight Colors.blueDeep ]
+                , focus [ Themes.color Themes.PrimaryColor Colors.blueDeep ]
                 , visited [ Css.color Colors.purple ]
                 ]
             , isDisabled = Just (List.member (Html.Styled.Attributes.disabled True) attrs)
