@@ -1,7 +1,6 @@
 module Stories.Icons exposing (stories)
 
-import Css exposing (column, displayFlex, flexDirection, height, marginBottom, rem, row, width)
-import Css.Global exposing (children, everything)
+import Css exposing (column, displayFlex, flexDirection, rem, row, width)
 import Html.Styled as Html
 import Html.Styled.Attributes exposing (css)
 import Nordea.Components.Text as Text
@@ -53,10 +52,10 @@ stories =
                         ]
                     , iconCategoryHeader "Add, remove, accept and cancel"
                     , iconsRow
-                        [ Icons.warning Colors.black [ css [ width (rem 1.5) ] ]
+                        [ Icons.warning [ css [ width (rem 1.5) ] ]
                         , Icons.close [ css [ width (rem 1.5) ] ]
+                        , Icons.info [ css [ width (rem 1.5) ] ]
                         , Icons.questionMark [ css [ width (rem 1.5) ] ]
-                        , Icons.largeExclamationMark [ css [ width (rem 1.5) ] ]
                         , Icons.filledCheckmark [ css [ width (rem 1.5) ] ]
                         , Icons.unfilledMark [ css [ width (rem 1.5) ] ]
                         , Icons.largeAdditionalInfo [ css [ width (rem 1.5) ] ]
@@ -67,8 +66,8 @@ stories =
                     , iconCategoryHeader "Contact"
                     , iconsRow
                         [ Icons.contact [ css [ width (rem 1.5) ] ]
-                        , Icons.largeEnvelope Colors.black [ css [ width (rem 1.5) ] ]
-                        , Icons.largePhone Colors.black [ css [ width (rem 1.5) ] ]
+                        , Icons.largeEnvelope [ css [ width (rem 1.5) ] ]
+                        , Icons.largePhone [ css [ width (rem 1.5) ] ]
                         ]
                     , iconCategoryHeader "Misc."
                     , iconsRow
