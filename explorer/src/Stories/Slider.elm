@@ -1,4 +1,4 @@
-module Stories.Slider exposing (..)
+module Stories.Slider exposing (stories)
 
 import Config exposing (Config, Msg(..))
 import Nordea.Components.Slider as Slider

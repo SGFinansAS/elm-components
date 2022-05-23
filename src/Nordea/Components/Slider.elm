@@ -1,14 +1,50 @@
-module Nordea.Components.Slider exposing (..)
+module Nordea.Components.Slider exposing
+    ( Slider
+    , init
+    , view
+    , withError
+    , withMax
+    , withMin
+    , withStep
+    )
 
--- CONFIG
-
-import Css exposing (Style, alignItems, backgroundColor, borderRadius, center, color, column, cursor, displayFlex, flex, flexDirection, flexGrow, height, hex, int, linearGradient, linearGradient2, margin2, marginBottom, marginTop, pct, pointer, property, pseudoElement, px, rem, row, toRight, transparent, width)
+import Css
+    exposing
+        ( Style
+        , alignItems
+        , backgroundColor
+        , borderRadius
+        , center
+        , color
+        , column
+        , cursor
+        , displayFlex
+        , flex
+        , flexDirection
+        , height
+        , int
+        , marginBottom
+        , marginTop
+        , pct
+        , pointer
+        , property
+        , pseudoElement
+        , rem
+        , row
+        , transparent
+        , width
+        )
 import Html.Styled as Html exposing (Attribute, Html, div, input, label)
 import Html.Styled.Attributes exposing (css, for, name, type_)
 import Html.Styled.Events exposing (onInput)
 import Nordea.Components.NumberInput as NumberInput
 import Nordea.Components.Text as NordeaText
 import Nordea.Resources.Colors as Colors
+import Nordea.Themes as Themes
+
+
+
+-- CONFIG
 
 
 type alias Config msg =
@@ -41,6 +77,26 @@ init value min max labelString description onInput =
         , labelString = labelString
         , description = description
         }
+
+
+withMin : Float -> Slider msg -> Slider msg
+withMin min (Slider config) =
+    Slider { config | min = min }
+
+
+withMax : Float -> Slider msg -> Slider msg
+withMax max (Slider config) =
+    Slider { config | max = max }
+
+
+withStep : Float -> Slider msg -> Slider msg
+withStep step (Slider config) =
+    Slider { config | step = Just step }
+
+
+withError : Bool -> Slider msg -> Slider msg
+withError condition (Slider config) =
+    Slider { config | showError = condition }
 
 
 
@@ -85,35 +141,34 @@ sliderStyle (Slider config) =
         [ width (pct 100)
         , property "-webkit-appearance" "none"
         , cursor pointer
-        , margin2 (px 8) (px 0)
 
         -- Webkit
         , pseudoElement "-webkit-slider-runnable-track"
             [ width (pct 100)
-            , height (px 4)
+            , height (rem 0.25)
             , property "background-color" "transparent"
             ]
         , pseudoElement "-webkit-slider-thumb"
             [ property "-webkit-appearance" "none"
-            , width (px 20)
-            , height (px 20)
+            , width (rem 1.5)
+            , height (rem 1.5)
             , borderRadius (pct 100)
-            , backgroundColor (hex "#00005E")
-            , marginTop (px -8.5)
+            , Themes.backgroundColor Themes.SecondaryColor Colors.blueDeep
+            , marginTop (rem -0.625)
             ]
 
         -- Mozilla
         , pseudoElement "-moz-range-track"
             [ width (pct 100)
-            , height (px 4)
+            , height (rem 0.25)
             , backgroundColor transparent
             ]
         , pseudoElement "-moz-range-thumb"
-            [ width (px 20)
-            , height (px 20)
+            [ width (rem 1.25)
+            , height (rem 1.25)
             , borderRadius (pct 100)
-            , backgroundColor (hex "#00005E")
-            , marginTop (px -8.5)
+            , Themes.backgroundColor Themes.SecondaryColor Colors.blueDeep
+            , marginTop (rem -0.625)
             ]
         , adjustSlider (Slider config)
         ]
@@ -126,10 +181,10 @@ adjustSlider (Slider config) =
             ((((config.value |> String.toFloat |> Maybe.withDefault 0) - config.min) * 100) / (config.max - config.min)) |> String.fromFloat
 
         cloudBlue =
-            "#DCEDFF"
+            Themes.colorVariable Themes.SecondaryColor Colors.blueCloud
 
         nordeaBlue =
-            "#0000A0"
+            Themes.colorVariable Themes.PrimaryColorLight Colors.blueNordea
 
         gradientValue =
             "linear-gradient(to right," ++ nordeaBlue ++ " 0% " ++ visibleWidth ++ "%, " ++ cloudBlue ++ " " ++ visibleWidth ++ "%" ++ " 100% )"
