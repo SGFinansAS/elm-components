@@ -35,16 +35,16 @@ stories =
           , \_ ->
                 Html.div [ css [ displayFlex, Css.property "gap" "1rem" ] ]
                     [ RadioButton.init
-                        "simple"
+                        "small"
                         (text "Click me")
                         NoOp
-                        |> RadioButton.small
+                        |> RadioButton.withAppearance RadioButton.Small
                         |> RadioButton.view []
                     , RadioButton.init
-                        "simple"
+                        "small"
                         (text "Click me")
                         NoOp
-                        |> RadioButton.small
+                        |> RadioButton.withAppearance RadioButton.Small
                         |> RadioButton.withIsSelected True
                         |> RadioButton.view []
                     ]

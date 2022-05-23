@@ -2,7 +2,6 @@ module Nordea.Components.RadioButton exposing
     ( Appearance(..)
     , RadioButton
     , init
-    , small
     , view
     , withAppearance
     , withHasError
@@ -66,11 +65,6 @@ import Nordea.Resources.Colors as Colors
 import Nordea.Themes as Themes
 
 
-type Size
-    = DefaultSize
-    | Small
-
-
 type alias InputProperties msg =
     { name : String
     , label : Html msg
@@ -79,7 +73,6 @@ type alias InputProperties msg =
     , isSelected : Bool
     , appearance : Appearance
     , showError : Bool
-    , size : Size
     }
 
 
@@ -91,6 +84,7 @@ type Appearance
     = Standard
     | Simple
     | ListStyle
+    | Small
 
 
 init : String -> Html msg -> msg -> RadioButton msg
@@ -103,13 +97,7 @@ init name label onCheck =
         , isSelected = False
         , appearance = Standard
         , showError = False
-        , size = DefaultSize
         }
-
-
-small : RadioButton msg -> RadioButton msg
-small (RadioButton config) =
-    RadioButton { config | size = Small }
 
 
 view : List (Attribute msg) -> RadioButton msg -> Html msg
@@ -158,12 +146,12 @@ view attrs (RadioButton config) =
                 []
 
         padding =
-            case config.size of
-                DefaultSize ->
-                    rem 0.75
-
+            case config.appearance of
                 Small ->
                     rem 0.5
+
+                _ ->
+                    rem 0.75
 
         appearanceStyle =
             let
@@ -176,19 +164,6 @@ view attrs (RadioButton config) =
                         ]
             in
             case config.appearance of
-                Standard ->
-                    Css.batch
-                        [ commonNonSimpleStyles
-                        , borderRadius (rem 0.25)
-                        , minHeight (rem 2.5)
-                        , borderColor Colors.grayMedium |> styleIf (not config.isSelected)
-                        , borderColor Colors.redDark |> styleIf config.showError
-                        , hover
-                            [ Themes.borderColor Themes.PrimaryColorLight Colors.blueNordea |> styleIf (not config.showError)
-                            , Themes.backgroundColor Themes.SecondaryColor Colors.blueCloud
-                            ]
-                        ]
-
                 ListStyle ->
                     Css.batch
                         [ commonNonSimpleStyles
@@ -204,6 +179,19 @@ view attrs (RadioButton config) =
 
                 Simple ->
                     Css.batch []
+
+                _ ->
+                    Css.batch
+                        [ commonNonSimpleStyles
+                        , borderRadius (rem 0.25)
+                        , minHeight (rem 2.5)
+                        , borderColor Colors.grayMedium |> styleIf (not config.isSelected)
+                        , borderColor Colors.redDark |> styleIf config.showError
+                        , hover
+                            [ Themes.borderColor Themes.PrimaryColorLight Colors.blueNordea |> styleIf (not config.showError)
+                            , Themes.backgroundColor Themes.SecondaryColor Colors.blueCloud
+                            ]
+                        ]
     in
     Html.label
         (css
