@@ -5,6 +5,7 @@ import Css.Global as Css
 import Css.Transitions exposing (transition)
 import Html.Styled exposing (Html, div, span, styled)
 import Html.Styled.Attributes as Attr
+import Maybe.Extra as Maybe
 import Nordea.Resources.Colors as Colors
 
 
@@ -65,14 +66,23 @@ withOverrideShow overrideShow (Tooltip config) =
 
 view2 : List (Html msg) -> Tooltip msg -> Html msg
 view2 children (Tooltip config) =
+    let
+        autoHoverShow =
+            if Maybe.isNothing config.overrideShow then
+                [ Css.hover
+                    [ Css.descendants
+                        [ Css.class "tooltip"
+                            [ Css.opacity (int 1) ]
+                        ]
+                    ]
+                ]
+
+            else
+                []
+    in
     styled span
         [ Css.position Css.relative
-        , Css.hover
-            [ Css.descendants
-                [ Css.class "tooltip"
-                    [ Css.opacity (int 1) ]
-                ]
-            ]
+        , Css.batch autoHoverShow
         ]
         []
         (children
@@ -111,8 +121,9 @@ view2 children (Tooltip config) =
                                 Css.backgroundColor Css.inherit
                         , Css.position Css.absolute
                         , arrowStyle config.placement
-                        , Css.zIndex (Css.int -1)
-                        , Css.boxShadow4 zero (rem 0.0625) (rem 0.125) (Css.rgba 0 0 0 0.2)
+
+                        --, Css.zIndex (Css.int -1)
+                        --, Css.boxShadow4 zero (rem 0.0625) (rem 0.125) (Css.rgba 0 0 0 0.2)
                         ]
                     ]
                     [ Attr.class "tooltip" ]

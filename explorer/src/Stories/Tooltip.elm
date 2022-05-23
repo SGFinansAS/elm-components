@@ -1,8 +1,10 @@
 module Stories.Tooltip exposing (stories)
 
+import Config exposing (Config, Msg(..), TooltipMsg(..), TooltipState)
 import Css exposing (alignItems, center, displayFlex, marginLeft, rem)
-import Html.Styled exposing (div, text)
-import Html.Styled.Attributes exposing (css)
+import Html.Styled as Html exposing (div, text)
+import Html.Styled.Attributes as Attributes exposing (css)
+import Html.Styled.Events as Events
 import Nordea.Components.Card as Card exposing (Card(..))
 import Nordea.Components.Tooltip as Tooltip exposing (Placement(..))
 import Nordea.Resources.Colors as Colors
@@ -11,7 +13,7 @@ import UIExplorer exposing (UI)
 import UIExplorer.Styled exposing (styledStoriesOf)
 
 
-stories : UI a b {}
+stories : UI Config Config.Msg {}
 stories =
     styledStoriesOf
         "Tooltip"
@@ -71,20 +73,21 @@ stories =
           , {}
           )
         , ( "Card"
-          , \_ ->
+          , \state ->
                 div []
                     [ text "There is a tooltip "
                     , Tooltip.init
-                        |> Tooltip.withPlacement Right
+                        |> Tooltip.withPlacement Bottom
                         |> Tooltip.withArrowColor Colors.white
-                        |> Tooltip.withOverrideShow True
+                        |> Tooltip.withOverrideShow state.customModel.tooltipState.cardIsOpen
                         |> Tooltip.withContent
                             [ Card.init
                                 |> Card.withShadow
-                                |> Card.view [] [ text "Card content" ]
+                                |> Card.view [ Attributes.css [ Css.maxHeight (Css.px 300), Css.overflowY Css.scroll, Css.maxWidth (Css.px 300) ] ] [ text "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum." ]
                             ]
-                        |> Tooltip.view2 [ text "here" ]
+                        |> Tooltip.view2 [ Icons.questionMark [ css [ marginLeft (rem 0.25), Css.cursor Css.pointer ], Events.onClick Toggle ] ]
                     ]
+                    |> Html.map ToolTipMsg
           , {}
           )
         ]
