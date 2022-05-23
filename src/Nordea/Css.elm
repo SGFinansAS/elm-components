@@ -2,6 +2,8 @@ module Nordea.Css exposing
     ( colorVariable
     , propertyWithColorVariable
     , propertyWithVariable
+    , smallInputHeight
+    , standardInputHeight
     , variable
     )
 
@@ -37,3 +39,11 @@ colorToString color =
     ]
         |> String.join ","
         |> (\s -> "rgba(" ++ s ++ ")")
+
+
+standardInputHeight =
+    Css.rem 3
+
+
+smallInputHeight =
+    Css.rem 2.5

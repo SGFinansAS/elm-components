@@ -62,6 +62,7 @@ stories =
           , \_ ->
                 TextInput.init "Text"
                     |> TextInput.withSearchIcon True
+                    |> TextInput.withCurrency "EUR"
                     |> TextInput.view []
           , {}
           )
@@ -69,6 +70,13 @@ stories =
           , \_ ->
                 TextInput.init "Text"
                     |> TextInput.withSmallSize
+                    |> TextInput.view []
+          , {}
+          )
+        , ( "With currency"
+          , \_ ->
+                TextInput.init "Text"
+                    |> TextInput.withCurrency "EUR"
                     |> TextInput.view []
           , {}
           )

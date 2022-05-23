@@ -64,7 +64,7 @@ view attrs children (Card config) =
         (css cardStyle
             :: attrs
         )
-        ((config.title |> viewMaybe (\title -> cardTitle title))
+        (viewMaybe cardTitle config.title
             :: children
         )
 

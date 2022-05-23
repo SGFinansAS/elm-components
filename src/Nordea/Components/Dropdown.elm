@@ -56,6 +56,7 @@ import Html.Styled as Html exposing (Attribute, Html, div, option, text)
 import Html.Styled.Attributes as Attrs exposing (css, disabled, selected, value)
 import Html.Styled.Events as Events exposing (targetValue)
 import Json.Decode as Decode
+import Nordea.Css as NordeaCss
 import Nordea.Html exposing (styleIf, viewMaybe)
 import Nordea.Resources.Colors as Colors
 import Nordea.Resources.Icons as Icon
@@ -188,13 +189,13 @@ view attrs (Dropdown config) =
         dropdownHeight =
             case config.variant of
                 Standard ->
-                    rem 3
+                    NordeaCss.standardInputHeight
 
                 Simple ->
-                    rem 3
+                    NordeaCss.standardInputHeight
 
                 Small ->
-                    rem 2.5
+                    NordeaCss.smallInputHeight
     in
     div
         (css
