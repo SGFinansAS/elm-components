@@ -94,6 +94,7 @@ stories =
                             (Maybe.withDefault "" model.customModel.searchComponentInput)
                             OnClickClearSearchComponentInput
                             |> DropdownFilter.withFocusHandling "explorer" model.customModel.searchHasFocus SearchComponentFocus
+                            |> DropdownFilter.withFocusState True
                 in
                 Html.div []
                     [ DropdownFilter.view defaultOptions []

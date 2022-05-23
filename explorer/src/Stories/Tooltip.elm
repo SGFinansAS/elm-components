@@ -80,12 +80,13 @@ stories =
                         |> Tooltip.withPlacement Bottom
                         |> Tooltip.withArrowColor Colors.white
                         |> Tooltip.withOverrideShow state.customModel.tooltipState.cardIsOpen
+                        |> Tooltip.withFocusHandling "tooltipCard" FocusChange
                         |> Tooltip.withContent
                             [ Card.init
                                 |> Card.withShadow
                                 |> Card.view [ Attributes.css [ Css.maxHeight (Css.px 300), Css.overflowY Css.scroll, Css.maxWidth (Css.px 300) ] ] [ text "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum." ]
                             ]
-                        |> Tooltip.view2 [ Icons.questionMark [ css [ marginLeft (rem 0.25), Css.cursor Css.pointer ], Events.onClick Toggle ] ]
+                        |> Tooltip.view2 [ Icons.questionMark [ css [ marginLeft (rem 0.25), Css.cursor Css.pointer ] ] ]
                     ]
                     |> Html.map ToolTipMsg
           , {}

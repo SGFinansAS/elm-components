@@ -6,6 +6,7 @@ import Css.Transitions exposing (transition)
 import Html.Styled exposing (Html, div, span, styled)
 import Html.Styled.Attributes as Attr
 import Maybe.Extra as Maybe
+import Nordea.Helpers.Focus as Focus
 import Nordea.Resources.Colors as Colors
 
 
@@ -21,6 +22,7 @@ type alias Config msg =
     , content : List (Html msg)
     , arrowColor : Maybe Css.Color
     , overrideShow : Maybe Bool
+    , onFocus : Maybe ( String, Bool -> msg )
     }
 
 
@@ -35,6 +37,7 @@ init =
         , content = []
         , arrowColor = Nothing
         , overrideShow = Nothing
+        , onFocus = Nothing
         }
 
 
@@ -58,6 +61,11 @@ withOverrideShow overrideShow (Tooltip config) =
     Tooltip { config | overrideShow = Just overrideShow }
 
 
+withFocusHandling : String -> (Bool -> msg) -> Tooltip msg -> Tooltip msg
+withFocusHandling uniqueName onFocus (Tooltip config) =
+    Tooltip { config | onFocus = Just ( uniqueName, onFocus ) }
+
+
 
 --test : Css.Color
 --test =
@@ -79,56 +87,68 @@ view2 children (Tooltip config) =
 
             else
                 []
+
+        contentStyled =
+            [ styled div
+                [ Css.position Css.absolute
+
+                --, Css.backgroundColor Colors.grayDarkest
+                --  , Css.color Colors.white
+                --, Css.padding2 (rem 0.5) (rem 1)
+                --, Css.borderRadius (rem 0.5)
+                --, Css.boxShadow4 zero (rem 0.0625) (rem 0.125) (Css.rgba 0 0 0 0.2)
+                , Css.property "width" "max-content"
+
+                --, Css.maxWidth (rem 20)
+                --, Css.pointerEvents Css.none
+                , case config.overrideShow of
+                    Just True ->
+                        Css.batch []
+
+                    Just False ->
+                        Css.opacity zero
+
+                    Nothing ->
+                        Css.opacity zero
+                , transition [ Css.Transitions.opacity 150 ]
+                , tooltipContentStyle config.placement
+                , Css.before
+                    [ Css.property "content" "' '"
+                    , Css.width (rem 0.625)
+                    , Css.height (rem 0.625)
+                    , case config.arrowColor of
+                        Just color ->
+                            Css.backgroundColor color
+
+                        Nothing ->
+                            Css.backgroundColor Css.inherit
+                    , Css.position Css.absolute
+                    , arrowStyle config.placement
+
+                    --, Css.zIndex (Css.int -1)
+                    --, Css.boxShadow4 zero (rem 0.0625) (rem 0.125) (Css.rgba 0 0 0 0.2)
+                    ]
+                ]
+                ([ Attr.class "tooltip" ] ++ Focus.groupIdAttributeToItemAttrs config.onFocus)
+                config.content
+            ]
     in
     styled span
         [ Css.position Css.relative
         , Css.batch autoHoverShow
         ]
-        []
+        (Focus.onFocusAttrs config.onFocus ++ [ Attr.contenteditable True ])
         (children
-            ++ [ styled div
-                    [ Css.position Css.absolute
+            ++ (case config.overrideShow of
+                    Just True ->
+                        contentStyled
 
-                    --, Css.backgroundColor Colors.grayDarkest
-                    --  , Css.color Colors.white
-                    --, Css.padding2 (rem 0.5) (rem 1)
-                    --, Css.borderRadius (rem 0.5)
-                    --, Css.boxShadow4 zero (rem 0.0625) (rem 0.125) (Css.rgba 0 0 0 0.2)
-                    , Css.property "width" "max-content"
+                    Just False ->
+                        []
 
-                    --, Css.maxWidth (rem 20)
-                    --, Css.pointerEvents Css.none
-                    , case config.overrideShow of
-                        Just True ->
-                            Css.batch []
-
-                        Just False ->
-                            Css.opacity zero
-
-                        Nothing ->
-                            Css.opacity zero
-                    , transition [ Css.Transitions.opacity 150 ]
-                    , tooltipContentStyle config.placement
-                    , Css.before
-                        [ Css.property "content" "' '"
-                        , Css.width (rem 0.625)
-                        , Css.height (rem 0.625)
-                        , case config.arrowColor of
-                            Just color ->
-                                Css.backgroundColor color
-
-                            Nothing ->
-                                Css.backgroundColor Css.inherit
-                        , Css.position Css.absolute
-                        , arrowStyle config.placement
-
-                        --, Css.zIndex (Css.int -1)
-                        --, Css.boxShadow4 zero (rem 0.0625) (rem 0.125) (Css.rgba 0 0 0 0.2)
-                        ]
-                    ]
-                    [ Attr.class "tooltip" ]
-                    config.content
-               ]
+                    Nothing ->
+                        contentStyled
+               )
         )
 
 

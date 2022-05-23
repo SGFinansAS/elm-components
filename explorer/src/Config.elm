@@ -29,7 +29,8 @@ type alias Config =
 
 
 type TooltipMsg
-    = Toggle
+    = Toggle Bool
+    | FocusChange Bool
 
 
 type Msg
@@ -149,5 +150,8 @@ initialToolTipState =
 tooltipUpdate : TooltipMsg -> TooltipState -> TooltipState
 tooltipUpdate msg state =
     case msg of
-        Toggle ->
-            { state | cardIsOpen = not state.cardIsOpen }
+        Toggle isOpen ->
+            { state | cardIsOpen = isOpen }
+
+        FocusChange hasFocus ->
+            { state | cardIsOpen = hasFocus }

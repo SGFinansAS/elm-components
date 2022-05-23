@@ -13,9 +13,9 @@ import Html.Events.Extra as Events
 import Html.Styled as Html exposing (Attribute, Html)
 import Html.Styled.Attributes as Attr
 import Html.Styled.Events as Events
-import Json.Decode as Decode
 import Maybe.Extra as Maybe
 import Nordea.Components.Spinner as Spinner
+import Nordea.Helpers.Focus as Focus
 import Nordea.Html as Html exposing (styleIf)
 import Nordea.Resources.Colors as Colors
 import Nordea.Resources.Icons as Icon
@@ -143,7 +143,7 @@ view (DropdownFilter options) attributes =
                     (\header ->
                         let
                             subResultView =
-                                List.map (itemView (groupIdAttributeToItemAttrs options.onFocus) options.onSelectedValue)
+                                List.map (itemView (Focus.groupIdAttributeToItemAttrs options.onFocus) options.onSelectedValue)
                                     header.items
                         in
                         -- Do not show header if there are no results to view
@@ -196,7 +196,7 @@ inputSearchView hasError hasFocus searchString onInput onFocus onClickClearInput
                 , Css.paddingRight (Css.rem 2)
                 ]
              ]
-                ++ onFocusAttrs onFocus
+                ++ Focus.onFocusAttrs onFocus
             )
             []
         , let
@@ -274,80 +274,3 @@ withIsLoading isLoading (DropdownFilter config) =
 --
 -- Focus handling
 --
-
-
-onFocusAttrs : Maybe ( String, Bool -> msg ) -> List (Attribute msg)
-onFocusAttrs hasFocusAndId =
-    let
-        hasFocus =
-            Maybe.map Tuple.second hasFocusAndId
-
-        groupAttr =
-            Maybe.map Tuple.first hasFocusAndId
-                |> Maybe.map groupIdAttribute
-                |> Maybe.map List.singleton
-                |> Maybe.withDefault []
-
-        onFocusAttribute =
-            hasFocus
-                |> Maybe.map (\f -> f True)
-                |> Maybe.map Events.onFocus
-                |> Maybe.map List.singleton
-                |> Maybe.withDefault []
-
-        onBlurAttribute =
-            hasFocus
-                |> Maybe.map (\f -> f False)
-                |> Maybe.map onGroupBlur
-                |> Maybe.map List.singleton
-                |> Maybe.withDefault []
-    in
-    onFocusAttribute ++ onBlurAttribute ++ groupAttr
-
-
-groupIdAttributeToItemAttrs : Maybe ( String, Bool -> msg ) -> List (Attribute msg)
-groupIdAttributeToItemAttrs groupId =
-    Maybe.map Tuple.first groupId
-        |> Maybe.map groupIdAttribute
-        |> Maybe.map List.singleton
-        |> Maybe.withDefault []
-
-
-onGroupBlur : msg -> Attribute msg
-onGroupBlur msg =
-    Events.on "blur" (decodeGroupIdChanged msg)
-
-
-groupIdAttribute : String -> Attribute msg
-groupIdAttribute groupId =
-    Attr.attribute "data-group-id" groupId
-
-
-{-| Concept taken from:
-<https://stackoverflow.com/questions/52375939/in-elm-how-can-i-detect-if-focus-will-be-lost-from-a-group-of-elements>
--}
-decodeGroupIdChanged : msg -> Decode.Decoder msg
-decodeGroupIdChanged msg =
-    Decode.oneOf
-        [ Decode.map2
-            (\a b ->
-                if a /= b then
-                    Just a
-
-                else
-                    Nothing
-            )
-            (Decode.at [ "target", "dataset", "groupId" ] Decode.string)
-            (Decode.at [ "relatedTarget", "dataset", "groupId" ] Decode.string)
-        , Decode.at [ "target", "dataset", "groupId" ] Decode.string
-            |> Decode.andThen (\a -> Decode.succeed (Just a))
-        ]
-        |> Decode.andThen
-            (\maybeChanged ->
-                case maybeChanged of
-                    Just _ ->
-                        Decode.succeed msg
-
-                    Nothing ->
-                        Decode.fail "no change"
-            )
