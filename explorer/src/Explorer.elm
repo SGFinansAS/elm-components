@@ -17,6 +17,7 @@ import Stories.FlatLink as FlatLink
 import Stories.Icons as Icons
 import Stories.InfoLabel as InfoLabel
 import Stories.InfoPanel as InfoPanel
+import Stories.InformationDetails as InformationDetails
 import Stories.Label as Label
 import Stories.LottiePlayer as LottiePlayer
 import Stories.Modal as Modal
@@ -84,6 +85,7 @@ main =
                 , FlatLink.stories
                 , InfoLabel.stories
                 , InfoPanel.stories
+                , InformationDetails.stories
                 , Label.stories
                 , LottiePlayer.stories
                 , Modal.stories
