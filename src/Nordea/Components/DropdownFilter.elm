@@ -97,11 +97,10 @@ view (DropdownFilter options) attributes =
             List.all identity
                 [ not options.hasFocus || Maybe.isNothing options.onFocus
                 , options.rawInputString /= ""
-                , not
-                    (List.any
-                        (\item -> item.text == options.rawInputString)
-                        (List.concatMap .items filteredSearchResult)
-                    )
+                , filteredSearchResult
+                    |> List.concatMap .items
+                    |> List.all
+                        (\item -> item.text /= options.rawInputString)
                 ]
     in
     Html.div
@@ -140,23 +139,17 @@ view (DropdownFilter options) attributes =
                     ]
                 ]
                 (List.concatMap
-                    (\header ->
+                    (\headerAndItems ->
                         let
                             subResultView =
                                 List.map (itemView (groupIdAttributeToItemAttrs options.onFocus) options.onSelectedValue)
-                                    header.items
+                                    headerAndItems.items
                         in
-                        -- Do not show header if there are no results to view
-                        if List.length subResultView > 0 then
-                            -- Do not show header without text
-                            if not (String.isEmpty header.header) then
-                                headerView header.header :: subResultView
-
-                            else
-                                subResultView
+                        if not (List.isEmpty subResultView) && not (String.isEmpty headerAndItems.header) then
+                            headerView headerAndItems.header :: subResultView
 
                         else
-                            []
+                            subResultView
                     )
                     searchResultToShow
                 )
@@ -285,32 +278,23 @@ onFocusAttrs hasFocusAndId =
         groupAttr =
             Maybe.map Tuple.first hasFocusAndId
                 |> Maybe.map groupIdAttribute
-                |> Maybe.map List.singleton
-                |> Maybe.withDefault []
 
         onFocusAttribute =
             hasFocus
-                |> Maybe.map (\f -> f True)
-                |> Maybe.map Events.onFocus
-                |> Maybe.map List.singleton
-                |> Maybe.withDefault []
+                |> Maybe.map (\f -> f True |> Events.onFocus)
 
         onBlurAttribute =
             hasFocus
-                |> Maybe.map (\f -> f False)
-                |> Maybe.map onGroupBlur
-                |> Maybe.map List.singleton
-                |> Maybe.withDefault []
+                |> Maybe.map (\f -> f False |> onGroupBlur)
     in
-    onFocusAttribute ++ onBlurAttribute ++ groupAttr
+    Maybe.values [ onFocusAttribute, onBlurAttribute, groupAttr ]
 
 
 groupIdAttributeToItemAttrs : Maybe ( String, Bool -> msg ) -> List (Attribute msg)
 groupIdAttributeToItemAttrs groupId =
     Maybe.map Tuple.first groupId
         |> Maybe.map groupIdAttribute
-        |> Maybe.map List.singleton
-        |> Maybe.withDefault []
+        |> Maybe.toList
 
 
 onGroupBlur : msg -> Attribute msg
