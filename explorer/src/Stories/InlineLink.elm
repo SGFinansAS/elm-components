@@ -4,10 +4,8 @@ import Css exposing (hover, marginBottom, rem, visited)
 import Css.Global exposing (children, everything)
 import Html.Styled as Html exposing (div, text)
 import Html.Styled.Attributes exposing (css, href)
-import Nordea.Components.Button as ButtonVariant
 import Nordea.Components.InlineLink as InlineLink
 import Nordea.Resources.Colors as Colors
-import Nordea.Resources.Icons as Icons
 import Nordea.Themes as Themes
 import UIExplorer exposing (UI)
 import UIExplorer.Styled exposing (styledStoriesOf)
