@@ -1,7 +1,6 @@
 module Nordea.Components.InformationDetails exposing
     ( card
     , element
-    , elementChangedRow
     , fullWidthElement
     , label
     , value
