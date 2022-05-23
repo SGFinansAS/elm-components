@@ -21,6 +21,7 @@ import Html.Styled.Events exposing (keyCode, on, onBlur, onInput)
 import Json.Decode as Json
 import Maybe.Extra as Maybe
 import Nordea.Components.Text as Text
+import Nordea.Css as NordeaCss
 import Nordea.Html exposing (styleIf)
 import Nordea.Resources.Colors as Colors
 import Nordea.Resources.Icons as Icons
@@ -236,10 +237,10 @@ getStyles config =
     , height
         (case config.size of
             Small ->
-                rem 2.5625
+                NordeaCss.smallInputHeight
 
             Large ->
-                rem 3
+                NordeaCss.standardInputHeight
         )
     , padding2 (rem 0.75) (rem 0.75)
     , borderRadius (rem 0.25)
@@ -248,7 +249,6 @@ getStyles config =
     , width (pct 100)
     , disabled [ backgroundColor Colors.grayWarm ]
     , paddingLeft (rem 2) |> styleIf config.hasSearchIcon
-    , paddingRight (rem 2) |> styleIf (config.currency |> Maybe.withDefault "" |> String.isEmpty)
     , focus
         [ outline none
         , Themes.borderColor Themes.PrimaryColorLight Colors.blueNordea
