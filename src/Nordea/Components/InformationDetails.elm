@@ -7,8 +7,8 @@ module Nordea.Components.InformationDetails exposing
     , value
     )
 
-import Css exposing (color, column, displayFlex, flexBasis, flexDirection, flexGrow, flexWrap, lineHeight, marginBottom, marginRight, num, pct, pseudoClass, rem, wrap)
-import Css.Global as Css exposing (children, everything)
+import Css exposing (color, column, displayFlex, flexBasis, flexDirection, flexGrow, flexWrap, lineHeight, marginBottom, marginRight, num, pct, rem, wrap)
+import Css.Global as Css exposing (children)
 import Html.Styled as Html exposing (Attribute, Html)
 import Html.Styled.Attributes exposing (css)
 import Nordea.Components.Card as Card
@@ -65,21 +65,6 @@ fullWidthElement attrs =
             [ displayFlex
             , flexDirection column
             , flexBasis (pct 100)
-            ]
-            :: attrs
-        )
-
-
-elementChangedRow : List (Attribute msg) -> List (Html msg) -> Html msg
-elementChangedRow attrs =
-    Html.div
-        (css
-            [ displayFlex
-            , flexWrap wrap
-            , children
-                [ everything
-                    [ pseudoClass "not(:last-child)" [ marginRight (rem 0.5) ] ]
-                ]
             ]
             :: attrs
         )

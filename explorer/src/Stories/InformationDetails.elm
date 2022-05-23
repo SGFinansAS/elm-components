@@ -4,9 +4,7 @@ import Config exposing (Config, Msg(..))
 import Css
 import Html.Styled as Html
 import Html.Styled.Attributes exposing (css)
-import Nordea.Components.InfoLabel as InfoLabel
 import Nordea.Components.InformationDetails as InformationDetails
-import Nordea.Html
 import Nordea.Resources.Colors as Colors
 import UIExplorer exposing (UI)
 import UIExplorer.Styled exposing (styledStoriesOf)
