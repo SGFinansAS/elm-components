@@ -136,7 +136,12 @@ view2 children (Tooltip config) =
     styled span
         [ Css.position Css.relative
         , Css.batch autoHoverShow
+
+        -- To hide contenteditable blue outline
+        , Css.outline3 (Css.px 0) Css.solid Css.transparent
         ]
+        -- Added contenteditable to make it have focus events so focus
+        -- system can work
         (Focus.onFocusAttrs config.onFocus ++ [ Attr.contenteditable True ])
         (children
             ++ (case config.overrideShow of
