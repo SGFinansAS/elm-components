@@ -31,6 +31,7 @@ import Stories.Table as Table
 import Stories.Text as Header
 import Stories.TextArea as TextArea
 import Stories.TextInput as TextInput
+import Stories.Toggle as Toggle
 import Stories.Tooltip as Tooltip
 import UIExplorer exposing (UIExplorerProgram)
 
@@ -97,6 +98,7 @@ main =
                 , Table.stories
                 , TextArea.stories
                 , TextInput.stories
+                , Toggle.stories
                 , Tooltip.stories
                 ]
         )
