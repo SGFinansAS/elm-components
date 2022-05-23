@@ -22,6 +22,7 @@ module Nordea.Resources.Colors exposing
     , green
     , greenDark
     , greenStatus
+    , purple
     , red
     , redDark
     , redStatus
@@ -211,6 +212,11 @@ yellowStatus =
 yellowDark : Color
 yellowDark =
     hex "#FFCF3D"
+
+
+purple : Color
+purple =
+    hex "#7E15D1"
 
 
 toString : Css.Color -> String

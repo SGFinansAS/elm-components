@@ -14,6 +14,7 @@ import Stories.Error as Error
 import Stories.FeatureBox as FeatureBox
 import Stories.FileUpload as FileUpload
 import Stories.FlatLink as FlatLink
+import Stories.InlineLink as InlineLink
 import Stories.Icons as Icons
 import Stories.InfoLabel as InfoLabel
 import Stories.InfoPanel as InfoPanel
@@ -82,6 +83,7 @@ main =
                 , FeatureBox.stories
                 , FileUpload.stories
                 , FlatLink.stories
+                , InlineLink.stories
                 , InfoLabel.stories
                 , InfoPanel.stories
                 , Label.stories
