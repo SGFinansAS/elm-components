@@ -41,7 +41,7 @@ import Css
         , width
         )
 import Html.Styled as Html exposing (Attribute, Html)
-import Html.Styled.Attributes exposing (css, href)
+import Html.Styled.Attributes exposing (css)
 import Nordea.Components.Button as Button
 import Nordea.Resources.Colors as Colors
 import Nordea.Resources.Icons as Icons
