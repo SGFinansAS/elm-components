@@ -48,7 +48,7 @@ import Nordea.Themes as Themes
 
 
 type alias Config msg =
-    { value : String
+    { value : Float
     , min : Float
     , max : Float
     , step : Maybe Float
@@ -64,7 +64,7 @@ type Slider msg
     = Slider (Config msg)
 
 
-init : String -> Float -> Float -> String -> String -> (String -> msg) -> Slider msg
+init : Float -> Float -> Float -> String -> String -> (String -> msg) -> Slider msg
 init value min max labelString description onInput =
     Slider
         { value = value
@@ -113,18 +113,18 @@ view attributes (Slider config) =
                 , NordeaText.textTinyLight
                     |> NordeaText.view [ css [ color Colors.grayNordea ] ] [ Html.text config.description ]
                 ]
-            , NumberInput.init config.value
+            , NumberInput.init (config.value |> String.fromFloat)
                 |> NumberInput.withMin config.min
                 |> NumberInput.withMax config.max
                 |> NumberInput.withStep (config.step |> Maybe.withDefault 1)
                 |> NumberInput.withOnInput config.onInput
-                |> NumberInput.withError ((config.value |> String.toFloat |> Maybe.withDefault 1) > config.max || (config.value |> String.toFloat |> Maybe.withDefault 1) < config.min)
+                |> NumberInput.withError (config.value > config.max || config.value < config.min)
                 |> NumberInput.view [ name "rangeInput", css [ flex (int 1) ] ]
             ]
         , input
             [ name "rangeInput"
             , type_ "range"
-            , Html.Styled.Attributes.value config.value
+            , Html.Styled.Attributes.value (config.value |> String.fromFloat)
             , Html.Styled.Attributes.min (config.min |> String.fromFloat)
             , Html.Styled.Attributes.max (config.max |> String.fromFloat)
             , Html.Styled.Attributes.step (config.step |> Maybe.map String.fromFloat |> Maybe.withDefault "1")
@@ -178,7 +178,7 @@ adjustSlider : Slider msg -> Style
 adjustSlider (Slider config) =
     let
         visibleWidth =
-            ((((config.value |> String.toFloat |> Maybe.withDefault 0) - config.min) * 100) / (config.max - config.min)) |> String.fromFloat
+            (((config.value - config.min) * 100) / (config.max - config.min)) |> String.fromFloat
 
         cloudBlue =
             Themes.colorVariable Themes.SecondaryColor Colors.blueCloud
