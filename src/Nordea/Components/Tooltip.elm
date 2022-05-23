@@ -18,6 +18,8 @@ type Placement
 type alias Config msg =
     { placement : Placement
     , content : List (Html msg)
+    , arrowColor : Maybe Css.Color
+    , overrideShow : Maybe Bool
     }
 
 
@@ -30,6 +32,8 @@ init =
     Tooltip
         { placement = Top
         , content = []
+        , arrowColor = Nothing
+        , overrideShow = Nothing
         }
 
 
@@ -41,6 +45,80 @@ withPlacement placement (Tooltip config) =
 withContent : List (Html msg) -> Tooltip msg -> Tooltip msg
 withContent content (Tooltip config) =
     Tooltip { config | content = content }
+
+
+withArrowColor : Css.Color -> Tooltip msg -> Tooltip msg
+withArrowColor arrowColor (Tooltip config) =
+    Tooltip { config | arrowColor = Just arrowColor }
+
+
+withOverrideShow : Bool -> Tooltip msg -> Tooltip msg
+withOverrideShow overrideShow (Tooltip config) =
+    Tooltip { config | overrideShow = Just overrideShow }
+
+
+
+--test : Css.Color
+--test =
+--  Css.inherit
+
+
+view2 : List (Html msg) -> Tooltip msg -> Html msg
+view2 children (Tooltip config) =
+    styled span
+        [ Css.position Css.relative
+        , Css.hover
+            [ Css.descendants
+                [ Css.class "tooltip"
+                    [ Css.opacity (int 1) ]
+                ]
+            ]
+        ]
+        []
+        (children
+            ++ [ styled div
+                    [ Css.position Css.absolute
+
+                    --, Css.backgroundColor Colors.grayDarkest
+                    --  , Css.color Colors.white
+                    --, Css.padding2 (rem 0.5) (rem 1)
+                    --, Css.borderRadius (rem 0.5)
+                    --, Css.boxShadow4 zero (rem 0.0625) (rem 0.125) (Css.rgba 0 0 0 0.2)
+                    , Css.property "width" "max-content"
+
+                    --, Css.maxWidth (rem 20)
+                    --, Css.pointerEvents Css.none
+                    , case config.overrideShow of
+                        Just True ->
+                            Css.batch []
+
+                        Just False ->
+                            Css.opacity zero
+
+                        Nothing ->
+                            Css.opacity zero
+                    , transition [ Css.Transitions.opacity 150 ]
+                    , tooltipContentStyle config.placement
+                    , Css.before
+                        [ Css.property "content" "' '"
+                        , Css.width (rem 0.625)
+                        , Css.height (rem 0.625)
+                        , case config.arrowColor of
+                            Just color ->
+                                Css.backgroundColor color
+
+                            Nothing ->
+                                Css.backgroundColor Css.inherit
+                        , Css.position Css.absolute
+                        , arrowStyle config.placement
+                        , Css.zIndex (Css.int -1)
+                        , Css.boxShadow4 zero (rem 0.0625) (rem 0.125) (Css.rgba 0 0 0 0.2)
+                        ]
+                    ]
+                    [ Attr.class "tooltip" ]
+                    config.content
+               ]
+        )
 
 
 view : List (Html msg) -> Tooltip msg -> Html msg
