@@ -71,7 +71,7 @@ import Css
         , width
         )
 import Css.Global exposing (children, descendants, everything, withClass)
-import Css.Transitions exposing (easeOut, linear, transition)
+import Css.Transitions exposing (easeOut, transition)
 import Html.Styled as Html exposing (Attribute, Html)
 import Html.Styled.Attributes exposing (class, css)
 import Nordea.Resources.Colors as Colors
