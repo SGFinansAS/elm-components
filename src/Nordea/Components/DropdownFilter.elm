@@ -169,7 +169,8 @@ inputSearchView : Bool -> Bool -> String -> (String -> msg) -> Maybe ( String, B
 inputSearchView hasError hasFocus searchString onInput onFocus onClickClearInput =
     Html.div
         [ Attr.css
-            [ Css.position Css.relative
+            [ Css.displayFlex
+            , Css.position Css.relative
             ]
         ]
         [ Html.input
