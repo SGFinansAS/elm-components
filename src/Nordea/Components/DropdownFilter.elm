@@ -128,9 +128,9 @@ view (DropdownFilter options) attributes =
                     , Css.position Css.absolute
                     , Css.zIndex (Css.int 1)
                     , Css.display Css.block
-                    , Css.right (Css.px 0)
-                    , Css.left (Css.px 0)
-                    , Css.margin (Css.px 0)
+                    , Css.right (Css.rem 0)
+                    , Css.left (Css.rem 0)
+                    , Css.margin (Css.rem 0)
                     , Css.top (Css.pct 100)
                     , Css.backgroundColor Colors.white
                     , Css.borderBottom3 (Css.rem 0.0625) Css.solid Colors.grayMedium
