@@ -124,7 +124,7 @@ view (DropdownFilter options) attributes =
                     [ Css.listStyle Css.none
                     , Css.padding3 (Css.px 3) (Css.px 1) (Css.px 12)
                     , Css.maxHeight (Css.rem 16.75)
-                    , Css.overflowY Css.auto
+                    , Css.overflowY Css.scroll
                     , Css.position Css.absolute
                     , Css.zIndex (Css.int 1)
                     , Css.display Css.block
@@ -226,7 +226,7 @@ headerView text =
             [ Css.color Colors.gray
             , Css.margin2 (Css.px 0) (Css.px 10)
             , Css.fontSize (Css.px 12)
-            , Css.fontWeight (Css.int 900)
+            , Css.fontWeight (Css.int 400)
             , Css.lineHeight (Css.px 16)
             ]
         ]
