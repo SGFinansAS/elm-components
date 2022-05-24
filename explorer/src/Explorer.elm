@@ -5,6 +5,7 @@ import Html exposing (Html)
 import Html.Styled exposing (toUnstyled)
 import Nordea.Resources.Fonts as Fonts
 import Stories.Accordion as Accordion
+import Stories.Badge as Badge
 import Stories.Button as Button
 import Stories.Card as Card
 import Stories.Checkbox as Checkbox
@@ -77,6 +78,7 @@ main =
                 ]
             |> UIExplorer.category "Components"
                 [ Accordion.stories
+                , Badge.stories
                 , Button.stories
                 , Card.stories
                 , Checkbox.stories
