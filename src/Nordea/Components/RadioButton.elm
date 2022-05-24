@@ -15,7 +15,6 @@ import Css
         , after
         , alignItems
         , backgroundColor
-        , before
         , block
         , border3
         , borderBottomLeftRadius
@@ -30,16 +29,13 @@ import Css
         , center
         , cursor
         , display
-        , fitContent
         , flex
         , flexBasis
         , height
         , hover
-        , important
         , inlineFlex
         , left
         , minHeight
-        , minWidth
         , none
         , num
         , opacity
@@ -52,13 +48,14 @@ import Css
         , rem
         , solid
         , top
+        , transform
+        , translate2
         , transparent
         , width
         )
-import Css.Global exposing (descendants, typeSelector)
 import Css.Transitions exposing (transition)
 import Html.Styled as Html exposing (Attribute, Html)
-import Html.Styled.Attributes as Attrs exposing (css, name, type_)
+import Html.Styled.Attributes as Attrs exposing (css, disabled, name, type_)
 import Html.Styled.Events as Events
 import Nordea.Html exposing (styleIf)
 import Nordea.Resources.Colors as Colors
@@ -103,6 +100,9 @@ init name label onCheck =
 view : List (Attribute msg) -> RadioButton msg -> Html msg
 view attrs (RadioButton config) =
     let
+        isDisabled =
+            List.member (Attrs.disabled True) attrs
+
         radiomark =
             Html.span
                 [ Attrs.class "nfe-radiomark"
@@ -111,53 +111,53 @@ view attrs (RadioButton config) =
                     , width (rem 1.375)
                     , height (rem 1.375)
                     , flex none
-                    , before
-                        [ Css.property "content" "''"
-                        , display block
-                        , position absolute
-                        , top (rem 0)
-                        , left (rem 0)
-                        , width (pct 100)
-                        , height (pct 100)
-                        , backgroundColor Colors.white
-                        , border3 (rem 0.125) solid Css.transparent
-                        , Themes.borderColor Themes.PrimaryColorLight Colors.blueNordea
-                        , borderColor Colors.redDark
-                            |> styleIf (config.showError && config.appearance == Simple)
-                        , borderColor Colors.grayMedium
-                            |> styleIf (config.showError && List.member config.appearance [ Standard, ListStyle ])
-                        , borderRadius (pct 100)
-                        , boxSizing borderBox
-                        ]
+                    , backgroundColor Colors.white
+                    , border3 (rem 0.125) solid Css.transparent
+                    , if isDisabled then
+                        borderColor Colors.grayMedium
+
+                      else
+                        Themes.borderColor Themes.PrimaryColorLight Colors.blueNordea
+                    , borderColor Colors.redDark
+                        |> styleIf (config.showError && config.appearance == Simple)
+                    , borderColor Colors.grayMedium
+                        |> styleIf (config.showError && List.member config.appearance [ Standard, ListStyle ])
+                    , borderRadius (pct 50)
+                    , boxSizing borderBox
                     , after
                         [ Css.property "content" "''"
                         , position absolute
-                        , top (rem 0.3125)
-                        , left (rem 0.3125)
-                        , display none
+                        , top (pct 50)
+                        , left (pct 50)
+                        , transform (translate2 (pct -50) (pct -50))
                         , width (rem 0.75)
                         , height (rem 0.75)
-                        , Themes.backgroundColor Themes.PrimaryColorLight Colors.blueNordea
-                        , borderRadius (pct 100)
+                        , if isDisabled then
+                            backgroundColor Colors.grayNordea
+
+                          else
+                            Themes.backgroundColor Themes.PrimaryColorLight Colors.blueNordea
+                        , borderRadius (pct 50)
                         , boxSizing borderBox
+                        , display none
                         ]
                     ]
                 ]
                 []
 
-        padding =
-            case config.appearance of
-                Small ->
-                    rem 0.5
-
-                _ ->
-                    rem 0.75
-
         appearanceStyle =
             let
+                topBottomPadding =
+                    case config.appearance of
+                        Small ->
+                            rem 0.5
+
+                        _ ->
+                            rem 0.75
+
                 commonNonSimpleStyles =
                     Css.batch
-                        [ padding2 padding (rem 1)
+                        [ padding2 topBottomPadding (rem 1)
                         , border3 (rem 0.0625) solid transparent
                         , Themes.backgroundColor Themes.SecondaryColor Colors.blueCloud |> styleIf config.isSelected
                         , transition [ Css.Transitions.borderColor 100, Css.Transitions.boxShadow 100 ]
@@ -174,7 +174,7 @@ view attrs (RadioButton config) =
                         , Css.lastOfType [ borderBottomLeftRadius (rem 0.5), borderBottomRightRadius (rem 0.5) ]
                         , pseudoClass "not(label:first-of-type):not(:hover)" [ borderTopColor transparent ] |> styleIf (not config.isSelected)
                         , pseudoClass "not(label:first-of-type)" [ Css.marginTop (rem -0.0625) ]
-                        , hover [ Themes.backgroundColor Themes.SecondaryColor Colors.blueCloud ]
+                        , hover [ Themes.backgroundColor Themes.SecondaryColor Colors.blueCloud ] |> styleIf (not isDisabled)
                         ]
 
                 Simple ->
@@ -191,24 +191,30 @@ view attrs (RadioButton config) =
                             [ Themes.borderColor Themes.PrimaryColorLight Colors.blueNordea |> styleIf (not config.showError)
                             , Themes.backgroundColor Themes.SecondaryColor Colors.blueCloud
                             ]
+                            |> styleIf (not isDisabled)
                         ]
+
+        notDisabledSpecificStyling =
+            let
+                hoverShadow =
+                    Css.property "box-shadow" ("0rem 0rem 0rem 0.0625rem " ++ Themes.colorVariable Themes.SecondaryColor Colors.blueMedium)
+            in
+            Css.batch
+                [ pseudoClass "hover .nfe-radiomark:before" [ hoverShadow ]
+                , pseudoClass "focus-within .nfe-radiomark:before" [ hoverShadow ]
+                , cursor pointer
+                ]
+                |> styleIf (not isDisabled)
     in
     Html.label
         (css
             [ display inlineFlex
             , Css.property "gap" "0.5rem"
             , alignItems center
-            , cursor pointer
-            , minWidth fitContent
             , boxSizing borderBox
-            , appearanceStyle
             , position relative
-            , pseudoClass "hover .nfe-radiomark:before" [ Css.property "box-shadow" ("0rem 0rem 0rem 0.0625rem " ++ Themes.colorVariable Themes.SecondaryColor Colors.blueMedium) ]
-            , pseudoClass "focus-within .nfe-radiomark:before" [ Css.property "box-shadow" ("0rem 0rem 0rem 0.0625rem " ++ Themes.colorVariable Themes.SecondaryColor Colors.blueMedium) ]
-            , descendants
-                [ typeSelector "span"
-                    [ Themes.color Themes.PrimaryColorLight Colors.black |> important ]
-                ]
+            , notDisabledSpecificStyling
+            , appearanceStyle
             ]
             :: attrs
         )
@@ -217,14 +223,15 @@ view attrs (RadioButton config) =
             , name config.name
             , Attrs.checked config.isSelected
             , Events.onCheck (\_ -> config.onCheck)
+            , disabled isDisabled
             , css
                 [ position absolute
                 , opacity (num 0)
                 , height (rem 0)
                 , width (rem 0)
 
-                -- when <input> is checked, apply styles to sibling with class .nfe-radiomark
-                , pseudoClass "checked ~ .nfe-radiomark:after" [ display block ]
+                -- when <input> is checked, show radiomark
+                , pseudoClass "checked ~ .nfe-radiomark::after" [ display block ]
                 ]
             ]
             []
