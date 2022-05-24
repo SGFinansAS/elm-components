@@ -124,11 +124,13 @@ view (DropdownFilter options) attributes =
                     [ Css.listStyle Css.none
                     , Css.padding3 (Css.px 3) (Css.px 1) (Css.px 12)
                     , Css.maxHeight (Css.rem 16.75)
-                    , Css.overflowY Css.auto
+                    , Css.overflowY Css.scroll
                     , Css.position Css.absolute
                     , Css.zIndex (Css.int 1)
                     , Css.display Css.block
-                    , Css.width (Css.pct 100)
+                    , Css.right (Css.rem 0)
+                    , Css.left (Css.rem 0)
+                    , Css.margin (Css.rem 0)
                     , Css.top (Css.pct 100)
                     , Css.backgroundColor Colors.white
                     , Css.borderBottom3 (Css.rem 0.0625) Css.solid Colors.grayMedium
@@ -160,7 +162,8 @@ inputSearchView : Bool -> Bool -> String -> (String -> msg) -> Maybe ( String, B
 inputSearchView hasError hasFocus searchString onInput onFocus onClickClearInput =
     Html.div
         [ Attr.css
-            [ Css.position Css.relative
+            [ Css.displayFlex
+            , Css.position Css.relative
             ]
         ]
         [ Html.input
@@ -172,11 +175,11 @@ inputSearchView hasError hasFocus searchString onInput onFocus onClickClearInput
                 , Css.border3 (Css.px 1) Css.solid Colors.grayMedium
                 , Css.borderColor Colors.redDark |> styleIf hasError
                 , Css.width (Css.pct 100)
-
-                -- Style
-                , Css.backgroundColor Colors.grayCool
+                , Css.boxSizing Css.borderBox
+                , Css.backgroundColor Colors.white
                 , Css.focus
-                    [ Css.outline Css.none
+                    [ Css.backgroundColor Colors.grayCool
+                    , Css.outline Css.none
                     , Css.border3 (Css.px 1) Css.solid Colors.blueNordea
                     ]
                 , if hasFocus then
@@ -224,7 +227,7 @@ headerView text =
             [ Css.color Colors.gray
             , Css.margin2 (Css.px 0) (Css.px 10)
             , Css.fontSize (Css.px 12)
-            , Css.fontWeight (Css.int 900)
+            , Css.fontWeight (Css.int 400)
             , Css.lineHeight (Css.px 16)
             ]
         ]
