@@ -176,9 +176,10 @@ inputSearchView hasError hasFocus searchString onInput onFocus onClickClearInput
                 , Css.borderColor Colors.redDark |> styleIf hasError
                 , Css.width (Css.pct 100)
                 , Css.boxSizing Css.borderBox
-                , Css.backgroundColor Colors.grayCool
+                , Css.backgroundColor Colors.white
                 , Css.focus
-                    [ Css.outline Css.none
+                    [ Css.backgroundColor Colors.grayCool
+                    , Css.outline Css.none
                     , Css.border3 (Css.px 1) Css.solid Colors.blueNordea
                     ]
                 , if hasFocus then
