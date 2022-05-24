@@ -174,7 +174,7 @@ view attrs (RadioButton config) =
                         , Css.lastOfType [ borderBottomLeftRadius (rem 0.5), borderBottomRightRadius (rem 0.5) ]
                         , pseudoClass "not(label:first-of-type):not(:hover)" [ borderTopColor transparent ] |> styleIf (not config.isSelected)
                         , pseudoClass "not(label:first-of-type)" [ Css.marginTop (rem -0.0625) ]
-                        , hover [ Themes.backgroundColor Themes.SecondaryColor Colors.blueCloud ]
+                        , hover [ Themes.backgroundColor Themes.SecondaryColor Colors.blueCloud ] |> styleIf (not isDisabled)
                         ]
 
                 Simple ->
@@ -191,6 +191,7 @@ view attrs (RadioButton config) =
                             [ Themes.borderColor Themes.PrimaryColorLight Colors.blueNordea |> styleIf (not config.showError)
                             , Themes.backgroundColor Themes.SecondaryColor Colors.blueCloud
                             ]
+                            |> styleIf (not isDisabled)
                         ]
 
         notDisabledSpecificStyling =
