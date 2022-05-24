@@ -58,7 +58,7 @@ import Css
         )
 import Css.Transitions exposing (transition)
 import Html.Styled as Html exposing (Attribute, Html)
-import Html.Styled.Attributes as Attrs exposing (class, css, name, type_)
+import Html.Styled.Attributes as Attrs exposing (class, css, disabled, name, type_)
 import Html.Styled.Events exposing (onCheck)
 import Nordea.Html exposing (styleIf)
 import Nordea.Resources.Colors as Colors
@@ -84,6 +84,7 @@ type Appearance
     = Standard
     | Simple
     | ListStyle
+    | Small
 
 
 init : String -> Html msg -> (Bool -> msg) -> Checkbox msg
@@ -152,28 +153,23 @@ view attrs (Checkbox config) =
 
         appearanceStyle =
             let
+                topBottomPadding =
+                    case config.appearance of
+                        Small ->
+                            rem 0.5
+
+                        _ ->
+                            rem 0.75
+
                 commonNonSimpleStyles =
                     Css.batch
-                        [ padding2 (rem 0.75) (rem 1)
+                        [ padding2 topBottomPadding (rem 1)
                         , border3 (rem 0.0625) solid transparent
                         , Themes.backgroundColor Themes.SecondaryColor Colors.blueCloud |> styleIf config.isChecked
                         , transition [ Css.Transitions.borderColor 100, Css.Transitions.boxShadow 100 ]
                         ]
             in
             case config.appearance of
-                Standard ->
-                    Css.batch
-                        [ commonNonSimpleStyles
-                        , borderRadius (rem 0.25)
-                        , minHeight (rem 3)
-                        , borderColor Colors.grayMedium |> styleIf (not config.isChecked)
-                        , borderColor Colors.redDark |> styleIf config.hasError
-                        , hover
-                            [ Themes.borderColor Themes.PrimaryColorLight Colors.blueNordea |> styleIf (not config.hasError)
-                            , Themes.backgroundColor Themes.SecondaryColor Colors.blueCloud
-                            ]
-                        ]
-
                 ListStyle ->
                     Css.batch
                         [ commonNonSimpleStyles
@@ -190,27 +186,41 @@ view attrs (Checkbox config) =
                 Simple ->
                     Css.batch []
 
-        notDisabledSpecificStyling =
-            if isDisabled then
-                []
+                _ ->
+                    Css.batch
+                        [ commonNonSimpleStyles
+                        , borderRadius (rem 0.25)
+                        , minHeight (rem 2.5)
+                        , borderColor Colors.grayMedium |> styleIf (not config.isChecked)
+                        , borderColor Colors.redDark |> styleIf config.hasError
+                        , hover
+                            [ Themes.borderColor Themes.PrimaryColorLight Colors.blueNordea |> styleIf (not config.hasError)
+                            , Themes.backgroundColor Themes.SecondaryColor Colors.blueCloud
+                            ]
+                        ]
 
-            else
-                [ pseudoClass "hover .nfe-checkbox" [ Css.property "box-shadow" ("0rem 0rem 0rem 0.0625rem " ++ Themes.colorVariable Themes.SecondaryColor Colors.blueMedium) ]
-                , pseudoClass "focus-within .nfe-checkbox" [ Css.property "box-shadow" ("0rem 0rem 0rem 0.0625rem " ++ Themes.colorVariable Themes.SecondaryColor Colors.blueMedium) ]
+        notDisabledSpecificStyling =
+            let
+                hoverShadow =
+                    Css.property "box-shadow" ("0rem 0rem 0rem 0.0625rem " ++ Themes.colorVariable Themes.SecondaryColor Colors.blueMedium)
+            in
+            Css.batch
+                [ pseudoClass "hover .nfe-checkbox" [ hoverShadow ]
+                , pseudoClass "focus-within .nfe-checkbox" [ hoverShadow ]
                 , cursor pointer
                 ]
+                |> styleIf (not isDisabled)
     in
     Html.label
         (css
-            ([ display inlineFlex
-             , Css.property "gap" "0.5rem"
-             , alignItems center
-             , boxSizing borderBox
-             , appearanceStyle
-             , position relative
-             ]
-                ++ notDisabledSpecificStyling
-            )
+            [ display inlineFlex
+            , Css.property "gap" "0.5rem"
+            , alignItems center
+            , boxSizing borderBox
+            , position relative
+            , notDisabledSpecificStyling
+            , appearanceStyle
+            ]
             :: attrs
         )
         [ Html.input
@@ -218,13 +228,14 @@ view attrs (Checkbox config) =
             , name config.name
             , Attrs.checked config.isChecked
             , onCheck config.onCheck
+            , disabled isDisabled
             , css
                 [ position absolute
                 , opacity (num 0)
                 , width (rem 0)
                 , height (rem 0)
 
-                -- when <input> is checked, apply styles to sibling with class .nfe-checkbox
+                -- when <input> is checked, show checkmark
                 , pseudoClass "checked ~ .nfe-checkbox"
                     [ after [ display block ]
                     , if isDisabled then
