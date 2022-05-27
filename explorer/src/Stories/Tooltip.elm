@@ -68,4 +68,28 @@ stories =
                     ]
           , {}
           )
+        , ( "With icon dissapear 3s"
+           , \_ ->
+                div [ css [ displayFlex, alignItems center ] ]
+                    [ text "There is a tooltip "
+                    , Tooltip.init
+                        |> Tooltip.withIsDissapear 3000
+                        |> Tooltip.withPlacement Right
+                        |> Tooltip.withContent [ text "This is a tooltip" ]
+                        |> Tooltip.view [ Icons.questionMark [ css [ marginLeft (rem 0.25) ] ] ]
+                    ]
+          , {}
+          )
+        , ( "With icon dissapear 5s"
+           , \_ ->
+                 div [ css [ displayFlex, alignItems center ] ]
+                     [ text "There is a tooltip "
+                     , Tooltip.init
+                         |> Tooltip.withIsDissapear 5000
+                         |> Tooltip.withPlacement Right
+                         |> Tooltip.withContent [ text "This is a tooltip" ]
+                         |> Tooltip.view [ Icons.questionMark [ css [ marginLeft (rem 0.25) ] ] ]
+                     ]
+           , {}
+           )
         ]

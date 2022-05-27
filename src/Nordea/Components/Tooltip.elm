@@ -1,6 +1,7 @@
 module Nordea.Components.Tooltip exposing (..)
 
-import Css exposing (Style, deg, int, pct, rem, zero)
+import Css exposing (Style, animationDuration, animationName, deg, int, ms, opacity, pct, rem, zero)
+import Css.Animations as Animations exposing (keyframes)
 import Css.Global as Css
 import Css.Transitions exposing (transition)
 import Html.Styled exposing (Html, div, span, styled)
@@ -18,6 +19,8 @@ type Placement
 type alias Config msg =
     { placement : Placement
     , content : List (Html msg)
+    , isDisappear : Bool
+    , visibleDurationMs : Maybe Float
     }
 
 
@@ -30,6 +33,8 @@ init =
     Tooltip
         { placement = Top
         , content = []
+        , isDisappear = False
+        , visibleDurationMs = Nothing
         }
 
 
@@ -43,14 +48,37 @@ withContent content (Tooltip config) =
     Tooltip { config | content = content }
 
 
+withIsDissapear : Float -> Tooltip msg -> Tooltip msg
+withIsDissapear visibleDurationMs (Tooltip config) =
+    Tooltip { config | isDisappear = True, visibleDurationMs = Just visibleDurationMs }
+
+
 view : List (Html msg) -> Tooltip msg -> Html msg
 view children (Tooltip config) =
+    let
+        animation =
+            keyframes
+                [ ( 0, [ Animations.opacity (int 1) ] )
+                , ( 10, [ Animations.opacity (int 1) ] )
+                , ( 90, [ Animations.opacity (int 1) ] )
+                , ( 100, [ Animations.opacity (int 0) ] )
+                ]
+    in
     styled span
         [ Css.position Css.relative
         , Css.hover
             [ Css.descendants
                 [ Css.class "tooltip"
-                    [ Css.opacity (int 1) ]
+                    [ if config.isDisappear then
+                        Css.batch
+                            [ opacity (int 0)
+                            , animationName animation
+                            , animationDuration (ms (config.visibleDurationMs |> Maybe.withDefault 3000))
+                            ]
+
+                      else
+                        Css.opacity (int 1)
+                    ]
                 ]
             ]
         ]
