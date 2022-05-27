@@ -69,7 +69,7 @@ stories =
           , {}
           )
         , ( "With icon dissapear 3s"
-           , \_ ->
+          , \_ ->
                 div [ css [ displayFlex, alignItems center ] ]
                     [ text "There is a tooltip "
                     , Tooltip.init
@@ -81,7 +81,7 @@ stories =
           , {}
           )
         , ( "With icon dissapear 5s"
-           , \_ ->
+          , \_ ->
                  div [ css [ displayFlex, alignItems center ] ]
                      [ text "There is a tooltip "
                      , Tooltip.init
@@ -91,5 +91,5 @@ stories =
                          |> Tooltip.view [ Icons.questionMark [ css [ marginLeft (rem 0.25) ] ] ]
                      ]
            , {}
-           )
+          )
         ]
