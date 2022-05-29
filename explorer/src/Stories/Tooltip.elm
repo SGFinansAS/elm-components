@@ -3,7 +3,7 @@ module Stories.Tooltip exposing (stories)
 import Css exposing (alignItems, center, displayFlex, marginLeft, rem)
 import Html.Styled exposing (div, text)
 import Html.Styled.Attributes exposing (css)
-import Nordea.Components.Tooltip as Tooltip exposing (Placement(..))
+import Nordea.Components.Tooltip as Tooltip exposing (Placement(..), Visibility(..))
 import Nordea.Resources.Icons as Icons
 import UIExplorer exposing (UI)
 import UIExplorer.Styled exposing (styledStoriesOf)
@@ -73,7 +73,7 @@ stories =
                 div [ css [ displayFlex, alignItems center ] ]
                     [ text "There is a tooltip "
                     , Tooltip.init
-                        |> Tooltip.withIsDissapear 3000
+                        |> Tooltip.withVisibility (DurationMs 3000)
                         |> Tooltip.withPlacement Right
                         |> Tooltip.withContent [ text "This is a tooltip" ]
                         |> Tooltip.view [ Icons.questionMark [ css [ marginLeft (rem 0.25) ] ] ]
@@ -85,7 +85,7 @@ stories =
                 div [ css [ displayFlex, alignItems center ] ]
                     [ text "There is a tooltip "
                     , Tooltip.init
-                        |> Tooltip.withIsDissapear 5000
+                        |> Tooltip.withVisibility (DurationMs 5000)
                         |> Tooltip.withPlacement Right
                         |> Tooltip.withContent [ text "This is a tooltip" ]
                         |> Tooltip.view [ Icons.questionMark [ css [ marginLeft (rem 0.25) ] ] ]

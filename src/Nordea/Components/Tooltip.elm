@@ -16,11 +16,15 @@ type Placement
     | Right
 
 
+type Visibility
+    = Always
+    | DurationMs Float
+
+
 type alias Config msg =
     { placement : Placement
     , content : List (Html msg)
-    , isDisappear : Bool
-    , visibleDurationMs : Maybe Float
+    , visibility : Visibility
     }
 
 
@@ -33,8 +37,7 @@ init =
     Tooltip
         { placement = Top
         , content = []
-        , isDisappear = False
-        , visibleDurationMs = Nothing
+        , visibility = Always
         }
 
 
@@ -48,9 +51,9 @@ withContent content (Tooltip config) =
     Tooltip { config | content = content }
 
 
-withIsDissapear : Float -> Tooltip msg -> Tooltip msg
-withIsDissapear visibleDurationMs (Tooltip config) =
-    Tooltip { config | isDisappear = True, visibleDurationMs = Just visibleDurationMs }
+withVisibility : Visibility -> Tooltip msg -> Tooltip msg
+withVisibility visibility (Tooltip config) =
+    Tooltip { config | visibility = visibility }
 
 
 view : List (Html msg) -> Tooltip msg -> Html msg
@@ -69,15 +72,16 @@ view children (Tooltip config) =
         , Css.hover
             [ Css.descendants
                 [ Css.class "tooltip"
-                    [ if config.isDisappear then
-                        Css.batch
-                            [ opacity (int 0)
-                            , animationName animation
-                            , animationDuration (ms (config.visibleDurationMs |> Maybe.withDefault 3000))
-                            ]
+                    [ case config.visibility of
+                        DurationMs duration ->
+                            Css.batch
+                                [ opacity (int 0)
+                                , animationName animation
+                                , animationDuration (ms duration)
+                                ]
 
-                      else
-                        Css.opacity (int 1)
+                        Always ->
+                            Css.opacity (int 1)
                     ]
                 ]
             ]
