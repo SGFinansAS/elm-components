@@ -145,7 +145,7 @@ header title onClickMsg =
     else
         Html.div
             [ css
-                [ padding4 (rem 1.5) (rem 1.5) (rem 0) (rem 2.5)
+                [ padding4 (rem 1) (rem 1.5) (rem 0) (rem 2.5)
                 , alignItems center
                 , displayFlex
                 ]
@@ -159,7 +159,7 @@ contentContainer title attrs children =
         Html.div (css [ padding (rem 2.5), displayFlex, flexDirection column ] :: attrs) children
 
     else
-        Html.div (css [ padding4 (rem 0.5) (rem 2.5) (rem 2.5) (rem 2.5), displayFlex, flexDirection column, textAlign center ] :: attrs) children
+        Html.div (css [ padding4 (rem 0) (rem 2.5) (rem 3.5) (rem 2.5), displayFlex, flexDirection column, textAlign center ] :: attrs) children
 
 
 disableScrollOnBody : Html msg
