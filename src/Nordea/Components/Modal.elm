@@ -1,7 +1,7 @@
 module Nordea.Components.Modal exposing
-    ( ViewConfig
-    , header
+    ( init
     , view
+    , withTitle
     )
 
 import Css
@@ -34,6 +34,7 @@ import Css
         , position
         , rem
         , solid
+        , textAlign
         , top
         , zIndex
         )
@@ -52,12 +53,24 @@ import Nordea.Themes as Themes
 
 type alias ViewConfig msg =
     { onClickClose : msg
-    , title : String
+    , title : Maybe String
     }
 
 
-view : ViewConfig msg -> List (Attribute msg) -> List (Html msg) -> Html msg
-view config attrs children =
+type Modal msg
+    = Modal (ViewConfig msg)
+
+
+init : msg -> Modal msg
+init onClickClose =
+    Modal
+        { onClickClose = onClickClose
+        , title = Nothing
+        }
+
+
+view : List (Attribute msg) -> List (Html msg) -> Modal msg -> Html msg
+view attrs children (Modal config) =
     let
         card =
             Html.div
@@ -77,7 +90,7 @@ view config attrs children =
                         ]
                     :: attrs
                 )
-                [ header config.onClickClose config.title, contentContainer [] children ]
+                [ header (config.title |> Maybe.withDefault "") config.onClickClose, contentContainer (config.title |> Maybe.withDefault "") [] children ]
     in
     Html.div
         [ onEscPress config.onClickClose
@@ -104,8 +117,8 @@ view config attrs children =
         [ card, disableScrollOnBody ]
 
 
-header : msg -> String -> Html msg
-header onClickMsg title =
+header : String -> msg -> Html msg
+header title onClickMsg =
     let
         cross onClick =
             NordeaButton.tertiary
@@ -115,23 +128,38 @@ header onClickMsg title =
                         [ css [ Themes.color Themes.PrimaryColor Colors.blueDeep, Css.width (rem 1.385) ] ]
                     ]
     in
-    Html.div
-        [ css
-            [ padding4 (rem 1.5) (rem 1.5) (rem 1.5) (rem 2.5)
-            , alignItems center
-            , borderBottom3 (rem 0.0625) solid Colors.grayCool
-            , displayFlex
+    if not (title |> String.isEmpty) then
+        Html.div
+            [ css
+                [ padding4 (rem 1.5) (rem 1.5) (rem 1.5) (rem 2.5)
+                , alignItems center
+                , borderBottom3 (rem 0.0625) solid Colors.grayCool
+                , displayFlex
+                ]
             ]
-        ]
-        [ Text.headlineFourHeavy
-            |> Text.view [] [ Html.text title ]
-        , cross onClickMsg
-        ]
+            [ Text.headlineFourHeavy
+                |> Text.view [] [ Html.text title ]
+            , cross onClickMsg
+            ]
+
+    else
+        Html.div
+            [ css
+                [ padding4 (rem 1.5) (rem 1.5) (rem 0) (rem 2.5)
+                , alignItems center
+                , displayFlex
+                ]
+            ]
+            [ cross onClickMsg ]
 
 
-contentContainer : List (Attribute msg) -> List (Html msg) -> Html msg
-contentContainer attrs children =
-    Html.div (css [ padding (rem 2.5), displayFlex, flexDirection column ] :: attrs) children
+contentContainer : String -> List (Attribute msg) -> List (Html msg) -> Html msg
+contentContainer title attrs children =
+    if not (title |> String.isEmpty) then
+        Html.div (css [ padding (rem 2.5), displayFlex, flexDirection column ] :: attrs) children
+
+    else
+        Html.div (css [ padding4 (rem 0.5) (rem 2.5) (rem 2.5) (rem 2.5), displayFlex, flexDirection column, textAlign center ] :: attrs) children
 
 
 disableScrollOnBody : Html msg
@@ -150,3 +178,8 @@ onEscPress msg =
                 Json.fail "not ESC"
     in
     on "keydown" (Json.andThen isEnter keyCode)
+
+
+withTitle : String -> Modal msg -> Modal msg
+withTitle title (Modal config) =
+    Modal { config | title = Just title }
