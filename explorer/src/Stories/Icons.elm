@@ -4,7 +4,6 @@ import Css exposing (column, displayFlex, flexDirection, rem, row, width)
 import Html.Styled as Html
 import Html.Styled.Attributes exposing (css)
 import Nordea.Components.Text as Text
-import Nordea.Resources.Colors as Colors
 import Nordea.Resources.Icons as Icons
 import UIExplorer exposing (UI)
 import UIExplorer.Styled exposing (styledStoriesOf)
@@ -40,15 +39,18 @@ stories =
                         [ Icons.delete [ css [ width (rem 1.5) ] ]
                         , Icons.user [ css [ width (rem 1.5) ] ]
                         , Icons.contacts [ css [ width (rem 1.5) ] ]
-                        , Icons.settings [ css [ width (rem 1.5) ] ]
+                        , Icons.cog [ css [ width (rem 1.5) ] ]
                         , Icons.logout [ css [ width (rem 1.5) ] ]
+                        , Icons.exit [ css [ width (rem 1.5) ] ]
                         , Icons.document [ css [ width (rem 1.5) ] ]
                         , Icons.download [ css [ width (rem 1.5) ] ]
-                        , Icons.newApplication [ css [ width (rem 1.5) ] ]
-                        , Icons.financingProposals [ css [ width (rem 1.5) ] ]
-                        , Icons.creditLimits [ css [ width (rem 1.5) ] ]
+                        , Icons.orders [ css [ width (rem 1.5) ] ]
+                        , Icons.agreements [ css [ width (rem 1.5) ] ]
+                        , Icons.insights [ css [ width (rem 1.5) ] ]
                         , Icons.applications [ css [ width (rem 1.5) ] ]
                         , Icons.portfolio [ css [ width (rem 1.5) ] ]
+                        , Icons.search [ css [ width (rem 1.5) ] ]
+                        , Icons.search2 [ css [ width (rem 1.5) ] ]
                         ]
                     , iconCategoryHeader "Add, remove, accept and cancel"
                     , iconsRow
@@ -72,17 +74,9 @@ stories =
                     , iconCategoryHeader "Misc."
                     , iconsRow
                         [ Icons.downloaded [ css [ width (rem 1.5) ] ]
-                        , Icons.factorTables [ css [ width (rem 1.5) ] ]
+                        , Icons.abacus [ css [ width (rem 1.5) ] ]
                         , Icons.object [ css [ width (rem 1.5) ] ]
                         ]
-
-                    --, Icons.nordeaLogo (Just "Nordea Logo") [ css [ width (rem 1.5) ] ]
-                    --, Icons.poweredByNordea (Just "Powered by Nordea") [ css [ width (rem 1.5) ] ]
-                    --, Icons.feedbackEnvelope [ css [ width (rem 1.5) ] ]
-                    --, Icons.balloon [ css [ width (rem 1.5) ] ]
-                    --, Icons.rejection [ css [ width (rem 1.5) ] ]
-                    --, Icons.instructionalStar [ css [ width (rem 1.5) ] ]
-                    --, Icons.instructionalBlocks [ css [ width (rem 1.5) ] ]
                     ]
           , {}
           )
