@@ -50,6 +50,7 @@ import Html.Styled.Events as Events exposing (keyCode, on)
 import Json.Decode as Json
 import Nordea.Components.Button as NordeaButton
 import Nordea.Components.Text as Text
+import Nordea.Html exposing (viewMaybe)
 import Nordea.Resources.Colors as Colors
 import Nordea.Resources.Icons as Icons
 import Nordea.Themes as Themes
@@ -113,8 +114,8 @@ view attrs children (Modal config) =
                         ]
                     :: attrs
                 )
-                [ header config.variant (config.title |> Maybe.withDefault "") config.onClickClose
-                , contentContainer config.variant (config.title |> Maybe.withDefault "") (config.subtitle |> Maybe.withDefault "") [] children
+                [ header config.variant config.title config.onClickClose
+                , contentContainer config.variant config.title config.subtitle [] children
                 ]
     in
     Html.div
@@ -142,7 +143,7 @@ view attrs children (Modal config) =
         [ card, disableScrollOnBody ]
 
 
-header : Variant -> String -> msg -> Html msg
+header : Variant -> Maybe String -> msg -> Html msg
 header variant title onClickMsg =
     let
         cross onClick =
@@ -163,8 +164,12 @@ header variant title onClickMsg =
                     , displayFlex
                     ]
                 ]
-                [ Text.titleHeavy
-                    |> Text.view [] [ Html.text title ]
+                [ title
+                    |> viewMaybe
+                        (\text ->
+                            Text.titleHeavy
+                                |> Text.view [] [ Html.text text ]
+                        )
                 , cross onClickMsg
                 ]
 
@@ -180,15 +185,23 @@ header variant title onClickMsg =
                 ]
 
 
-contentContainer : Variant -> String -> String -> List (Attribute msg) -> List (Html msg) -> Html msg
+contentContainer : Variant -> Maybe String -> Maybe String -> List (Attribute msg) -> List (Html msg) -> Html msg
 contentContainer variant title subTitle attrs children =
     let
         newsTitle =
             Html.div []
-                [ Text.textTinyLight
-                    |> Text.view [ css [ color Colors.nordeaGray ] ] [ Html.text subTitle ]
-                , Text.titleHeavy
-                    |> Text.view [ css [ padding3 (rem 0.5) (rem 0) (rem 2) ] ] [ Html.text title ]
+                [ subTitle
+                    |> viewMaybe
+                        (\text ->
+                            Text.textTinyLight
+                                |> Text.view [ css [ color Colors.nordeaGray ] ] [ Html.text text ]
+                        )
+                , title
+                    |> viewMaybe
+                        (\text ->
+                            Text.titleHeavy
+                                |> Text.view [ css [ padding3 (rem 0.5) (rem 0) (rem 2) ] ] [ Html.text text ]
+                        )
                 ]
     in
     case variant of
