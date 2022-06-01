@@ -4,6 +4,7 @@ import Css exposing (column, displayFlex, flexDirection, rem, row, width)
 import Html.Styled as Html
 import Html.Styled.Attributes exposing (css)
 import Nordea.Components.Text as Text
+import Nordea.Resources.Colors as Colors
 import Nordea.Resources.Icons as Icons
 import UIExplorer exposing (UI)
 import UIExplorer.Styled exposing (styledStoriesOf)
@@ -55,12 +56,13 @@ stories =
                     , iconCategoryHeader "Add, remove, accept and cancel"
                     , iconsRow
                         [ Icons.warning [ css [ width (rem 1.5) ] ]
-                        , Icons.close [ css [ width (rem 1.5) ] ]
+                        , Icons.filledWarning [ css [ width (rem 1.5) ] ]
                         , Icons.info [ css [ width (rem 1.5) ] ]
+                        , Icons.filledInfo [ css [ width (rem 1.5) ] ]
                         , Icons.questionMark [ css [ width (rem 1.5) ] ]
+                        , Icons.close [ css [ width (rem 1.5) ] ]
                         , Icons.filledCheckmark [ css [ width (rem 1.5) ] ]
                         , Icons.unfilledMark [ css [ width (rem 1.5) ] ]
-                        , Icons.largeAdditionalInfo [ css [ width (rem 1.5) ] ]
                         , Icons.dismiss [ css [ width (rem 1.5) ] ]
                         , Icons.mediumPlus [ css [ width (rem 1.5) ] ]
                         , Icons.add [ css [ width (rem 1.5) ] ]

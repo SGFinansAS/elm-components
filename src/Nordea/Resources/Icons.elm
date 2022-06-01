@@ -36,7 +36,6 @@ module Nordea.Resources.Icons exposing
     , insights
     , instructionalBlocks
     , instructionalStar
-    , largeAdditionalInfo
     , largeEnvelope
     , largePhone
     , leftIcon
@@ -570,8 +569,8 @@ largePhone attrs =
         ]
 
 
-largeAdditionalInfo : List (Attribute msg) -> Html msg
-largeAdditionalInfo attrs =
+filledInfo : List (Attribute msg) -> Html msg
+filledInfo attrs =
     iconContainer attrs
         [ Svg.svg [ viewBox "0 0 24 24", fill "none" ]
             [ Svg.ellipse [ cx "12.0161", cy "12", rx "11.9849", ry "12", fill "#DCEDFF" ] []
@@ -652,32 +651,16 @@ add attrs =
         ]
 
 
-filledInfo : Color -> Color -> List (Attribute msg) -> Html msg
-filledInfo fillColor accentColor attrs =
-    iconContainer attrs
-        [ Svg.svg [ viewBox "0 0 24 24", fill "none" ]
-            [ Svg.ellipse [ cx "12.0161", cy "12", rx "11.9849", ry "12", fill (Colors.toString fillColor) ] []
-            , Svg.path
-                [ fillRule "evenodd"
-                , clipRule "evenodd"
-                , d "M20.4594 3.51472C18.2118 1.26428 15.1635 0 11.9849 0C5.36581 0 0 5.37258 0 12C0 18.6274 5.36581 24 11.9849 24C18.6039 24 23.9697 18.6274 23.9697 12C23.9697 8.8174 22.707 5.76516 20.4594 3.51472ZM19.4001 19.4246C17.4335 21.3938 14.7661 22.5 11.9849 22.5C6.19319 22.5 1.49811 17.799 1.49811 12C1.49811 6.20101 6.19319 1.5 11.9849 1.5C17.7765 1.5 22.4716 6.20101 22.4716 12C22.4716 14.7848 21.3668 17.4555 19.4001 19.4246ZM14.292 16.5C14.7056 16.5 15.041 16.8358 15.041 17.25C15.041 17.6642 14.7056 18 14.292 18H9.79763C9.38394 18 9.04857 17.6642 9.04857 17.25C9.04857 16.8358 9.38394 16.5 9.79763 16.5H11.2358V16.455V11.25H10.1047C9.69105 11.25 9.35569 10.9142 9.35569 10.5C9.35569 10.0858 9.69105 9.75 10.1047 9.75H12.7339V16.455V16.5H14.292ZM11.6103 8.25C12.2309 8.25 12.7339 7.74632 12.7339 7.125C12.7339 6.50368 12.2309 6 11.6103 6C10.9898 6 10.4868 6.50368 10.4868 7.125C10.4868 7.74632 10.9898 8.25 11.6103 8.25Z"
-                , fill (Colors.toString accentColor)
-                ]
-                []
-            ]
-        ]
-
-
-filledWarning : Color -> Color -> List (Attribute msg) -> Html msg
-filledWarning fillColor accentColor attrs =
+filledWarning : List (Attribute msg) -> Html msg
+filledWarning attrs =
     iconContainer attrs
         [ Svg.svg [ viewBox "0 0 25 24", fill "none" ]
-            [ Svg.circle [ cx "12.2734", cy "12", r "12", fill (Colors.toString fillColor) ] []
+            [ Svg.circle [ cx "12.2734", cy "12", r "12", fill (Colors.toString Colors.cloudBlue) ] []
             , Svg.path
                 [ fillRule "evenodd"
                 , clipRule "evenodd"
                 , d "M21.1254 3.51472C18.8047 1.26428 15.6571 0 12.375 0C5.54048 0 0 5.37258 0 12C0 18.6274 5.54048 24 12.375 24C19.2095 24 24.75 18.6274 24.75 12C24.75 8.8174 23.4462 5.76516 21.1254 3.51472ZM20.0316 19.4246C18.001 21.3938 15.2468 22.5 12.375 22.5C6.39479 22.5 1.54688 17.799 1.54688 12C1.54688 6.20101 6.39479 1.5 12.375 1.5C18.3552 1.5 23.2031 6.20101 23.2031 12C23.2031 14.7848 22.0623 17.4555 20.0316 19.4246ZM12.375 13.5C11.9478 13.5 11.6016 13.1642 11.6016 12.75V6C11.6016 5.58579 11.9478 5.25 12.375 5.25C12.8022 5.25 13.1484 5.58579 13.1484 6V12.75C13.1484 13.1642 12.8022 13.5 12.375 13.5ZM12.375 17.25C13.0157 17.25 13.5352 16.7463 13.5352 16.125C13.5352 15.5037 13.0157 15 12.375 15C11.7343 15 11.2148 15.5037 11.2148 16.125C11.2148 16.7463 11.7343 17.25 12.375 17.25Z"
-                , fill (Colors.toString accentColor)
+                , fill (Colors.toString Colors.black)
                 ]
                 []
             ]
