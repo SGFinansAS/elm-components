@@ -1,7 +1,15 @@
 module Stories.Icons exposing (stories)
 
-import Css exposing (column, displayFlex, flexDirection, rem, row, width)
-import Html.Styled as Html exposing (Html)
+import Css
+    exposing
+        ( column
+        , displayFlex
+        , flexDirection
+        , rem
+        , row
+        , width
+        )
+import Html.Styled as Html
 import Html.Styled.Attributes exposing (css)
 import Nordea.Components.Text as Text
 import Nordea.Resources.Icons as Icons

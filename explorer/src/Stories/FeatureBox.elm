@@ -5,7 +5,6 @@ import Html.Styled as Html
 import Html.Styled.Events exposing (onClick)
 import Nordea.Components.Button as Button
 import Nordea.Components.FeatureBox as FeatureBox
-import Nordea.Resources.Icons as Icons
 import Nordea.Resources.Illustrations as Illustrations
 import UIExplorer exposing (UI)
 import UIExplorer.Styled exposing (styledStoriesOf)

@@ -1,7 +1,9 @@
 module Nordea.Components.FlatLink exposing
     ( FlatLink
     , default
+    , inline
     , mini
+    , outer
     , view
     , withButtonStyle
     , withDisabled
@@ -21,7 +23,9 @@ import Css
         , focus
         , fontSize
         , fontWeight
+        , height
         , hover
+        , inlineFlex
         , int
         , lineHeight
         , maxWidth
@@ -33,10 +37,14 @@ import Css
         , rem
         , textDecoration
         , underline
+        , visited
+        , width
         )
 import Html.Styled as Html exposing (Attribute, Html)
+import Html.Styled.Attributes exposing (css)
 import Nordea.Components.Button as Button
 import Nordea.Resources.Colors as Colors
+import Nordea.Resources.Icons as Icons
 import Nordea.Themes as Themes
 
 
@@ -101,6 +109,49 @@ view attributes children (FlatLink config) =
         ]
         attributes
         children
+
+
+inline : List (Attribute msg) -> List (Html msg) -> Html msg
+inline attrs children =
+    view attrs
+        children
+        (FlatLink
+            { styles =
+                [ Css.display inlineFlex
+                , Css.fontWeight Css.inherit
+                , Themes.color Themes.PrimaryColorLight Colors.blueNordea
+                , hover [ Themes.color Themes.PrimaryColor Colors.blueDeep ]
+                , focus [ Themes.color Themes.PrimaryColor Colors.blueDeep ]
+                , visited [ Css.color Colors.purple ]
+                ]
+            , isDisabled = Just (List.member (Html.Styled.Attributes.disabled True) attrs)
+            , variant = Default
+            }
+        )
+
+
+outer : List (Attribute msg) -> List (Html msg) -> Html msg
+outer attrs children =
+    view attrs
+        (children
+            ++ [ Icons.rightIcon (Icons.outerLink [ css [ width (rem 1), height (rem 1) ] ]) ]
+        )
+        (FlatLink
+            { styles =
+                [ Css.fontWeight Css.inherit
+                , Themes.color Themes.PrimaryColorLight Colors.blueNordea
+                , textDecoration none
+                , hover
+                    [ Themes.color Themes.PrimaryColor Colors.blueDeep
+                    , textDecoration underline
+                    ]
+                , focus [ Themes.color Themes.PrimaryColor Colors.blueDeep ]
+                , visited [ Css.color Colors.purple ]
+                ]
+            , isDisabled = Just (List.member (Html.Styled.Attributes.disabled True) attrs)
+            , variant = Default
+            }
+        )
 
 
 
