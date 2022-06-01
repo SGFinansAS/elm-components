@@ -63,8 +63,8 @@ type Variant
 type alias Config msg =
     { variant : Variant
     , onClickClose : msg
-    , title : String
-    , subtitle : String
+    , title : Maybe String
+    , subtitle : Maybe String
     }
 
 
@@ -77,8 +77,8 @@ init onClickClose variant =
     Modal
         { variant = variant
         , onClickClose = onClickClose
-        , title = ""
-        , subtitle = ""
+        , title = Nothing
+        , subtitle = Nothing
         }
 
 
@@ -113,7 +113,9 @@ view attrs children (Modal config) =
                         ]
                     :: attrs
                 )
-                [ header config.variant config.title config.onClickClose, contentContainer config.variant config.title config.subtitle [] children ]
+                [ header config.variant (config.title |> Maybe.withDefault "") config.onClickClose
+                , contentContainer config.variant (config.title |> Maybe.withDefault "") (config.subtitle |> Maybe.withDefault "") [] children
+                ]
     in
     Html.div
         [ onEscPress config.onClickClose
@@ -220,9 +222,9 @@ onEscPress msg =
 
 withTitle : String -> Modal msg -> Modal msg
 withTitle title (Modal config) =
-    Modal { config | title = title }
+    Modal { config | title = Just title }
 
 
 withSubtitle : String -> Modal msg -> Modal msg
 withSubtitle subtitle (Modal config) =
-    Modal { config | subtitle = subtitle }
+    Modal { config | subtitle = Just subtitle }
