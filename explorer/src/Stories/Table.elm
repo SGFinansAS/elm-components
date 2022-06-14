@@ -20,7 +20,7 @@ stories : UI a b {}
 stories =
     styledStoriesOf
         "Table"
-        [ ( "Default"
+        [ ( "Standard"
           , \_ ->
                 Table.view [ css [ width (rem 60) ] ]
                     [ Table.thead []
@@ -33,6 +33,51 @@ stories =
                             ]
                         ]
                     , Table.tbody []
+                        [ Table.tr []
+                            [ Table.td [ css [ flex (int 1), textAlign center ] ] [ Html.text "Text" ]
+                            , Table.td [ css [ flex (int 1), textAlign center ] ] [ Html.text "Text" ]
+                            , Table.td [ css [ flex (int 1), textAlign center ] ] [ Html.text "Text" ]
+                            , Table.td [ css [ flex (int 1), textAlign center ] ] [ Html.text "Text" ]
+                            , Table.td [ css [ flex (int 1), textAlign center ] ] [ Html.text "Text" ]
+                            ]
+                        , Table.tr []
+                            [ Table.td [ css [ flex (int 1), textAlign center ] ] [ Html.text "Text" ]
+                            , Table.td [ css [ flex (int 1), textAlign center ] ] [ Html.text "Text" ]
+                            , Table.td [ css [ flex (int 1), textAlign center ] ] [ Html.text "Text" ]
+                            , Table.td [ css [ flex (int 1), textAlign center ] ] [ Html.text "Text" ]
+                            , Table.td [ css [ flex (int 1), textAlign center ] ] [ Html.text "Text" ]
+                            ]
+                        , Table.tr []
+                            [ Table.td [ css [ flex (int 1), textAlign center ] ] [ Html.text "Text" ]
+                            , Table.td [ css [ flex (int 1), textAlign center ] ] [ Html.text "Text" ]
+                            , Table.td [ css [ flex (int 1), textAlign center ] ] [ Html.text "Text" ]
+                            , Table.td [ css [ flex (int 1), textAlign center ] ] [ Html.text "Text" ]
+                            , Table.td [ css [ flex (int 1), textAlign center ] ] [ Html.text "Text" ]
+                            ]
+                        , Table.tr []
+                            [ Table.td [ css [ flex (int 1), textAlign center ] ] [ Html.text "Text" ]
+                            , Table.td [ css [ flex (int 1), textAlign center ] ] [ Html.text "Text" ]
+                            , Table.td [ css [ flex (int 1), textAlign center ] ] [ Html.text "Text" ]
+                            , Table.td [ css [ flex (int 1), textAlign center ] ] [ Html.text "Text" ]
+                            , Table.td [ css [ flex (int 1), textAlign center ] ] [ Html.text "Text" ]
+                            ]
+                        ]
+                    ]
+          , {}
+          )
+        , ( "Small"
+          , \_ ->
+                Table.view [ css [ width (rem 60) ] ]
+                    [ Table.theadSmall []
+                        [ Table.tr []
+                            [ Table.th [ css [ flex (int 1) ] ] [ Html.text "Text" ]
+                            , Table.th [ css [ flex (int 1) ] ] [ Html.text "Text" ]
+                            , Table.th [ css [ flex (int 1) ] ] [ Html.text "Text" ]
+                            , Table.th [ css [ flex (int 1) ] ] [ Html.text "Text" ]
+                            , Table.th [ css [ flex (int 1) ] ] [ Html.text "Text" ]
+                            ]
+                        ]
+                    , Table.tbodySmall []
                         [ Table.tr []
                             [ Table.td [ css [ flex (int 1), textAlign center ] ] [ Html.text "Text" ]
                             , Table.td [ css [ flex (int 1), textAlign center ] ] [ Html.text "Text" ]
