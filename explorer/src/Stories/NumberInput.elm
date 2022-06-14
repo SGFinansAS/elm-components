@@ -1,6 +1,5 @@
 module Stories.NumberInput exposing (stories)
 
-import Html.Styled.Attributes exposing (disabled)
 import Nordea.Components.NumberInput as NumberInput
 import UIExplorer exposing (UI)
 import UIExplorer.Styled exposing (styledStoriesOf)
