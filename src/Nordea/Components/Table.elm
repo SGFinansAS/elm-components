@@ -118,10 +118,10 @@ th attrs children =
 {-| Groups the body content in a table
 -}
 tbodyWithVariant : List (Attribute msg) -> List (Html msg) -> Variant -> Html msg
-tbodyWithVariant attrs children size =
+tbodyWithVariant attrs children variant =
     let
         trHeight =
-            case size of
+            case variant of
                 Small ->
                     rem 2.5
 
