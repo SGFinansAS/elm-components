@@ -43,7 +43,8 @@ stories =
         , ( "Disabled"
           , \_ ->
                 NumberInput.init "0"
-                    |> NumberInput.view [ disabled True ]
+                    |> NumberInput.withIsDisabled True
+                    |> NumberInput.view []
           , {}
           )
         , ( "Small"

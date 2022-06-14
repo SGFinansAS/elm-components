@@ -157,6 +157,7 @@ getAttributes config =
         , config.onInput |> Maybe.map onInput
         , config.onBlur |> Maybe.map onBlur
         , Just config.value |> Maybe.map format |> Maybe.map value
+        , Just config.isDisabled |> Maybe.map Attributes.disabled
         ]
 
 
