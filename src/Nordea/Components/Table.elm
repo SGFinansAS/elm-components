@@ -57,30 +57,39 @@ view attrs children =
 
 {-| Groups the header content in a table
 -}
-thead : List (Attribute msg) -> List (Html msg) -> Html msg
-thead attrs children =
+theadWithVariant : List (Attribute msg) -> List (Html msg) -> Variant -> Html msg
+theadWithVariant attrs children variant =
+    let
+        headHeight =
+            case variant of
+                Small ->
+                    rem 2.5
+
+                Standard ->
+                    rem 3.5
+    in
     Html.thead
         (css
-            [ height (rem 3.0)
+            [ height headHeight
             , borderBottom3 (rem 0.0625) solid Colors.grayLight
             ]
             :: attrs
         )
         children
+
+
+{-| Groups the header content in a table
+-}
+thead : List (Attribute msg) -> List (Html msg) -> Html msg
+thead attrs children =
+    theadWithVariant attrs children Standard
 
 
 {-| Groups the header content in a smaller table
 -}
 theadSmall : List (Attribute msg) -> List (Html msg) -> Html msg
 theadSmall attrs children =
-    Html.thead
-        (css
-            [ height (rem 2.5)
-            , borderBottom3 (rem 0.0625) solid Colors.grayLight
-            ]
-            :: attrs
-        )
-        children
+    theadWithVariant attrs children Small
 
 
 {-| Defines a row in a table
