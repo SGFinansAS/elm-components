@@ -51,8 +51,8 @@ view attrs children config =
                     , alignItems center
                     , justifyContent center
                     , position absolute
-                    , right (rem -0.3)
-                    , bottom (rem -0.1)
+                    , right (rem 0)
+                    , bottom (rem 0)
                     , width (rem 1.125)
                     , height (rem 1.125)
                     , backgroundColor Colors.darkRed
