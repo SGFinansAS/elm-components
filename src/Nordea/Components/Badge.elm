@@ -17,6 +17,7 @@ import Css
         , position
         , relative
         , rem
+        , right
         , width
         )
 import Html.Styled as Html exposing (Attribute, Html)
@@ -33,32 +34,34 @@ type Notification
 view : List (Attribute msg) -> List (Html msg) -> Notification -> Html msg
 view attrs children config =
     let
-        textContent =
+        ( showBadge, badgeTextContent ) =
             case config of
                 Number num ->
-                    String.fromInt num
+                    ( num > 0, String.fromInt num )
 
                 Generic ->
-                    "•"
+                    ( True, "•" )
     in
     Html.div
         (css [ position relative ] :: attrs)
-        (Text.view
-            [ css
-                [ displayFlex
-                , alignItems center
-                , justifyContent center
-                , position absolute
-                , left (rem -0.5)
-                , bottom (rem -0.5)
-                , width (rem 2)
-                , height (rem 2)
-                , backgroundColor Colors.darkRed
-                , borderRadius (pct 50)
-                , color Colors.white
+        ((Text.textSmallHeavy
+            |> Text.view
+                [ css
+                    [ displayFlex
+                    , alignItems center
+                    , justifyContent center
+                    , position absolute
+                    , right (rem -0.5)
+                    , bottom (rem -0.5)
+                    , width (rem 1.125)
+                    , height (rem 1.125)
+                    , backgroundColor Colors.darkRed
+                    , borderRadius (pct 50)
+                    , color Colors.white
+                    ]
                 ]
-            ]
-            [ Html.text textContent ]
-            Text.bodyTextHeavy
+                [ Html.text badgeTextContent ]
+            |> showIf showBadge
+         )
             :: children
         )
