@@ -22,6 +22,7 @@ import Css
 import Html.Styled as Html exposing (Attribute, Html)
 import Html.Styled.Attributes exposing (css)
 import Nordea.Components.Text as Text
+import Nordea.Html exposing (showIf)
 import Nordea.Resources.Colors as Colors
 
 
