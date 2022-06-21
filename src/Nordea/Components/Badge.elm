@@ -44,15 +44,15 @@ view attrs children config =
     in
     Html.div
         (css [ position relative ] :: attrs)
-        ((Text.textSmallHeavy
+        ((Text.textTinyHeavy
             |> Text.view
                 [ css
                     [ displayFlex
                     , alignItems center
                     , justifyContent center
                     , position absolute
-                    , right (rem -0.5)
-                    , bottom (rem -0.5)
+                    , right (rem -0.3)
+                    , bottom (rem -0.3)
                     , width (rem 1.125)
                     , height (rem 1.125)
                     , backgroundColor Colors.darkRed
