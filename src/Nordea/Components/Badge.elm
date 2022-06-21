@@ -52,7 +52,7 @@ view attrs children config =
                     , justifyContent center
                     , position absolute
                     , right (rem -0.3)
-                    , bottom (rem -0.3)
+                    , bottom (rem -0.1)
                     , width (rem 1.125)
                     , height (rem 1.125)
                     , backgroundColor Colors.darkRed
