@@ -12,7 +12,6 @@ import Css
         , displayFlex
         , height
         , justifyContent
-        , left
         , pct
         , position
         , relative
