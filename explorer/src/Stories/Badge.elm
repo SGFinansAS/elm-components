@@ -18,6 +18,12 @@ stories =
                     |> Badge.view [] [ Icons.pdf [ css [ width (rem 5) |> Css.important ] ] ]
           , {}
           )
+        , ( "Not showing"
+          , \_ ->
+                Badge.Number 0
+                    |> Badge.view [] [ Icons.pdf [ css [ width (rem 5) |> Css.important ] ] ]
+          , {}
+          )
         , ( "Generic"
           , \_ ->
                 Badge.Generic
