@@ -10,8 +10,7 @@ module Nordea.Components.Slider exposing
 
 import Css
     exposing
-        ( Style
-        , alignItems
+        ( alignItems
         , center
         , color
         , column
