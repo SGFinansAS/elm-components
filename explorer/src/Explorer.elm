@@ -5,9 +5,11 @@ import Html exposing (Html)
 import Html.Styled exposing (toUnstyled)
 import Nordea.Resources.Fonts as Fonts
 import Stories.Accordion as Accordion
+import Stories.Badge as Badge
 import Stories.Button as Button
 import Stories.Card as Card
 import Stories.Checkbox as Checkbox
+import Stories.Colors as Colors
 import Stories.Dropdown as Dropdown
 import Stories.DropdownFilter as Search
 import Stories.Error as Error
@@ -17,6 +19,7 @@ import Stories.FlatLink as FlatLink
 import Stories.Icons as Icons
 import Stories.InfoLabel as InfoLabel
 import Stories.InfoPanel as InfoPanel
+import Stories.InformationDetails as InformationDetails
 import Stories.Label as Label
 import Stories.LottiePlayer as LottiePlayer
 import Stories.Modal as Modal
@@ -29,7 +32,7 @@ import Stories.Spinner as Spinner
 import Stories.Status as Status
 import Stories.StepIndicator as StepIndicator
 import Stories.Table as Table
-import Stories.Text as Header
+import Stories.Text as Text
 import Stories.TextArea as TextArea
 import Stories.TextInput as TextInput
 import Stories.Toggle as Toggle
@@ -70,11 +73,13 @@ main =
         }
         (UIExplorer.createCategories
             |> UIExplorer.category "Tokens"
-                [ Header.stories
+                [ Colors.stories
+                , Text.stories
                 , Icons.stories
                 ]
             |> UIExplorer.category "Components"
                 [ Accordion.stories
+                , Badge.stories
                 , Button.stories
                 , Card.stories
                 , Checkbox.stories
@@ -86,6 +91,7 @@ main =
                 , FlatLink.stories
                 , InfoLabel.stories
                 , InfoPanel.stories
+                , InformationDetails.stories
                 , Label.stories
                 , LottiePlayer.stories
                 , Modal.stories

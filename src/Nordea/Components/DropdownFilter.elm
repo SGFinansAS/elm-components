@@ -97,11 +97,10 @@ view (DropdownFilter options) attributes =
             List.all identity
                 [ not options.hasFocus || Maybe.isNothing options.onFocus
                 , options.rawInputString /= ""
-                , not
-                    (List.any
-                        (\item -> item.text == options.rawInputString)
-                        (List.concatMap .items filteredSearchResult)
-                    )
+                , filteredSearchResult
+                    |> List.concatMap .items
+                    |> List.all
+                        (\item -> item.text /= options.rawInputString)
                 ]
     in
     Html.div
@@ -125,11 +124,13 @@ view (DropdownFilter options) attributes =
                     [ Css.listStyle Css.none
                     , Css.padding3 (Css.px 3) (Css.px 1) (Css.px 12)
                     , Css.maxHeight (Css.rem 16.75)
-                    , Css.overflowY Css.auto
+                    , Css.overflowY Css.scroll
                     , Css.position Css.absolute
                     , Css.zIndex (Css.int 1)
                     , Css.display Css.block
-                    , Css.width (Css.pct 100)
+                    , Css.right (Css.rem 0)
+                    , Css.left (Css.rem 0)
+                    , Css.margin (Css.rem 0)
                     , Css.top (Css.pct 100)
                     , Css.backgroundColor Colors.white
                     , Css.borderBottom3 (Css.rem 0.0625) Css.solid Colors.grayMedium
@@ -140,23 +141,17 @@ view (DropdownFilter options) attributes =
                     ]
                 ]
                 (List.concatMap
-                    (\header ->
+                    (\headerAndItems ->
                         let
                             subResultView =
                                 List.map (itemView (groupIdAttributeToItemAttrs options.onFocus) options.onSelectedValue)
-                                    header.items
+                                    headerAndItems.items
                         in
-                        -- Do not show header if there are no results to view
-                        if List.length subResultView > 0 then
-                            -- Do not show header without text
-                            if not (String.isEmpty header.header) then
-                                headerView header.header :: subResultView
-
-                            else
-                                subResultView
+                        if not (List.isEmpty subResultView) && not (String.isEmpty headerAndItems.header) then
+                            headerView headerAndItems.header :: subResultView
 
                         else
-                            []
+                            subResultView
                     )
                     searchResultToShow
                 )
@@ -167,7 +162,8 @@ inputSearchView : Bool -> Bool -> String -> (String -> msg) -> Maybe ( String, B
 inputSearchView hasError hasFocus searchString onInput onFocus onClickClearInput =
     Html.div
         [ Attr.css
-            [ Css.position Css.relative
+            [ Css.displayFlex
+            , Css.position Css.relative
             ]
         ]
         [ Html.input
@@ -179,11 +175,11 @@ inputSearchView hasError hasFocus searchString onInput onFocus onClickClearInput
                 , Css.border3 (Css.px 1) Css.solid Colors.grayMedium
                 , Css.borderColor Colors.redDark |> styleIf hasError
                 , Css.width (Css.pct 100)
-
-                -- Style
-                , Css.backgroundColor Colors.grayCool
+                , Css.boxSizing Css.borderBox
+                , Css.backgroundColor Colors.white
                 , Css.focus
-                    [ Css.outline Css.none
+                    [ Css.backgroundColor Colors.grayCool
+                    , Css.outline Css.none
                     , Css.border3 (Css.px 1) Css.solid Colors.blueNordea
                     ]
                 , if hasFocus then
@@ -231,7 +227,7 @@ headerView text =
             [ Css.color Colors.gray
             , Css.margin2 (Css.px 0) (Css.px 10)
             , Css.fontSize (Css.px 12)
-            , Css.fontWeight (Css.int 900)
+            , Css.fontWeight (Css.int 400)
             , Css.lineHeight (Css.px 16)
             ]
         ]
@@ -279,38 +275,29 @@ withIsLoading isLoading (DropdownFilter config) =
 onFocusAttrs : Maybe ( String, Bool -> msg ) -> List (Attribute msg)
 onFocusAttrs hasFocusAndId =
     let
-        hasFocus =
+        maybeOnFocus =
             Maybe.map Tuple.second hasFocusAndId
 
         groupAttr =
             Maybe.map Tuple.first hasFocusAndId
                 |> Maybe.map groupIdAttribute
-                |> Maybe.map List.singleton
-                |> Maybe.withDefault []
 
         onFocusAttribute =
-            hasFocus
-                |> Maybe.map (\f -> f True)
-                |> Maybe.map Events.onFocus
-                |> Maybe.map List.singleton
-                |> Maybe.withDefault []
+            maybeOnFocus
+                |> Maybe.map (\onFocus -> Events.onFocus (onFocus True))
 
         onBlurAttribute =
-            hasFocus
-                |> Maybe.map (\f -> f False)
-                |> Maybe.map onGroupBlur
-                |> Maybe.map List.singleton
-                |> Maybe.withDefault []
+            maybeOnFocus
+                |> Maybe.map (\onFocus -> onGroupBlur (onFocus False))
     in
-    onFocusAttribute ++ onBlurAttribute ++ groupAttr
+    Maybe.values [ onFocusAttribute, onBlurAttribute, groupAttr ]
 
 
 groupIdAttributeToItemAttrs : Maybe ( String, Bool -> msg ) -> List (Attribute msg)
 groupIdAttributeToItemAttrs groupId =
     Maybe.map Tuple.first groupId
         |> Maybe.map groupIdAttribute
-        |> Maybe.map List.singleton
-        |> Maybe.withDefault []
+        |> Maybe.toList
 
 
 onGroupBlur : msg -> Attribute msg

@@ -35,7 +35,7 @@ stories =
                     , { value = HirePurchase, text = financingVariantToString HirePurchase }
                     ]
               }
-            , { header = "Oor this"
+            , { header = "Or this"
               , items =
                     [ { value = Leasing, text = financingVariantToString Leasing }
                     , { value = Rent, text = financingVariantToString Rent }

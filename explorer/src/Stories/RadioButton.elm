@@ -3,7 +3,7 @@ module Stories.RadioButton exposing (stories)
 import Config exposing (Msg(..))
 import Css exposing (column, displayFlex, flexDirection, maxWidth, rem)
 import Html.Styled as Html exposing (text)
-import Html.Styled.Attributes exposing (css)
+import Html.Styled.Attributes exposing (css, disabled)
 import Nordea.Components.RadioButton as RadioButton
 import Nordea.Components.RadioGroup as RadioGroup
 import UIExplorer exposing (UI)
@@ -50,6 +50,42 @@ stories =
                     ]
           , {}
           )
+        , ( "Standard disabled"
+          , \_ ->
+                Html.div [ css [ displayFlex, Css.property "gap" "1rem" ] ]
+                    [ RadioButton.init
+                        "simple"
+                        (text "Click me")
+                        NoOp
+                        |> RadioButton.view [ disabled True ]
+                    , RadioButton.init
+                        "simple"
+                        (text "Click me")
+                        NoOp
+                        |> RadioButton.withIsSelected True
+                        |> RadioButton.view [ disabled True ]
+                    ]
+          , {}
+          )
+        , ( "Small"
+          , \_ ->
+                Html.div [ css [ displayFlex, Css.property "gap" "1rem" ] ]
+                    [ RadioButton.init
+                        "small"
+                        (text "Click me")
+                        NoOp
+                        |> RadioButton.withAppearance RadioButton.Small
+                        |> RadioButton.view []
+                    , RadioButton.init
+                        "small"
+                        (text "Click me")
+                        NoOp
+                        |> RadioButton.withAppearance RadioButton.Small
+                        |> RadioButton.withIsSelected True
+                        |> RadioButton.view []
+                    ]
+          , {}
+          )
         , ( "Simple"
           , \_ ->
                 Html.div [ css [ displayFlex, Css.property "gap" "1rem" ] ]
@@ -87,6 +123,25 @@ stories =
                         |> RadioButton.withHasError True
                         |> RadioButton.withIsSelected True
                         |> RadioButton.view []
+                    ]
+          , {}
+          )
+        , ( "Simple disabled"
+          , \_ ->
+                Html.div [ css [ displayFlex, Css.property "gap" "1rem" ] ]
+                    [ RadioButton.init
+                        "simple"
+                        (text "Click me")
+                        NoOp
+                        |> RadioButton.withAppearance RadioButton.Simple
+                        |> RadioButton.view [ disabled True ]
+                    , RadioButton.init
+                        "simple"
+                        (text "Click me")
+                        NoOp
+                        |> RadioButton.withAppearance RadioButton.Simple
+                        |> RadioButton.withIsSelected True
+                        |> RadioButton.view [ disabled True ]
                     ]
           , {}
           )

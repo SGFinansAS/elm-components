@@ -1,7 +1,9 @@
 module Nordea.Components.Modal exposing
-    ( ViewConfig
-    , header
+    ( default
+    , newsModal
     , view
+    , withSubtitle
+    , withTitle
     )
 
 import Css
@@ -13,6 +15,7 @@ import Css
         , borderRadius
         , bottom
         , center
+        , color
         , column
         , displayFlex
         , fixed
@@ -29,11 +32,13 @@ import Css
         , outline
         , overflow
         , padding
+        , padding3
         , padding4
         , pct
         , position
         , rem
         , solid
+        , textAlign
         , top
         , zIndex
         )
@@ -45,19 +50,51 @@ import Html.Styled.Events as Events exposing (keyCode, on)
 import Json.Decode as Json
 import Nordea.Components.Button as NordeaButton
 import Nordea.Components.Text as Text
+import Nordea.Html exposing (viewMaybe)
 import Nordea.Resources.Colors as Colors
 import Nordea.Resources.Icons as Icons
 import Nordea.Themes as Themes
 
 
-type alias ViewConfig msg =
-    { onClickClose : msg
-    , title : String
+type Variant
+    = DefaultModal
+    | NewsModal
+
+
+type alias Config msg =
+    { variant : Variant
+    , onClickClose : msg
+    , title : Maybe String
+    , subtitle : Maybe String
     }
 
 
-view : ViewConfig msg -> List (Attribute msg) -> List (Html msg) -> Html msg
-view config attrs children =
+type Modal msg
+    = Modal (Config msg)
+
+
+init : msg -> Variant -> Modal msg
+init onClickClose variant =
+    Modal
+        { variant = variant
+        , onClickClose = onClickClose
+        , title = Nothing
+        , subtitle = Nothing
+        }
+
+
+default : msg -> Modal msg
+default msg =
+    init msg DefaultModal
+
+
+newsModal : msg -> Modal msg
+newsModal msg =
+    init msg NewsModal
+
+
+view : List (Attribute msg) -> List (Html msg) -> Modal msg -> Html msg
+view attrs children (Modal config) =
     let
         card =
             Html.div
@@ -77,7 +114,9 @@ view config attrs children =
                         ]
                     :: attrs
                 )
-                [ header config.onClickClose config.title, contentContainer [] children ]
+                [ header config.variant config.title config.onClickClose
+                , contentContainer config.variant config.title config.subtitle [] children
+                ]
     in
     Html.div
         [ onEscPress config.onClickClose
@@ -104,8 +143,8 @@ view config attrs children =
         [ card, disableScrollOnBody ]
 
 
-header : msg -> String -> Html msg
-header onClickMsg title =
+header : Variant -> Maybe String -> msg -> Html msg
+header variant title onClickMsg =
     let
         cross onClick =
             NordeaButton.tertiary
@@ -115,23 +154,65 @@ header onClickMsg title =
                         [ css [ Themes.color Themes.PrimaryColor Colors.blueDeep, Css.width (rem 1.385) ] ]
                     ]
     in
-    Html.div
-        [ css
-            [ padding4 (rem 1.5) (rem 1.5) (rem 1.5) (rem 2.5)
-            , alignItems center
-            , borderBottom3 (rem 0.0625) solid Colors.grayCool
-            , displayFlex
-            ]
-        ]
-        [ Text.headlineFourHeavy
-            |> Text.view [] [ Html.text title ]
-        , cross onClickMsg
-        ]
+    case variant of
+        DefaultModal ->
+            Html.div
+                [ css
+                    [ padding4 (rem 1.5) (rem 1.5) (rem 1.5) (rem 2.5)
+                    , alignItems center
+                    , borderBottom3 (rem 0.0625) solid Colors.grayCool
+                    , displayFlex
+                    ]
+                ]
+                [ title
+                    |> viewMaybe
+                        (\text ->
+                            Text.titleHeavy
+                                |> Text.view [] [ Html.text text ]
+                        )
+                , cross onClickMsg
+                ]
+
+        NewsModal ->
+            Html.div
+                [ css
+                    [ padding4 (rem 1) (rem 1.5) (rem 0) (rem 2.5)
+                    , alignItems center
+                    , displayFlex
+                    ]
+                ]
+                [ cross onClickMsg
+                ]
 
 
-contentContainer : List (Attribute msg) -> List (Html msg) -> Html msg
-contentContainer attrs children =
-    Html.div (css [ padding (rem 2.5), displayFlex, flexDirection column ] :: attrs) children
+contentContainer : Variant -> Maybe String -> Maybe String -> List (Attribute msg) -> List (Html msg) -> Html msg
+contentContainer variant title subTitle attrs children =
+    let
+        newsTitle =
+            Html.div []
+                [ subTitle
+                    |> viewMaybe
+                        (\text ->
+                            Text.textTinyLight
+                                |> Text.view [ css [ color Colors.nordeaGray ] ] [ Html.text text ]
+                        )
+                , title
+                    |> viewMaybe
+                        (\text ->
+                            Text.titleHeavy
+                                |> Text.view [ css [ padding3 (rem 0.5) (rem 0) (rem 2) ] ] [ Html.text text ]
+                        )
+                ]
+    in
+    case variant of
+        DefaultModal ->
+            Html.div (css [ padding (rem 2.5), displayFlex, flexDirection column ] :: attrs) children
+
+        NewsModal ->
+            Html.div (css [ padding4 (rem 0) (rem 2.5) (rem 3.5) (rem 2.5), displayFlex, flexDirection column, textAlign center ] :: attrs)
+                (newsTitle
+                    :: children
+                )
 
 
 disableScrollOnBody : Html msg
@@ -150,3 +231,13 @@ onEscPress msg =
                 Json.fail "not ESC"
     in
     on "keydown" (Json.andThen isEnter keyCode)
+
+
+withTitle : String -> Modal msg -> Modal msg
+withTitle title (Modal config) =
+    Modal { config | title = Just title }
+
+
+withSubtitle : String -> Modal msg -> Modal msg
+withSubtitle subtitle (Modal config) =
+    Modal { config | subtitle = Just subtitle }
