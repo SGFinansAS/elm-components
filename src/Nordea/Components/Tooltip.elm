@@ -129,39 +129,40 @@ view attrs children (Tooltip config) =
                     case config.placement of
                         Top ->
                             Css.batch
-                                [ bottom (rem -0.3125)
+                                [ bottom (rem -0.66)
                                 , left (pct 50)
-                                , transforms [ translateX (pct -50), rotate (deg 45) ]
+                                , transforms [ translateX (pct -50), rotate (deg 180) ]
                                 ]
 
                         Bottom ->
                             Css.batch
-                                [ top (rem -0.3125)
+                                [ top (rem -0.66)
                                 , left (pct 50)
-                                , transforms [ translateX (pct -50), rotate (deg 45) ]
+                                , transforms [ translateX (pct -50) ]
                                 ]
 
                         Left ->
                             Css.batch
-                                [ right (rem -0.3125)
+                                [ right (rem -0.66)
                                 , top (pct 50)
-                                , transforms [ translateY (pct -50), rotate (deg 45) ]
+                                , transforms [ translateY (pct -50), rotate (deg 90) ]
                                 ]
 
                         Right ->
                             Css.batch
-                                [ left (rem -0.3125)
+                                [ left (rem -0.66)
                                 , top (pct 50)
-                                , transforms [ translateY (pct -50), rotate (deg 45) ]
+                                , transforms [ translateY (pct -50), rotate (deg -90) ]
                                 ]
             in
             Html.div
                 (css
                     [ display block
                     , position absolute
+                    , Css.property "clip-path" "polygon(50% 20%, 100% 70%, 0 70%)"
                     , arrowPosition
-                    , width (rem 0.625)
-                    , height (rem 0.625)
+                    , width (rem 1)
+                    , height (rem 1)
                     , backgroundColor inherit
                     ]
                     :: arrowAttrs
