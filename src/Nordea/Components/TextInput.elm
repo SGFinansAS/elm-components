@@ -14,7 +14,40 @@ module Nordea.Components.TextInput exposing
     , withSmallSize
     )
 
-import Css exposing (Style, absolute, backgroundColor, border3, borderBox, borderRadius, boxSizing, color, disabled, displayFlex, focus, fontSize, height, left, none, num, opacity, outline, padding2, paddingLeft, pct, pointerEvents, position, relative, rem, right, solid, top, transform, translateY, width)
+import Css
+    exposing
+        ( Style
+        , absolute
+        , backgroundColor
+        , border3
+        , borderBox
+        , borderRadius
+        , boxSizing
+        , color
+        , disabled
+        , displayFlex
+        , focus
+        , fontSize
+        , height
+        , left
+        , none
+        , num
+        , opacity
+        , outline
+        , padding2
+        , paddingLeft
+        , pct
+        , pointerEvents
+        , position
+        , relative
+        , rem
+        , right
+        , solid
+        , top
+        , transform
+        , translateY
+        , width
+        )
 import Html.Styled as Html exposing (Attribute, Html, input, styled)
 import Html.Styled.Attributes exposing (css, maxlength, pattern, placeholder, value)
 import Html.Styled.Events exposing (keyCode, on, onBlur, onInput)
@@ -22,7 +55,7 @@ import Json.Decode as Json
 import Maybe.Extra as Maybe
 import Nordea.Components.Text as Text
 import Nordea.Css as NordeaCss
-import Nordea.Html exposing (styleIf)
+import Nordea.Html as Html exposing (styleIf)
 import Nordea.Resources.Colors as Colors
 import Nordea.Resources.Icons as Icons
 import Nordea.Themes as Themes
@@ -177,9 +210,7 @@ view attributes (TextInput config) =
 
     else
         Html.div
-            (css [ displayFlex, position relative ]
-                :: attributes
-            )
+            (css [ displayFlex, position relative ] :: attributes)
             [ styled input
                 (getStyles config)
                 (getAttributes config ++ attributes)
@@ -190,20 +221,23 @@ view attributes (TextInput config) =
 
 viewCurrency : Config msg -> Html msg
 viewCurrency config =
-    let
-        currency =
-            config.currency |> Maybe.withDefault "" |> String.slice 0 3 |> String.toUpper
-    in
-    Html.div
-        [ css
-            [ position absolute
-            , right (rem 0.7)
-            , top (pct 30)
-            ]
-        ]
-        [ Text.textHeavy
-            |> Text.view [] [ Html.text currency ]
-        ]
+    config.currency
+        |> Html.viewMaybe
+            (\currency ->
+                Text.textHeavy
+                    |> Text.view
+                        [ css
+                            [ position absolute
+                            , right (rem 0.7)
+                            , top (pct 30)
+                            ]
+                        ]
+                        [ currency
+                            |> String.slice 0 3
+                            |> String.toUpper
+                            |> Html.text
+                        ]
+            )
 
 
 getAttributes : Config msg -> List (Attribute msg)

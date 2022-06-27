@@ -15,25 +15,19 @@ module Nordea.Components.Dropdown exposing
 import Css
     exposing
         ( absolute
-        , alignItems
         , backgroundColor
         , border3
         , borderColor
         , borderRadius
-        , borderStyle
-        , center
         , color
-        , displayFlex
         , focus
         , fontFamilies
         , fontSize
         , height
-        , hidden
         , inherit
         , lineHeight
         , none
         , outline
-        , overflow
         , padding4
         , paddingRight
         , pct
@@ -198,17 +192,7 @@ view attrs (Dropdown config) =
                     NordeaCss.smallInputHeight
     in
     div
-        (css
-            [ displayFlex
-            , position relative
-            , border3 (rem 0.0625) solid Colors.grayMedium |> styleIf (config.variant /= Simple || config.hasError)
-            , borderColor Colors.redDark |> styleIf config.hasError
-            , borderRadius (rem 0.25)
-            , alignItems center
-            , overflow hidden
-            ]
-            :: attrs
-        )
+        (css [ position relative ] :: attrs)
         [ Html.select
             [ Events.on "change" decoder
             , Attrs.disabled isDisabled
@@ -221,7 +205,9 @@ view attrs (Dropdown config) =
                 , backgroundColor transparent
                 , padding4 (rem 0.5) (rem 2) (rem 0.5) (rem 1)
                 , paddingRight (rem 3) |> styleIf (config.variant /= Simple)
-                , borderStyle none
+                , border3 (rem 0.0625) solid Colors.grayMedium |> styleIf (config.variant /= Simple || config.hasError)
+                , borderColor Colors.redDark |> styleIf config.hasError
+                , borderRadius (rem 0.25)
                 , focus
                     [ Css.property "box-shadow" ("0rem 0rem 0rem 0.0625rem " ++ Themes.colorVariable Themes.SecondaryColor Colors.blueNordea)
                     , outline none
@@ -241,7 +227,7 @@ view attrs (Dropdown config) =
                         [ position absolute
                         , top (pct 50)
                         , transform (translateY (pct -50))
-                        , right (rem 0.25)
+                        , right (rem 0.3125)
                         , pointerEvents none
                         , color Colors.grayCool
                         ]

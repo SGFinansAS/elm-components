@@ -13,30 +13,24 @@ import Css
         ( absolute
         , alignItems
         , backgroundColor
-        , block
-        , border3
         , borderBottom3
         , borderBottomLeftRadius
         , borderBottomRightRadius
         , borderBox
-        , borderColor
         , borderLeft3
-        , borderRadius4
         , borderRight3
-        , boxShadow5
         , boxSizing
         , center
         , color
+        , column
         , cursor
-        , display
+        , deg
         , displayFlex
-        , focus
+        , flexDirection
         , fontSize
         , fontWeight
         , height
         , hover
-        , inherit
-        , inset
         , int
         , justifyContent
         , lineHeight
@@ -45,32 +39,34 @@ import Css
         , margin2
         , maxHeight
         , none
-        , outline
         , overflowY
         , padding
         , padding3
-        , padding4
         , paddingRight
         , pct
         , pointer
+        , pointerEvents
         , position
         , relative
         , rem
         , right
+        , rotate
         , scroll
         , solid
         , top
-        , transform
+        , transforms
         , translateY
         , width
         )
+import Css.Global exposing (descendants, typeSelector)
 import Html.Events.Extra as Events
 import Html.Styled as Html exposing (Html)
-import Html.Styled.Attributes as Attrs exposing (css, tabindex, type_, value)
+import Html.Styled.Attributes as Attrs exposing (css, tabindex, value)
 import Html.Styled.Events as Events
 import Json.Decode as Decode
 import Maybe.Extra as Maybe
 import Nordea.Components.Spinner as Spinner
+import Nordea.Components.TextInput as TextInput
 import Nordea.Components.Tooltip as Tooltip
 import Nordea.Html as Html exposing (styleIf)
 import Nordea.Resources.Colors as Colors
@@ -107,11 +103,6 @@ type DropdownFilter a msg
     = DropdownFilter (DropdownFilterProperties a msg)
 
 
-{-| Default Options, will give you empty dropdown with no empty item
-
-  - TODO handle isSearching - use with RemoteData to show that new data is loading
-
--}
 init : (String -> msg) -> (Item a -> msg) -> List (ItemGroup a) -> String -> msg -> DropdownFilter a msg
 init onSearchInput onSelectValue searchItems rawInputString onClickClearInput =
     DropdownFilter
@@ -150,6 +141,18 @@ view attrs (DropdownFilter config) =
 
         showHasNoMatch =
             config.rawInputString /= "" && List.isEmpty searchMatches
+
+        dropdownStyles =
+            Css.batch
+                [ backgroundColor Colors.white
+                , borderBottom3 (rem 0.0625) solid Colors.grayMedium
+                , borderLeft3 (rem 0.0625) solid Colors.grayMedium
+                , borderRight3 (rem 0.0625) solid Colors.grayMedium
+                , borderBottomLeftRadius (rem 0.25)
+                , borderBottomRightRadius (rem 0.25)
+                , boxSizing borderBox
+                , padding3 (rem 0.1875) (rem 0.0625) (rem 0.75)
+                ]
     in
     Tooltip.init
         |> Tooltip.withPlacement Tooltip.Bottom
@@ -165,16 +168,12 @@ view attrs (DropdownFilter config) =
                 if config.isLoading then
                     Html.div
                         [ css
-                            [ displayFlex
+                            [ height (rem 8)
+                            , displayFlex
+                            , flexDirection column
                             , justifyContent center
+                            , dropdownStyles
                             , alignItems center
-                            , height (rem 8)
-                            , backgroundColor Colors.white
-                            , borderBottom3 (rem 0.0625) solid Colors.grayMedium
-                            , borderLeft3 (rem 0.0625) solid Colors.grayMedium
-                            , borderRight3 (rem 0.0625) solid Colors.grayMedium
-                            , borderBottomLeftRadius (rem 0.25)
-                            , borderBottomRightRadius (rem 0.25)
                             ]
                         ]
                         [ Spinner.small [] ]
@@ -182,19 +181,11 @@ view attrs (DropdownFilter config) =
                 else
                     Html.ul
                         [ css
-                            [ display block
-                            , margin (rem 0)
+                            [ margin (rem 0)
                             , overflowY scroll
                             , maxHeight (rem 16.75)
                             , listStyle none
-                            , boxSizing borderBox
-                            , padding3 (rem 0.1875) (rem 0.0625) (rem 0.75)
-                            , backgroundColor Colors.white
-                            , borderBottom3 (rem 0.0625) solid Colors.grayMedium
-                            , borderLeft3 (rem 0.0625) solid Colors.grayMedium
-                            , borderRight3 (rem 0.0625) solid Colors.grayMedium
-                            , borderBottomLeftRadius (rem 0.25)
-                            , borderBottomRightRadius (rem 0.25)
+                            , dropdownStyles
                             ]
                         ]
                         searchMatches
@@ -223,60 +214,54 @@ view attrs (DropdownFilter config) =
 inputSearchView : Bool -> Bool -> String -> (String -> msg) -> msg -> Html msg
 inputSearchView hasError hasFocus searchString onInput onClickClearInput =
     Html.div
-        [ css
-            [ displayFlex
-            , position relative
-            ]
-        ]
-        [ Html.input
-            [ type_ "text"
-            , Events.onInput onInput
-            , value searchString
-            , css
-                [ padding4 (rem 0.25) (rem 0.25) (rem 0.25) (rem 1)
-                , border3 (rem 0.0625) solid Colors.grayMedium
-                , borderColor Colors.redDark |> styleIf hasError
-                , width (pct 100)
-                , boxSizing borderBox
-                , backgroundColor Colors.white
-                , focus
-                    [ backgroundColor Colors.grayCool
-                    , outline none
-                    , border3 (rem 0.0625) solid Colors.blueNordea
+        [ css [ position relative ] ]
+        [ TextInput.init searchString
+            |> TextInput.withError hasError
+            |> TextInput.withOnInput onInput
+            |> TextInput.view
+                [ css
+                    [ width (pct 100)
+                    , borderBottomLeftRadius (pct 0) |> Css.important |> styleIf hasFocus
+                    , borderBottomRightRadius (pct 0) |> Css.important |> styleIf hasFocus
+                    , descendants [ typeSelector "input" [ paddingRight (rem 3) ] ]
                     ]
-                , if hasFocus then
-                    borderRadius4 (rem 0.25) (rem 0.25) (rem 0) (rem 0)
-
-                  else
-                    borderRadius4 (rem 0.25) (rem 0.25) (rem 0.25) (rem 0.25)
-                , boxShadow5 inset (rem 0) (rem -0.0625) (rem 0) Colors.grayLight
-                , height (rem 3)
-                , paddingRight (rem 2)
                 ]
-            ]
-            []
-        , let
-            attributes =
+        , if String.length searchString > 0 then
+            Icon.cross
+                [ Events.onClick onClickClearInput
+                , css
+                    [ position absolute
+                    , top (pct 50)
+                    , right (rem 0.75)
+                    , transforms [ translateY (pct -50) ]
+                    , width (rem 1.125)
+                    , cursor pointer
+                    ]
+                ]
+
+          else if hasFocus then
+            Icon.chevronDownFilled
                 [ css
                     [ position absolute
                     , top (pct 50)
-                    , transform (translateY (pct -50))
-                    , right (rem 0.75)
-                    , width (rem 1.125) |> Css.important
-                    , height (rem 1.125)
-                    , cursor pointer
-                    , color inherit
+                    , right (rem 0.3125)
+                    , transforms [ translateY (pct -50), rotate (deg 180) ]
+                    , pointerEvents none
+                    , color Colors.grayCool
                     ]
                 ]
-          in
-          if String.length searchString > 0 then
-            Icon.cross (attributes ++ [ Events.onClick onClickClearInput, css [ width (rem 1.385) ] ])
-
-          else if hasFocus then
-            Icon.chevronUp attributes
 
           else
-            Icon.chevronDown attributes
+            Icon.chevronDownFilled
+                [ css
+                    [ position absolute
+                    , top (pct 50)
+                    , right (rem 0.3125)
+                    , transforms [ translateY (pct -50) ]
+                    , pointerEvents none
+                    , color Colors.grayCool
+                    ]
+                ]
         ]
 
 
