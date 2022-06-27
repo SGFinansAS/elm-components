@@ -19,6 +19,7 @@ import Css
         , border3
         , borderColor
         , borderRadius
+        , borderStyle
         , color
         , focus
         , fontFamilies
@@ -209,7 +210,7 @@ view attrs (Dropdown config) =
                     border3 (rem 0.0625) solid Colors.grayMedium
 
                   else
-                    border none
+                    borderStyle none
                 , borderColor Colors.redDark |> styleIf config.hasError
                 , borderRadius (rem 0.25)
                 , focus
