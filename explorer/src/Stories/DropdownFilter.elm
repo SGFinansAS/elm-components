@@ -57,7 +57,7 @@ stories =
                             SearchComponentInput
                             SearchComponentSelected
                             searchResult
-                            (Maybe.withDefault "" model.customModel.searchComponentInput)
+                            model.customModel.searchComponentInput
                             OnClickClearSearchComponentInput
                 in
                 Html.div [ css [ displayFlex, flexDirection column ] ]
@@ -75,7 +75,7 @@ stories =
                             SearchComponentInput
                             SearchComponentSelected
                             removedGroups
-                            (Maybe.withDefault "" model.customModel.searchComponentInput)
+                            model.customModel.searchComponentInput
                             OnClickClearSearchComponentInput
                             |> DropdownFilter.withHasFocus True
                 in
@@ -91,7 +91,7 @@ stories =
                             SearchComponentInput
                             SearchComponentSelected
                             searchResult
-                            (Maybe.withDefault "" model.customModel.searchComponentInput)
+                            model.customModel.searchComponentInput
                             OnClickClearSearchComponentInput
                             |> DropdownFilter.withHasFocus model.customModel.searchHasFocus
                             |> DropdownFilter.withOnFocus SearchComponentFocus
@@ -108,7 +108,7 @@ stories =
                             SearchComponentInput
                             SearchComponentSelected
                             searchResult
-                            (Maybe.withDefault "" model.customModel.searchComponentInput)
+                            model.customModel.searchComponentInput
                             OnClickClearSearchComponentInput
                             |> DropdownFilter.withIsLoading True
                             |> DropdownFilter.withHasFocus True

@@ -17,7 +17,7 @@ type FinancingVariant
 type alias Config =
     { accordion : Accordion
     , isModalOpen : Bool
-    , searchComponentInput : Maybe String
+    , searchComponentInput : String
     , searchHasFocus : Bool
     , isFeatureBoxOpen : Bool
     , isProgressBarCompleted : Bool
@@ -61,7 +61,7 @@ init =
                 , body = [ Html.text "This is an answer" ]
                 , open = False
                 }
-    , searchComponentInput = Nothing
+    , searchComponentInput = ""
     , searchHasFocus = False
     , isModalOpen = True
     , isFeatureBoxOpen = True
@@ -87,11 +87,11 @@ update msg config =
             { config | infoLabel = InfoLabel.update m config.infoLabel }
 
         SearchComponentInput input ->
-            { config | searchComponentInput = Just input }
+            { config | searchComponentInput = input }
 
         SearchComponentSelected item ->
             { config
-                | searchComponentInput = Just item.text
+                | searchComponentInput = item.text
                 , searchHasFocus = False
             }
 
@@ -99,11 +99,7 @@ update msg config =
             { config | searchHasFocus = value }
 
         OnClickClearSearchComponentInput ->
-            let
-                emptySearchString =
-                    config.searchComponentInput |> Maybe.map (\_ -> "")
-            in
-            { config | searchComponentInput = emptySearchString }
+            { config | searchComponentInput = "" }
 
         NoOp ->
             config

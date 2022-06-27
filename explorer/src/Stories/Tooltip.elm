@@ -13,6 +13,7 @@ import Css
         , position
         , relative
         , rem
+        , scroll
         , width
         )
 import Html.Styled exposing (div, text)
@@ -127,7 +128,7 @@ stories =
                                                 ]
                                             ]
                                             [ arrow []
-                                            , div [ css [ overflowY Css.scroll ] ] [ text lorem ]
+                                            , div [ css [ overflowY scroll ] ] [ text lorem ]
                                             ]
                                 )
                             |> Tooltip.view [] [ Icons.questionMark [ css [ marginLeft (rem 0.25) ] ] ]
@@ -149,7 +150,7 @@ stories =
                                                 ]
                                             ]
                                             [ arrow []
-                                            , div [ css [ overflowY Css.scroll ] ] [ text lorem ]
+                                            , div [ css [ overflowY scroll ] ] [ text lorem ]
                                             ]
                                 )
                             |> Tooltip.view [] [ Icons.questionMark [ css [ marginLeft (rem 0.25) ] ] ]
