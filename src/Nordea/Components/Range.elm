@@ -8,29 +8,8 @@ module Nordea.Components.Range exposing
 
 -- CONFIG
 
-import Css
-    exposing
-        ( Style
-        , backgroundColor
-        , borderRadius
-        , cursor
-        , displayFlex
-        , flexDirection
-        , height
-        , justifyContent
-        , margin2
-        , marginTop
-        , pct
-        , pointer
-        , property
-        , pseudoElement
-        , rem
-        , row
-        , spaceBetween
-        , transparent
-        , width
-        )
-import Html.Styled as Html exposing (Attribute, Html, div, input, span)
+import Css exposing (Style, backgroundColor, borderRadius, cursor, displayFlex, flexDirection, height, justifyContent, listStyle, margin2, marginTop, none, padding, pct, pointer, property, pseudoElement, rem, row, spaceBetween, transparent, width)
+import Html.Styled as Html exposing (Attribute, Html, div, input, li, ol)
 import Html.Styled.Attributes as Attrs exposing (css, name, step, type_, value)
 import Html.Styled.Events as Events exposing (onInput, targetValue)
 import Json.Decode as Decode
@@ -102,10 +81,20 @@ view attributes (Range config) =
             , css [ sliderStyle (Range config) ]
             ]
             []
-        , showIf config.showInterval
-            (div [ css [ displayFlex, flexDirection row, justifyContent spaceBetween, margin2 (rem 1) (rem 0.25) ] ]
-                (List.range (config.min |> ceiling) (config.max |> ceiling) |> List.map (\number -> span [] [ Html.text (String.fromInt number) ]))
+        , ol
+            [ css
+                [ displayFlex
+                , flexDirection row
+                , justifyContent spaceBetween
+                , margin2 (rem 1) (rem 0.25)
+                , listStyle none
+                , padding (rem 0)
+                ]
+            ]
+            (List.range (config.min |> ceiling) (config.max |> ceiling)
+                |> List.map (\number -> li [] [ Html.text (String.fromInt number) ])
             )
+            |> showIf config.showInterval
         ]
 
 
