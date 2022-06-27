@@ -10,9 +10,7 @@ module Nordea.Components.Slider exposing
 
 import Css
     exposing
-        ( alignItems
-        , center
-        , color
+        ( color
         , column
         , displayFlex
         , flex
@@ -20,10 +18,17 @@ import Css
         , int
         , marginBottom
         , rem
-        , row
         )
-import Html.Styled as Html exposing (Attribute, Html, div, label)
-import Html.Styled.Attributes exposing (css, for, name)
+import Html.Styled as Html
+    exposing
+        ( Attribute
+        , Html
+        , div
+        , fieldset
+        , label
+        , legend
+        )
+import Html.Styled.Attributes exposing (css)
 import Nordea.Components.NumberInput as NumberInput
 import Nordea.Components.Range as Range
 import Nordea.Components.Text as NordeaText
@@ -36,7 +41,7 @@ import Nordea.Resources.Colors as Colors
 
 
 type alias Config msg =
-    { value : Float
+    { value : String
     , min : Float
     , max : Float
     , step : Maybe Float
@@ -54,7 +59,7 @@ type Slider msg
     = Slider (Config msg)
 
 
-init : Float -> Float -> Float -> String -> String -> (String -> msg) -> Slider msg
+init : String -> Float -> Float -> String -> String -> (String -> msg) -> Slider msg
 init value min max labelString description onInput =
     Slider
         { value = value
@@ -97,25 +102,29 @@ withShowNumberInput value (Slider config) =
 
 view : List (Attribute msg) -> Slider msg -> Html msg
 view attributes (Slider config) =
-    div ([] ++ attributes)
-        [ div [ css [ displayFlex, flexDirection row, marginBottom (rem 1), alignItems center ] ]
-            [ label [ for "rangeInput", css [ displayFlex, flexDirection column, flex (int 3) ] ]
+    fieldset ([ css [ displayFlex, flexDirection column ] ] ++ attributes)
+        [ div [ css [ displayFlex, marginBottom (rem 0.5) ] ]
+            [ legend [ css [ flex (int 3) ] ]
                 [ NordeaText.textSmallLight
                     |> NordeaText.view [] [ Html.text config.labelString ]
                 , NordeaText.textTinyLight
                     |> NordeaText.view [ css [ color Colors.grayNordea ] ] [ Html.text config.description ]
                 ]
-            , showIf config.showNumberInput
-                (NumberInput.init (config.value |> String.fromFloat)
-                    |> NumberInput.withMin config.min
-                    |> NumberInput.withMax config.max
-                    |> NumberInput.withStep (config.step |> Maybe.withDefault 1)
-                    |> NumberInput.withOnInput config.onInput
-                    |> NumberInput.withError (config.value > config.max || config.value < config.min)
-                    |> NumberInput.view [ name "rangeInput", css [ flex (int 1) ] ]
-                )
+            , label [ css [ flex (int 1) ] ]
+                [ showIf config.showNumberInput
+                    (NumberInput.init config.value
+                        |> NumberInput.withMin config.min
+                        |> NumberInput.withMax config.max
+                        |> NumberInput.withStep (config.step |> Maybe.withDefault 1)
+                        |> NumberInput.withOnInput config.onInput
+                        |> NumberInput.withError config.showError
+                        |> NumberInput.view []
+                    )
+                ]
             ]
-        , Range.init config.value config.min config.max config.onInput
-            |> Range.withShowInterval config.showInterval
-            |> Range.view []
+        , label [ css [ flex (int 1) ] ]
+            [ Range.init (config.value |> String.toFloat |> Maybe.withDefault 0) config.min config.max (String.fromFloat >> config.onInput)
+                |> Range.withShowInterval config.showInterval
+                |> Range.view []
+            ]
         ]

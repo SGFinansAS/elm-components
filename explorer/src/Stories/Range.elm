@@ -12,13 +12,13 @@ stories =
         "Range"
         [ ( "Simple"
           , \model ->
-                Range.init model.customModel.sliderInputValue 1 10 SliderMsg
+                Range.init model.customModel.rangeInputValue 1 10 RangeMsg
                     |> Range.view []
           , {}
           )
         , ( "With Interval"
           , \model ->
-                Range.init model.customModel.sliderInputValue 1 10 SliderMsg
+                Range.init model.customModel.rangeInputValue 1 10 RangeMsg
                     |> Range.withShowInterval True
                     |> Range.view []
           , {}

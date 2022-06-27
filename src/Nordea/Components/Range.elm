@@ -31,8 +31,9 @@ import Css
         , width
         )
 import Html.Styled as Html exposing (Attribute, Html, div, input, span)
-import Html.Styled.Attributes exposing (css, name, type_)
-import Html.Styled.Events exposing (onInput)
+import Html.Styled.Attributes as Attrs exposing (css, name, step, type_, value)
+import Html.Styled.Events as Events exposing (onInput, targetValue)
+import Json.Decode as Decode
 import Nordea.Html exposing (showIf)
 import Nordea.Resources.Colors as Colors
 import Nordea.Themes as Themes
@@ -43,7 +44,7 @@ type alias Config msg =
     , min : Float
     , max : Float
     , step : Maybe Float
-    , onInput : String -> msg
+    , onInput : Float -> msg
     , showInterval : Bool
     }
 
@@ -52,7 +53,7 @@ type Range msg
     = Range (Config msg)
 
 
-init : Float -> Float -> Float -> (String -> msg) -> Range msg
+init : Float -> Float -> Float -> (Float -> msg) -> Range msg
 init value min max onInput =
     Range
         { value = value
@@ -75,15 +76,29 @@ withShowInterval value (Range config) =
 
 view : List (Attribute msg) -> Range msg -> Html msg
 view attributes (Range config) =
+    let
+        decoder =
+            targetValue
+                |> Decode.andThen
+                    (\val ->
+                        case val |> String.toFloat of
+                            Nothing ->
+                                Decode.fail "1"
+
+                            Just tag ->
+                                Decode.succeed tag
+                    )
+                |> Decode.map config.onInput
+    in
     div attributes
         [ input
             [ name "rangeInput"
             , type_ "range"
-            , Html.Styled.Attributes.value (config.value |> String.fromFloat)
-            , Html.Styled.Attributes.min (config.min |> String.fromFloat)
-            , Html.Styled.Attributes.max (config.max |> String.fromFloat)
-            , Html.Styled.Attributes.step (config.step |> Maybe.map String.fromFloat |> Maybe.withDefault "1")
-            , config.onInput |> onInput
+            , value (config.value |> String.fromFloat)
+            , Attrs.min (config.min |> String.fromFloat)
+            , Attrs.max (config.max |> String.fromFloat)
+            , step (config.step |> Maybe.map String.fromFloat |> Maybe.withDefault "1")
+            , Events.on "input" decoder
             , css [ sliderStyle (Range config) ]
             ]
             []
@@ -112,7 +127,7 @@ sliderStyle (Range config) =
             , width (rem 1.5)
             , height (rem 1.5)
             , borderRadius (pct 100)
-            , Themes.backgroundColor Themes.SecondaryColor Colors.blueDeep
+            , Themes.backgroundColor Themes.PrimaryColor Colors.blueDeep
             , marginTop (rem -0.625)
             ]
 
@@ -123,10 +138,10 @@ sliderStyle (Range config) =
             , backgroundColor transparent
             ]
         , pseudoElement "-moz-range-thumb"
-            [ width (rem 1.25)
-            , height (rem 1.25)
+            [ width (rem 1.5)
+            , height (rem 1.5)
             , borderRadius (pct 100)
-            , Themes.backgroundColor Themes.SecondaryColor Colors.blueDeep
+            , Themes.backgroundColor Themes.PrimaryColor Colors.blueDeep
             , marginTop (rem -0.625)
             ]
         , adjustSlider (Range config)
@@ -148,6 +163,4 @@ adjustSlider (Range config) =
         gradientValue =
             "linear-gradient(to right," ++ nordeaBlue ++ " 0% " ++ visibleWidth ++ "%, " ++ cloudBlue ++ " " ++ visibleWidth ++ "%" ++ " 100% )"
     in
-    Css.batch
-        [ property "background" gradientValue
-        ]
+    property "background" gradientValue
