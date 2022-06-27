@@ -7,7 +7,38 @@ module Nordea.Components.Hamburger exposing
     , withText
     )
 
-import Css exposing (Color, backgroundColor, block, boxShadow, color, deg, display, focus, fontSize, fontWeight, height, hover, int, lastChild, marginBottom, marginLeft, none, normal, opacity, paddingLeft, paddingRight, rem, rotate, scale2, textDecoration, transforms, translate2, underline, width)
+import Css
+    exposing
+        ( Color
+        , backgroundColor
+        , block
+        , boxShadow
+        , color
+        , deg
+        , display
+        , focus
+        , fontSize
+        , fontWeight
+        , height
+        , hover
+        , int
+        , lastChild
+        , marginBottom
+        , marginLeft
+        , none
+        , normal
+        , opacity
+        , paddingLeft
+        , paddingRight
+        , rem
+        , rotate
+        , scale2
+        , textDecoration
+        , transforms
+        , translate2
+        , underline
+        , width
+        )
 import Css.Transitions as Transitions
 import Html.Styled exposing (Html, span, styled, text)
 import Html.Styled.Attributes exposing (css)
