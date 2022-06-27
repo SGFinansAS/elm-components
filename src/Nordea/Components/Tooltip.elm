@@ -13,6 +13,7 @@ module Nordea.Components.Tooltip exposing
 import Css
     exposing
         ( absolute
+        , active
         , animationDuration
         , animationName
         , backgroundColor
@@ -29,6 +30,7 @@ import Css
         , height
         , hover
         , inherit
+        , inlineFlex
         , int
         , left
         , maxWidth
@@ -37,6 +39,7 @@ import Css
         , padding2
         , pct
         , position
+        , pseudoClass
         , relative
         , rem
         , rgba
@@ -49,12 +52,14 @@ import Css
         , translateX
         , translateY
         , width
+        , zIndex
         , zero
         )
 import Css.Animations as Animations exposing (keyframes)
 import Css.Global exposing (class, descendants)
 import Html.Styled as Html exposing (Attribute, Html)
 import Html.Styled.Attributes as Attr exposing (css)
+import Nordea.Html exposing (styleIf)
 import Nordea.Resources.Colors as Colors
 
 
@@ -110,8 +115,8 @@ withVisibility visibility (Tooltip config) =
     Tooltip { config | visibility = visibility }
 
 
-view : List (Html msg) -> Tooltip msg -> Html msg
-view children (Tooltip config) =
+view : List (Attribute msg) -> List (Html msg) -> Tooltip msg -> Html msg
+view attrs children (Tooltip config) =
     let
         arrow arrowAttrs =
             let
@@ -196,6 +201,8 @@ view children (Tooltip config) =
                     [ position absolute
                     , display none
                     , flexDirection column
+                    , zIndex (int 10)
+                    , width (pct 100)
                     , tooltipPosition
                     , case config.visibility of
                         FadeOutMs duration ->
@@ -232,24 +239,24 @@ view children (Tooltip config) =
                             Css.batch []
                     ]
                 ]
-    in
-    Html.span
-        [ css
-            [ position relative
-            , hover
-                [ descendants
-                    [ class "tooltip"
-                        [ case config.visibility of
-                            OnHoverFocus ->
-                                displayFlex
 
-                            _ ->
-                                Css.batch []
-                        ]
-                    ]
-                ]
+        showTooltipOnHover =
+            class "tooltip" [ displayFlex ]
+    in
+    Html.div
+        (css
+            [ display inlineFlex
+            , flexDirection column
+            , position relative
+            , hover [ descendants [ showTooltipOnHover ] ]
+                |> styleIf (config.visibility == OnHoverFocus)
+            , active [ descendants [ showTooltipOnHover ] ]
+                |> styleIf (config.visibility == OnHoverFocus)
+            , pseudoClass "focus-within" [ descendants [ showTooltipOnHover ] ]
+                |> styleIf (config.visibility == OnHoverFocus)
             ]
-        ]
+            :: attrs
+        )
         (children ++ [ tooltipContainer [ config.content arrow ] ])
 
 

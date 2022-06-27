@@ -1,7 +1,9 @@
 module Stories.DropdownFilter exposing (stories)
 
 import Config exposing (Config, FinancingVariant(..), Msg(..))
+import Css exposing (column, displayFlex, flexDirection)
 import Html.Styled as Html
+import Html.Styled.Attributes exposing (css)
 import Nordea.Components.DropdownFilter as DropdownFilter
 import UIExplorer exposing (UI)
 import UIExplorer.Styled exposing (styledStoriesOf)
@@ -58,9 +60,8 @@ stories =
                             (Maybe.withDefault "" model.customModel.searchComponentInput)
                             OnClickClearSearchComponentInput
                 in
-                DropdownFilter.view
-                    defaultOptions
-                    []
+                Html.div [ css [ displayFlex, flexDirection column ] ]
+                    [ DropdownFilter.view [] defaultOptions ]
           , {}
           )
         , ( "focused without group"
@@ -76,11 +77,10 @@ stories =
                             removedGroups
                             (Maybe.withDefault "" model.customModel.searchComponentInput)
                             OnClickClearSearchComponentInput
-                            |> DropdownFilter.withFocusState True
+                            |> DropdownFilter.withHasFocus True
                 in
-                DropdownFilter.view
-                    defaultOptions
-                    []
+                Html.div [ css [ displayFlex, flexDirection column ] ]
+                    [ DropdownFilter.view [] defaultOptions ]
           , {}
           )
         , ( "interactive with focus"
@@ -93,12 +93,28 @@ stories =
                             searchResult
                             (Maybe.withDefault "" model.customModel.searchComponentInput)
                             OnClickClearSearchComponentInput
-                            |> DropdownFilter.withFocusHandling "explorer" model.customModel.searchHasFocus SearchComponentFocus
+                            |> DropdownFilter.withHasFocus model.customModel.searchHasFocus
+                            |> DropdownFilter.withOnFocus SearchComponentFocus
                 in
-                Html.div []
-                    [ DropdownFilter.view defaultOptions []
-                    , Html.text "Some text"
-                    ]
+                Html.div [ css [ displayFlex, flexDirection column ] ]
+                    [ DropdownFilter.view [] defaultOptions ]
+          , {}
+          )
+        , ( "Loading"
+          , \model ->
+                let
+                    defaultOptions =
+                        DropdownFilter.init
+                            SearchComponentInput
+                            SearchComponentSelected
+                            searchResult
+                            (Maybe.withDefault "" model.customModel.searchComponentInput)
+                            OnClickClearSearchComponentInput
+                            |> DropdownFilter.withIsLoading True
+                            |> DropdownFilter.withHasFocus True
+                in
+                Html.div [ css [ displayFlex, flexDirection column ] ]
+                    [ DropdownFilter.view [] defaultOptions ]
           , {}
           )
         , ( "interactive with async"

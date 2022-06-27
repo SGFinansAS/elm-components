@@ -5,14 +5,15 @@ import Css
         ( alignItems
         , center
         , displayFlex
+        , height
+        , marginBottom
         , marginLeft
         , marginTop
-        , maxHeight
-        , maxWidth
         , overflowY
         , position
         , relative
         , rem
+        , width
         )
 import Html.Styled exposing (div, text)
 import Html.Styled.Attributes exposing (css)
@@ -34,7 +35,7 @@ stories =
                     , Tooltip.init
                         |> Tooltip.withPlacement Top
                         |> Tooltip.withContent (Tooltip.infoTooltip [] [ text "This is a tooltip" ])
-                        |> Tooltip.view [ text "here" ]
+                        |> Tooltip.view [] [ text "here" ]
                     ]
           , {}
           )
@@ -45,7 +46,7 @@ stories =
                     , Tooltip.init
                         |> Tooltip.withPlacement Bottom
                         |> Tooltip.withContent (Tooltip.infoTooltip [] [ text "This is a tooltip" ])
-                        |> Tooltip.view [ text "here" ]
+                        |> Tooltip.view [] [ text "here" ]
                     ]
           , {}
           )
@@ -56,7 +57,7 @@ stories =
                     , Tooltip.init
                         |> Tooltip.withPlacement Left
                         |> Tooltip.withContent (Tooltip.infoTooltip [] [ text "This is a tooltip" ])
-                        |> Tooltip.view [ text "here" ]
+                        |> Tooltip.view [] [ text "here" ]
                     ]
           , {}
           )
@@ -67,7 +68,7 @@ stories =
                     , Tooltip.init
                         |> Tooltip.withPlacement Right
                         |> Tooltip.withContent (Tooltip.infoTooltip [] [ text "This is a tooltip" ])
-                        |> Tooltip.view [ text "here" ]
+                        |> Tooltip.view [] [ text "here" ]
                     ]
           , {}
           )
@@ -78,7 +79,7 @@ stories =
                     , Tooltip.init
                         |> Tooltip.withPlacement Right
                         |> Tooltip.withContent (Tooltip.infoTooltip [] [ text "This is a tooltip" ])
-                        |> Tooltip.view [ Icons.questionMark [ css [ marginLeft (rem 0.25) ] ] ]
+                        |> Tooltip.view [] [ Icons.questionMark [ css [ marginLeft (rem 0.25) ] ] ]
                     ]
           , {}
           )
@@ -90,7 +91,7 @@ stories =
                         |> Tooltip.withVisibility (FadeOutMs 3000)
                         |> Tooltip.withPlacement Right
                         |> Tooltip.withContent (Tooltip.infoTooltip [] [ text "This is a tooltip" ])
-                        |> Tooltip.view [ Icons.questionMark [ css [ marginLeft (rem 0.25) ] ] ]
+                        |> Tooltip.view [] [ Icons.questionMark [ css [ marginLeft (rem 0.25) ] ] ]
                     ]
           , {}
           )
@@ -102,33 +103,57 @@ stories =
                         |> Tooltip.withVisibility (FadeOutMs 5000)
                         |> Tooltip.withPlacement Right
                         |> Tooltip.withContent (Tooltip.infoTooltip [] [ text "This is a tooltip" ])
-                        |> Tooltip.view [ Icons.questionMark [ css [ marginLeft (rem 0.25) ] ] ]
+                        |> Tooltip.view [] [ Icons.questionMark [ css [ marginLeft (rem 0.25) ] ] ]
                     ]
           , {}
           )
         , ( "Card"
           , \_ ->
                 div []
-                    [ text "There is a tooltip "
-                    , Tooltip.init
-                        |> Tooltip.withPlacement Bottom
-                        |> Tooltip.withContent
-                            (\arrow ->
-                                Card.init
-                                    |> Card.withShadow
-                                    |> Card.view
-                                        [ css
-                                            [ maxHeight (rem 19)
-                                            , maxWidth (rem 19)
-                                            , marginTop (rem 1)
-                                            , position relative
+                    [ div [ css [ marginBottom (rem 10) ] ]
+                        [ text "There is a bottom tooltip "
+                        , Tooltip.init
+                            |> Tooltip.withPlacement Bottom
+                            |> Tooltip.withContent
+                                (\arrow ->
+                                    Card.init
+                                        |> Card.withShadow
+                                        |> Card.view
+                                            [ css
+                                                [ height (rem 18)
+                                                , width (rem 18)
+                                                , marginTop (rem 1)
+                                                , position relative
+                                                ]
                                             ]
-                                        ]
-                                        [ arrow []
-                                        , div [ css [ overflowY Css.scroll ] ] [ text lorem ]
-                                        ]
-                            )
-                        |> Tooltip.view [ Icons.questionMark [ css [ marginLeft (rem 0.25) ] ] ]
+                                            [ arrow []
+                                            , div [ css [ overflowY Css.scroll ] ] [ text lorem ]
+                                            ]
+                                )
+                            |> Tooltip.view [] [ Icons.questionMark [ css [ marginLeft (rem 0.25) ] ] ]
+                        ]
+                    , div []
+                        [ text "There is a right tooltip "
+                        , Tooltip.init
+                            |> Tooltip.withPlacement Right
+                            |> Tooltip.withContent
+                                (\arrow ->
+                                    Card.init
+                                        |> Card.withShadow
+                                        |> Card.view
+                                            [ css
+                                                [ height (rem 18)
+                                                , width (rem 18)
+                                                , marginLeft (rem 1)
+                                                , position relative
+                                                ]
+                                            ]
+                                            [ arrow []
+                                            , div [ css [ overflowY Css.scroll ] ] [ text lorem ]
+                                            ]
+                                )
+                            |> Tooltip.view [] [ Icons.questionMark [ css [ marginLeft (rem 0.25) ] ] ]
+                        ]
                     ]
           , {}
           )
