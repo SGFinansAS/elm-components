@@ -205,7 +205,11 @@ view attrs (Dropdown config) =
                 , backgroundColor transparent
                 , padding4 (rem 0.5) (rem 2) (rem 0.5) (rem 1)
                 , paddingRight (rem 3) |> styleIf (config.variant /= Simple)
-                , border3 (rem 0.0625) solid Colors.grayMedium |> styleIf (config.variant /= Simple || config.hasError)
+                , if config.variant /= Simple || config.hasError then
+                    border3 (rem 0.0625) solid Colors.grayMedium
+
+                  else
+                    border none
                 , borderColor Colors.redDark |> styleIf config.hasError
                 , borderRadius (rem 0.25)
                 , focus
