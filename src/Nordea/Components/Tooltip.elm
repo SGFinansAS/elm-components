@@ -33,7 +33,12 @@ import Css
         , inlineFlex
         , int
         , left
+        , marginBottom
+        , marginLeft
+        , marginRight
+        , marginTop
         , maxWidth
+        , minWidth
         , ms
         , none
         , padding2
@@ -202,7 +207,7 @@ view attrs children (Tooltip config) =
                     , display none
                     , flexDirection column
                     , zIndex (int 10)
-                    , width (pct 100)
+                    , minWidth (pct 100)
                     , tooltipPosition
                     , case config.visibility of
                         FadeOutMs duration ->
@@ -254,6 +259,22 @@ view attrs children (Tooltip config) =
                 |> styleIf (config.visibility == OnHoverFocus)
             , pseudoClass "focus-within" [ descendants [ showTooltipOnHover ] ]
                 |> styleIf (config.visibility == OnHoverFocus)
+            , descendants
+                [ class "tooltip-content-default-margin"
+                    [ case config.placement of
+                        Top ->
+                            marginBottom (rem 1)
+
+                        Bottom ->
+                            marginTop (rem 1)
+
+                        Left ->
+                            marginRight (rem 1)
+
+                        Right ->
+                            marginLeft (rem 1)
+                    ]
+                ]
             ]
             :: attrs
         )
@@ -263,7 +284,8 @@ view attrs children (Tooltip config) =
 infoTooltip : List (Attribute msg) -> List (Html msg) -> (List (Attribute msg) -> Html msg) -> Html msg
 infoTooltip attrs children arrow =
     Html.div
-        (css
+        ([ Attr.class "tooltip-content-default-margin"
+         , css
             [ backgroundColor Colors.grayDarkest
             , color Colors.white
             , padding2 (rem 0.5) (rem 1)
@@ -273,6 +295,7 @@ infoTooltip attrs children arrow =
             , maxWidth (rem 20)
             , position relative
             ]
-            :: attrs
+         ]
+            ++ attrs
         )
         (arrow [] :: children)
