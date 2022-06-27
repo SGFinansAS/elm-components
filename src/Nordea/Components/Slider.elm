@@ -8,7 +8,20 @@ module Nordea.Components.Slider exposing
     , withStep
     )
 
-import Css exposing (border, color, column, displayFlex, flex, flexDirection, int, margin, marginBottom, padding, rem)
+import Css
+    exposing
+        ( border
+        , color
+        , column
+        , displayFlex
+        , flex
+        , flexDirection
+        , int
+        , margin
+        , marginBottom
+        , padding
+        , rem
+        )
 import Html.Styled as Html
     exposing
         ( Attribute
