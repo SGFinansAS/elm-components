@@ -10,13 +10,16 @@ module Nordea.Components.Slider exposing
 
 import Css
     exposing
-        ( color
+        ( border
+        , color
         , column
         , displayFlex
         , flex
         , flexDirection
         , int
+        , margin
         , marginBottom
+        , padding
         , rem
         )
 import Html.Styled as Html
@@ -102,7 +105,17 @@ withShowNumberInput value (Slider config) =
 
 view : List (Attribute msg) -> Slider msg -> Html msg
 view attributes (Slider config) =
-    fieldset ([ css [ displayFlex, flexDirection column ] ] ++ attributes)
+    fieldset
+        ([ css
+            [ displayFlex
+            , flexDirection column
+            , border (rem 0)
+            , padding (rem 0)
+            , margin (rem 0)
+            ]
+         ]
+            ++ attributes
+        )
         [ div [ css [ displayFlex, marginBottom (rem 0.5) ] ]
             [ legend [ css [ flex (int 3) ] ]
                 [ NordeaText.textSmallLight
