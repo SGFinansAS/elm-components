@@ -202,67 +202,46 @@ view attrs (DropdownFilter config) =
              )
                 ++ attrs
             )
-            [ inputSearchView
-                (config.hasError || showHasNoMatch)
-                config.hasFocus
-                config.rawInputString
-                config.onSearchInput
-                config.onClickClearInput
+            [ TextInput.init config.rawInputString
+                |> TextInput.withError (config.hasError || showHasNoMatch)
+                |> TextInput.withOnInput config.onSearchInput
+                |> TextInput.view
+                    [ css
+                        [ width (pct 100)
+                        , borderBottomLeftRadius (pct 0) |> Css.important |> styleIf config.hasFocus
+                        , borderBottomRightRadius (pct 0) |> Css.important |> styleIf config.hasFocus
+                        , descendants [ typeSelector "input" [ paddingRight (rem 3) ] ]
+                        ]
+                    ]
+            , if String.length config.rawInputString > 0 then
+                Icon.cross
+                    [ Events.onClick config.onClickClearInput
+                    , css
+                        [ position absolute
+                        , top (pct 50)
+                        , right (rem 0.75)
+                        , transforms [ translateY (pct -50) ]
+                        , width (rem 1.125)
+                        , cursor pointer
+                        ]
+                    ]
+
+              else
+                Icon.chevronDownFilled
+                    [ css
+                        [ position absolute
+                        , top (pct 50)
+                        , right (rem 0.3125)
+                        , if config.hasFocus then
+                            transforms [ translateY (pct -50), rotate (deg 180) ]
+
+                          else
+                            transforms [ translateY (pct -50) ]
+                        , pointerEvents none
+                        , color Colors.grayCool
+                        ]
+                    ]
             ]
-
-
-inputSearchView : Bool -> Bool -> String -> (String -> msg) -> msg -> Html msg
-inputSearchView hasError hasFocus searchString onInput onClickClearInput =
-    Html.div
-        [ css [ position relative ] ]
-        [ TextInput.init searchString
-            |> TextInput.withError hasError
-            |> TextInput.withOnInput onInput
-            |> TextInput.view
-                [ css
-                    [ width (pct 100)
-                    , borderBottomLeftRadius (pct 0) |> Css.important |> styleIf hasFocus
-                    , borderBottomRightRadius (pct 0) |> Css.important |> styleIf hasFocus
-                    , descendants [ typeSelector "input" [ paddingRight (rem 3) ] ]
-                    ]
-                ]
-        , if String.length searchString > 0 then
-            Icon.cross
-                [ Events.onClick onClickClearInput
-                , css
-                    [ position absolute
-                    , top (pct 50)
-                    , right (rem 0.75)
-                    , transforms [ translateY (pct -50) ]
-                    , width (rem 1.125)
-                    , cursor pointer
-                    ]
-                ]
-
-          else if hasFocus then
-            Icon.chevronDownFilled
-                [ css
-                    [ position absolute
-                    , top (pct 50)
-                    , right (rem 0.3125)
-                    , transforms [ translateY (pct -50), rotate (deg 180) ]
-                    , pointerEvents none
-                    , color Colors.grayCool
-                    ]
-                ]
-
-          else
-            Icon.chevronDownFilled
-                [ css
-                    [ position absolute
-                    , top (pct 50)
-                    , right (rem 0.3125)
-                    , transforms [ translateY (pct -50) ]
-                    , pointerEvents none
-                    , color Colors.grayCool
-                    ]
-                ]
-        ]
 
 
 headerView : String -> Html msg
