@@ -3,19 +3,70 @@ module Nordea.Components.DropdownFilter exposing
     , ItemGroup
     , init
     , view
-    , withFocusHandling
-    , withFocusState
+    , withHasFocus
     , withIsLoading
+    , withOnFocus
     )
 
 import Css
+    exposing
+        ( absolute
+        , alignItems
+        , backgroundColor
+        , borderBottom3
+        , borderBottomLeftRadius
+        , borderBottomRightRadius
+        , borderBox
+        , borderLeft3
+        , borderRight3
+        , boxSizing
+        , center
+        , color
+        , column
+        , cursor
+        , deg
+        , displayFlex
+        , flexDirection
+        , fontSize
+        , fontWeight
+        , height
+        , hover
+        , int
+        , justifyContent
+        , lineHeight
+        , listStyle
+        , margin
+        , margin2
+        , maxHeight
+        , none
+        , overflowY
+        , padding
+        , padding3
+        , paddingRight
+        , pct
+        , pointer
+        , pointerEvents
+        , position
+        , rem
+        , right
+        , rotate
+        , scroll
+        , solid
+        , top
+        , transforms
+        , translateY
+        , width
+        )
+import Css.Global exposing (descendants, typeSelector)
 import Html.Events.Extra as Events
-import Html.Styled as Html exposing (Attribute, Html)
-import Html.Styled.Attributes as Attr
+import Html.Styled as Html exposing (Html)
+import Html.Styled.Attributes as Attrs exposing (css, tabindex, value)
 import Html.Styled.Events as Events
 import Json.Decode as Decode
 import Maybe.Extra as Maybe
 import Nordea.Components.Spinner as Spinner
+import Nordea.Components.TextInput as TextInput
+import Nordea.Components.Tooltip as Tooltip
 import Nordea.Html as Html exposing (styleIf)
 import Nordea.Resources.Colors as Colors
 import Nordea.Resources.Icons as Icon
@@ -35,12 +86,12 @@ type alias ItemGroup a =
 
 type alias DropdownFilterProperties a msg =
     { searchItems : List (ItemGroup a)
-    , onInput : String -> msg
-    , onSelectedValue : Item a -> msg
+    , onSearchInput : String -> msg
+    , onSelectValue : Item a -> msg
     , onClickClearInput : msg
     , rawInputString : String
     , filterValues : String -> String -> Bool
-    , onFocus : Maybe ( String, Bool -> msg )
+    , onFocus : Maybe (Bool -> msg)
     , hasFocus : Bool
     , hasError : Bool
     , isLoading : Bool -- data might be fetching
@@ -51,19 +102,14 @@ type DropdownFilter a msg
     = DropdownFilter (DropdownFilterProperties a msg)
 
 
-{-| Default Options, will give you empty dropdown with no empty item
-
-  - TODO handle isSearching - use with RemoteData to show that new data is loading
-
--}
 init : (String -> msg) -> (Item a -> msg) -> List (ItemGroup a) -> String -> msg -> DropdownFilter a msg
-init onSearchHandler onSelectedValue searchItems rawInputString onClickClearInput =
+init onSearchInput onSelectValue searchItems rawInputString onClickClearInput =
     DropdownFilter
         { searchItems = searchItems
-        , onInput = onSearchHandler
-        , onSelectedValue = onSelectedValue
+        , onSearchInput = onSearchInput
+        , onSelectValue = onSelectValue
         , onClickClearInput = onClickClearInput
-        , filterValues = \searchString -> \value -> String.contains (String.toLower searchString) (String.toLower value)
+        , filterValues = \searchString value -> String.contains (String.toLower searchString) (String.toLower value)
         , rawInputString = rawInputString
         , onFocus = Nothing
         , hasFocus = True
@@ -72,269 +118,170 @@ init onSearchHandler onSelectedValue searchItems rawInputString onClickClearInpu
         }
 
 
-view : DropdownFilter a msg -> List (Html.Attribute msg) -> Html msg
-view (DropdownFilter options) attributes =
+view : List (Html.Attribute msg) -> DropdownFilter a msg -> Html msg
+view attrs (DropdownFilter config) =
     let
-        filteredSearchResult =
-            options.searchItems
-                |> List.map
+        searchMatches =
+            config.searchItems
+                |> List.concatMap
                     (\group ->
                         let
-                            newItems =
-                                List.filter (\item -> options.filterValues options.rawInputString item.text) group.items
+                            itemMatches =
+                                group.items
+                                    |> List.filter (.text >> config.filterValues config.rawInputString)
+                                    |> List.map (itemView config.onSelectValue)
                         in
-                        { group | items = newItems }
-                    )
-
-        searchResultToShow =
-            if options.hasFocus || Maybe.isNothing options.onFocus then
-                filteredSearchResult
-
-            else
-                []
-
-        showHasNoMatch =
-            List.all identity
-                [ not options.hasFocus || Maybe.isNothing options.onFocus
-                , options.rawInputString /= ""
-                , filteredSearchResult
-                    |> List.concatMap .items
-                    |> List.all
-                        (\item -> item.text /= options.rawInputString)
-                ]
-    in
-    Html.div
-        (Attr.css
-            [ Css.displayFlex
-            , Css.flexDirection Css.column
-            , Css.position Css.relative
-            ]
-            :: attributes
-        )
-        [ inputSearchView (options.hasError || showHasNoMatch) options.hasFocus options.rawInputString options.onInput options.onFocus options.onClickClearInput
-        , if options.isLoading then
-            Spinner.small []
-
-          else if List.isEmpty searchResultToShow then
-            Html.nothing
-
-          else
-            Html.ul
-                [ Attr.css
-                    [ Css.listStyle Css.none
-                    , Css.padding3 (Css.px 3) (Css.px 1) (Css.px 12)
-                    , Css.maxHeight (Css.rem 16.75)
-                    , Css.overflowY Css.scroll
-                    , Css.position Css.absolute
-                    , Css.zIndex (Css.int 1)
-                    , Css.display Css.block
-                    , Css.right (Css.rem 0)
-                    , Css.left (Css.rem 0)
-                    , Css.margin (Css.rem 0)
-                    , Css.top (Css.pct 100)
-                    , Css.backgroundColor Colors.white
-                    , Css.borderBottom3 (Css.rem 0.0625) Css.solid Colors.grayMedium
-                    , Css.borderLeft3 (Css.rem 0.0625) Css.solid Colors.grayMedium
-                    , Css.borderRight3 (Css.rem 0.0625) Css.solid Colors.grayMedium
-                    , Css.borderBottomLeftRadius (Css.rem 0.25)
-                    , Css.borderBottomRightRadius (Css.rem 0.25)
-                    ]
-                ]
-                (List.concatMap
-                    (\headerAndItems ->
-                        let
-                            subResultView =
-                                List.map (itemView (groupIdAttributeToItemAttrs options.onFocus) options.onSelectedValue)
-                                    headerAndItems.items
-                        in
-                        if not (List.isEmpty subResultView) && not (String.isEmpty headerAndItems.header) then
-                            headerView headerAndItems.header :: subResultView
+                        if not (List.isEmpty itemMatches) && not (String.isEmpty group.header) then
+                            headerView group.header :: itemMatches
 
                         else
-                            subResultView
+                            itemMatches
                     )
-                    searchResultToShow
-                )
-        ]
 
+        showHasNoMatch =
+            config.rawInputString /= "" && List.isEmpty searchMatches
 
-inputSearchView : Bool -> Bool -> String -> (String -> msg) -> Maybe ( String, Bool -> msg ) -> msg -> Html msg
-inputSearchView hasError hasFocus searchString onInput onFocus onClickClearInput =
-    Html.div
-        [ Attr.css
-            [ Css.displayFlex
-            , Css.position Css.relative
-            ]
-        ]
-        [ Html.input
-            ([ Attr.type_ "text"
-             , Events.onInput onInput
-             , Attr.value searchString
-             , Attr.css
-                [ Css.padding4 (Css.px 4) (Css.px 4) (Css.px 4) (Css.px 16)
-                , Css.border3 (Css.px 1) Css.solid Colors.grayMedium
-                , Css.borderColor Colors.redDark |> styleIf hasError
-                , Css.width (Css.pct 100)
-                , Css.boxSizing Css.borderBox
-                , Css.backgroundColor Colors.white
-                , Css.focus
-                    [ Css.backgroundColor Colors.grayCool
-                    , Css.outline Css.none
-                    , Css.border3 (Css.px 1) Css.solid Colors.blueNordea
-                    ]
-                , if hasFocus then
-                    Css.borderRadius4 (Css.px 4) (Css.px 4) (Css.px 0) (Css.px 0)
-
-                  else
-                    Css.borderRadius4 (Css.px 4) (Css.px 4) (Css.px 4) (Css.px 4)
-                , Css.boxShadow5 Css.inset (Css.px 0) (Css.px -1) (Css.px 0) Colors.grayLight
-                , Css.height (Css.px 48)
-                , Css.paddingRight (Css.rem 2)
+        dropdownStyles =
+            Css.batch
+                [ backgroundColor Colors.white
+                , borderBottom3 (rem 0.0625) solid Colors.grayMedium
+                , borderLeft3 (rem 0.0625) solid Colors.grayMedium
+                , borderRight3 (rem 0.0625) solid Colors.grayMedium
+                , borderBottomLeftRadius (rem 0.25)
+                , borderBottomRightRadius (rem 0.25)
+                , boxSizing borderBox
+                , padding3 (rem 0.1875) (rem 0.0625) (rem 0.75)
                 ]
-             ]
-                ++ onFocusAttrs onFocus
+    in
+    Tooltip.init
+        |> Tooltip.withPlacement Tooltip.Bottom
+        |> Tooltip.withVisibility
+            (if config.hasFocus then
+                Tooltip.Show
+
+             else
+                Tooltip.Hidden
             )
-            []
-        , let
-            attributes =
-                [ Attr.css
-                    [ Css.position Css.absolute
-                    , Css.top (Css.pct 50)
-                    , Css.transform (Css.translateY (Css.pct -50))
-                    , Css.right (Css.rem 0.75)
-                    , Css.width (Css.rem 1.125) |> Css.important
-                    , Css.height (Css.rem 1.125)
-                    , Css.cursor Css.pointer
-                    , Css.color Css.inherit
+        |> Tooltip.withContent
+            (\_ ->
+                if config.isLoading then
+                    Html.div
+                        [ css
+                            [ height (rem 8)
+                            , displayFlex
+                            , flexDirection column
+                            , justifyContent center
+                            , dropdownStyles
+                            , alignItems center
+                            ]
+                        ]
+                        [ Spinner.small [] ]
+
+                else
+                    Html.ul
+                        [ css
+                            [ margin (rem 0)
+                            , overflowY scroll
+                            , maxHeight (rem 16.75)
+                            , listStyle none
+                            , dropdownStyles
+                            ]
+                        ]
+                        searchMatches
+            )
+        |> Tooltip.view
+            ((config.onFocus
+                |> Maybe.map
+                    (\onFocus ->
+                        [ Events.on "focusout" (Decode.succeed (onFocus False))
+                        , Events.on "focusin" (Decode.succeed (onFocus True))
+                        ]
+                    )
+                |> Maybe.withDefault []
+             )
+                ++ attrs
+            )
+            [ TextInput.init config.rawInputString
+                |> TextInput.withError (config.hasError || showHasNoMatch)
+                |> TextInput.withOnInput config.onSearchInput
+                |> TextInput.view
+                    [ css
+                        [ width (pct 100)
+                        , borderBottomLeftRadius (pct 0) |> Css.important |> styleIf config.hasFocus
+                        , borderBottomRightRadius (pct 0) |> Css.important |> styleIf config.hasFocus
+                        , descendants [ typeSelector "input" [ paddingRight (rem 3) ] ]
+                        ]
                     ]
-                ]
-          in
-          if String.length searchString > 0 then
-            Icon.cross (attributes ++ [ Events.onClick onClickClearInput, Attr.css [ Css.width (Css.rem 1.385) ] ])
+            , if String.length config.rawInputString > 0 then
+                Icon.cross
+                    [ Events.onClick config.onClickClearInput
+                    , css
+                        [ position absolute
+                        , top (pct 50)
+                        , right (rem 0.75)
+                        , transforms [ translateY (pct -50) ]
+                        , width (rem 1.125)
+                        , cursor pointer
+                        ]
+                    ]
 
-          else if hasFocus then
-            Icon.chevronUp attributes
+              else
+                Icon.chevronDownFilled
+                    [ css
+                        [ position absolute
+                        , top (pct 50)
+                        , right (rem 0.3125)
+                        , if config.hasFocus then
+                            transforms [ translateY (pct -50), rotate (deg 180) ]
 
-          else
-            Icon.chevronDown attributes
-        ]
+                          else
+                            transforms [ translateY (pct -50) ]
+                        , pointerEvents none
+                        , color Colors.grayCool
+                        ]
+                    ]
+            ]
 
 
 headerView : String -> Html msg
 headerView text =
     Html.li
-        [ Attr.css
-            [ Css.color Colors.gray
-            , Css.margin2 (Css.px 0) (Css.px 10)
-            , Css.fontSize (Css.px 12)
-            , Css.fontWeight (Css.int 400)
-            , Css.lineHeight (Css.px 16)
+        [ css
+            [ color Colors.gray
+            , margin2 (rem 0) (rem 0.625)
+            , fontSize (rem 0.75)
+            , fontWeight (int 400)
+            , lineHeight (rem 1)
             ]
         ]
         [ Html.text text ]
 
 
-itemView : List (Html.Attribute msg) -> (Item a -> msg) -> Item a -> Html msg
-itemView itemAttributes onSelectedValue item =
+itemView : (Item a -> msg) -> Item a -> Html msg
+itemView onSelectValue item =
     Html.li
-        ([ Events.onClick (onSelectedValue item)
-         , Attr.fromUnstyled (Events.onEnter (onSelectedValue item))
-         , Attr.tabindex 0
-         , Attr.style "cursor" "pointer"
-         , Attr.css
-            [ Css.padding (Css.px 12)
-            , Css.hover [ Css.backgroundColor Colors.blueCloud ]
+        [ Events.onClick (onSelectValue item)
+        , Attrs.fromUnstyled (Events.onEnter (onSelectValue item))
+        , tabindex 0
+        , css
+            [ padding (rem 0.75)
+            , hover [ backgroundColor Colors.blueCloud ]
+            , cursor pointer
             ]
-         ]
-            ++ itemAttributes
-        )
+        ]
         [ Html.text item.text ]
 
 
-withFocusHandling : String -> Bool -> (Bool -> msg) -> DropdownFilter a msg -> DropdownFilter a msg
-withFocusHandling uniqueName hasFocus onFocus (DropdownFilter config) =
-    DropdownFilter { config | hasFocus = hasFocus, onFocus = Just ( uniqueName, onFocus ) }
-
-
-withFocusState : Bool -> DropdownFilter a msg -> DropdownFilter a msg
-withFocusState hasFocus (DropdownFilter config) =
+withHasFocus : Bool -> DropdownFilter a msg -> DropdownFilter a msg
+withHasFocus hasFocus (DropdownFilter config) =
     DropdownFilter { config | hasFocus = hasFocus }
+
+
+withOnFocus : (Bool -> msg) -> DropdownFilter a msg -> DropdownFilter a msg
+withOnFocus onFocus (DropdownFilter config) =
+    DropdownFilter { config | onFocus = Just onFocus }
 
 
 withIsLoading : Bool -> DropdownFilter a msg -> DropdownFilter a msg
 withIsLoading isLoading (DropdownFilter config) =
     DropdownFilter { config | isLoading = isLoading }
-
-
-
---
--- Focus handling
---
-
-
-onFocusAttrs : Maybe ( String, Bool -> msg ) -> List (Attribute msg)
-onFocusAttrs hasFocusAndId =
-    let
-        maybeOnFocus =
-            Maybe.map Tuple.second hasFocusAndId
-
-        groupAttr =
-            Maybe.map Tuple.first hasFocusAndId
-                |> Maybe.map groupIdAttribute
-
-        onFocusAttribute =
-            maybeOnFocus
-                |> Maybe.map (\onFocus -> Events.onFocus (onFocus True))
-
-        onBlurAttribute =
-            maybeOnFocus
-                |> Maybe.map (\onFocus -> onGroupBlur (onFocus False))
-    in
-    Maybe.values [ onFocusAttribute, onBlurAttribute, groupAttr ]
-
-
-groupIdAttributeToItemAttrs : Maybe ( String, Bool -> msg ) -> List (Attribute msg)
-groupIdAttributeToItemAttrs groupId =
-    Maybe.map Tuple.first groupId
-        |> Maybe.map groupIdAttribute
-        |> Maybe.toList
-
-
-onGroupBlur : msg -> Attribute msg
-onGroupBlur msg =
-    Events.on "blur" (decodeGroupIdChanged msg)
-
-
-groupIdAttribute : String -> Attribute msg
-groupIdAttribute groupId =
-    Attr.attribute "data-group-id" groupId
-
-
-{-| Concept taken from:
-<https://stackoverflow.com/questions/52375939/in-elm-how-can-i-detect-if-focus-will-be-lost-from-a-group-of-elements>
--}
-decodeGroupIdChanged : msg -> Decode.Decoder msg
-decodeGroupIdChanged msg =
-    Decode.oneOf
-        [ Decode.map2
-            (\a b ->
-                if a /= b then
-                    Just a
-
-                else
-                    Nothing
-            )
-            (Decode.at [ "target", "dataset", "groupId" ] Decode.string)
-            (Decode.at [ "relatedTarget", "dataset", "groupId" ] Decode.string)
-        , Decode.at [ "target", "dataset", "groupId" ] Decode.string
-            |> Decode.andThen (\a -> Decode.succeed (Just a))
-        ]
-        |> Decode.andThen
-            (\maybeChanged ->
-                case maybeChanged of
-                    Just _ ->
-                        Decode.succeed msg
-
-                    Nothing ->
-                        Decode.fail "no change"
-            )
