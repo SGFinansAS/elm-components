@@ -85,14 +85,12 @@ import Svg.Styled.Attributes as SvgAttrs
         , d
         , fill
         , fillRule
-        , height
         , r
         , rx
         , ry
         , stroke
         , strokeWidth
         , viewBox
-        , width
         )
 
 
@@ -122,7 +120,7 @@ check : List (Attribute msg) -> Svg msg
 check attrs =
     iconContainer attrs
         [ svg
-            [ width "1em", height "1em", viewBox "0 0 16 12" ]
+            [ viewBox "0 0 16 12" ]
             [ Svg.path
                 [ fillRule "evenodd"
                 , clipRule "evenodd"
@@ -194,7 +192,7 @@ chevronDownFilled : List (Attribute msg) -> Html msg
 chevronDownFilled attrs =
     iconContainer (css [ Css.width (rem 2) ] :: attrs)
         [ svg [ viewBox "0 0 30 30", fill "none" ]
-            [ rect [ width "30", height "30", rx "2", fill "currentColor" ] []
+            [ rect [ rx "2", fill "currentColor" ] []
             , Svg.path
                 [ fillRule "evenodd"
                 , clipRule "evenodd"
@@ -417,7 +415,7 @@ chevronRight : List (Attribute msg) -> Html msg
 chevronRight attrs =
     iconContainer attrs
         [ Svg.svg
-            [ width "32", height "32", viewBox "0 0 32 32", fill "none" ]
+            [ viewBox "0 0 32 32", fill "none" ]
             [ Svg.path
                 [ d "M10 29C10.2431 28.9996 10.4777 28.9107 10.66 28.75L24.37 16.75C24.5853 16.5601 24.7086 16.287 24.7086 16C24.7086 15.713 24.5853 15.4398 24.37 15.25L10.66 3.24997C10.2431 2.91417 9.63568 2.96626 9.28202 3.36814C8.92837 3.77002 8.95393 4.37913 9.34001 4.74997L22.2 16L9.34001 27.25C8.92631 27.6147 8.88604 28.2456 9.25001 28.66C9.43958 28.8758 9.71279 28.9996 10 29Z"
                 , fill (Colors.toString Colors.deepBlue)
@@ -431,7 +429,7 @@ chevronLeft : List (Attribute msg) -> Html msg
 chevronLeft attrs =
     iconContainer attrs
         [ Svg.svg
-            [ width "32", height "32", viewBox "0 0 32 32", fill "none" ]
+            [ viewBox "0 0 32 32", fill "none" ]
             [ Svg.path
                 [ d "M9.53995 16L22.65 27.24C23.0697 27.599 23.1189 28.2303 22.76 28.65C22.401 29.0697 21.7697 29.119 21.35 28.76L7.34995 16.76C7.12779 16.57 6.99988 16.2923 6.99988 16C6.99988 15.7077 7.12779 15.43 7.34995 15.24L21.35 3.24C21.6215 3.00778 21.9963 2.93805 22.3331 3.05709C22.67 3.17612 22.9178 3.46583 22.9831 3.81709C23.0485 4.16834 22.9215 4.52778 22.65 4.76L9.53995 16Z"
                 , fill (Colors.toString Colors.deepBlue)
@@ -445,7 +443,7 @@ chevronUp : List (Attribute msg) -> Html msg
 chevronUp attrs =
     iconContainer attrs
         [ Svg.svg
-            [ width "32", height "32", viewBox "0 0 32 32", fill "none" ]
+            [ viewBox "0 0 32 32", fill "none" ]
             [ Svg.path
                 [ d "M28 23.64C28.2405 23.6452 28.4748 23.5635 28.66 23.41C29.0737 23.0452 29.114 22.4144 28.75 22L16.75 8.35999C16.5602 8.14474 16.287 8.02142 16 8.02142C15.713 8.02142 15.4399 8.14474 15.25 8.35999L3.25002 22C2.89934 22.4115 2.93921 23.0272 3.34002 23.39C3.75442 23.754 4.38526 23.7137 4.75002 23.3L16 10.51L27.25 23.3C27.4396 23.5158 27.7128 23.6396 28 23.64Z"
                 , fill (Colors.toString Colors.deepBlue)
@@ -459,7 +457,7 @@ chevronDown : List (Attribute msg) -> Html msg
 chevronDown attrs =
     iconContainer attrs
         [ Svg.svg
-            [ width "32", height "32", viewBox "0 0 32 32", fill "none" ]
+            [ viewBox "0 0 32 32", fill "none" ]
             [ Svg.path
                 [ d "M16 24.71C16.2872 24.7096 16.5604 24.5858 16.75 24.37L28.75 10.66C29.0858 10.2431 29.0337 9.63564 28.6318 9.28198C28.23 8.92833 27.6208 8.95389 27.25 9.33997L16 22.2L4.75001 9.33997C4.51938 9.05363 4.15022 8.91695 3.78872 8.98404C3.42722 9.05114 3.1317 9.3112 3.01919 9.66123C2.90667 10.0113 2.99532 10.3948 3.25001 10.66L15.25 24.37C15.4396 24.5858 15.7128 24.7096 16 24.71Z"
                 , fill (Colors.toString Colors.deepBlue)
@@ -499,7 +497,7 @@ arrowBack : List (Attribute msg) -> Html msg
 arrowBack attrs =
     iconContainer attrs
         [ Svg.svg
-            [ width "32", height "32", viewBox "0 0 32 32", fill "none" ]
+            [ viewBox "0 0 32 32", fill "none" ]
             [ Svg.path
                 [ d "M28 15C28.5523 15 29 15.4477 29 16C29 16.5523 28.5523 17 28 17H6.56L17.68 27.25C17.9702 27.4853 18.105 27.8629 18.0295 28.2288C17.954 28.5948 17.6808 28.8881 17.3211 28.9893C16.9614 29.0906 16.5753 28.9828 16.32 28.71L3.32 16.71C3.24897 16.6352 3.18842 16.5511 3.14 16.46C3.14 16.39 3.14 16.39 3.14 16.39C3.02869 16.135 3.02869 15.8451 3.14 15.59C3.14 15.57 3.14 15.52 3.14 15.52C3.18842 15.4289 3.24897 15.3448 3.32 15.27L16.32 3.27C16.5753 2.99717 16.9614 2.88944 17.3211 2.99068C17.6808 3.09192 17.954 3.38525 18.0295 3.75119C18.105 4.11714 17.9702 4.49466 17.68 4.73L6.56 15H28Z"
                 , fill (Colors.toString Colors.deepBlue)
@@ -512,7 +510,7 @@ arrowBack attrs =
 user : List (Attribute msg) -> Html msg
 user attrs =
     iconContainer attrs
-        [ Svg.svg [ width "20", height "25", viewBox "0 0 20 25", fill "none" ]
+        [ Svg.svg [ viewBox "0 0 20 25", fill "none" ]
             [ Svg.path
                 [ fillRule "evenodd"
                 , clipRule "evenodd"
@@ -621,9 +619,7 @@ add : List (Attribute msg) -> Html msg
 add attrs =
     iconContainer attrs
         [ Svg.svg
-            [ width "32"
-            , height "32"
-            , viewBox "0 0 32 32"
+            [ viewBox "0 0 32 32"
             , fill "none"
             ]
             [ Svg.path
@@ -671,7 +667,7 @@ warning attrs =
 abacus : List (Attribute msg) -> Html msg
 abacus attrs =
     iconContainer attrs
-        [ Svg.svg [ width "22", height "22", viewBox "0 0 22 22", fill "none" ]
+        [ Svg.svg [ viewBox "0 0 22 22", fill "none" ]
             [ Svg.path
                 [ fillRule "evenodd"
                 , clipRule "evenodd"
@@ -687,7 +683,7 @@ agreements : List (Attribute msg) -> Html msg
 agreements attrs =
     iconContainer attrs
         [ Svg.svg
-            [ width "25", height "24", viewBox "0 0 25 24", fill "none" ]
+            [ viewBox "0 0 25 24", fill "none" ]
             [ Svg.path
                 [ fillRule "evenodd"
                 , clipRule "evenodd"
@@ -702,7 +698,7 @@ agreements attrs =
 cog : List (Attribute msg) -> Html msg
 cog attrs =
     iconContainer attrs
-        [ Svg.svg [ width "26", height "26", viewBox "0 0 26 26", fill "none" ]
+        [ Svg.svg [ viewBox "0 0 26 26", fill "none" ]
             [ Svg.path
                 [ fillRule "evenodd"
                 , clipRule "evenodd"
@@ -717,7 +713,7 @@ cog attrs =
 orders : List (Attribute msg) -> Html msg
 orders attrs =
     iconContainer attrs
-        [ Svg.svg [ width "21", height "25", viewBox "0 0 21 25", fill "none" ]
+        [ Svg.svg [ viewBox "0 0 21 25", fill "none" ]
             [ Svg.path
                 [ fillRule "evenodd"
                 , clipRule "evenodd"
@@ -732,7 +728,7 @@ orders attrs =
 document : List (Attribute msg) -> Html msg
 document attrs =
     iconContainer attrs
-        [ Svg.svg [ width "18", height "24", viewBox "0 0 18 24", fill "none" ]
+        [ Svg.svg [ viewBox "0 0 18 24", fill "none" ]
             [ Svg.path
                 [ fillRule "evenodd"
                 , clipRule "evenodd"
@@ -747,13 +743,13 @@ document attrs =
 contacts : List (Attribute msg) -> Html msg
 contacts attrs =
     iconContainer attrs
-        [ svg [ width "23", height "22", viewBox "0 0 23 22", fill "none" ] [ Svg.path [ fillRule "evenodd", clipRule "evenodd", d "M8.50002 9.00001C7.30573 9.00266 6.15959 8.52941 5.3151 7.68492C4.47061 6.84043 3.99736 5.69429 4.00001 4.5C4.00001 2.01472 6.01474 0 8.50002 0C10.9853 0 13 2.01472 13 4.5C13 6.98528 10.9853 9.00001 8.50002 9.00001ZM11 4.5C11.0004 3.60278 10.5142 2.7759 9.73002 2.34C9.03785 3.8318 7.7939 4.99688 6.26002 5.59C6.76067 6.64643 7.92885 7.21231 9.06817 6.95032C10.2075 6.68832 11.0111 5.669 11 4.5ZM6.00002 4.5C6.00002 3.11929 7.11931 2 8.50002 2C8.59328 1.99455 8.68677 1.99455 8.78002 2C8.20342 3.17816 7.21408 4.10343 6.00002 4.6V4.5ZM14 6.5C14 8.433 15.567 10 17.5 10C19.433 10 21 8.433 21 6.5C21 4.567 19.433 3 17.5 3C15.567 3 14 4.567 14 6.5ZM16 6.5C16 5.67157 16.6716 5 17.5 5C18.3285 5 19 5.67157 19 6.5C19 7.32843 18.3285 8 17.5 8C16.6716 8 16 7.32843 16 6.5ZM22.73 15.78C23.039 14.7325 22.8707 13.6021 22.27 12.69C21.5386 11.6069 20.3066 10.9702 19 11H15.21C14.4016 10.3589 13.4018 10.0068 12.37 10H5.76003C4.30678 9.97553 2.92198 10.6164 2.00003 11.74C1.03678 12.9356 0.722737 14.5283 1.16003 16L1.76003 18C2.50187 20.385 4.71234 22.0074 7.21003 22.0001H10.65C12.3245 22.0096 13.9173 21.2773 15 20H17.52C19.8767 19.9916 21.9492 18.4392 22.62 16.18L22.73 15.78ZM14.37 12.91C14.9576 13.6784 15.1051 14.6964 14.76 15.6L14.17 17.44C13.6758 18.9662 12.2543 20 10.65 20H7.21003C5.58 20.0071 4.13954 18.941 3.67003 17.38L3.07003 15.38C2.84089 14.5555 3.01924 13.6712 3.55003 13C4.09289 12.3435 4.90851 11.9744 5.76003 12H12.37C13.1384 11.9929 13.8706 12.326 14.37 12.91ZM20.76 15.22H20.81C20.9514 14.7289 20.8749 14.2008 20.6 13.77C20.2268 13.2646 19.6279 12.9763 19 13H16.67C17.0228 14.0409 17.0228 15.1691 16.67 16.21L16.09 18H17.52C18.9704 17.9731 20.2364 17.0104 20.65 15.62L20.76 15.22Z", fill "#00005E" ] [] ] ]
+        [ svg [ viewBox "0 0 23 22", fill "none" ] [ Svg.path [ fillRule "evenodd", clipRule "evenodd", d "M8.50002 9.00001C7.30573 9.00266 6.15959 8.52941 5.3151 7.68492C4.47061 6.84043 3.99736 5.69429 4.00001 4.5C4.00001 2.01472 6.01474 0 8.50002 0C10.9853 0 13 2.01472 13 4.5C13 6.98528 10.9853 9.00001 8.50002 9.00001ZM11 4.5C11.0004 3.60278 10.5142 2.7759 9.73002 2.34C9.03785 3.8318 7.7939 4.99688 6.26002 5.59C6.76067 6.64643 7.92885 7.21231 9.06817 6.95032C10.2075 6.68832 11.0111 5.669 11 4.5ZM6.00002 4.5C6.00002 3.11929 7.11931 2 8.50002 2C8.59328 1.99455 8.68677 1.99455 8.78002 2C8.20342 3.17816 7.21408 4.10343 6.00002 4.6V4.5ZM14 6.5C14 8.433 15.567 10 17.5 10C19.433 10 21 8.433 21 6.5C21 4.567 19.433 3 17.5 3C15.567 3 14 4.567 14 6.5ZM16 6.5C16 5.67157 16.6716 5 17.5 5C18.3285 5 19 5.67157 19 6.5C19 7.32843 18.3285 8 17.5 8C16.6716 8 16 7.32843 16 6.5ZM22.73 15.78C23.039 14.7325 22.8707 13.6021 22.27 12.69C21.5386 11.6069 20.3066 10.9702 19 11H15.21C14.4016 10.3589 13.4018 10.0068 12.37 10H5.76003C4.30678 9.97553 2.92198 10.6164 2.00003 11.74C1.03678 12.9356 0.722737 14.5283 1.16003 16L1.76003 18C2.50187 20.385 4.71234 22.0074 7.21003 22.0001H10.65C12.3245 22.0096 13.9173 21.2773 15 20H17.52C19.8767 19.9916 21.9492 18.4392 22.62 16.18L22.73 15.78ZM14.37 12.91C14.9576 13.6784 15.1051 14.6964 14.76 15.6L14.17 17.44C13.6758 18.9662 12.2543 20 10.65 20H7.21003C5.58 20.0071 4.13954 18.941 3.67003 17.38L3.07003 15.38C2.84089 14.5555 3.01924 13.6712 3.55003 13C4.09289 12.3435 4.90851 11.9744 5.76003 12H12.37C13.1384 11.9929 13.8706 12.326 14.37 12.91ZM20.76 15.22H20.81C20.9514 14.7289 20.8749 14.2008 20.6 13.77C20.2268 13.2646 19.6279 12.9763 19 13H16.67C17.0228 14.0409 17.0228 15.1691 16.67 16.21L16.09 18H17.52C18.9704 17.9731 20.2364 17.0104 20.65 15.62L20.76 15.22Z", fill "#00005E" ] [] ] ]
 
 
 applications : List (Attribute msg) -> Html msg
 applications attrs =
     iconContainer attrs
-        [ Svg.svg [ width "22", height "25", viewBox "0 0 22 25", fill "none" ]
+        [ Svg.svg [ viewBox "0 0 22 25", fill "none" ]
             [ Svg.path
                 [ fillRule "evenodd"
                 , clipRule "evenodd"
@@ -768,7 +764,7 @@ applications attrs =
 insights : List (Attribute msg) -> Html msg
 insights attrs =
     iconContainer attrs
-        [ Svg.svg [ width "24", height "24", viewBox "0 0 24 24", fill "none" ]
+        [ Svg.svg [ viewBox "0 0 24 24", fill "none" ]
             [ Svg.path
                 [ fillRule "evenodd"
                 , clipRule "evenodd"
@@ -783,7 +779,7 @@ insights attrs =
 exit : List (Attribute msg) -> Html msg
 exit attrs =
     iconContainer attrs
-        [ Svg.svg [ width "18", height "26", viewBox "0 0 18 26", fill "none" ]
+        [ Svg.svg [ viewBox "0 0 18 26", fill "none" ]
             [ Svg.path
                 [ fillRule "evenodd"
                 , clipRule "evenodd"
@@ -798,7 +794,7 @@ exit attrs =
 search2 : List (Attribute msg) -> Html msg
 search2 attrs =
     iconContainer attrs
-        [ Svg.svg [ width "25", height "24", viewBox "0 0 25 24", fill "none" ]
+        [ Svg.svg [ viewBox "0 0 25 24", fill "none" ]
             [ Svg.path
                 [ fillRule "evenodd"
                 , clipRule "evenodd"
@@ -813,7 +809,7 @@ search2 attrs =
 portfolio : List (Attribute msg) -> Html msg
 portfolio attrs =
     iconContainer attrs
-        [ svg [ width "27", height "24", viewBox "0 0 27 24", fill "none" ]
+        [ svg [ viewBox "0 0 27 24", fill "none" ]
             [ Svg.path
                 [ fillRule "evenodd"
                 , clipRule "evenodd"
@@ -828,7 +824,7 @@ portfolio attrs =
 contact : List (Attribute msg) -> Html msg
 contact attrs =
     iconContainer attrs
-        [ Svg.svg [ width "24", height "24", viewBox "0 0 24 24", fill "none" ]
+        [ Svg.svg [ viewBox "0 0 24 24", fill "none" ]
             [ Svg.path
                 [ fillRule "evenodd"
                 , clipRule "evenodd"
@@ -843,7 +839,7 @@ contact attrs =
 object : List (Attribute msg) -> Html msg
 object attrs =
     iconContainer attrs
-        [ Svg.svg [ width "21", height "26", viewBox "0 0 21 26", fill "none" ]
+        [ Svg.svg [ viewBox "0 0 21 26", fill "none" ]
             [ Svg.path
                 [ fillRule "evenodd"
                 , clipRule "evenodd"
