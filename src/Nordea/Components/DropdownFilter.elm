@@ -88,9 +88,7 @@ type alias DropdownFilterProperties a msg =
     { searchItems : List (ItemGroup a)
     , onSearchInput : String -> msg
     , onSelectValue : Item a -> msg
-    , onClickClearInput : msg
     , rawInputString : String
-    , filterValues : String -> String -> Bool
     , onFocus : Maybe (Bool -> msg)
     , hasFocus : Bool
     , hasError : Bool
@@ -102,14 +100,18 @@ type DropdownFilter a msg
     = DropdownFilter (DropdownFilterProperties a msg)
 
 
-init : (String -> msg) -> (Item a -> msg) -> List (ItemGroup a) -> String -> msg -> DropdownFilter a msg
-init onSearchInput onSelectValue searchItems rawInputString onClickClearInput =
+init :
+    { onSearchInput : String -> msg
+    , rawInputString : String
+    , onSelectValue : Item a -> msg
+    , searchItems : List (ItemGroup a)
+    }
+    -> DropdownFilter a msg
+init { onSearchInput, rawInputString, onSelectValue, searchItems } =
     DropdownFilter
         { searchItems = searchItems
         , onSearchInput = onSearchInput
         , onSelectValue = onSelectValue
-        , onClickClearInput = onClickClearInput
-        , filterValues = \searchString value -> String.contains (String.toLower searchString) (String.toLower value)
         , rawInputString = rawInputString
         , onFocus = Nothing
         , hasFocus = True
@@ -121,6 +123,11 @@ init onSearchInput onSelectValue searchItems rawInputString onClickClearInput =
 view : List (Html.Attribute msg) -> DropdownFilter a msg -> Html msg
 view attrs (DropdownFilter config) =
     let
+        filterValues value =
+            value
+                |> String.toLower
+                |> String.contains (String.toLower config.rawInputString)
+
         searchMatches =
             config.searchItems
                 |> List.concatMap
@@ -128,7 +135,7 @@ view attrs (DropdownFilter config) =
                         let
                             itemMatches =
                                 group.items
-                                    |> List.filter (.text >> config.filterValues config.rawInputString)
+                                    |> List.filter (.text >> filterValues)
                                     |> List.map (itemView config.onSelectValue)
                         in
                         if not (List.isEmpty itemMatches) && not (String.isEmpty group.header) then
@@ -156,7 +163,7 @@ view attrs (DropdownFilter config) =
     Tooltip.init
         |> Tooltip.withPlacement Tooltip.Bottom
         |> Tooltip.withVisibility
-            (if config.hasFocus then
+            (if config.hasFocus && (config.isLoading || not (List.isEmpty searchMatches)) then
                 Tooltip.Show
 
              else
@@ -214,7 +221,7 @@ view attrs (DropdownFilter config) =
                     ]
             , if String.length config.rawInputString > 0 then
                 Icon.cross
-                    [ Events.onClick config.onClickClearInput
+                    [ Events.onClick (config.onSearchInput "")
                     , css
                         [ position absolute
                         , top (pct 50)
