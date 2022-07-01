@@ -48,7 +48,6 @@ stories =
                         , Icons.user [ css [ width (rem 1.5) ] ]
                         , Icons.contacts [ css [ width (rem 1.5) ] ]
                         , Icons.cog [ css [ width (rem 1.5) ] ]
-                        , Icons.logout [ css [ width (rem 1.5) ] ]
                         , Icons.exit [ css [ width (rem 1.5) ] ]
                         , Icons.document [ css [ width (rem 1.5) ] ]
                         , Icons.download [ css [ width (rem 1.5) ] ]
