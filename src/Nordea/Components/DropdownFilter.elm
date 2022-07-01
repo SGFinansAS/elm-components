@@ -238,7 +238,7 @@ view attrs (DropdownFilter config) =
                         [ position absolute
                         , top (pct 50)
                         , right (rem 0.3125)
-                        , if config.hasFocus then
+                        , if config.hasFocus && not (List.isEmpty searchMatches) then
                             transforms [ translateY (pct -50), rotate (deg 180) ]
 
                           else
