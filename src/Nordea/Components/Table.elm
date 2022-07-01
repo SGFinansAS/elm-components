@@ -1,8 +1,10 @@
 module Nordea.Components.Table exposing
     ( tbody
+    , tbodySmall
     , td
     , th
     , thead
+    , theadSmall
     , tr
     , view
     )
@@ -39,6 +41,11 @@ import Nordea.Resources.Colors as Colors
 import Nordea.Themes as Themes
 
 
+type Variant
+    = Small
+    | Standard
+
+
 view : List (Attribute msg) -> List (Html msg) -> Html msg
 view attrs children =
     Html.table
@@ -50,16 +57,39 @@ view attrs children =
 
 {-| Groups the header content in a table
 -}
-thead : List (Attribute msg) -> List (Html msg) -> Html msg
-thead attrs children =
+theadWithVariant : List (Attribute msg) -> List (Html msg) -> Variant -> Html msg
+theadWithVariant attrs children variant =
+    let
+        headHeight =
+            case variant of
+                Small ->
+                    rem 2.5
+
+                Standard ->
+                    rem 3.5
+    in
     Html.thead
         (css
-            [ height (rem 3.0)
+            [ height headHeight
             , borderBottom3 (rem 0.0625) solid Colors.grayLight
             ]
             :: attrs
         )
         children
+
+
+{-| Groups the header content in a table
+-}
+thead : List (Attribute msg) -> List (Html msg) -> Html msg
+thead attrs children =
+    theadWithVariant attrs children Standard
+
+
+{-| Groups the header content in a smaller table
+-}
+theadSmall : List (Attribute msg) -> List (Html msg) -> Html msg
+theadSmall attrs children =
+    theadWithVariant attrs children Small
 
 
 {-| Defines a row in a table
@@ -87,15 +117,24 @@ th attrs children =
 
 {-| Groups the body content in a table
 -}
-tbody : List (Attribute msg) -> List (Html msg) -> Html msg
-tbody attrs children =
+tbodyWithVariant : List (Attribute msg) -> List (Html msg) -> Variant -> Html msg
+tbodyWithVariant attrs children variant =
+    let
+        trHeight =
+            case variant of
+                Small ->
+                    rem 2.5
+
+                Standard ->
+                    rem 4.5
+    in
     Html.tbody
         (css
             [ displayFlex
             , flexDirection column
             , Css.children
                 [ typeSelector "tr"
-                    [ height (rem 4.5)
+                    [ height trHeight
                     , hover [ Themes.backgroundColor Themes.SecondaryColor Colors.blueCloud |> Css.important ]
                     , nthChild "even" [ backgroundColor Colors.grayLightBorder ]
                     ]
@@ -104,6 +143,20 @@ tbody attrs children =
             :: attrs
         )
         children
+
+
+{-| Groups the body content in a table
+-}
+tbody : List (Attribute msg) -> List (Html msg) -> Html msg
+tbody attrs children =
+    tbodyWithVariant attrs children Standard
+
+
+{-| Groups the body content in a smaller table
+-}
+tbodySmall : List (Attribute msg) -> List (Html msg) -> Html msg
+tbodySmall attrs children =
+    tbodyWithVariant attrs children Small
 
 
 {-| Defines a cell in a table

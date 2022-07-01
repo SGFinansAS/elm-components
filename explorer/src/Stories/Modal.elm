@@ -21,12 +21,29 @@ stories =
                     [ Button.primary
                         |> Button.view [ onClick ToggleModal ] [ Html.text "Show modal" ]
                     , if model.customModel.isModalOpen then
-                        Modal.view
-                            { onClickClose = ToggleModal
-                            , title = "Header"
-                            }
-                            [ css [ width (rem 35) ] ]
-                            [ Html.text "Suggested width is 560px (35rem)" ]
+                        Modal.default ToggleModal
+                            |> Modal.withTitle "Title"
+                            |> Modal.view
+                                [ css [ width (rem 35) ] ]
+                                [ Html.text "Suggested width is 560px (35rem)" ]
+
+                      else
+                        Html.text ""
+                    ]
+          , {}
+          )
+        , ( "News Modal"
+          , \model ->
+                Html.div []
+                    [ Button.primary
+                        |> Button.view [ onClick ToggleModal ] [ Html.text "Show modal" ]
+                    , if model.customModel.isModalOpen then
+                        Modal.newsModal ToggleModal
+                            |> Modal.withTitle "Title"
+                            |> Modal.withSubtitle "Subtitle | Subtitle"
+                            |> Modal.view
+                                [ css [ width (rem 35) ] ]
+                                [ Html.text "Suggested width is 560px (35rem)" ]
 
                       else
                         Html.text ""

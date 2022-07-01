@@ -16,6 +16,7 @@ import Stories.Error as Error
 import Stories.FeatureBox as FeatureBox
 import Stories.FileUpload as FileUpload
 import Stories.FlatLink as FlatLink
+import Stories.Hamburger as Hamburger
 import Stories.Icons as Icons
 import Stories.InfoLabel as InfoLabel
 import Stories.InfoPanel as InfoPanel
@@ -27,6 +28,8 @@ import Stories.NumberInput as NumberInput
 import Stories.ProgressBar as ProgressBar
 import Stories.ProgressBarStepper as ProgressBarStepper
 import Stories.RadioButton as RadioButton
+import Stories.Range as Range
+import Stories.Slider as Slider
 import Stories.Spinner as Spinner
 import Stories.Status as Status
 import Stories.StepIndicator as StepIndicator
@@ -88,6 +91,7 @@ main =
                 , FeatureBox.stories
                 , FileUpload.stories
                 , FlatLink.stories
+                , Hamburger.stories
                 , InfoLabel.stories
                 , InfoPanel.stories
                 , InformationDetails.stories
@@ -98,6 +102,8 @@ main =
                 , ProgressBar.stories
                 , ProgressBarStepper.stories
                 , RadioButton.stories
+                , Range.stories
+                , Slider.stories
                 , Spinner.stories
                 , Status.stories
                 , StepIndicator.stories
