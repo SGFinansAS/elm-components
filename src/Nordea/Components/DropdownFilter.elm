@@ -163,7 +163,7 @@ view attrs (DropdownFilter config) =
     Tooltip.init
         |> Tooltip.withPlacement Tooltip.Bottom
         |> Tooltip.withVisibility
-            (if config.hasFocus && (config.isLoading || not (List.isEmpty searchMatches)) then
+            (if config.hasFocus then
                 Tooltip.Show
 
              else
@@ -195,6 +195,7 @@ view attrs (DropdownFilter config) =
                             ]
                         ]
                         searchMatches
+                        |> showIf (not (List.isEmpty searchMatches))
             )
         |> Tooltip.view
             ((config.onFocus
@@ -238,7 +239,7 @@ view attrs (DropdownFilter config) =
                         [ position absolute
                         , top (pct 50)
                         , right (rem 0.3125)
-                        , if config.hasFocus && not (List.isEmpty searchMatches) then
+                        , if config.hasFocus then
                             transforms [ translateY (pct -50), rotate (deg 180) ]
 
                           else
