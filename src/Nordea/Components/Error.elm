@@ -28,7 +28,7 @@ import Nordea.Components.Common exposing (Translation)
 import Nordea.Components.FlatLink as FlatLink
 import Nordea.Components.Text as Text
 import Nordea.Resources.Colors as Colors
-import Nordea.Resources.Icons as Icons
+import Nordea.Resources.Illustrations as Illustrations
 
 
 type alias InternalServerErrorConfig =
@@ -77,7 +77,7 @@ viewInternalServerError attributes children config =
         (css [ errorContainerStyle ] :: attributes)
         ([ viewHeading (texts.heading |> config.translate)
          , viewDescription (texts.internalServerError.description |> config.translate)
-         , Icons.errorSvg [ css [ width (rem 30) ] ]
+         , Illustrations.errorSvg [ css [ width (rem 30) ] ]
          , viewActionForInternalServerError config
          ]
             ++ children
@@ -90,7 +90,7 @@ viewPageNotFoundError attributes children config =
         (css [ errorContainerStyle ] :: attributes)
         ([ viewHeading (texts.heading |> config.translate)
          , viewDescription (texts.pageNotFound.description |> config.translate)
-         , Icons.errorSvg [ css [ width (rem 30) ] ]
+         , Illustrations.errorSvg [ css [ width (rem 30) ] ]
          ]
             ++ children
         )
