@@ -36,7 +36,6 @@ type Msg
     | SearchComponentInput String
     | SearchComponentSelected (Item FinancingVariant)
     | SearchComponentFocus Bool
-    | OnClickClearSearchComponentInput
     | NoOp
     | ToggleModal
     | ToggleFeatureBox
@@ -106,9 +105,6 @@ update msg config =
 
         SearchComponentFocus value ->
             { config | searchHasFocus = value }
-
-        OnClickClearSearchComponentInput ->
-            { config | searchComponentInput = "" }
 
         NoOp ->
             config

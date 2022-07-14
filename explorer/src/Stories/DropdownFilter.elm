@@ -51,17 +51,15 @@ stories =
         "DropdownFilter"
         [ ( "Default"
           , \model ->
-                let
-                    defaultOptions =
-                        DropdownFilter.init
-                            SearchComponentInput
-                            SearchComponentSelected
-                            searchResult
-                            model.customModel.searchComponentInput
-                            OnClickClearSearchComponentInput
-                in
                 Html.div [ css [ displayFlex, flexDirection column ] ]
-                    [ DropdownFilter.view [] defaultOptions ]
+                    [ DropdownFilter.init
+                        { onInput = SearchComponentInput
+                        , input = model.customModel.searchComponentInput
+                        , onSelect = SearchComponentSelected
+                        , items = searchResult
+                        }
+                        |> DropdownFilter.view []
+                    ]
           , {}
           )
         , ( "focused without group"
@@ -69,52 +67,45 @@ stories =
                 let
                     removedGroups =
                         List.map (\v -> { v | header = "" }) searchResult
-
-                    defaultOptions =
-                        DropdownFilter.init
-                            SearchComponentInput
-                            SearchComponentSelected
-                            removedGroups
-                            model.customModel.searchComponentInput
-                            OnClickClearSearchComponentInput
-                            |> DropdownFilter.withHasFocus True
                 in
                 Html.div [ css [ displayFlex, flexDirection column ] ]
-                    [ DropdownFilter.view [] defaultOptions ]
+                    [ DropdownFilter.init
+                        { onInput = SearchComponentInput
+                        , input = model.customModel.searchComponentInput
+                        , onSelect = SearchComponentSelected
+                        , items = removedGroups
+                        }
+                        |> DropdownFilter.view []
+                    ]
           , {}
           )
         , ( "interactive with focus"
           , \model ->
-                let
-                    defaultOptions =
-                        DropdownFilter.init
-                            SearchComponentInput
-                            SearchComponentSelected
-                            searchResult
-                            model.customModel.searchComponentInput
-                            OnClickClearSearchComponentInput
-                            |> DropdownFilter.withHasFocus model.customModel.searchHasFocus
-                            |> DropdownFilter.withOnFocus SearchComponentFocus
-                in
                 Html.div [ css [ displayFlex, flexDirection column ] ]
-                    [ DropdownFilter.view [] defaultOptions ]
+                    [ DropdownFilter.init
+                        { onInput = SearchComponentInput
+                        , input = model.customModel.searchComponentInput
+                        , onSelect = SearchComponentSelected
+                        , items = searchResult
+                        }
+                        |> DropdownFilter.withHasFocus model.customModel.searchHasFocus
+                        |> DropdownFilter.withOnFocus SearchComponentFocus
+                        |> DropdownFilter.view []
+                    ]
           , {}
           )
         , ( "Loading"
           , \model ->
-                let
-                    defaultOptions =
-                        DropdownFilter.init
-                            SearchComponentInput
-                            SearchComponentSelected
-                            searchResult
-                            model.customModel.searchComponentInput
-                            OnClickClearSearchComponentInput
-                            |> DropdownFilter.withIsLoading True
-                            |> DropdownFilter.withHasFocus True
-                in
                 Html.div [ css [ displayFlex, flexDirection column ] ]
-                    [ DropdownFilter.view [] defaultOptions ]
+                    [ DropdownFilter.init
+                        { onInput = SearchComponentInput
+                        , input = model.customModel.searchComponentInput
+                        , onSelect = SearchComponentSelected
+                        , items = searchResult
+                        }
+                        |> DropdownFilter.withIsLoading True
+                        |> DropdownFilter.view []
+                    ]
           , {}
           )
         , ( "interactive with async"
