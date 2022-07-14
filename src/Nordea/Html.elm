@@ -1,5 +1,6 @@
 module Nordea.Html exposing
     ( column
+    , hideIf
     , nothing
     , row
     , showIf
@@ -50,6 +51,15 @@ showIf condition element =
 
     else
         nothing
+
+
+hideIf : Bool -> Html msg -> Html msg
+hideIf condition html =
+    if condition then
+        nothing
+
+    else
+        html
 
 
 viewIfNotEmpty : List a -> (List a -> Html msg) -> Html msg
