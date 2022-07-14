@@ -67,7 +67,7 @@ import Maybe.Extra as Maybe
 import Nordea.Components.Spinner as Spinner
 import Nordea.Components.TextInput as TextInput
 import Nordea.Components.Tooltip as Tooltip
-import Nordea.Html as Html exposing (styleIf)
+import Nordea.Html as Html exposing (showIf, styleIf)
 import Nordea.Resources.Colors as Colors
 import Nordea.Resources.Icons as Icon
 
@@ -85,12 +85,10 @@ type alias ItemGroup a =
 
 
 type alias DropdownFilterProperties a msg =
-    { searchItems : List (ItemGroup a)
-    , onSearchInput : String -> msg
-    , onSelectValue : Item a -> msg
-    , onClickClearInput : msg
-    , rawInputString : String
-    , filterValues : String -> String -> Bool
+    { items : List (ItemGroup a)
+    , onInput : String -> msg
+    , onSelect : Item a -> msg
+    , input : String
     , onFocus : Maybe (Bool -> msg)
     , hasFocus : Bool
     , hasError : Bool
@@ -102,15 +100,19 @@ type DropdownFilter a msg
     = DropdownFilter (DropdownFilterProperties a msg)
 
 
-init : (String -> msg) -> (Item a -> msg) -> List (ItemGroup a) -> String -> msg -> DropdownFilter a msg
-init onSearchInput onSelectValue searchItems rawInputString onClickClearInput =
+init :
+    { onInput : String -> msg
+    , input : String
+    , onSelect : Item a -> msg
+    , items : List (ItemGroup a)
+    }
+    -> DropdownFilter a msg
+init { onInput, input, onSelect, items } =
     DropdownFilter
-        { searchItems = searchItems
-        , onSearchInput = onSearchInput
-        , onSelectValue = onSelectValue
-        , onClickClearInput = onClickClearInput
-        , filterValues = \searchString value -> String.contains (String.toLower searchString) (String.toLower value)
-        , rawInputString = rawInputString
+        { items = items
+        , onInput = onInput
+        , onSelect = onSelect
+        , input = input
         , onFocus = Nothing
         , hasFocus = True
         , hasError = False
@@ -121,15 +123,20 @@ init onSearchInput onSelectValue searchItems rawInputString onClickClearInput =
 view : List (Html.Attribute msg) -> DropdownFilter a msg -> Html msg
 view attrs (DropdownFilter config) =
     let
+        filterValues value =
+            value
+                |> String.toLower
+                |> String.contains (String.toLower config.input)
+
         searchMatches =
-            config.searchItems
+            config.items
                 |> List.concatMap
                     (\group ->
                         let
                             itemMatches =
                                 group.items
-                                    |> List.filter (.text >> config.filterValues config.rawInputString)
-                                    |> List.map (itemView config.onSelectValue)
+                                    |> List.filter (.text >> filterValues)
+                                    |> List.map (itemView config.onSelect)
                         in
                         if not (List.isEmpty itemMatches) && not (String.isEmpty group.header) then
                             headerView group.header :: itemMatches
@@ -139,7 +146,7 @@ view attrs (DropdownFilter config) =
                     )
 
         showHasNoMatch =
-            config.rawInputString /= "" && List.isEmpty searchMatches
+            config.input /= "" && List.isEmpty searchMatches
 
         dropdownStyles =
             Css.batch
@@ -188,6 +195,7 @@ view attrs (DropdownFilter config) =
                             ]
                         ]
                         searchMatches
+                        |> showIf (not (List.isEmpty searchMatches))
             )
         |> Tooltip.view
             ((config.onFocus
@@ -201,9 +209,9 @@ view attrs (DropdownFilter config) =
              )
                 ++ attrs
             )
-            [ TextInput.init config.rawInputString
+            [ TextInput.init config.input
                 |> TextInput.withError (config.hasError || showHasNoMatch)
-                |> TextInput.withOnInput config.onSearchInput
+                |> TextInput.withOnInput config.onInput
                 |> TextInput.view
                     [ css
                         [ width (pct 100)
@@ -212,9 +220,9 @@ view attrs (DropdownFilter config) =
                         , descendants [ typeSelector "input" [ paddingRight (rem 3) ] ]
                         ]
                     ]
-            , if String.length config.rawInputString > 0 then
+            , if String.length config.input > 0 then
                 Icon.cross
-                    [ Events.onClick config.onClickClearInput
+                    [ Events.onClick (config.onInput "")
                     , css
                         [ position absolute
                         , top (pct 50)
