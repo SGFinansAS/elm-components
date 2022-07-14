@@ -53,10 +53,10 @@ stories =
           , \model ->
                 Html.div [ css [ displayFlex, flexDirection column ] ]
                     [ DropdownFilter.init
-                        { onSearchInput = SearchComponentInput
-                        , rawInputString = model.customModel.searchComponentInput
-                        , onSelectValue = SearchComponentSelected
-                        , searchItems = searchResult
+                        { onInput = SearchComponentInput
+                        , input = model.customModel.searchComponentInput
+                        , onSelect = SearchComponentSelected
+                        , items = searchResult
                         }
                         |> DropdownFilter.view []
                     ]
@@ -70,10 +70,10 @@ stories =
                 in
                 Html.div [ css [ displayFlex, flexDirection column ] ]
                     [ DropdownFilter.init
-                        { onSearchInput = SearchComponentInput
-                        , rawInputString = model.customModel.searchComponentInput
-                        , onSelectValue = SearchComponentSelected
-                        , searchItems = removedGroups
+                        { onInput = SearchComponentInput
+                        , input = model.customModel.searchComponentInput
+                        , onSelect = SearchComponentSelected
+                        , items = removedGroups
                         }
                         |> DropdownFilter.view []
                     ]
@@ -83,10 +83,10 @@ stories =
           , \model ->
                 Html.div [ css [ displayFlex, flexDirection column ] ]
                     [ DropdownFilter.init
-                        { onSearchInput = SearchComponentInput
-                        , rawInputString = model.customModel.searchComponentInput
-                        , onSelectValue = SearchComponentSelected
-                        , searchItems = searchResult
+                        { onInput = SearchComponentInput
+                        , input = model.customModel.searchComponentInput
+                        , onSelect = SearchComponentSelected
+                        , items = searchResult
                         }
                         |> DropdownFilter.withHasFocus model.customModel.searchHasFocus
                         |> DropdownFilter.withOnFocus SearchComponentFocus
@@ -98,10 +98,10 @@ stories =
           , \model ->
                 Html.div [ css [ displayFlex, flexDirection column ] ]
                     [ DropdownFilter.init
-                        { onSearchInput = SearchComponentInput
-                        , rawInputString = model.customModel.searchComponentInput
-                        , onSelectValue = SearchComponentSelected
-                        , searchItems = searchResult
+                        { onInput = SearchComponentInput
+                        , input = model.customModel.searchComponentInput
+                        , onSelect = SearchComponentSelected
+                        , items = searchResult
                         }
                         |> DropdownFilter.withIsLoading True
                         |> DropdownFilter.view []

@@ -85,10 +85,10 @@ type alias ItemGroup a =
 
 
 type alias DropdownFilterProperties a msg =
-    { searchItems : List (ItemGroup a)
-    , onSearchInput : String -> msg
-    , onSelectValue : Item a -> msg
-    , rawInputString : String
+    { items : List (ItemGroup a)
+    , onInput : String -> msg
+    , onSelect : Item a -> msg
+    , input : String
     , onFocus : Maybe (Bool -> msg)
     , hasFocus : Bool
     , hasError : Bool
@@ -101,18 +101,18 @@ type DropdownFilter a msg
 
 
 init :
-    { onSearchInput : String -> msg
-    , rawInputString : String
-    , onSelectValue : Item a -> msg
-    , searchItems : List (ItemGroup a)
+    { onInput : String -> msg
+    , input : String
+    , onSelect : Item a -> msg
+    , items : List (ItemGroup a)
     }
     -> DropdownFilter a msg
-init { onSearchInput, rawInputString, onSelectValue, searchItems } =
+init { onInput, input, onSelect, items } =
     DropdownFilter
-        { searchItems = searchItems
-        , onSearchInput = onSearchInput
-        , onSelectValue = onSelectValue
-        , rawInputString = rawInputString
+        { items = items
+        , onInput = onInput
+        , onSelect = onSelect
+        , input = input
         , onFocus = Nothing
         , hasFocus = True
         , hasError = False
@@ -126,17 +126,17 @@ view attrs (DropdownFilter config) =
         filterValues value =
             value
                 |> String.toLower
-                |> String.contains (String.toLower config.rawInputString)
+                |> String.contains (String.toLower config.input)
 
         searchMatches =
-            config.searchItems
+            config.items
                 |> List.concatMap
                     (\group ->
                         let
                             itemMatches =
                                 group.items
                                     |> List.filter (.text >> filterValues)
-                                    |> List.map (itemView config.onSelectValue)
+                                    |> List.map (itemView config.onSelect)
                         in
                         if not (List.isEmpty itemMatches) && not (String.isEmpty group.header) then
                             headerView group.header :: itemMatches
@@ -146,7 +146,7 @@ view attrs (DropdownFilter config) =
                     )
 
         showHasNoMatch =
-            config.rawInputString /= "" && List.isEmpty searchMatches
+            config.input /= "" && List.isEmpty searchMatches
 
         dropdownStyles =
             Css.batch
@@ -209,9 +209,9 @@ view attrs (DropdownFilter config) =
              )
                 ++ attrs
             )
-            [ TextInput.init config.rawInputString
+            [ TextInput.init config.input
                 |> TextInput.withError (config.hasError || showHasNoMatch)
-                |> TextInput.withOnInput config.onSearchInput
+                |> TextInput.withOnInput config.onInput
                 |> TextInput.view
                     [ css
                         [ width (pct 100)
@@ -220,9 +220,9 @@ view attrs (DropdownFilter config) =
                         , descendants [ typeSelector "input" [ paddingRight (rem 3) ] ]
                         ]
                     ]
-            , if String.length config.rawInputString > 0 then
+            , if String.length config.input > 0 then
                 Icon.cross
-                    [ Events.onClick (config.onSearchInput "")
+                    [ Events.onClick (config.onInput "")
                     , css
                         [ position absolute
                         , top (pct 50)
