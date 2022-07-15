@@ -6,6 +6,7 @@ module Nordea.Components.DropdownFilter exposing
     , withHasFocus
     , withIsLoading
     , withOnFocus
+    , withSearchIcon
     )
 
 import Css
@@ -33,26 +34,32 @@ import Css
         , hover
         , int
         , justifyContent
+        , left
         , lineHeight
         , listStyle
         , margin
         , margin2
         , maxHeight
         , none
+        , num
+        , opacity
         , overflowY
         , padding
         , padding3
+        , paddingLeft
         , paddingRight
         , pct
         , pointer
         , pointerEvents
         , position
+        , relative
         , rem
         , right
         , rotate
         , scroll
         , solid
         , top
+        , transform
         , transforms
         , translateY
         , width
@@ -63,7 +70,6 @@ import Html.Styled as Html exposing (Html)
 import Html.Styled.Attributes as Attrs exposing (css, tabindex, value)
 import Html.Styled.Events as Events
 import Json.Decode as Decode
-import Maybe.Extra as Maybe
 import Nordea.Components.Spinner as Spinner
 import Nordea.Components.TextInput as TextInput
 import Nordea.Components.Tooltip as Tooltip
@@ -93,6 +99,7 @@ type alias DropdownFilterProperties a msg =
     , hasFocus : Bool
     , hasError : Bool
     , isLoading : Bool -- data might be fetching
+    , hasSearchIcon : Bool
     }
 
 
@@ -117,6 +124,7 @@ init { onInput, input, onSelect, items } =
         , hasFocus = True
         , hasError = False
         , isLoading = False
+        , hasSearchIcon = False
         }
 
 
@@ -217,10 +225,16 @@ view attrs (DropdownFilter config) =
                         [ width (pct 100)
                         , borderBottomLeftRadius (pct 0) |> Css.important |> styleIf config.hasFocus
                         , borderBottomRightRadius (pct 0) |> Css.important |> styleIf config.hasFocus
-                        , descendants [ typeSelector "input" [ paddingRight (rem 3) ] ]
+                        , descendants
+                            [ typeSelector "input"
+                                [ paddingRight (rem 3)
+                                , position relative |> Css.important |> styleIf config.hasSearchIcon
+                                , paddingLeft (rem 2) |> Css.important |> styleIf config.hasSearchIcon
+                                ]
+                            ]
                         ]
                     ]
-            , if String.length config.input > 0 then
+            , if String.length config.input > 0 && not config.hasSearchIcon then
                 Icon.cross
                     [ Events.onClick (config.onInput "")
                     , css
@@ -230,6 +244,21 @@ view attrs (DropdownFilter config) =
                         , transforms [ translateY (pct -50) ]
                         , width (rem 1.125)
                         , cursor pointer
+                        ]
+                    ]
+
+              else if config.hasSearchIcon then
+                Icon.search
+                    [ css
+                        [ width (rem 1)
+                        , height (rem 1)
+                        , opacity (num 0.5)
+                        , position absolute
+                        , color Colors.blueNordea
+                        , left (rem 0.7)
+                        , top (pct 50)
+                        , transform (translateY (pct -50))
+                        , pointerEvents none
                         ]
                     ]
 
@@ -293,3 +322,8 @@ withOnFocus onFocus (DropdownFilter config) =
 withIsLoading : Bool -> DropdownFilter a msg -> DropdownFilter a msg
 withIsLoading isLoading (DropdownFilter config) =
     DropdownFilter { config | isLoading = isLoading }
+
+
+withSearchIcon : Bool -> DropdownFilter a msg -> DropdownFilter a msg
+withSearchIcon hasSearchIcon (DropdownFilter config) =
+    DropdownFilter { config | hasSearchIcon = hasSearchIcon }
