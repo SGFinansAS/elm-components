@@ -108,7 +108,7 @@ stories =
                     ]
           , {}
           )
-        , ( "Has search icon"
+        , ( "With search icon"
           , \model ->
                 let
                     defaultOptions =

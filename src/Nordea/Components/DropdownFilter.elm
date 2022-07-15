@@ -34,32 +34,26 @@ import Css
         , hover
         , int
         , justifyContent
-        , left
         , lineHeight
         , listStyle
         , margin
         , margin2
         , maxHeight
         , none
-        , num
-        , opacity
         , overflowY
         , padding
         , padding3
-        , paddingLeft
         , paddingRight
         , pct
         , pointer
         , pointerEvents
         , position
-        , relative
         , rem
         , right
         , rotate
         , scroll
         , solid
         , top
-        , transform
         , transforms
         , translateY
         , width
@@ -73,7 +67,7 @@ import Json.Decode as Decode
 import Nordea.Components.Spinner as Spinner
 import Nordea.Components.TextInput as TextInput
 import Nordea.Components.Tooltip as Tooltip
-import Nordea.Html as Html exposing (showIf, styleIf)
+import Nordea.Html as Html exposing (hideIf, showIf, styleIf)
 import Nordea.Resources.Colors as Colors
 import Nordea.Resources.Icons as Icon
 
@@ -220,6 +214,7 @@ view attrs (DropdownFilter config) =
             [ TextInput.init config.input
                 |> TextInput.withError (config.hasError || showHasNoMatch)
                 |> TextInput.withOnInput config.onInput
+                |> TextInput.withSearchIcon config.hasSearchIcon
                 |> TextInput.view
                     [ css
                         [ width (pct 100)
@@ -228,13 +223,11 @@ view attrs (DropdownFilter config) =
                         , descendants
                             [ typeSelector "input"
                                 [ paddingRight (rem 3)
-                                , position relative |> Css.important |> styleIf config.hasSearchIcon
-                                , paddingLeft (rem 2) |> Css.important |> styleIf config.hasSearchIcon
                                 ]
                             ]
                         ]
                     ]
-            , if String.length config.input > 0 && not config.hasSearchIcon then
+            , if String.length config.input > 0 then
                 Icon.cross
                     [ Events.onClick (config.onInput "")
                     , css
@@ -244,21 +237,6 @@ view attrs (DropdownFilter config) =
                         , transforms [ translateY (pct -50) ]
                         , width (rem 1.125)
                         , cursor pointer
-                        ]
-                    ]
-
-              else if config.hasSearchIcon then
-                Icon.search
-                    [ css
-                        [ width (rem 1)
-                        , height (rem 1)
-                        , opacity (num 0.5)
-                        , position absolute
-                        , color Colors.blueNordea
-                        , left (rem 0.7)
-                        , top (pct 50)
-                        , transform (translateY (pct -50))
-                        , pointerEvents none
                         ]
                     ]
 
@@ -277,6 +255,7 @@ view attrs (DropdownFilter config) =
                         , color Colors.grayCool
                         ]
                     ]
+                    |> hideIf config.hasSearchIcon
             ]
 
 
