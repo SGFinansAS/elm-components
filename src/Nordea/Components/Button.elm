@@ -200,7 +200,7 @@ baseStyle =
         , alignItems center
         , fontSize (rem 1)
         , fontWeight (int 500)
-        , padding2 (rem 0.5) (rem 1)
+        , padding2 (rem 0) (rem 1)
         , borderRadius (rem 2)
         , cursor pointer
         , boxSizing borderBox
@@ -296,25 +296,31 @@ variantStyle variant =
                 ]
             , hoverTransition
             ]
+
+        normalHeight =
+            height (rem 2.5)
+
+        smallHeight =
+            height (rem 2)
     in
     case variant of
         Primary ->
-            batch primaryStyling
+            batch (normalHeight :: primaryStyling)
 
         PrimarySmall ->
-            batch (height (rem 2) :: primaryStyling)
+            batch (smallHeight :: primaryStyling)
 
         Secondary ->
-            batch secondaryStyling
+            batch (normalHeight :: secondaryStyling)
 
         SecondarySmall ->
-            batch (height (rem 2) :: secondaryStyling)
+            batch (smallHeight :: secondaryStyling)
 
         Tertiary ->
-            batch tertiaryStyling
+            batch (normalHeight :: tertiaryStyling)
 
         TertiarySmall ->
-            batch (height (rem 2) :: tertiaryStyling)
+            batch (smallHeight :: tertiaryStyling)
 
         Card ->
             let
