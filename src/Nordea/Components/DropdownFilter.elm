@@ -6,6 +6,7 @@ module Nordea.Components.DropdownFilter exposing
     , withHasFocus
     , withIsLoading
     , withOnFocus
+    , withSearchIcon
     )
 
 import Css
@@ -63,11 +64,10 @@ import Html.Styled as Html exposing (Html)
 import Html.Styled.Attributes as Attrs exposing (css, tabindex, value)
 import Html.Styled.Events as Events
 import Json.Decode as Decode
-import Maybe.Extra as Maybe
 import Nordea.Components.Spinner as Spinner
 import Nordea.Components.TextInput as TextInput
 import Nordea.Components.Tooltip as Tooltip
-import Nordea.Html as Html exposing (showIf, styleIf)
+import Nordea.Html as Html exposing (hideIf, showIf, styleIf)
 import Nordea.Resources.Colors as Colors
 import Nordea.Resources.Icons as Icon
 
@@ -93,6 +93,7 @@ type alias DropdownFilterProperties a msg =
     , hasFocus : Bool
     , hasError : Bool
     , isLoading : Bool -- data might be fetching
+    , hasSearchIcon : Bool
     }
 
 
@@ -117,6 +118,7 @@ init { onInput, input, onSelect, items } =
         , hasFocus = True
         , hasError = False
         , isLoading = False
+        , hasSearchIcon = False
         }
 
 
@@ -212,12 +214,17 @@ view attrs (DropdownFilter config) =
             [ TextInput.init config.input
                 |> TextInput.withError (config.hasError || showHasNoMatch)
                 |> TextInput.withOnInput config.onInput
+                |> TextInput.withSearchIcon config.hasSearchIcon
                 |> TextInput.view
                     [ css
                         [ width (pct 100)
                         , borderBottomLeftRadius (pct 0) |> Css.important |> styleIf config.hasFocus
                         , borderBottomRightRadius (pct 0) |> Css.important |> styleIf config.hasFocus
-                        , descendants [ typeSelector "input" [ paddingRight (rem 3) ] ]
+                        , descendants
+                            [ typeSelector "input"
+                                [ paddingRight (rem 3)
+                                ]
+                            ]
                         ]
                     ]
             , if String.length config.input > 0 then
@@ -248,6 +255,7 @@ view attrs (DropdownFilter config) =
                         , color Colors.grayCool
                         ]
                     ]
+                    |> hideIf config.hasSearchIcon
             ]
 
 
@@ -293,3 +301,8 @@ withOnFocus onFocus (DropdownFilter config) =
 withIsLoading : Bool -> DropdownFilter a msg -> DropdownFilter a msg
 withIsLoading isLoading (DropdownFilter config) =
     DropdownFilter { config | isLoading = isLoading }
+
+
+withSearchIcon : Bool -> DropdownFilter a msg -> DropdownFilter a msg
+withSearchIcon hasSearchIcon (DropdownFilter config) =
+    DropdownFilter { config | hasSearchIcon = hasSearchIcon }
