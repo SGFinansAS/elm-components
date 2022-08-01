@@ -1,9 +1,9 @@
 module Nordea.Components.Button exposing
     ( Button
     , Variant(..)
-    , actionButton
     , buttonStyleForExport
     , card
+    , circular
     , flatLinkStyle
     , primary
     , secondary
@@ -95,7 +95,7 @@ type Variant
     | Card
     | SmallCard
     | FlatLinkStyle
-    | ActionButton
+    | Circular
 
 
 type alias Config msg =
@@ -145,9 +145,9 @@ flatLinkStyle =
     init FlatLinkStyle
 
 
-actionButton : Button msg
-actionButton =
-    init ActionButton
+circular : Button msg
+circular =
+    init Circular
 
 
 
@@ -343,7 +343,7 @@ variantStyle variant =
                     [ outline none ]
                 ]
 
-        ActionButton ->
+        Circular ->
             batch
                 [ border3 (rem 0.0625) solid Colors.mediumGray
                 , borderRadius (pct 50)

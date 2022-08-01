@@ -135,12 +135,12 @@ stories =
                     ]
           , {}
           )
-        , ( "Action Button"
+        , ( "Circular"
           , \_ ->
                 Html.div [ css [ children [ everything [ marginBottom (rem 1) ] ] ] ]
-                    [ Button.actionButton
+                    [ Button.circular
                         |> Button.view [] [ Icons.chevronLeft [] ]
-                    , Button.actionButton
+                    , Button.circular
                         |> Button.view [] [ Icons.chevronRight [] ]
                     ]
           , {}
