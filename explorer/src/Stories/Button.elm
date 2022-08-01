@@ -135,4 +135,14 @@ stories =
                     ]
           , {}
           )
+        , ( "Action Button"
+          , \_ ->
+                Html.div [ css [ children [ everything [ marginBottom (rem 1) ] ] ] ]
+                    [ Button.actionButton
+                        |> Button.view [] [ Icons.chevronLeft [] ]
+                    , Button.actionButton
+                        |> Button.view [] [ Icons.chevronRight [] ]
+                    ]
+          , {}
+          )
         ]
