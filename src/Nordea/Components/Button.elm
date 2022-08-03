@@ -3,6 +3,7 @@ module Nordea.Components.Button exposing
     , Variant(..)
     , buttonStyleForExport
     , card
+    , circular
     , flatLinkStyle
     , primary
     , secondary
@@ -33,13 +34,16 @@ import Css
         , cursor
         , disabled
         , displayFlex
+        , flex
         , flexDirection
         , focus
         , fontFamilies
         , fontSize
         , fontWeight
+        , height
         , hover
         , int
+        , justifyContent
         , left
         , marginTop
         , none
@@ -59,6 +63,7 @@ import Css
         , scale2
         , solid
         , start
+        , stretch
         , textAlign
         , textDecoration
         , top
@@ -90,6 +95,7 @@ type Variant
     | Card
     | SmallCard
     | FlatLinkStyle
+    | Circular
 
 
 type alias Config msg =
@@ -137,6 +143,11 @@ smallCard =
 flatLinkStyle : Button msg
 flatLinkStyle =
     init FlatLinkStyle
+
+
+circular : Button msg
+circular =
+    init Circular
 
 
 
@@ -330,6 +341,21 @@ variantStyle variant =
                     [ Themes.color Themes.PrimaryColorLight Colors.blueNordea ]
                 , focus
                     [ outline none ]
+                ]
+
+        Circular ->
+            batch
+                [ border3 (rem 0.0625) solid Colors.mediumGray
+                , borderRadius (pct 50)
+                , width (rem 2.5)
+                , height (rem 2.5)
+                , padding (rem 0.5)
+                , displayFlex
+                , justifyContent center
+                , alignItems stretch
+                , hover [ Themes.backgroundColor Themes.SecondaryColor Colors.cloudBlue ]
+                , position relative
+                , children [ everything [ flex (num 1) ] ]
                 ]
 
 

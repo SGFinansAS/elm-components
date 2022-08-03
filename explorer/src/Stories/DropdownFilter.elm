@@ -108,6 +108,24 @@ stories =
                     ]
           , {}
           )
+        , ( "With search icon"
+          , \model ->
+                let
+                    defaultOptions =
+                        DropdownFilter.init
+                            { onInput = SearchComponentInput
+                            , input = model.customModel.searchComponentInput
+                            , onSelect = SearchComponentSelected
+                            , items = searchResult
+                            }
+                            |> DropdownFilter.withHasFocus model.customModel.searchHasFocus
+                            |> DropdownFilter.withOnFocus SearchComponentFocus
+                            |> DropdownFilter.withSearchIcon True
+                in
+                Html.div [ css [ displayFlex, flexDirection column ] ]
+                    [ DropdownFilter.view [] defaultOptions ]
+          , {}
+          )
         , ( "interactive with async"
           , \_ ->
                 Html.text "TODO debouncer and RemoteData"
