@@ -55,7 +55,7 @@ type FileDownload msg
 type alias Config msg =
     { onDownload : msg
     , label : String
-    , type_ : Maybe String
+    , type_ : String
     , id : String
     , translate : Translate
     , downloadStatus : Status
@@ -68,12 +68,12 @@ type Status
     | Success
 
 
-init : Translate -> msg -> String -> String -> FileDownload msg
-init translate onDownload label id =
+init : Translate -> msg -> String -> String -> String -> FileDownload msg
+init translate onDownload label type_ id =
     FileDownload
         { onDownload = onDownload
         , label = label
-        , type_ = Nothing
+        , type_ = type_
         , id = id
         , translate = translate
         , downloadStatus = NotAsked
@@ -111,7 +111,7 @@ view attrs (FileDownload config) =
             [ Text.textLight
                 |> Text.view [ css [ marginRight (rem 0.5), lineHeight (rem 1.5) ] ] [ Html.text config.label ]
             , Text.textTinyLight
-                |> Text.view [ css [ marginRight (rem 0.5), lineHeight (rem 1.5) ] ] [ Html.text (config.type_ |> Maybe.withDefault "") ]
+                |> Text.view [ css [ marginRight (rem 0.5), lineHeight (rem 1.5) ] ] [ Html.text config.type_ ]
             ]
         , Text.textSmallLight
             |> Text.view
