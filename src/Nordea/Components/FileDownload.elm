@@ -1,4 +1,10 @@
-module Nordea.Components.FileDownload exposing (..)
+module Nordea.Components.FileDownload exposing
+    ( FileDownload
+    , Status(..)
+    , init
+    , view
+    , withDownloadStatus
+    )
 
 import Css
     exposing
@@ -55,8 +61,7 @@ type FileDownload msg
 type alias Config msg =
     { onDownload : msg
     , label : String
-    , type_ : String
-    , id : String
+    , subtitle : String
     , translate : Translate
     , downloadStatus : Status
     }
@@ -68,13 +73,12 @@ type Status
     | Success
 
 
-init : Translate -> msg -> String -> String -> String -> FileDownload msg
-init translate onDownload label type_ id =
+init : Translate -> msg -> String -> String -> FileDownload msg
+init translate onDownload label subtitle =
     FileDownload
         { onDownload = onDownload
         , label = label
-        , type_ = type_
-        , id = id
+        , subtitle = subtitle
         , translate = translate
         , downloadStatus = NotAsked
         }
@@ -95,8 +99,8 @@ view attrs (FileDownload config) =
                     Icon.download [ css [ flexShrink (num 0), width (rem 0.875), marginLeft (rem 0.5) ] ]
     in
     Html.a
-        [ onClick config.onDownload
-        , css
+        ([ onClick config.onDownload
+         , css
             [ displayFlex
             , alignItems center
             , borderRadius (rem 0.5)
@@ -106,30 +110,31 @@ view attrs (FileDownload config) =
             , flexBasis (pct 100)
             , cursor pointer
             ]
-        ]
+         ]
+            ++ attrs
+        )
         [ Layout.column []
             [ Text.textLight
                 |> Text.view [ css [ marginRight (rem 0.5), lineHeight (rem 1.5) ] ] [ Html.text config.label ]
             , Text.textTinyLight
-                |> Text.view [ css [ marginRight (rem 0.5), lineHeight (rem 1.5) ] ] [ Html.text config.type_ ]
+                |> Text.view [ css [ marginRight (rem 0.5), lineHeight (rem 1.5) ] ] [ Html.text config.subtitle ]
             ]
         , Text.textSmallLight
             |> Text.view
-                (css
+                [ css
                     [ lineHeight (rem 1.5)
                     , Themes.color Themes.PrimaryColor Colors.deepBlue
                     , textDecoration underline
                     , marginLeft auto
                     , children [ everything [ verticalAlign middle ] ]
                     ]
-                    :: attrs
-                )
+                ]
                 [ Html.text (config.translate strings.download), downloadIconStatus ]
         ]
 
 
-withDownLoadStatus : Status -> FileDownload msg -> FileDownload msg
-withDownLoadStatus downloadStatus (FileDownload config) =
+withDownloadStatus : Status -> FileDownload msg -> FileDownload msg
+withDownloadStatus downloadStatus (FileDownload config) =
     FileDownload { config | downloadStatus = downloadStatus }
 
 
