@@ -14,6 +14,7 @@ import Stories.Dropdown as Dropdown
 import Stories.DropdownFilter as Search
 import Stories.Error as Error
 import Stories.FeatureBox as FeatureBox
+import Stories.FileDownload as FileDownload
 import Stories.FileUpload as FileUpload
 import Stories.FlatLink as FlatLink
 import Stories.Hamburger as Hamburger
@@ -89,6 +90,7 @@ main =
                 , Search.stories
                 , Error.stories
                 , FeatureBox.stories
+                , FileDownload.stories
                 , FileUpload.stories
                 , FlatLink.stories
                 , Hamburger.stories
