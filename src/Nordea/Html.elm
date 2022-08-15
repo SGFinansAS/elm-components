@@ -7,9 +7,10 @@ module Nordea.Html exposing
     , styleIf
     , viewIfNotEmpty
     , viewMaybe
+    , wrappedRow
     )
 
-import Css exposing (Style, displayFlex, flexDirection)
+import Css exposing (Style, displayFlex, flexDirection, flexWrap, wrap)
 import Html.Styled as Html exposing (Attribute, Html, div, styled)
 
 
@@ -32,6 +33,19 @@ row =
         [ displayFlex
         , flexDirection Css.row
         ]
+
+
+wrappedRow : List (Attribute msg) -> List (Html msg) -> Html msg
+wrappedRow =
+    styled div
+        [ displayFlex
+        , flexDirection Css.row
+        , flexWrap wrap
+        ]
+
+
+
+-- VISIBILITY
 
 
 viewMaybe : (a -> Html msg) -> Maybe a -> Html msg
