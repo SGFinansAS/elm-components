@@ -37,7 +37,6 @@ import Css
         , justifyContent
         , lineHeight
         , listStyle
-        , margin
         , margin2
         , maxHeight
         , none
@@ -93,7 +92,7 @@ type alias DropdownFilterProperties a msg =
     , onFocus : Maybe (Bool -> msg)
     , hasFocus : Bool
     , hasError : Bool
-    , isLoading : Bool -- data might be fetching
+    , isLoading : Bool
     , hasSearchIcon : Bool
     , isSmallSize : Bool
     }
@@ -162,8 +161,63 @@ view attrs (DropdownFilter config) =
                 , borderBottomLeftRadius (rem 0.25)
                 , borderBottomRightRadius (rem 0.25)
                 , boxSizing borderBox
-                , padding3 (rem 0.1875) (rem 0.0625) (rem 0.75)
+                , padding3 (rem 0.5) (rem 0) (rem 0.0)
                 ]
+
+        textInput =
+            TextInput.init config.input
+                |> TextInput.withError (config.hasError || showHasNoMatch)
+                |> TextInput.withOnInput config.onInput
+                |> TextInput.withSearchIcon config.hasSearchIcon
+                |> (if config.isSmallSize then
+                        TextInput.withSmallSize
+
+                    else
+                        identity
+                   )
+                |> TextInput.view
+                    [ css
+                        [ width (pct 100)
+                        , borderBottomLeftRadius (pct 0) |> Css.important |> styleIf config.hasFocus
+                        , borderBottomRightRadius (pct 0) |> Css.important |> styleIf config.hasFocus
+                        , descendants
+                            [ typeSelector "input"
+                                [ paddingRight (rem 3)
+                                ]
+                            ]
+                        ]
+                    ]
+
+        iconRight =
+            if String.length config.input > 0 then
+                Icon.cross
+                    [ Events.onClick (config.onInput "")
+                    , css
+                        [ position absolute
+                        , top (pct 50)
+                        , right (rem 0.75)
+                        , transforms [ translateY (pct -50) ]
+                        , width (rem 1.125)
+                        , cursor pointer
+                        ]
+                    ]
+
+            else
+                Icon.chevronDownFilled
+                    [ css
+                        [ position absolute
+                        , top (pct 50)
+                        , right (rem 0.3125)
+                        , if config.hasFocus then
+                            transforms [ translateY (pct -50), rotate (deg 180) ]
+
+                          else
+                            transforms [ translateY (pct -50) ]
+                        , pointerEvents none
+                        , color Colors.grayCool
+                        ]
+                    ]
+                    |> hideIf config.hasSearchIcon
     in
     Tooltip.init
         |> Tooltip.withPlacement Tooltip.Bottom
@@ -192,8 +246,7 @@ view attrs (DropdownFilter config) =
                 else
                     Html.ul
                         [ css
-                            [ margin (rem 0)
-                            , overflowY scroll
+                            [ overflowY scroll
                             , maxHeight (rem 16.75)
                             , listStyle none
                             , dropdownStyles
@@ -206,7 +259,7 @@ view attrs (DropdownFilter config) =
             ((config.onFocus
                 |> Maybe.map
                     (\onFocus ->
-                        [ Events.on "focusout" (Decode.succeed (onFocus False))
+                        [ Events.on "focusout" (Decode.succeed (onFocus True))
                         , Events.on "focusin" (Decode.succeed (onFocus True))
                         ]
                     )
@@ -214,57 +267,8 @@ view attrs (DropdownFilter config) =
              )
                 ++ attrs
             )
-            [ TextInput.init config.input
-                |> TextInput.withError (config.hasError || showHasNoMatch)
-                |> TextInput.withOnInput config.onInput
-                |> TextInput.withSearchIcon config.hasSearchIcon
-                |> (if config.isSmallSize then
-                        TextInput.withSmallSize
-
-                    else
-                        identity
-                   )
-                |> TextInput.view
-                    [ css
-                        [ width (pct 100)
-                        , borderBottomLeftRadius (pct 0) |> Css.important |> styleIf config.hasFocus
-                        , borderBottomRightRadius (pct 0) |> Css.important |> styleIf config.hasFocus
-                        , descendants
-                            [ typeSelector "input"
-                                [ paddingRight (rem 3)
-                                ]
-                            ]
-                        ]
-                    ]
-            , if String.length config.input > 0 then
-                Icon.cross
-                    [ Events.onClick (config.onInput "")
-                    , css
-                        [ position absolute
-                        , top (pct 50)
-                        , right (rem 0.75)
-                        , transforms [ translateY (pct -50) ]
-                        , width (rem 1.125)
-                        , cursor pointer
-                        ]
-                    ]
-
-              else
-                Icon.chevronDownFilled
-                    [ css
-                        [ position absolute
-                        , top (pct 50)
-                        , right (rem 0.3125)
-                        , if config.hasFocus then
-                            transforms [ translateY (pct -50), rotate (deg 180) ]
-
-                          else
-                            transforms [ translateY (pct -50) ]
-                        , pointerEvents none
-                        , color Colors.grayCool
-                        ]
-                    ]
-                    |> hideIf config.hasSearchIcon
+            [ textInput
+            , iconRight
             ]
 
 
