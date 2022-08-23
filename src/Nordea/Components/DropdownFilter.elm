@@ -197,7 +197,7 @@ view attrs (DropdownFilter config) =
                         , top (pct 50)
                         , right (rem 0.75)
                         , transforms [ translateY (pct -50) ]
-                        , width (rem 1.125)
+                        , width (rem 1)
                         , cursor pointer
                         ]
                     ]
