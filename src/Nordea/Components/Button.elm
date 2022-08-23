@@ -3,13 +3,13 @@ module Nordea.Components.Button exposing
     , Variant(..)
     , buttonStyleForExport
     , card
+    , cardSmall
     , circular
     , flatLinkStyle
     , primary
     , primarySmall
     , secondary
     , secondarySmall
-    , smallCard
     , tertiary
     , tertiarySmall
     , view
@@ -99,7 +99,7 @@ type Variant
     | Tertiary
     | TertiarySmall
     | Card
-    | SmallCard
+    | CardSmall
     | FlatLinkStyle
     | Circular
 
@@ -156,9 +156,9 @@ card =
     init Card
 
 
-smallCard : Button msg
-smallCard =
-    init SmallCard
+cardSmall : Button msg
+cardSmall =
+    init CardSmall
 
 
 flatLinkStyle : Button msg
@@ -183,7 +183,7 @@ view attributes children (Button config) =
                 Card ->
                     [ Icons.arrowRight [ class "arrowicon", css [ width (rem 1) ] ] ]
 
-                SmallCard ->
+                CardSmall ->
                     [ Icons.arrowRight [ class "arrowicon", css [ width (rem 1) ] ] ]
 
                 _ ->
@@ -350,7 +350,7 @@ variantStyle variant =
                 , hover [ arrowIconMovement (rem 1) ]
                 ]
 
-        SmallCard ->
+        CardSmall ->
             let
                 arrowIconMovement movementLengthRight =
                     descendants
