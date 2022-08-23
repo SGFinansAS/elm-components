@@ -1,4 +1,14 @@
-module Nordea.Components.Card exposing (..)
+module Nordea.Components.Card exposing
+    ( Card
+    , footer
+    , header
+    , infoBox
+    , init
+    , title
+    , view
+    , withShadow
+    , withTitle
+    )
 
 import Css
     exposing
@@ -7,10 +17,10 @@ import Css
         , border3
         , borderRadius
         , borderStyle
+        , boxShadow4
         , column
         , displayFlex
         , flexDirection
-        , fontSize
         , height
         , left
         , margin2
@@ -48,47 +58,47 @@ init =
 
 view : List (Attribute msg) -> List (Html msg) -> Card msg -> Html msg
 view attrs children (Card config) =
-    let
-        cardStyle =
+    Html.div
+        (css
             [ borderRadius (rem 0.5)
             , padding (rem 1.5)
             , textAlign left
             , displayFlex
             , flexDirection column
             , backgroundColor Colors.white
-            , Css.boxShadow4 (rem 0) (rem 0.25) (rem 2.5) Colors.grayLight
+            , boxShadow4 (rem 0) (rem 0.25) (rem 2.5) Colors.grayLight
                 |> styleIf config.hasShadow
             ]
-    in
-    Html.div
-        (css cardStyle
             :: attrs
         )
-        (viewMaybe cardTitle config.title
+        ((config.title |> viewMaybe (\title_ -> header [] [ title [] [ Html.text title_ ] ]))
             :: children
         )
 
 
-cardTitle : String -> Html msg
-cardTitle title =
+header : List (Attribute msg) -> List (Html msg) -> Html msg
+header attrs children =
     Html.div
-        [ css
-            [ fontSize (rem 1.125)
-            ]
-        ]
-        [ Text.bodyTextHeavy
-            |> Text.view [] [ Html.text title ]
-        , Html.hr
-            [ css
-                [ width auto
-                , borderStyle none
-                , height (rem 0.0625)
-                , backgroundColor Colors.grayCool
-                , margin2 (rem 1) (rem -1.5)
-                ]
-            ]
-            []
-        ]
+        (css [] :: attrs)
+        (children
+            ++ [ Html.hr
+                    [ css
+                        [ width auto
+                        , borderStyle none
+                        , height (rem 0.0625)
+                        , backgroundColor Colors.grayCool
+                        , margin2 (rem 1) (rem -1.5)
+                        ]
+                    ]
+                    []
+               ]
+        )
+
+
+title : List (Attribute msg) -> List (Html msg) -> Html msg
+title attrs children =
+    Text.bodyTextHeavy
+        |> Text.view attrs children
 
 
 infoBox : List (Attribute msg) -> List (Html msg) -> Html msg
@@ -105,9 +115,27 @@ infoBox attrs content =
         content
 
 
+footer : List (Attribute msg) -> List (Html msg) -> Html msg
+footer attrs children =
+    Html.div
+        (css [] :: attrs)
+        (Html.hr
+            [ css
+                [ width auto
+                , borderStyle none
+                , height (rem 0.0625)
+                , backgroundColor Colors.grayCool
+                , margin2 (rem 1) (rem -1.5)
+                ]
+            ]
+            []
+            :: children
+        )
+
+
 withTitle : String -> Card msg -> Card msg
-withTitle title (Card config) =
-    Card { config | title = Just title }
+withTitle title_ (Card config) =
+    Card { config | title = Just title_ }
 
 
 withShadow : Card msg -> Card msg

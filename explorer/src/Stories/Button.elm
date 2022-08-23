@@ -171,4 +171,14 @@ stories =
                     ]
           , {}
           )
+        , ( "Circular"
+          , \_ ->
+                Html.div [ css [ children [ everything [ marginBottom (rem 1) ] ] ] ]
+                    [ Button.circular
+                        |> Button.view [] [ Icons.chevronLeft [] ]
+                    , Button.circular
+                        |> Button.view [] [ Icons.chevronRight [] ]
+                    ]
+          , {}
+          )
         ]

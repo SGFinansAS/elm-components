@@ -278,7 +278,7 @@ getStyles config =
         )
     , padding2 (rem 0.75) (rem 0.75)
     , borderRadius (rem 0.25)
-    , border3 (rem 0.0625) solid borderColorStyle |> Css.important
+    , border3 (rem 0.0625) solid borderColorStyle
     , boxSizing borderBox
     , width (pct 100)
     , disabled [ backgroundColor Colors.grayWarm ]
