@@ -6,9 +6,12 @@ module Nordea.Components.Button exposing
     , circular
     , flatLinkStyle
     , primary
+    , primarySmall
     , secondary
+    , secondarySmall
     , smallCard
     , tertiary
+    , tertiarySmall
     , view
     , withHtmlTag
     , withStyles
@@ -90,8 +93,11 @@ import Nordea.Themes as Themes
 
 type Variant
     = Primary
+    | PrimarySmall
     | Secondary
+    | SecondarySmall
     | Tertiary
+    | TertiarySmall
     | Card
     | SmallCard
     | FlatLinkStyle
@@ -120,14 +126,29 @@ primary =
     init Primary
 
 
+primarySmall : Button msg
+primarySmall =
+    init PrimarySmall
+
+
 secondary : Button msg
 secondary =
     init Secondary
 
 
+secondarySmall : Button msg
+secondarySmall =
+    init SecondarySmall
+
+
 tertiary : Button msg
 tertiary =
     init Tertiary
+
+
+tertiarySmall : Button msg
+tertiarySmall =
+    init TertiarySmall
 
 
 card : Button msg
@@ -189,7 +210,7 @@ baseStyle =
         , alignItems center
         , fontSize (rem 1)
         , fontWeight (int 500)
-        , padding2 (rem 0.5) (rem 1)
+        , padding2 (rem 0) (rem 1)
         , borderRadius (rem 2)
         , cursor pointer
         , boxSizing borderBox
@@ -233,62 +254,83 @@ variantStyle variant =
                     ]
                 , hover [ transform (scale2 1.05 1.05) ]
                 ]
+
+        primaryStyling =
+            [ Themes.backgroundColor Themes.PrimaryColor Colors.blueDeep
+            , Themes.color Themes.TextColorOnPrimaryColorBackground Colors.white
+            , border3 (rem 0.125) solid Colors.transparent
+            , hover
+                [ Themes.backgroundColor Themes.SecondaryColor Colors.blueCloud
+                , Themes.color Themes.PrimaryColor Colors.blueDeep
+                ]
+            , focus
+                [ outline none
+                , Themes.backgroundColor Themes.PrimaryColorLight Colors.blueNordea
+                , Themes.color Themes.SecondaryColor Colors.blueHaas
+                , Css.property "box-shadow" ("0rem 0rem 0rem 0.25rem " ++ Themes.colorVariable Themes.SecondaryColor Colors.blueHaas)
+                ]
+            , hoverTransition
+            ]
+
+        secondaryStyling =
+            [ backgroundColor Colors.white
+            , Themes.color Themes.PrimaryColor Colors.blueDeep
+            , border3 (rem 0.125) solid Css.transparent
+            , Themes.borderColor Themes.PrimaryColor Colors.blueDeep
+            , hover
+                [ Themes.backgroundColor Themes.SecondaryColor (Colors.blueCloud |> Colors.withAlpha 0.5)
+                , Themes.color Themes.PrimaryColor Colors.blueDeep
+                ]
+            , focus
+                [ outline none
+                , Themes.backgroundColor Themes.SecondaryColor Colors.blueCloud
+                , Themes.color Themes.PrimaryColor Colors.blueDeep
+                , Css.property "box-shadow" ("0rem 0rem 0rem 0.125rem " ++ Themes.colorVariable Themes.PrimaryColor Colors.blueDeep)
+                ]
+            , hoverTransition
+            ]
+
+        tertiaryStyling =
+            [ backgroundColor Colors.transparent
+            , Themes.color Themes.PrimaryColor Colors.blueDeep
+            , border3 (rem 0.125) solid Colors.transparent
+            , hover
+                [ backgroundColor Colors.transparent
+                , Themes.color Themes.PrimaryColorLight Colors.blueNordea
+                ]
+            , focus
+                [ outline none
+                , backgroundColor Colors.transparent
+                , Themes.color Themes.PrimaryColor Colors.blueDeep
+                , Css.property "box-shadow" ("0rem 0rem 0rem 0.25rem " ++ Themes.colorVariable Themes.SecondaryColor Colors.blueHaas)
+                ]
+            , hoverTransition
+            ]
+
+        normalHeight =
+            height (rem 2.5)
+
+        smallHeight =
+            height (rem 2)
     in
     case variant of
         Primary ->
-            batch
-                [ Themes.backgroundColor Themes.PrimaryColor Colors.blueDeep
-                , Themes.color Themes.TextColorOnPrimaryColorBackground Colors.white
-                , border3 (rem 0.125) solid Colors.transparent
-                , hover
-                    [ Themes.backgroundColor Themes.SecondaryColor Colors.blueCloud
-                    , Themes.color Themes.PrimaryColor Colors.blueDeep
-                    ]
-                , focus
-                    [ outline none
-                    , Themes.backgroundColor Themes.PrimaryColorLight Colors.blueNordea
-                    , Themes.color Themes.SecondaryColor Colors.blueHaas
-                    , Css.property "box-shadow" ("0rem 0rem 0rem 0.25rem " ++ Themes.colorVariable Themes.SecondaryColor Colors.blueHaas)
-                    ]
-                , hoverTransition
-                ]
+            batch (normalHeight :: primaryStyling)
+
+        PrimarySmall ->
+            batch (smallHeight :: primaryStyling)
 
         Secondary ->
-            batch
-                [ backgroundColor Colors.white
-                , Themes.color Themes.PrimaryColor Colors.blueDeep
-                , border3 (rem 0.125) solid Css.transparent
-                , Themes.borderColor Themes.PrimaryColor Colors.blueDeep
-                , hover
-                    [ Themes.backgroundColor Themes.SecondaryColor (Colors.blueCloud |> Colors.withAlpha 0.5)
-                    , Themes.color Themes.PrimaryColor Colors.blueDeep
-                    ]
-                , focus
-                    [ outline none
-                    , Themes.backgroundColor Themes.SecondaryColor Colors.blueCloud
-                    , Themes.color Themes.PrimaryColor Colors.blueDeep
-                    , Css.property "box-shadow" ("0rem 0rem 0rem 0.125rem " ++ Themes.colorVariable Themes.PrimaryColor Colors.blueDeep)
-                    ]
-                , hoverTransition
-                ]
+            batch (normalHeight :: secondaryStyling)
+
+        SecondarySmall ->
+            batch (smallHeight :: secondaryStyling)
 
         Tertiary ->
-            batch
-                [ backgroundColor Colors.transparent
-                , Themes.color Themes.PrimaryColor Colors.blueDeep
-                , border3 (rem 0.125) solid Colors.transparent
-                , hover
-                    [ backgroundColor Colors.transparent
-                    , Themes.color Themes.PrimaryColorLight Colors.blueNordea
-                    ]
-                , focus
-                    [ outline none
-                    , backgroundColor Colors.transparent
-                    , Themes.color Themes.PrimaryColor Colors.blueDeep
-                    , Css.property "box-shadow" ("0rem 0rem 0rem 0.25rem " ++ Themes.colorVariable Themes.SecondaryColor Colors.blueHaas)
-                    ]
-                , hoverTransition
-                ]
+            batch (normalHeight :: tertiaryStyling)
+
+        TertiarySmall ->
+            batch (smallHeight :: tertiaryStyling)
 
         Card ->
             let

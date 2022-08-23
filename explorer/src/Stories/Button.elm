@@ -53,6 +53,18 @@ stories =
                     ]
           , {}
           )
+        , ( "PrimarySmall"
+          , \_ ->
+                Html.div [ css [ children [ everything [ marginBottom (rem 1) ] ] ] ]
+                    [ Button.primarySmall
+                        |> Button.view [] [ text "Click me" ]
+                    , Button.primarySmall
+                        |> Button.view [] [ text "Click me", Icons.rightIcon (Icons.info []) ]
+                    , Button.primarySmall
+                        |> Button.view [] [ Icons.leftIcon (Icons.info []), text "Click me" ]
+                    ]
+          , {}
+          )
         , ( "Secondary"
           , \_ ->
                 Html.div [ css [ children [ everything [ marginBottom (rem 1) ] ] ] ]
@@ -65,6 +77,18 @@ stories =
                     ]
           , {}
           )
+        , ( "SecondarySmall"
+          , \_ ->
+                Html.div [ css [ children [ everything [ marginBottom (rem 1) ] ] ] ]
+                    [ Button.secondarySmall
+                        |> Button.view [] [ text "Click me" ]
+                    , Button.secondarySmall
+                        |> Button.view [] [ text "Click me", Icons.rightIcon (Icons.info []) ]
+                    , Button.secondarySmall
+                        |> Button.view [] [ Icons.leftIcon (Icons.info []), text "Click me" ]
+                    ]
+          , {}
+          )
         , ( "Tertiary"
           , \_ ->
                 Html.div [ css [ children [ everything [ marginBottom (rem 1) ] ] ] ]
@@ -73,6 +97,18 @@ stories =
                     , Button.tertiary
                         |> Button.view [] [ text "Click me", Icons.rightIcon (Icons.info []) ]
                     , Button.tertiary
+                        |> Button.view [] [ Icons.leftIcon (Icons.info []), text "Click me" ]
+                    ]
+          , {}
+          )
+        , ( "TertiarySmall"
+          , \_ ->
+                Html.div [ css [ children [ everything [ marginBottom (rem 1) ] ] ] ]
+                    [ Button.tertiarySmall
+                        |> Button.view [] [ text "Click me" ]
+                    , Button.tertiarySmall
+                        |> Button.view [] [ text "Click me", Icons.rightIcon (Icons.info []) ]
+                    , Button.tertiarySmall
                         |> Button.view [] [ Icons.leftIcon (Icons.info []), text "Click me" ]
                     ]
           , {}
