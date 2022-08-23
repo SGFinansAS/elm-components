@@ -115,7 +115,7 @@ stories =
         , ( "SmallCard (clickable)"
           , \_ ->
                 Html.div [ css [ children [ everything [ marginBottom (rem 1) ] ] ] ]
-                    [ Button.smallCard
+                    [ Button.cardSmall
                         |> Button.view [ css [ width (rem 20) ] ]
                             [ Text.textHeavy |> Text.view [ css [ displayFlex, marginBottom (rem 0.25), color Colors.grayEclipse ] ] [ Html.text "Some text goes here" ]
                             , Text.textTiny |> Text.view [ css [ color Colors.grayEclipse ] ] [ Html.text "Some info text" ]
