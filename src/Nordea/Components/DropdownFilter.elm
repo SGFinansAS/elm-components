@@ -294,7 +294,7 @@ itemView onSelectValue item =
         , tabindex 0
         , css
             [ padding (rem 0.75)
-            , hover [ backgroundColor Colors.blueCloud ]
+            , hover [ backgroundColor Colors.coolGray ]
             , cursor pointer
             ]
         ]
