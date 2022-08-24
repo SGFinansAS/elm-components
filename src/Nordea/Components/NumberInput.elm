@@ -45,7 +45,7 @@ type alias Config msg =
 
 type Variant
     = Small
-    | Standard
+    | Large
 
 
 type NumberInput msg
@@ -119,6 +119,11 @@ withSmallSize (NumberInput config) =
     NumberInput { config | variant = Small }
 
 
+withLargeSize : NumberInput msg -> NumberInput msg
+withLargeSize (NumberInput config) =
+    NumberInput { config | variant = Large }
+
+
 
 -- VIEW
 
@@ -176,7 +181,7 @@ getStyles config =
 
         inputHeight =
             case config.variant of
-                Standard ->
+                Large ->
                     NordeaCss.standardInputHeight
 
                 Small ->

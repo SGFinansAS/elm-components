@@ -126,7 +126,7 @@ stories =
                     [ DropdownFilter.view [] defaultOptions ]
           , {}
           )
-        , ( "Small"
+        , ( "Large"
           , \model ->
                 Html.div [ css [ displayFlex, flexDirection column ] ]
                     [ DropdownFilter.init
@@ -137,7 +137,7 @@ stories =
                         }
                         |> DropdownFilter.withHasFocus model.customModel.searchHasFocus
                         |> DropdownFilter.withOnFocus SearchComponentFocus
-                        |> DropdownFilter.withSmallSize
+                        |> DropdownFilter.withLargeSize
                         |> DropdownFilter.view []
                     ]
           , {}

@@ -2,6 +2,7 @@ module Nordea.Components.Dropdown exposing
     ( Dropdown
     , init
     , initWithOptionProperties
+    , large
     , optionInit
     , optionIsDisabled
     , simple
@@ -59,7 +60,7 @@ import Nordea.Themes as Themes
 
 
 type Variant
-    = Standard
+    = Large
     | Simple
     | Small
 
@@ -117,6 +118,15 @@ small options optionToString onInput =
     Dropdown { config | variant = Small }
 
 
+large : List { value : a, text : String } -> (a -> String) -> (a -> msg) -> Dropdown a msg
+large options optionToString onInput =
+    let
+        (Dropdown config) =
+            init options optionToString onInput
+    in
+    Dropdown { config | variant = Large }
+
+
 init : List { value : a, text : String } -> (a -> String) -> (a -> msg) -> Dropdown a msg
 init options optionToString onInput =
     initWithOptionProperties (List.map optionInit options) optionToString onInput
@@ -131,7 +141,7 @@ initWithOptionProperties options optionToString onInput =
         , optionToString = optionToString
         , selectedValue = Nothing
         , hasError = False
-        , variant = Standard
+        , variant = Small
         }
 
 
@@ -183,7 +193,7 @@ view attrs (Dropdown config) =
 
         dropdownHeight =
             case config.variant of
-                Standard ->
+                Large ->
                     NordeaCss.standardInputHeight
 
                 Simple ->
@@ -239,7 +249,7 @@ view attrs (Dropdown config) =
                     ]
           in
           case config.variant of
-            Standard ->
+            Large ->
                 standardIcon
 
             Small ->

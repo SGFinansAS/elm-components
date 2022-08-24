@@ -4,6 +4,7 @@ module Nordea.Components.TextInput exposing
     , view
     , withCurrency
     , withError
+    , withLargeSize
     , withMaxLength
     , withOnBlur
     , withOnEnterPress
@@ -149,6 +150,11 @@ withOnEnterPress msg (TextInput config) =
 withSmallSize : TextInput msg -> TextInput msg
 withSmallSize (TextInput config) =
     TextInput { config | size = Small }
+
+
+withLargeSize : TextInput msg -> TextInput msg
+withLargeSize (TextInput config) =
+    TextInput { config | size = Large }
 
 
 withCurrency : String -> TextInput msg -> TextInput msg

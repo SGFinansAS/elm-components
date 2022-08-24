@@ -81,7 +81,7 @@ type Checkbox msg
 
 
 type Appearance
-    = Standard
+    = Large
     | Simple
     | ListStyle
     | Small
@@ -95,7 +95,7 @@ init name label onCheck =
         , onCheck = onCheck
         , onBlur = Nothing
         , isChecked = False
-        , appearance = Standard
+        , appearance = Small
         , hasError = False
         }
 
@@ -125,7 +125,7 @@ view attrs (Checkbox config) =
                     , borderColor Colors.redDark
                         |> styleIf (config.hasError && config.appearance == Simple)
                     , borderColor Colors.grayMedium
-                        |> styleIf (config.hasError && List.member config.appearance [ Standard, ListStyle ])
+                        |> styleIf (config.hasError && List.member config.appearance [ Large, ListStyle ])
                     , position relative
                     , boxSizing borderBox
 

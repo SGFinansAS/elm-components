@@ -66,10 +66,10 @@ stories =
                     |> TextInput.view []
           , {}
           )
-        , ( "Small size"
+        , ( "Large size"
           , \_ ->
                 TextInput.init "Text"
-                    |> TextInput.withSmallSize
+                    |> TextInput.withLargeSize
                     |> TextInput.view []
           , {}
           )

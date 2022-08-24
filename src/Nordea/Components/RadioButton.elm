@@ -78,7 +78,7 @@ type RadioButton msg
 
 
 type Appearance
-    = Standard
+    = Large
     | Simple
     | ListStyle
     | Small
@@ -92,7 +92,7 @@ init name label onCheck =
         , onCheck = onCheck
         , onBlur = Nothing
         , isSelected = False
-        , appearance = Standard
+        , appearance = Small
         , showError = False
         }
 
@@ -121,7 +121,7 @@ view attrs (RadioButton config) =
                     , borderColor Colors.redDark
                         |> styleIf (config.showError && config.appearance == Simple)
                     , borderColor Colors.grayMedium
-                        |> styleIf (config.showError && List.member config.appearance [ Standard, ListStyle ])
+                        |> styleIf (config.showError && List.member config.appearance [ Large, ListStyle ])
                     , borderRadius (pct 50)
                     , boxSizing borderBox
                     , after

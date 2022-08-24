@@ -117,9 +117,9 @@ stories =
                     |> Dropdown.view []
           , {}
           )
-        , ( "Small"
+        , ( "Large"
           , \_ ->
-                Dropdown.small
+                Dropdown.large
                     [ { value = Leasing, text = financingVariantToString Leasing }
                     , { value = Rent, text = financingVariantToString Rent }
                     , { value = Loan, text = financingVariantToString Loan }

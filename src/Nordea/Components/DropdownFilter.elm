@@ -5,6 +5,7 @@ module Nordea.Components.DropdownFilter exposing
     , view
     , withHasFocus
     , withIsLoading
+    , withLargeSize
     , withOnFocus
     , withSearchIcon
     , withSmallSize
@@ -121,7 +122,7 @@ init { onInput, input, onSelect, items } =
         , hasError = False
         , isLoading = False
         , hasSearchIcon = False
-        , isSmallSize = False
+        , isSmallSize = True
         }
 
 
@@ -320,3 +321,8 @@ withSearchIcon hasSearchIcon (DropdownFilter config) =
 withSmallSize : DropdownFilter a msg -> DropdownFilter a msg
 withSmallSize (DropdownFilter config) =
     DropdownFilter { config | isSmallSize = True }
+
+
+withLargeSize : DropdownFilter a msg -> DropdownFilter a msg
+withLargeSize (DropdownFilter config) =
+    DropdownFilter { config | isSmallSize = False }

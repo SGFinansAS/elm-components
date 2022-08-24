@@ -67,20 +67,20 @@ stories =
                     ]
           , {}
           )
-        , ( "Small"
+        , ( "Large"
           , \_ ->
                 Html.div [ css [ displayFlex, Css.property "gap" "1rem" ] ]
                     [ RadioButton.init
                         "small"
                         (text "Click me")
                         NoOp
-                        |> RadioButton.withAppearance RadioButton.Small
+                        |> RadioButton.withAppearance RadioButton.Large
                         |> RadioButton.view []
                     , RadioButton.init
                         "small"
                         (text "Click me")
                         NoOp
-                        |> RadioButton.withAppearance RadioButton.Small
+                        |> RadioButton.withAppearance RadioButton.Large
                         |> RadioButton.withIsSelected True
                         |> RadioButton.view []
                     ]
