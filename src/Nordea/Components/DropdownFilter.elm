@@ -116,7 +116,7 @@ init { onInput, input, onSelect, items } =
         , onSelect = onSelect
         , input = input
         , onFocus = Nothing
-        , hasFocus = True
+        , hasFocus = False
         , hasError = False
         , isLoading = False
         , hasSearchIcon = False
@@ -133,6 +133,32 @@ view attrs (DropdownFilter config) =
                 |> String.contains (String.toLower config.input)
 
         searchMatches =
+            let
+                viewHeader text =
+                    Html.li
+                        [ css
+                            [ color Colors.gray
+                            , margin2 (rem 0) (rem 0.625)
+                            , fontSize (rem 0.75)
+                            , fontWeight (int 400)
+                            , lineHeight (rem 1)
+                            ]
+                        ]
+                        [ Html.text text ]
+
+                viewItem onSelectValue item =
+                    Html.li
+                        [ Events.onClick (onSelectValue item)
+                        , Attrs.fromUnstyled (Events.onEnter (onSelectValue item))
+                        , tabindex 0
+                        , css
+                            [ padding (rem 0.75)
+                            , hover [ backgroundColor Colors.coolGray ]
+                            , cursor pointer
+                            ]
+                        ]
+                        [ Html.text item.text ]
+            in
             config.items
                 |> List.concatMap
                     (\group ->
@@ -140,10 +166,10 @@ view attrs (DropdownFilter config) =
                             itemMatches =
                                 group.items
                                     |> List.filter (.text >> filterValues)
-                                    |> List.map (itemView config.onSelect)
+                                    |> List.map (viewItem config.onSelect)
                         in
                         if not (List.isEmpty itemMatches) && not (String.isEmpty group.header) then
-                            headerView group.header :: itemMatches
+                            viewHeader group.header :: itemMatches
 
                         else
                             itemMatches
@@ -270,35 +296,6 @@ view attrs (DropdownFilter config) =
             [ textInput
             , iconRight
             ]
-
-
-headerView : String -> Html msg
-headerView text =
-    Html.li
-        [ css
-            [ color Colors.gray
-            , margin2 (rem 0) (rem 0.625)
-            , fontSize (rem 0.75)
-            , fontWeight (int 400)
-            , lineHeight (rem 1)
-            ]
-        ]
-        [ Html.text text ]
-
-
-itemView : (Item a -> msg) -> Item a -> Html msg
-itemView onSelectValue item =
-    Html.li
-        [ Events.onClick (onSelectValue item)
-        , Attrs.fromUnstyled (Events.onEnter (onSelectValue item))
-        , tabindex 0
-        , css
-            [ padding (rem 0.75)
-            , hover [ backgroundColor Colors.coolGray ]
-            , cursor pointer
-            ]
-        ]
-        [ Html.text item.text ]
 
 
 withHasFocus : Bool -> DropdownFilter a msg -> DropdownFilter a msg
