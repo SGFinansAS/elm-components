@@ -5,6 +5,7 @@ module Nordea.Components.NumberInput exposing
     , withError
     , withFormatter
     , withIsDisabled
+    , withLargeSize
     , withMax
     , withMin
     , withOnBlur
