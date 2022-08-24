@@ -101,7 +101,7 @@ init value =
         , hasSearchIcon = False
         , onBlur = Nothing
         , onEnterPress = Nothing
-        , size = Large
+        , size = Small
         , currency = Nothing
         }
 

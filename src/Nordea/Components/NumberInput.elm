@@ -65,7 +65,7 @@ init value =
         , onBlur = Nothing
         , formatter = Nothing
         , isDisabled = False
-        , variant = Standard
+        , variant = Small
         }
 
 
