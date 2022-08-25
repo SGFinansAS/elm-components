@@ -65,6 +65,7 @@ import Html.Styled.Attributes as Attrs exposing (css, tabindex, value)
 import Html.Styled.Events as Events
 import Json.Decode as Decode
 import Nordea.Components.Spinner as Spinner
+import Nordea.Components.Text as Text
 import Nordea.Components.TextInput as TextInput
 import Nordea.Components.Tooltip as Tooltip
 import Nordea.Html as Html exposing (hideIf, showIf, styleIf)
@@ -136,15 +137,8 @@ view attrs (DropdownFilter config) =
             let
                 viewHeader text =
                     Html.li
-                        [ css
-                            [ color Colors.gray
-                            , margin2 (rem 0) (rem 0.625)
-                            , fontSize (rem 0.75)
-                            , fontWeight (int 400)
-                            , lineHeight (rem 1)
-                            ]
-                        ]
-                        [ Html.text text ]
+                        [ css [ color Colors.gray, margin2 (rem 0) (rem 0.625) ] ]
+                        [ Text.textTinyLight |> Text.view [] [ Html.text text ] ]
 
                 viewItem onSelectValue item =
                     Html.li
