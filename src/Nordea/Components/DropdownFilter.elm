@@ -29,13 +29,9 @@ import Css
         , deg
         , displayFlex
         , flexDirection
-        , fontSize
-        , fontWeight
         , height
         , hover
-        , int
         , justifyContent
-        , lineHeight
         , listStyle
         , margin2
         , maxHeight
