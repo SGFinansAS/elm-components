@@ -148,7 +148,7 @@ stories =
                     ]
           , {}
           )
-        , ( "SmallCard (clickable)"
+        , ( "CardSmall (clickable)"
           , \_ ->
                 Html.div [ css [ children [ everything [ marginBottom (rem 1) ] ] ] ]
                     [ Button.cardSmall
