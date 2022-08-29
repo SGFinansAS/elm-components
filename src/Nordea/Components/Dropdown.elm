@@ -22,7 +22,6 @@ import Css
         , borderStyle
         , color
         , focus
-        , fontFamilies
         , fontSize
         , height
         , inherit
@@ -191,6 +190,41 @@ view attrs (Dropdown config) =
 
                 Small ->
                     NordeaCss.smallInputHeight
+
+        iconChevron =
+            let
+                standardIcon =
+                    Icon.chevronDownFilled
+                        [ css
+                            [ position absolute
+                            , top (pct 50)
+                            , transform (translateY (pct -50))
+                            , right (rem 0.3125)
+                            , pointerEvents none
+                            , color Colors.grayCool
+                            ]
+                        ]
+            in
+            case config.variant of
+                Standard ->
+                    standardIcon
+
+                Small ->
+                    standardIcon
+
+                Simple ->
+                    Icon.chevronDown
+                        [ css
+                            [ position absolute
+                            , top (pct 50)
+                            , transform (translateY (pct -50))
+                            , right (rem 0.75)
+                            , width (rem 1.125) |> Css.important
+                            , height (rem 1.125)
+                            , pointerEvents none
+                            , color inherit
+                            ]
+                        ]
     in
     div
         (css [ position relative ] :: attrs)
@@ -219,45 +253,12 @@ view attrs (Dropdown config) =
                     ]
                 , fontSize (rem 1.0)
                 , lineHeight (rem 1.4)
-                , fontFamilies [ "Nordea Sans Small" ]
                 , color inherit
                 , withAttribute "disabled" [ color Colors.grayNordea, backgroundColor Colors.grayCool ]
                 ]
             ]
             (placeholder :: options)
-        , let
-            standardIcon =
-                Icon.chevronDownFilled
-                    [ css
-                        [ position absolute
-                        , top (pct 50)
-                        , transform (translateY (pct -50))
-                        , right (rem 0.3125)
-                        , pointerEvents none
-                        , color Colors.grayCool
-                        ]
-                    ]
-          in
-          case config.variant of
-            Standard ->
-                standardIcon
-
-            Small ->
-                standardIcon
-
-            Simple ->
-                Icon.chevronDown
-                    [ css
-                        [ position absolute
-                        , top (pct 50)
-                        , transform (translateY (pct -50))
-                        , right (rem 0.75)
-                        , width (rem 1.125) |> Css.important
-                        , height (rem 1.125)
-                        , pointerEvents none
-                        , color inherit
-                        ]
-                    ]
+        , iconChevron
         ]
 
 
