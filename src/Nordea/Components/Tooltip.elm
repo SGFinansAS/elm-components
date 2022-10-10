@@ -217,20 +217,18 @@ view attrs children (Tooltip config) =
                                 , animationDuration (ms duration)
                                 , Css.property "animation-fill-mode" "forwards"
 
-                                -- left moves it out of dom, visibility hides it from screen readers
+                                -- visibility hides it from screen readers
                                 , animationName
                                     (keyframes
                                         [ ( 0, [ Animations.opacity (int 1) ] )
                                         , ( 90, [ Animations.opacity (int 1) ] )
                                         , ( 99
                                           , [ Animations.opacity (int 0)
-                                            , Animations.property "left" "unset"
                                             , Animations.property "visibility" "unset"
                                             ]
                                           )
                                         , ( 100
                                           , [ Animations.opacity (int 0)
-                                            , Animations.property "left" "-99999rem"
                                             , Animations.property "visibility" "hidden"
                                             ]
                                           )
