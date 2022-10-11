@@ -166,7 +166,7 @@ texts =
     , internalServerError =
         { description =
             { no = "Grunnen til at du har kommet hit kan være at det er noen nettverksproblemer eller at noe er galt hos oss."
-            , se = "Anledningen till att du har kommit hit kan vara att det är några nätverksproblem eller att något är fel på oss."
+            , se = "Anledning till att du har kommit hit kan vara att det är några nätverksproblem eller att något är fel hos oss."
             , dk = "Grunden til at du er kommet hertil kan være at der er nogle netværksproblemer eller at der er noget galt hos os."
             , en = "The reason why you ended up here could be due to network issues or that something is wrong in our systems."
             }
@@ -180,7 +180,7 @@ texts =
     , pageNotFound =
         { description =
             { no = "Grunnen til at du har kommet hit kan være at det er noe feil med linken, eller at siden er slettet."
-            , se = "Anledningen till att du har kommit hit kan vara att det är något fel på länken, eller att sidan har raderats."
+            , se = "Anledningen till att du har kommit hit kan vara att det är något fel på länken eller att sidan har raderats."
             , dk = "Grunden til at du er kommet hertil kan være, at der er noget galt med linket, eller at siden er blevet slettet."
             , en = "The reason why you have come here may be that there is something wrong with the link, or that the page has been deleted."
             }
