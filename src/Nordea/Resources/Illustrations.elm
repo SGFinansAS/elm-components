@@ -299,10 +299,7 @@ confetti2 =
 errorSvg : List (Attribute msg) -> Svg msg
 errorSvg attrs =
     illustrationsContainer attrs
-        [ Svg.svg
-            [ viewBox "0 0 197 191"
-            , fill "none"
-            ]
+        [ Svg.svg [ viewBox "0 0 197 191", fill "none" ]
             [ Svg.path
                 [ d "M61.758 47.6629C61.7682 47.763 61.7682 47.8638 61.758 47.9639C61.5878 48.4 61.252 48.7509 60.8239 48.9401C60.3958 49.1292 59.9102 49.1412 59.4732 48.9735L42.63 42.4027C42.3969 42.3318 42.1809 42.2136 41.9956 42.0555C41.8102 41.8973 41.6595 41.7026 41.5528 41.4836C41.4461 41.2645 41.3858 41.0258 41.3756 40.7823C41.3654 40.5389 41.4055 40.296 41.4935 40.0688C41.5814 39.8415 41.7153 39.6349 41.8868 39.4618C42.0582 39.2887 42.2636 39.1528 42.4899 39.0627C42.7163 38.9725 42.9588 38.9301 43.2023 38.9379C43.4459 38.9458 43.6851 39.0038 43.9052 39.1084L60.7484 45.6792C61.1182 45.8446 61.42 46.1317 61.6037 46.4926C61.7874 46.8536 61.8419 47.2666 61.758 47.6629Z"
                 , fill "#C9C7C7"
@@ -436,8 +433,7 @@ nordeaLogo : Maybe String -> List (Attribute msg) -> Html msg
 nordeaLogo accessibilityAltText attrs =
     illustrationsContainer attrs
         [ Svg.svg [ viewBox "16 15 85 33", fill "none" ]
-            [ Svg.title []
-                [ accessibilityAltText |> Maybe.withDefault "" |> Svg.text ]
+            [ Svg.title [] [ accessibilityAltText |> Maybe.withDefault "" |> Svg.text ]
             , Svg.path
                 [ fill "currentColor"
                 , d "M92.9173 18.523C89.5194 18.7692 86.8011 21.5384 86.554 24.923C86.3068 28.923 89.4576 32.2461 93.4115 32.2461C94.8325 32.2461 96.7477 31.5077 97.6744 30.0307V32H100.331V25.4769C100.331 21.2307 96.8712 18.2154 92.9173 18.523ZM97.4272 25.5384C97.3037 27.8154 95.3267 29.5384 92.9791 29.2307C91.1875 28.9846 89.7665 27.5692 89.5194 25.7846C89.2723 23.3846 91.1257 21.3538 93.4733 21.3538C95.5738 21.3538 97.3037 23.0154 97.4272 25.1077V25.5384Z"
@@ -511,8 +507,7 @@ poweredByNordea : Maybe String -> List (Attribute msg) -> Html msg
 poweredByNordea accessibilityAltText attrs =
     illustrationsContainer attrs
         [ Svg.svg [ viewBox "0 0 72 50", fill "none" ]
-            [ Svg.title []
-                [ accessibilityAltText |> Maybe.withDefault "" |> Svg.text ]
+            [ Svg.title [] [ accessibilityAltText |> Maybe.withDefault "" |> Svg.text ]
             , Svg.path
                 [ d "M52.7575 23.7088C50.8282 23.8511 49.2848 25.452 49.1444 27.4088C49.0041 29.7213 50.7931 31.6424 53.0382 31.6424C53.845 31.6424 54.9324 31.2155 55.4586 30.3617V31.5001H56.967V27.729C56.967 25.2742 55.0026 23.5309 52.7575 23.7088ZM55.3183 27.7645C55.2481 29.0809 54.1256 30.077 52.7926 29.8992C51.7753 29.7568 50.9685 28.9386 50.8282 27.9068C50.6879 26.5193 51.7403 25.3453 53.0732 25.3453C54.2659 25.3453 55.2481 26.3059 55.3183 27.5155V27.7645Z"
                 , fill "currentColor"
