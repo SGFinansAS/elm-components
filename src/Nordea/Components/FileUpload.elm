@@ -4,8 +4,6 @@ module Nordea.Components.FileUpload exposing
     , FileUpload
     , MimeType(..)
     , init
-    , onFilesDropped
-    , preventDefaultOn
     , supportedFileTypesText
     , uploadedFilesView
     , view
@@ -128,24 +126,15 @@ view (FileUpload config) =
 
                 Only mimeTypes ->
                     mimeTypes
-                        |> List.map
-                            (\mimeType ->
-                                case mimeType of
-                                    Pdf ->
-                                        "application/pdf"
-
-                                    Jpeg ->
-                                        "image/jpeg"
-
-                                    Png ->
-                                        "image/png"
-                            )
+                        |> List.map toMimeTypeString
                         |> String.join ","
     in
     Html.div
         [ onFilesDropped
+            config.accept
             (\first rest ->
-                config.onFilesSelected first
+                config.onFilesSelected
+                    first
                     (if config.allowMultiple then
                         rest
 
@@ -292,6 +281,7 @@ uploadedFilesView files onClickRemove translate attrs =
                                     , cursor pointer
                                     , padding2 (rem 0.75) (rem 1.25)
                                     , margin2 (rem -0.75) (rem -1.25)
+                                    , backgroundColor Colors.transparent
                                     ]
                                 ]
                                 [ Icon.trash [ css [ Themes.color Themes.PrimaryColorLight Colors.blueDeep ] ] ]
@@ -354,11 +344,20 @@ withAppearance appearance (FileUpload config) =
     FileUpload { config | appearance = appearance }
 
 
-onFilesDropped : (File -> List File -> msg) -> Attribute msg
-onFilesDropped msg =
+onFilesDropped : AcceptFileType -> (File -> List File -> msg) -> Attribute msg
+onFilesDropped acceptFileType msg =
     let
         filesDroppedDecoder =
             Decode.at [ "dataTransfer", "files" ] (Decode.list File.decoder)
+                |> Decode.map
+                    (\files ->
+                        case acceptFileType of
+                            Any ->
+                                files
+
+                            Only mimeTypes ->
+                                files |> List.filter (\file -> List.member (File.mime file) (List.map toMimeTypeString mimeTypes))
+                    )
                 |> Decode.andThen
                     (\files ->
                         case files of
@@ -393,6 +392,19 @@ onSelectFiles msg =
                     )
     in
     Events.on "change" filesDecoder
+
+
+toMimeTypeString : MimeType -> String
+toMimeTypeString mimeType =
+    case mimeType of
+        Pdf ->
+            "application/pdf"
+
+        Jpeg ->
+            "image/jpeg"
+
+        Png ->
+            "image/png"
 
 
 strings =
