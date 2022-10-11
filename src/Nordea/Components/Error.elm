@@ -166,7 +166,7 @@ texts =
     , internalServerError =
         { description =
             { no = "Grunnen til at du har kommet hit kan være at det er noen nettverksproblemer eller at noe er galt hos oss."
-            , se = "Anledning till att du har kommit hit kan vara att det är några nätverksproblem eller att något är fel hos oss."
+            , se = "Anledningen till att du har kommit hit kan vara att det är några nätverksproblem eller att något är fel hos oss."
             , dk = "Grunden til at du er kommet hertil kan være at der er nogle netværksproblemer eller at der er noget galt hos os."
             , en = "The reason why you ended up here could be due to network issues or that something is wrong in our systems."
             }
