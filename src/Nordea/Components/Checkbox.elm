@@ -65,7 +65,7 @@ import Nordea.Resources.Colors as Colors
 import Nordea.Themes as Themes
 
 
-type alias CheckBoxProperties msg =
+type alias CheckboxProperties msg =
     { name : String
     , label : Html msg
     , onCheck : Bool -> msg
@@ -77,7 +77,7 @@ type alias CheckBoxProperties msg =
 
 
 type Checkbox msg
-    = Checkbox (CheckBoxProperties msg)
+    = Checkbox (CheckboxProperties msg)
 
 
 type Appearance

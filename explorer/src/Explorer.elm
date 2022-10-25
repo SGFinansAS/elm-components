@@ -12,6 +12,7 @@ import Stories.Checkbox as Checkbox
 import Stories.Colors as Colors
 import Stories.Dropdown as Dropdown
 import Stories.DropdownFilter as Search
+import Stories.DropdownOptions as DropdownOptions
 import Stories.Error as Error
 import Stories.FeatureBox as FeatureBox
 import Stories.FileDownload as FileDownload
@@ -87,6 +88,7 @@ main =
                 , Card.stories
                 , Checkbox.stories
                 , Dropdown.stories
+                , DropdownOptions.stories
                 , Search.stories
                 , Error.stories
                 , FeatureBox.stories

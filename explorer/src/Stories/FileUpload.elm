@@ -6,6 +6,7 @@ import Html.Styled as Html
 import Html.Styled.Attributes exposing (css)
 import Nordea.Components.FileUpload as FileUpload
 import Nordea.Components.Label as Label
+import Nordea.Components.RequirednessHint as RequirednessHint
 import Nordea.Html exposing (showIf)
 import UIExplorer exposing (UI)
 import UIExplorer.Styled exposing (styledStoriesOf)
@@ -23,7 +24,7 @@ stories =
           , \model ->
                 Html.div [ css [ displayFlex, flexDirection column, maxWidth (rem 30) ] ]
                     [ Label.init "Some file document" Label.InputLabel
-                        |> Label.withRequirednessHint (Just (Label.Optional .no))
+                        |> Label.withRequirednessHint (Just (RequirednessHint.Optional .no))
                         |> Label.view []
                             [ FileUpload.init .no OnFilesSelected OnDragEnterFileUpload OnDragLeaveFileUpload
                                 |> FileUpload.withIsHovering model.customModel.isHoveringFileUpload
@@ -39,7 +40,7 @@ stories =
           , \model ->
                 Html.div [ css [ displayFlex, flexDirection column, maxWidth (rem 30) ] ]
                     [ Label.init "Some file document" Label.InputLabel
-                        |> Label.withRequirednessHint (Just (Label.Optional .no))
+                        |> Label.withRequirednessHint (Just (RequirednessHint.Optional .no))
                         |> Label.view []
                             [ FileUpload.init .no OnFilesSelected OnDragEnterFileUpload OnDragLeaveFileUpload
                                 |> FileUpload.withIsHovering model.customModel.isHoveringFileUpload
@@ -56,7 +57,7 @@ stories =
           , \model ->
                 Html.div [ css [ displayFlex, flexDirection column, maxWidth (rem 30) ] ]
                     [ Label.init "Some file document" Label.InputLabel
-                        |> Label.withRequirednessHint (Just (Label.Optional .no))
+                        |> Label.withRequirednessHint (Just (RequirednessHint.Optional .no))
                         |> Label.view []
                             [ FileUpload.init .no OnFilesSelected OnDragEnterFileUpload OnDragLeaveFileUpload
                                 |> FileUpload.withIsHovering model.customModel.isHoveringFileUpload
@@ -72,7 +73,7 @@ stories =
           , \model ->
                 Html.div [ css [ displayFlex, flexDirection column, maxWidth (rem 30) ] ]
                     [ Label.init "Some file document" Label.InputLabel
-                        |> Label.withRequirednessHint (Just (Label.Optional .no))
+                        |> Label.withRequirednessHint (Just (RequirednessHint.Optional .no))
                         |> Label.withErrorMessage (Just "Some validation error")
                         |> Label.view []
                             [ FileUpload.init .no OnFilesSelected OnDragEnterFileUpload OnDragLeaveFileUpload
@@ -90,7 +91,7 @@ stories =
           , \model ->
                 Html.div [ css [ displayFlex, flexDirection column, maxWidth (rem 30) ] ]
                     [ Label.init "Some file document" Label.InputLabel
-                        |> Label.withRequirednessHint (Just (Label.Optional .no))
+                        |> Label.withRequirednessHint (Just (RequirednessHint.Optional .no))
                         |> Label.withHintText (FileUpload.supportedFileTypesText .no supportedFileTypes)
                         |> Label.view []
                             [ FileUpload.init .no OnFilesSelected OnDragEnterFileUpload OnDragLeaveFileUpload
@@ -109,7 +110,7 @@ stories =
           , \model ->
                 Html.div [ css [ displayFlex, flexDirection column, maxWidth (rem 30) ] ]
                     [ Label.init "Some file document" Label.InputLabel
-                        |> Label.withRequirednessHint (Just (Label.Optional .no))
+                        |> Label.withRequirednessHint (Just (RequirednessHint.Optional .no))
                         |> Label.withErrorMessage (FileUpload.supportedFileTypesText .no supportedFileTypes)
                         |> Label.view []
                             [ FileUpload.init .no OnFilesSelected OnDragEnterFileUpload OnDragLeaveFileUpload

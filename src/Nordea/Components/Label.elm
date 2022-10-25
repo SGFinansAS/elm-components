@@ -1,7 +1,6 @@
 module Nordea.Components.Label exposing
     ( Label
     , LabelType(..)
-    , RequirednessHint(..)
     , init
     , view
     , withCharCounter
@@ -42,7 +41,9 @@ import Html.Styled
         )
 import Html.Styled.Attributes exposing (css)
 import Maybe.Extra as Maybe
-import Nordea.Components.Common as Common exposing (CharCounter, RequirednessHint, Translation, bottomInfo, topInfo)
+import Nordea.Components.Common exposing (CharCounter, topInfo)
+import Nordea.Components.Hint as Hint
+import Nordea.Components.RequirednessHint exposing (RequirednessHint(..))
 import Nordea.Html exposing (showIf, styleIf)
 import Nordea.Resources.Colors as Colors
 import Nordea.Themes as Themes
@@ -52,12 +53,6 @@ type LabelType
     = InputLabel
     | GroupLabel
     | TextLabel
-
-
-type RequirednessHint
-    = Mandatory (Translation -> String)
-    | Optional (Translation -> String)
-    | Custom String
 
 
 type alias InputProperties =
@@ -99,13 +94,13 @@ view attrs children (Label config) =
                             (\hint ->
                                 case hint of
                                     Mandatory a ->
-                                        Common.Mandatory a
+                                        Mandatory a
 
                                     Optional a ->
-                                        Common.Optional a
+                                        Optional a
 
                                     Custom a ->
-                                        Common.Custom a
+                                        Custom a
                             )
             in
             { labelText = config.labelText
@@ -115,6 +110,13 @@ view attrs children (Label config) =
             , hintText = config.hintText
             , charCounter = config.charCounter
             }
+
+        viewHint =
+            [ Hint.init { text = commonConfig.hintText |> Maybe.withDefault "" }
+                |> Hint.withCharCounter commonConfig.charCounter
+                |> Hint.withError commonConfig.errorMessage
+                |> Hint.view
+            ]
     in
     case config.labelType of
         InputLabel ->
@@ -125,7 +127,10 @@ view attrs children (Label config) =
                 , Css.Global.children [ everything [ flexBasis (pct 100) ] ]
                 ]
                 attrs
-                (topInfo commonConfig :: children ++ bottomInfo commonConfig)
+                (topInfo commonConfig
+                    :: children
+                    ++ viewHint
+                )
 
         GroupLabel ->
             styled fieldset
@@ -144,7 +149,7 @@ view attrs children (Label config) =
                     |> showIf (not (String.isEmpty config.labelText) || Maybe.isJust config.requirednessHint)
                  )
                     :: children
-                    ++ bottomInfo commonConfig
+                    ++ viewHint
                 )
 
         TextLabel ->
@@ -155,7 +160,7 @@ view attrs children (Label config) =
                 , Css.Global.children [ everything [ flexBasis (pct 100) ] ]
                 ]
                 attrs
-                (topInfo commonConfig :: children ++ bottomInfo commonConfig)
+                (topInfo commonConfig :: children ++ viewHint)
 
 
 focusStyle : Style
