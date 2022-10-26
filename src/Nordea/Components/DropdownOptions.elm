@@ -3,7 +3,7 @@ module Nordea.Components.DropdownOptions exposing
     , init
     , view
     , withHasFocus
-    , withHint
+    , withHintText
     , withLabel
     , withOptions
     , withRequirednessHint
@@ -77,21 +77,21 @@ import Html.Styled as Html exposing (Attribute, Html)
 import Html.Styled.Attributes as Attrs exposing (class, css, name, tabindex, type_)
 import Html.Styled.Events as Events
 import Json.Decode as Decode
+import Nordea.Components.Checkbox as Checkbox
 import Nordea.Components.Common as Common
-import Nordea.Components.Hint as Hint
-import Nordea.Components.RequirednessHint as RequirednessHint exposing (RequirednessHint)
+import Nordea.Components.Util.Hint as Hint
+import Nordea.Components.Util.RequirednessHint as RequirednessHint exposing (RequirednessHint)
 import Nordea.Html as Html
 import Nordea.Resources.Colors as Colors
 import Nordea.Resources.Icons as Icon
 import Nordea.Themes as Themes
 
 
-type alias DropdownOptions value msg =
+type alias DropdownOptions msg =
     { label : String
     , placeholder : String
     , hint : Maybe String
     , options : List (Option msg)
-    , onSelect : value -> msg
     , onFocus : Bool -> msg
     , hasFocus : Bool
     , requirednessHint : Maybe RequirednessHint
@@ -102,20 +102,19 @@ type alias Option msg =
     { name : String, label : String, isChecked : Bool, onCheck : Bool -> msg }
 
 
-init : { onSelect : value -> msg, onFocus : Bool -> msg } -> DropdownOptions value msg
-init { onSelect, onFocus } =
+init : { onFocus : Bool -> msg } -> DropdownOptions msg
+init { onFocus } =
     { label = ""
     , placeholder = ""
     , hint = Nothing
     , options = []
-    , onSelect = onSelect
     , onFocus = onFocus
     , hasFocus = True
     , requirednessHint = Nothing
     }
 
 
-view : List (Attribute msg) -> DropdownOptions value msg -> Html msg
+view : List (Attribute msg) -> DropdownOptions msg -> Html msg
 view attrs dropdown =
     let
         viewSelectItems =
@@ -134,26 +133,22 @@ view attrs dropdown =
                             , Css.property "gap" "0.5rem"
                             ]
                         ]
-                        [ Html.input
-                            [ type_ "checkbox"
-                            , name option.label
-                            , Attrs.checked option.isChecked
-                            , css
-                                [ cursor pointer
-                                , opacity (num 0)
-                                , width (rem 0)
-                                , height (rem 0)
+                        [ Checkbox.init option.name (Html.text option.label) option.onCheck
+                            |> Checkbox.withIsChecked option.isChecked
+                            |> Checkbox.withAppearance Checkbox.Simple
+                            |> Checkbox.view []
+                        ]
 
-                                -- when <input> is checked, show checkmark
-                                , pseudoClass "checked ~ .nfe-checkbox"
-                                    [ after [ display block ]
-                                    , Themes.backgroundColor Themes.PrimaryColorLight Colors.blueNordea
-                                    ]
-                                ]
-                            ]
-                            []
-                        , checkbox
-                        , Common.viewLabel { label = option.label, isError = False } []
+                dropdownStyles =
+                    Css.batch
+                        [ backgroundColor Colors.white
+                        , borderBottom3 (rem 0.0625) solid Colors.grayMedium
+                        , borderLeft3 (rem 0.0625) solid Colors.grayMedium
+                        , borderRight3 (rem 0.0625) solid Colors.grayMedium
+                        , borderBottomLeftRadius (rem 0.25)
+                        , borderBottomRightRadius (rem 0.25)
+                        , boxSizing borderBox
+                        , padding3 (rem 0.5) (rem 0) (rem 0.0)
                         ]
             in
             Html.div
@@ -228,77 +223,30 @@ view attrs dropdown =
                 ]
             , viewSelectItems
             ]
-        , Hint.init { text = "Hint" } |> Hint.view
+        , dropdown.hint |> Html.viewMaybe (\hint -> Hint.init { text = hint } |> Hint.view)
         ]
 
 
-withLabel : String -> DropdownOptions value msg -> DropdownOptions value msg
+withLabel : String -> DropdownOptions msg -> DropdownOptions msg
 withLabel label dropdown =
     { dropdown | label = label }
 
 
-withOptions : List (Option msg) -> DropdownOptions value msg -> DropdownOptions value msg
+withOptions : List (Option msg) -> DropdownOptions msg -> DropdownOptions msg
 withOptions options dropdown =
     { dropdown | options = options }
 
 
-withHint : String -> DropdownOptions value msg -> DropdownOptions value msg
-withHint hint dropdown =
-    { dropdown | hint = Just hint }
+withHintText : Maybe String -> DropdownOptions msg -> DropdownOptions msg
+withHintText hint dropdown =
+    { dropdown | hint = hint }
 
 
-withRequirednessHint : Maybe RequirednessHint -> DropdownOptions value msg -> DropdownOptions value msg
+withRequirednessHint : Maybe RequirednessHint -> DropdownOptions msg -> DropdownOptions msg
 withRequirednessHint requirednessHint dropdown =
     { dropdown | requirednessHint = requirednessHint }
 
 
-withHasFocus : Bool -> DropdownOptions value msg -> DropdownOptions value msg
+withHasFocus : Bool -> DropdownOptions msg -> DropdownOptions msg
 withHasFocus hasFocus dropdown =
     { dropdown | hasFocus = hasFocus }
-
-
-dropdownStyles =
-    Css.batch
-        [ backgroundColor Colors.white
-        , borderBottom3 (rem 0.0625) solid Colors.grayMedium
-        , borderLeft3 (rem 0.0625) solid Colors.grayMedium
-        , borderRight3 (rem 0.0625) solid Colors.grayMedium
-        , borderBottomLeftRadius (rem 0.25)
-        , borderBottomRightRadius (rem 0.25)
-        , boxSizing borderBox
-        , padding3 (rem 0.5) (rem 0) (rem 0.0)
-        ]
-
-
-checkbox =
-    Html.span
-        [ class "nfe-checkbox"
-        , css
-            [ displayFlex
-            , flex none
-            , height (rem 1.25)
-            , width (rem 1.25)
-            , backgroundColor Colors.white
-            , border3 (rem 0.125) solid Css.transparent
-            , Themes.borderColor Themes.PrimaryColorLight Colors.blueNordea
-            , borderRadius (rem 0.125)
-            , position relative
-            , boxSizing borderBox
-
-            -- Styling the checkmark
-            , after
-                [ Css.property "content" "''"
-                , display none
-                , position absolute
-                , top (rem -0.0625)
-                , left (rem 0.25)
-                , width (rem 0.5)
-                , height (rem 0.813)
-                , transforms [ rotate (deg 45) ]
-                , border3 (rem 0.0625) solid Colors.white
-                , borderWidth4 (rem 0) (rem 0.125) (rem 0.125) (rem 0)
-                , boxSizing borderBox
-                ]
-            ]
-        ]
-        []

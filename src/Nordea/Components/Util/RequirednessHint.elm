@@ -1,4 +1,4 @@
-module Nordea.Components.RequirednessHint exposing (RequirednessHint(..), view)
+module Nordea.Components.Util.RequirednessHint exposing (RequirednessHint(..), view)
 
 import Css exposing (color)
 import Html.Styled as Html exposing (Html)

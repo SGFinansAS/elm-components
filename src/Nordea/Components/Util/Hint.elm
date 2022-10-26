@@ -1,4 +1,4 @@
-module Nordea.Components.Hint exposing
+module Nordea.Components.Util.Hint exposing
     ( init
     , view
     , withCharCounter

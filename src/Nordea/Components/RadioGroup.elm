@@ -12,7 +12,7 @@ import Css
         )
 import Html.Styled as Html exposing (Attribute, Html)
 import Html.Styled.Attributes exposing (css)
-import Nordea.Components.Hint as Hint
+import Nordea.Components.Util.Hint as Hint
 
 
 type alias RadioGroupProperties =

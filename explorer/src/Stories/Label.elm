@@ -8,8 +8,8 @@ import Nordea.Components.Checkbox as Checkbox
 import Nordea.Components.Dropdown as Dropdown
 import Nordea.Components.Label as Label
 import Nordea.Components.RadioButton as RadioButton
-import Nordea.Components.RequirednessHint as RequirednessHint
 import Nordea.Components.TextInput as TextInput
+import Nordea.Components.Util.RequirednessHint as RequirednessHint
 import UIExplorer exposing (UI)
 import UIExplorer.Styled exposing (styledStoriesOf)
 

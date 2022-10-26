@@ -12,8 +12,8 @@ import Css
 import Html.Styled as Html exposing (Attribute, Html, div, text)
 import Html.Styled.Attributes exposing (css)
 import Maybe.Extra as Maybe
-import Nordea.Components.RequirednessHint as RequirednessHint exposing (RequirednessHint)
 import Nordea.Components.Text as Text
+import Nordea.Components.Util.RequirednessHint as RequirednessHint exposing (RequirednessHint)
 import Nordea.Html as Html exposing (styleIf)
 import Nordea.Resources.Colors as Colors
 

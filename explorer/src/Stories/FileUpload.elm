@@ -6,7 +6,7 @@ import Html.Styled as Html
 import Html.Styled.Attributes exposing (css)
 import Nordea.Components.FileUpload as FileUpload
 import Nordea.Components.Label as Label
-import Nordea.Components.RequirednessHint as RequirednessHint
+import Nordea.Components.Util.RequirednessHint as RequirednessHint
 import Nordea.Html exposing (showIf)
 import UIExplorer exposing (UI)
 import UIExplorer.Styled exposing (styledStoriesOf)

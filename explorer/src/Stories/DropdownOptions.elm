@@ -2,7 +2,7 @@ module Stories.DropdownOptions exposing (..)
 
 import Config exposing (Msg(..))
 import Nordea.Components.DropdownOptions as DropdownOptions
-import Nordea.Components.RequirednessHint as RequirednessHint
+import Nordea.Components.Util.RequirednessHint as RequirednessHint
 import UIExplorer exposing (UI)
 import UIExplorer.Styled exposing (styledStoriesOf)
 
@@ -13,7 +13,7 @@ stories =
         "DropdownOptions"
         [ ( "Standard"
           , \model ->
-                DropdownOptions.init { onSelect = \_ -> NoOp, onFocus = FocusDropdownOptions }
+                DropdownOptions.init { onFocus = FocusDropdownOptions }
                     |> DropdownOptions.withLabel "Label"
                     |> DropdownOptions.withHasFocus model.customModel.hasDropdownOptionsFocus
                     |> DropdownOptions.withRequirednessHint (Just (RequirednessHint.Mandatory .no))

@@ -42,8 +42,8 @@ import Html.Styled
 import Html.Styled.Attributes exposing (css)
 import Maybe.Extra as Maybe
 import Nordea.Components.Common exposing (CharCounter, topInfo)
-import Nordea.Components.Hint as Hint
-import Nordea.Components.RequirednessHint exposing (RequirednessHint(..))
+import Nordea.Components.Util.Hint as Hint
+import Nordea.Components.Util.RequirednessHint as RequirednessHint exposing (RequirednessHint)
 import Nordea.Html exposing (showIf, styleIf)
 import Nordea.Resources.Colors as Colors
 import Nordea.Themes as Themes
@@ -93,14 +93,14 @@ view attrs children (Label config) =
                         |> Maybe.map
                             (\hint ->
                                 case hint of
-                                    Mandatory a ->
-                                        Mandatory a
+                                    RequirednessHint.Mandatory a ->
+                                        RequirednessHint.Mandatory a
 
-                                    Optional a ->
-                                        Optional a
+                                    RequirednessHint.Optional a ->
+                                        RequirednessHint.Optional a
 
-                                    Custom a ->
-                                        Custom a
+                                    RequirednessHint.Custom a ->
+                                        RequirednessHint.Custom a
                             )
             in
             { labelText = config.labelText
