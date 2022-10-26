@@ -6,13 +6,13 @@ module Nordea.Components.DropdownOptions exposing
     , withHintText
     , withLabel
     , withOptions
+    , withPlaceholder
     , withRequirednessHint
     )
 
 import Css
     exposing
         ( absolute
-        , after
         , alignItems
         , backgroundColor
         , block
@@ -22,19 +22,15 @@ import Css
         , borderBottomRightRadius
         , borderBox
         , borderLeft3
-        , borderRadius
         , borderRadius4
         , borderRight3
-        , borderWidth4
         , boxSizing
         , center
         , color
         , column
         , cursor
-        , deg
         , display
         , displayFlex
-        , flex
         , flexDirection
         , focus
         , fontSize
@@ -49,8 +45,6 @@ import Css
         , maxHeight
         , maxWidth
         , none
-        , num
-        , opacity
         , outline
         , overflowY
         , padding
@@ -59,22 +53,19 @@ import Css
         , pct
         , pointer
         , position
-        , pseudoClass
         , relative
         , rem
         , right
-        , rotate
         , row
         , scroll
         , solid
         , spaceBetween
         , top
-        , transforms
         , transparent
         , width
         )
 import Html.Styled as Html exposing (Attribute, Html)
-import Html.Styled.Attributes as Attrs exposing (class, css, name, tabindex, type_)
+import Html.Styled.Attributes exposing (class, css, name, tabindex)
 import Html.Styled.Events as Events
 import Json.Decode as Decode
 import Nordea.Components.Checkbox as Checkbox
@@ -201,7 +192,11 @@ view attrs dropdown =
                     , backgroundColor transparent
                     , padding4 (rem 0.5) (rem 1) (rem 0.5) (rem 1)
                     , border3 (rem 0.0625) solid Colors.grayMedium
-                    , borderRadius4 (rem 0.25) (rem 0.25) (rem 0.0) (rem 0.0)
+                    , if dropdown.hasFocus then
+                        borderRadius4 (rem 0.25) (rem 0.25) (rem 0.0) (rem 0.0)
+
+                      else
+                        borderRadius4 (rem 0.25) (rem 0.25) (rem 0.25) (rem 0.25)
                     , fontSize (rem 1.0)
                     , lineHeight (rem 1.4)
                     , color inherit
@@ -218,7 +213,7 @@ view attrs dropdown =
                     , Css.property "-webkit-appearance" "none"
                     ]
                 ]
-                [ Html.text "Select options"
+                [ Html.text dropdown.placeholder
                 , Icon.chevronDownFilled [ css [ height (rem 1.5) ] ]
                 ]
             , viewSelectItems
@@ -230,6 +225,11 @@ view attrs dropdown =
 withLabel : String -> DropdownOptions msg -> DropdownOptions msg
 withLabel label dropdown =
     { dropdown | label = label }
+
+
+withPlaceholder : String -> DropdownOptions msg -> DropdownOptions msg
+withPlaceholder placeholder dropdown =
+    { dropdown | placeholder = placeholder }
 
 
 withOptions : List (Option msg) -> DropdownOptions msg -> DropdownOptions msg

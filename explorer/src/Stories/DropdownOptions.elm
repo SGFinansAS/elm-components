@@ -15,6 +15,7 @@ stories =
           , \model ->
                 DropdownOptions.init { onFocus = FocusDropdownOptions }
                     |> DropdownOptions.withLabel "Label"
+                    |> DropdownOptions.withPlaceholder "Choose an option"
                     |> DropdownOptions.withHasFocus model.customModel.hasDropdownOptionsFocus
                     |> DropdownOptions.withRequirednessHint (Just (RequirednessHint.Mandatory .no))
                     |> DropdownOptions.withOptions
