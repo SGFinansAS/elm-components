@@ -69,8 +69,8 @@ import Html.Styled.Attributes exposing (class, css, name, tabindex)
 import Html.Styled.Events as Events
 import Json.Decode as Decode
 import Nordea.Components.Checkbox as Checkbox
-import Nordea.Components.Common as Common
 import Nordea.Components.Util.Hint as Hint
+import Nordea.Components.Util.Label as Label
 import Nordea.Components.Util.RequirednessHint as RequirednessHint exposing (RequirednessHint)
 import Nordea.Html as Html
 import Nordea.Resources.Colors as Colors
@@ -170,7 +170,7 @@ view attrs dropdown =
     in
     Html.column attrs
         [ Html.row [ css [ displayFlex, justifyContent spaceBetween, marginBottom (rem 0.2) ] ]
-            [ Common.viewLabel { label = dropdown.label, isError = False } []
+            [ Label.init { label = dropdown.label } |> Label.view []
             , dropdown.requirednessHint |> Html.viewMaybe RequirednessHint.view
             ]
         , Html.div

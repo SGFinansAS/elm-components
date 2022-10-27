@@ -19,12 +19,15 @@ import Css
         , flexBasis
         , flexDirection
         , flexWrap
+        , justifyContent
+        , marginBottom
         , marginInlineEnd
         , marginInlineStart
         , padding
         , pct
         , pseudoClass
         , rem
+        , spaceBetween
         , width
         , wrap
         )
@@ -41,10 +44,10 @@ import Html.Styled
         )
 import Html.Styled.Attributes exposing (css)
 import Maybe.Extra as Maybe
-import Nordea.Components.Common exposing (CharCounter, topInfo)
-import Nordea.Components.Util.Hint as Hint
+import Nordea.Components.Util.Hint as Hint exposing (CharCounter)
+import Nordea.Components.Util.Label as Label
 import Nordea.Components.Util.RequirednessHint as RequirednessHint exposing (RequirednessHint)
-import Nordea.Html exposing (showIf, styleIf)
+import Nordea.Html as Html exposing (showIf, styleIf)
 import Nordea.Resources.Colors as Colors
 import Nordea.Themes as Themes
 
@@ -111,6 +114,12 @@ view attrs children (Label config) =
             , charCounter = config.charCounter
             }
 
+        viewTopInfo =
+            div [ css [ displayFlex, justifyContent spaceBetween, marginBottom (rem 0.2) ] ]
+                [ Label.init { label = commonConfig.labelText } |> Label.withIsError (Maybe.isJust commonConfig.errorMessage) |> Label.view []
+                , config.requirednessHint |> Html.viewMaybe RequirednessHint.view
+                ]
+
         viewHint =
             [ Hint.init { text = commonConfig.hintText |> Maybe.withDefault "" }
                 |> Hint.withCharCounter commonConfig.charCounter
@@ -127,10 +136,7 @@ view attrs children (Label config) =
                 , Css.Global.children [ everything [ flexBasis (pct 100) ] ]
                 ]
                 attrs
-                (topInfo commonConfig
-                    :: children
-                    ++ viewHint
-                )
+                (viewTopInfo :: children ++ viewHint)
 
         GroupLabel ->
             styled fieldset
@@ -145,7 +151,7 @@ view attrs children (Label config) =
                 attrs
                 ((legend
                     [ css [ width (pct 100), padding (rem 0), Css.Global.children [ everything [ flexBasis (pct 100) ] ] ] ]
-                    [ topInfo commonConfig ]
+                    [ viewTopInfo ]
                     |> showIf (not (String.isEmpty config.labelText) || Maybe.isJust config.requirednessHint)
                  )
                     :: children
@@ -160,7 +166,7 @@ view attrs children (Label config) =
                 , Css.Global.children [ everything [ flexBasis (pct 100) ] ]
                 ]
                 attrs
-                (topInfo commonConfig :: children ++ viewHint)
+                (viewTopInfo :: children ++ viewHint)
 
 
 focusStyle : Style

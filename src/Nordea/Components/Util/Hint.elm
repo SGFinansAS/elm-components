@@ -1,5 +1,6 @@
 module Nordea.Components.Util.Hint exposing
-    ( init
+    ( CharCounter
+    , init
     , view
     , withCharCounter
     , withError
