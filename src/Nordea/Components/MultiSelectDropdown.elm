@@ -32,7 +32,6 @@ import Css
         , display
         , displayFlex
         , flexDirection
-        , focus
         , fontSize
         , height
         , hover
@@ -45,7 +44,6 @@ import Css
         , maxHeight
         , maxWidth
         , none
-        , outline
         , overflowY
         , padding
         , padding3
@@ -75,7 +73,6 @@ import Nordea.Components.Util.RequirednessHint as RequirednessHint exposing (Req
 import Nordea.Html as Html
 import Nordea.Resources.Colors as Colors
 import Nordea.Resources.Icons as Icon
-import Nordea.Themes as Themes
 
 
 type alias MultiSelectDropdown msg =
@@ -168,24 +165,27 @@ view attrs dropdown =
                     (dropdown.options |> List.map viewOption)
                 ]
     in
-    Html.fieldset ([ css [ displayFlex, flexDirection column ] ] ++ attrs)
+    Html.fieldset
+        ([ Events.on "focusout" (Decode.succeed (dropdown.onFocus False))
+         , Events.on "focusin" (Decode.succeed (dropdown.onFocus True))
+         , tabindex 0
+         , css [ displayFlex, flexDirection column ]
+         ]
+            ++ attrs
+        )
         [ Html.row [ css [ displayFlex, justifyContent spaceBetween, marginBottom (rem 0.2) ] ]
             [ Label.init { label = dropdown.label } |> Label.withAsLegend |> Label.view []
             , dropdown.requirednessHint |> Html.viewMaybe RequirednessHint.view
             ]
         , Html.div
             [ class "nordea-select"
-            , Events.on "focusout" (Decode.succeed (dropdown.onFocus False))
-            , Events.on "focusin" (Decode.succeed (dropdown.onFocus True))
             , css [ position relative ]
-            , tabindex -1
             ]
             [ Html.select
                 [ css [ display none ] ]
                 (dropdown.options |> List.map (\option -> Html.option [ name option.name ] [ Html.text option.label ]))
             , Html.div
                 [ class "select-selected"
-                , tabindex -1
                 , css
                     [ height (rem 3)
                     , width (pct 100)
