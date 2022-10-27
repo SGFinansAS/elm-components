@@ -168,7 +168,7 @@ view attrs dropdown =
                     (dropdown.options |> List.map viewOption)
                 ]
     in
-    Html.column attrs
+    Html.fieldset ([ css [ displayFlex, flexDirection column ] ] ++ attrs)
         [ Html.row [ css [ displayFlex, justifyContent spaceBetween, marginBottom (rem 0.2) ] ]
             [ Label.init { label = dropdown.label } |> Label.withAsLegend |> Label.view []
             , dropdown.requirednessHint |> Html.viewMaybe RequirednessHint.view
