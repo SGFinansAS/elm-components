@@ -204,10 +204,6 @@ view attrs dropdown =
                     , displayFlex
                     , alignItems center
                     , justifyContent spaceBetween
-                    , focus
-                        [ Css.property "box-shadow" ("0rem 0rem 0rem 0.0625rem " ++ Themes.colorVariable Themes.SecondaryColor Colors.blueNordea)
-                        , outline none
-                        ]
                     , Css.property "appearance" "none"
                     ]
                 ]
