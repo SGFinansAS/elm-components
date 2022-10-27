@@ -1,5 +1,5 @@
-module Nordea.Components.DropdownOptions exposing
-    ( DropdownOptions
+module Nordea.Components.MultiSelectDropdown exposing
+    ( MultiSelectDropdown
     , init
     , view
     , withHasFocus
@@ -78,7 +78,7 @@ import Nordea.Resources.Icons as Icon
 import Nordea.Themes as Themes
 
 
-type alias DropdownOptions msg =
+type alias MultiSelectDropdown msg =
     { label : String
     , placeholder : String
     , hint : Maybe String
@@ -93,7 +93,7 @@ type alias Option msg =
     { name : String, label : String, isChecked : Bool, onCheck : Bool -> msg }
 
 
-init : { onFocus : Bool -> msg } -> DropdownOptions msg
+init : { onFocus : Bool -> msg } -> MultiSelectDropdown msg
 init { onFocus } =
     { label = ""
     , placeholder = ""
@@ -105,7 +105,7 @@ init { onFocus } =
     }
 
 
-view : List (Attribute msg) -> DropdownOptions msg -> Html msg
+view : List (Attribute msg) -> MultiSelectDropdown msg -> Html msg
 view attrs dropdown =
     let
         viewSelectItems =
@@ -222,31 +222,31 @@ view attrs dropdown =
         ]
 
 
-withLabel : String -> DropdownOptions msg -> DropdownOptions msg
+withLabel : String -> MultiSelectDropdown msg -> MultiSelectDropdown msg
 withLabel label dropdown =
     { dropdown | label = label }
 
 
-withPlaceholder : String -> DropdownOptions msg -> DropdownOptions msg
+withPlaceholder : String -> MultiSelectDropdown msg -> MultiSelectDropdown msg
 withPlaceholder placeholder dropdown =
     { dropdown | placeholder = placeholder }
 
 
-withOptions : List (Option msg) -> DropdownOptions msg -> DropdownOptions msg
+withOptions : List (Option msg) -> MultiSelectDropdown msg -> MultiSelectDropdown msg
 withOptions options dropdown =
     { dropdown | options = options }
 
 
-withHintText : Maybe String -> DropdownOptions msg -> DropdownOptions msg
+withHintText : Maybe String -> MultiSelectDropdown msg -> MultiSelectDropdown msg
 withHintText hint dropdown =
     { dropdown | hint = hint }
 
 
-withRequirednessHint : Maybe RequirednessHint -> DropdownOptions msg -> DropdownOptions msg
+withRequirednessHint : Maybe RequirednessHint -> MultiSelectDropdown msg -> MultiSelectDropdown msg
 withRequirednessHint requirednessHint dropdown =
     { dropdown | requirednessHint = requirednessHint }
 
 
-withHasFocus : Bool -> DropdownOptions msg -> DropdownOptions msg
+withHasFocus : Bool -> MultiSelectDropdown msg -> MultiSelectDropdown msg
 withHasFocus hasFocus dropdown =
     { dropdown | hasFocus = hasFocus }

@@ -12,7 +12,6 @@ import Stories.Checkbox as Checkbox
 import Stories.Colors as Colors
 import Stories.Dropdown as Dropdown
 import Stories.DropdownFilter as Search
-import Stories.DropdownOptions as DropdownOptions
 import Stories.Error as Error
 import Stories.FeatureBox as FeatureBox
 import Stories.FileDownload as FileDownload
@@ -26,6 +25,7 @@ import Stories.InformationDetails as InformationDetails
 import Stories.Label as Label
 import Stories.LottiePlayer as LottiePlayer
 import Stories.Modal as Modal
+import Stories.MultiSelectDropdown as MultiSelectDropdown
 import Stories.NumberInput as NumberInput
 import Stories.ProgressBar as ProgressBar
 import Stories.ProgressBarStepper as ProgressBarStepper
@@ -88,7 +88,7 @@ main =
                 , Card.stories
                 , Checkbox.stories
                 , Dropdown.stories
-                , DropdownOptions.stories
+                , MultiSelectDropdown.stories
                 , Search.stories
                 , Error.stories
                 , FeatureBox.stories
