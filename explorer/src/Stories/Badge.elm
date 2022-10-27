@@ -16,7 +16,8 @@ stories =
         [ ( "Specific number"
           , \_ ->
                 Html.div [ css [ displayFlex ] ]
-                    [ Badge.Number 4
+                    [ Html.text "It's a badge!"
+                    , Badge.Number 4
                         |> Badge.view [] [ Icons.pdf [ css [ width (rem 5) |> Css.important ] ] ]
                     ]
           , {}
