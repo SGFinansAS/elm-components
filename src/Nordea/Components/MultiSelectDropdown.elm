@@ -170,7 +170,7 @@ view attrs dropdown =
     in
     Html.column attrs
         [ Html.row [ css [ displayFlex, justifyContent spaceBetween, marginBottom (rem 0.2) ] ]
-            [ Label.init { label = dropdown.label } |> Label.view []
+            [ Label.init { label = dropdown.label } |> Label.withAsLegend |> Label.view []
             , dropdown.requirednessHint |> Html.viewMaybe RequirednessHint.view
             ]
         , Html.div
