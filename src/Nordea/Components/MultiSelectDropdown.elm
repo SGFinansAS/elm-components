@@ -209,8 +209,6 @@ view attrs dropdown =
                         , outline none
                         ]
                     , Css.property "appearance" "none"
-                    , Css.property "-moz-appearance" "none"
-                    , Css.property "-webkit-appearance" "none"
                     ]
                 ]
                 [ Html.text dropdown.placeholder
