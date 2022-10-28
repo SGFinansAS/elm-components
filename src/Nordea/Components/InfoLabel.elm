@@ -1,15 +1,46 @@
-module Nordea.Components.InfoLabel exposing (InfoLabel, Msg, init, openableView, update, view, warning, withIsOpen, withText, withTitle)
+module Nordea.Components.InfoLabel exposing
+    ( InfoLabel
+    , Msg
+    , init
+    , openableView
+    , update
+    , view
+    , warning
+    , withIsOpen
+    , withText
+    , withTitle
+    )
 
-import Css exposing (backgroundColor, borderRadius, column, displayFlex, fitContent, flexDirection, height, hidden, marginBottom, marginRight, marginTop, maxWidth, overflow, padding, property, rem, row, width)
+import Css
+    exposing
+        ( backgroundColor
+        , borderRadius
+        , column
+        , displayFlex
+        , fitContent
+        , flexDirection
+        , height
+        , hidden
+        , marginBottom
+        , marginRight
+        , marginTop
+        , maxWidth
+        , overflow
+        , padding
+        , property
+        , rem
+        , row
+        , width
+        )
 import Html.Styled as Html exposing (Attribute, Html)
 import Html.Styled.Attributes exposing (css)
 import Html.Styled.Events as Events
 import Json.Decode as Decode
-import Nordea.Components.Common exposing (Translation)
 import Nordea.Components.FlatLink as FlatLink
 import Nordea.Components.Text as Text
 import Nordea.Html
 import Nordea.Resources.Colors as Colors
+import Nordea.Resources.I18N exposing (Translation)
 import Nordea.Resources.Icons as Icon
 import Nordea.Themes as Themes
 

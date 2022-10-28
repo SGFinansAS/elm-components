@@ -18,6 +18,10 @@ type alias Config =
     { accordion : Accordion
     , isModalOpen : Bool
     , searchComponentInput : String
+    , hasMultiSelectDropdownFocus : Bool
+    , isChoice1 : Bool
+    , isChoice2 : Bool
+    , isChoice3 : Bool
     , searchHasFocus : Bool
     , isFeatureBoxOpen : Bool
     , isProgressBarCompleted : Bool
@@ -37,6 +41,10 @@ type Msg
     | SearchComponentSelected (Item FinancingVariant)
     | SearchComponentFocus Bool
     | NoOp
+    | FocusMultiSelectDropdown Bool
+    | OnCheckChoice1
+    | OnCheckChoice2
+    | OnCheckChoice3
     | ToggleModal
     | ToggleFeatureBox
     | ToggleProgressBarCompleted
@@ -67,6 +75,10 @@ init =
                 , open = False
                 }
     , searchComponentInput = ""
+    , hasMultiSelectDropdownFocus = False
+    , isChoice1 = False
+    , isChoice2 = False
+    , isChoice3 = False
     , searchHasFocus = False
     , isModalOpen = True
     , isFeatureBoxOpen = True
@@ -96,6 +108,18 @@ update msg config =
 
         SearchComponentInput input ->
             { config | searchComponentInput = input }
+
+        FocusMultiSelectDropdown value ->
+            { config | hasMultiSelectDropdownFocus = value }
+
+        OnCheckChoice1 ->
+            { config | isChoice1 = not config.isChoice1 }
+
+        OnCheckChoice2 ->
+            { config | isChoice2 = not config.isChoice2 }
+
+        OnCheckChoice3 ->
+            { config | isChoice3 = not config.isChoice3 }
 
         SearchComponentSelected item ->
             { config

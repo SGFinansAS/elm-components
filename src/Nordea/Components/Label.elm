@@ -1,7 +1,6 @@
 module Nordea.Components.Label exposing
     ( Label
     , LabelType(..)
-    , RequirednessHint(..)
     , init
     , view
     , withCharCounter
@@ -20,12 +19,15 @@ import Css
         , flexBasis
         , flexDirection
         , flexWrap
+        , justifyContent
+        , marginBottom
         , marginInlineEnd
         , marginInlineStart
         , padding
         , pct
         , pseudoClass
         , rem
+        , spaceBetween
         , width
         , wrap
         )
@@ -42,8 +44,10 @@ import Html.Styled
         )
 import Html.Styled.Attributes exposing (css)
 import Maybe.Extra as Maybe
-import Nordea.Components.Common as Common exposing (CharCounter, RequirednessHint, Translation, bottomInfo, topInfo)
-import Nordea.Html exposing (showIf, styleIf)
+import Nordea.Components.Util.Hint as Hint exposing (CharCounter)
+import Nordea.Components.Util.Label as Label
+import Nordea.Components.Util.RequirednessHint as RequirednessHint exposing (RequirednessHint)
+import Nordea.Html as Html exposing (showIf, styleIf)
 import Nordea.Resources.Colors as Colors
 import Nordea.Themes as Themes
 
@@ -52,12 +56,6 @@ type LabelType
     = InputLabel
     | GroupLabel
     | TextLabel
-
-
-type RequirednessHint
-    = Mandatory (Translation -> String)
-    | Optional (Translation -> String)
-    | Custom String
 
 
 type alias InputProperties =
@@ -98,14 +96,14 @@ view attrs children (Label config) =
                         |> Maybe.map
                             (\hint ->
                                 case hint of
-                                    Mandatory a ->
-                                        Common.Mandatory a
+                                    RequirednessHint.Mandatory a ->
+                                        RequirednessHint.Mandatory a
 
-                                    Optional a ->
-                                        Common.Optional a
+                                    RequirednessHint.Optional a ->
+                                        RequirednessHint.Optional a
 
-                                    Custom a ->
-                                        Common.Custom a
+                                    RequirednessHint.Custom a ->
+                                        RequirednessHint.Custom a
                             )
             in
             { labelText = config.labelText
@@ -115,6 +113,19 @@ view attrs children (Label config) =
             , hintText = config.hintText
             , charCounter = config.charCounter
             }
+
+        viewTopInfo =
+            div [ css [ displayFlex, justifyContent spaceBetween, marginBottom (rem 0.2) ] ]
+                [ Label.init { label = commonConfig.labelText } |> Label.withIsError (Maybe.isJust commonConfig.errorMessage) |> Label.view []
+                , config.requirednessHint |> Html.viewMaybe RequirednessHint.view
+                ]
+
+        viewHint =
+            [ Hint.init { text = commonConfig.hintText |> Maybe.withDefault "" }
+                |> Hint.withCharCounter commonConfig.charCounter
+                |> Hint.withError commonConfig.errorMessage
+                |> Hint.view
+            ]
     in
     case config.labelType of
         InputLabel ->
@@ -125,7 +136,7 @@ view attrs children (Label config) =
                 , Css.Global.children [ everything [ flexBasis (pct 100) ] ]
                 ]
                 attrs
-                (topInfo commonConfig :: children ++ bottomInfo commonConfig)
+                (viewTopInfo :: children ++ viewHint)
 
         GroupLabel ->
             styled fieldset
@@ -140,11 +151,11 @@ view attrs children (Label config) =
                 attrs
                 ((legend
                     [ css [ width (pct 100), padding (rem 0), Css.Global.children [ everything [ flexBasis (pct 100) ] ] ] ]
-                    [ topInfo commonConfig ]
+                    [ viewTopInfo ]
                     |> showIf (not (String.isEmpty config.labelText) || Maybe.isJust config.requirednessHint)
                  )
                     :: children
-                    ++ bottomInfo commonConfig
+                    ++ viewHint
                 )
 
         TextLabel ->
@@ -155,7 +166,7 @@ view attrs children (Label config) =
                 , Css.Global.children [ everything [ flexBasis (pct 100) ] ]
                 ]
                 attrs
-                (topInfo commonConfig :: children ++ bottomInfo commonConfig)
+                (viewTopInfo :: children ++ viewHint)
 
 
 focusStyle : Style

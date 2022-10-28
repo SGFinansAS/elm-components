@@ -24,10 +24,10 @@ import Css
         )
 import Html.Styled as Html exposing (Attribute, Html)
 import Html.Styled.Attributes exposing (css, href)
-import Nordea.Components.Common exposing (Translation)
 import Nordea.Components.FlatLink as FlatLink
 import Nordea.Components.Text as Text
 import Nordea.Resources.Colors as Colors
+import Nordea.Resources.I18N exposing (Translation)
 import Nordea.Resources.Illustrations as Illustrations
 
 

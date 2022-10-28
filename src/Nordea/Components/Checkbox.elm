@@ -65,7 +65,7 @@ import Nordea.Resources.Colors as Colors
 import Nordea.Themes as Themes
 
 
-type alias CheckBoxProperties msg =
+type alias CheckboxProperties msg =
     { name : String
     , label : Html msg
     , onCheck : Bool -> msg
@@ -77,7 +77,7 @@ type alias CheckBoxProperties msg =
 
 
 type Checkbox msg
-    = Checkbox (CheckBoxProperties msg)
+    = Checkbox (CheckboxProperties msg)
 
 
 type Appearance
@@ -213,7 +213,7 @@ view attrs (Checkbox config) =
                 |> styleIf (not isDisabled)
     in
     Html.label
-        (css
+        ([ css
             [ display inlineFlex
             , Css.property "gap" "0.5rem"
             , alignItems center
@@ -222,7 +222,8 @@ view attrs (Checkbox config) =
             , notDisabledSpecificStyling
             , appearanceStyle
             ]
-            :: attrs
+         ]
+            ++ attrs
         )
         [ Html.input
             [ type_ "checkbox"

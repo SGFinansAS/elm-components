@@ -25,6 +25,7 @@ import Stories.InformationDetails as InformationDetails
 import Stories.Label as Label
 import Stories.LottiePlayer as LottiePlayer
 import Stories.Modal as Modal
+import Stories.MultiSelectDropdown as MultiSelectDropdown
 import Stories.NumberInput as NumberInput
 import Stories.ProgressBar as ProgressBar
 import Stories.ProgressBarStepper as ProgressBarStepper
@@ -87,6 +88,7 @@ main =
                 , Card.stories
                 , Checkbox.stories
                 , Dropdown.stories
+                , MultiSelectDropdown.stories
                 , Search.stories
                 , Error.stories
                 , FeatureBox.stories

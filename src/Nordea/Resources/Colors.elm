@@ -76,7 +76,7 @@ deepBlue =
     hex "#00005E"
 
 
-{-| Deprecated, use deepBlue
+{-| Deprecated, use nordeaBlue
 -}
 blueNordea : Color
 blueNordea =
