@@ -109,7 +109,7 @@ view attrs dropdown =
             let
                 viewOption option =
                     Html.li
-                        [ Events.onClick (option.onCheck (not option.isChecked))
+                        [ Events.custom "click" (Decode.succeed { message = option.onCheck (not option.isChecked), stopPropagation = True, preventDefault = True })
                         , css
                             [ maxWidth (pct 100)
                             , cursor pointer
@@ -167,7 +167,7 @@ view attrs dropdown =
     in
     Html.fieldset
         ([ Events.on "focusout" (Decode.succeed (dropdown.onFocus False))
-         , Events.on "focusin" (Decode.succeed (dropdown.onFocus True))
+         , Events.onClick (dropdown.onFocus (not dropdown.hasFocus))
          , tabindex 0
          , css [ displayFlex, flexDirection column ]
          ]
