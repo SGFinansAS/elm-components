@@ -31,18 +31,22 @@ import Css
         , cursor
         , display
         , displayFlex
+        , fitContent
         , flexDirection
         , fontSize
         , height
         , hover
         , inherit
+        , int
         , justifyContent
         , left
         , lineHeight
         , listStyle
+        , margin
         , marginBottom
         , maxHeight
         , maxWidth
+        , minWidth
         , none
         , overflowY
         , padding
@@ -60,12 +64,13 @@ import Css
         , spaceBetween
         , top
         , transparent
-        , width
+        , zIndex
         )
 import Html.Styled as Html exposing (Attribute, Html)
-import Html.Styled.Attributes exposing (class, css, name, tabindex)
+import Html.Styled.Attributes exposing (css, name, tabindex)
 import Html.Styled.Events as Events
 import Json.Decode as Decode
+import Maybe.Extra as Maybe
 import Nordea.Components.Checkbox as Checkbox
 import Nordea.Components.Util.Hint as Hint
 import Nordea.Components.Util.Label as Label
@@ -105,11 +110,23 @@ init { onFocus } =
 view : List (Attribute msg) -> MultiSelectDropdown msg -> Html msg
 view attrs dropdown =
     let
+        isLabel =
+            not (String.isEmpty dropdown.label)
+
+        isRequirednessHint =
+            Maybe.isJust dropdown.requirednessHint
+
         viewSelectItems =
             let
                 viewOption option =
                     Html.li
-                        [ Events.onClick (option.onCheck (not option.isChecked))
+                        [ Events.custom "click"
+                            (Decode.succeed
+                                { message = option.onCheck (not option.isChecked)
+                                , stopPropagation = True
+                                , preventDefault = True
+                                }
+                            )
                         , css
                             [ maxWidth (pct 100)
                             , cursor pointer
@@ -160,6 +177,8 @@ view attrs dropdown =
                         , maxHeight (rem 16.75)
                         , dropdownStyles
                         , listStyle none
+                        , margin (rem 0)
+                        , padding (rem 0)
                         ]
                     ]
                     (dropdown.options |> List.map viewOption)
@@ -167,9 +186,18 @@ view attrs dropdown =
     in
     Html.fieldset
         ([ Events.on "focusout" (Decode.succeed (dropdown.onFocus False))
-         , Events.on "focusin" (Decode.succeed (dropdown.onFocus True))
+         , Events.onClick (dropdown.onFocus (not dropdown.hasFocus))
          , tabindex 0
-         , css [ displayFlex, flexDirection column ]
+         , css
+            [ minWidth fitContent
+            , zIndex (int 1)
+            , displayFlex
+            , flexDirection column
+            , margin (rem 0)
+            , padding (rem 0)
+            , Css.property "border" "none"
+            , position relative
+            ]
          ]
             ++ attrs
         )
@@ -177,41 +205,33 @@ view attrs dropdown =
             [ Label.init { label = dropdown.label } |> Label.withAsLegend |> Label.view []
             , dropdown.requirednessHint |> Html.viewMaybe RequirednessHint.view
             ]
+            |> Html.showIf (isLabel || isRequirednessHint)
+        , Html.select [ css [ display none ] ]
+            (dropdown.options |> List.map (\option -> Html.option [ name option.name ] [ Html.text option.label ]))
         , Html.div
-            [ class "nordea-select"
-            , css [ position relative ]
-            ]
-            [ Html.select
-                [ css [ display none ] ]
-                (dropdown.options |> List.map (\option -> Html.option [ name option.name ] [ Html.text option.label ]))
-            , Html.div
-                [ class "select-selected"
-                , css
-                    [ height (rem 3)
-                    , width (pct 100)
-                    , backgroundColor transparent
-                    , padding4 (rem 0.5) (rem 1) (rem 0.5) (rem 1)
-                    , border3 (rem 0.0625) solid Colors.grayMedium
-                    , if dropdown.hasFocus then
-                        borderRadius4 (rem 0.25) (rem 0.25) (rem 0.0) (rem 0.0)
+            [ css
+                [ backgroundColor transparent
+                , padding4 (rem 0.5) (rem 0.75) (rem 0.5) (rem 0.75)
+                , border3 (rem 0.0625) solid Colors.grayMedium
+                , if dropdown.hasFocus then
+                    borderRadius4 (rem 0.25) (rem 0.25) (rem 0.0) (rem 0.0)
 
-                      else
-                        borderRadius4 (rem 0.25) (rem 0.25) (rem 0.25) (rem 0.25)
-                    , fontSize (rem 1.0)
-                    , lineHeight (rem 1.4)
-                    , color inherit
-                    , cursor pointer
-                    , displayFlex
-                    , alignItems center
-                    , justifyContent spaceBetween
-                    , Css.property "appearance" "none"
-                    ]
+                  else
+                    borderRadius4 (rem 0.25) (rem 0.25) (rem 0.25) (rem 0.25)
+                , fontSize (rem 1.0)
+                , lineHeight (rem 1.4)
+                , color inherit
+                , cursor pointer
+                , displayFlex
+                , alignItems center
+                , justifyContent spaceBetween
+                , Css.property "appearance" "none"
                 ]
-                [ Html.text dropdown.placeholder
-                , Icon.chevronDownFilled [ css [ height (rem 1.5) ] ]
-                ]
-            , viewSelectItems
             ]
+            [ Html.text dropdown.placeholder
+            , Icon.chevronDownFilled [ css [ height (rem 1.5) ] ]
+            ]
+        , viewSelectItems
         , dropdown.hint |> Html.viewMaybe (\hint -> Hint.init { text = hint } |> Hint.view)
         ]
 
