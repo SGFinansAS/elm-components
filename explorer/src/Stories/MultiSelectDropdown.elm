@@ -18,6 +18,7 @@ stories =
                     |> MultiSelectDropdown.withPlaceholder "Choose an option"
                     |> MultiSelectDropdown.withHasFocus model.customModel.hasMultiSelectDropdownFocus
                     |> MultiSelectDropdown.withRequirednessHint (Just (RequirednessHint.Mandatory .no))
+                    |> MultiSelectDropdown.withHintText (Just "Hint")
                     |> MultiSelectDropdown.withOptions
                         [ { name = "1", label = "Valg 1", isChecked = model.customModel.isChoice1, onCheck = \_ -> OnCheckChoice1 }
                         , { name = "2", label = "Valg 2", isChecked = model.customModel.isChoice2, onCheck = \_ -> OnCheckChoice2 }

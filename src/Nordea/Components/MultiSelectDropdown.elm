@@ -42,9 +42,8 @@ import Css
         , left
         , lineHeight
         , listStyle
+        , margin
         , marginBottom
-        , marginInlineEnd
-        , marginInlineStart
         , maxHeight
         , maxWidth
         , minWidth
@@ -178,9 +177,8 @@ view attrs dropdown =
                         , maxHeight (rem 16.75)
                         , dropdownStyles
                         , listStyle none
-                        , Css.property "margin-block-start" "0"
-                        , Css.property "margin-block-end" "0"
-                        , Css.property "padding-inline-start" "0"
+                        , margin (rem 0)
+                        , padding (rem 0)
                         ]
                     ]
                     (dropdown.options |> List.map viewOption)
@@ -195,14 +193,10 @@ view attrs dropdown =
             , zIndex (int 1)
             , displayFlex
             , flexDirection column
-            , marginInlineStart (rem 0)
-            , marginInlineEnd (rem 0)
-            , Css.property "padding-block-start" "0"
-            , Css.property "padding-block-end" "0"
-            , Css.property "padding-inline-start" "0"
-            , Css.property "padding-inline-end" "0"
+            , margin (rem 0)
+            , padding (rem 0)
             , Css.property "border" "none"
-            , Css.property "min-inline-size" "min-content"
+            , position relative
             ]
          ]
             ++ attrs
@@ -212,35 +206,32 @@ view attrs dropdown =
             , dropdown.requirednessHint |> Html.viewMaybe RequirednessHint.view
             ]
             |> Html.showIf (isLabel || isRequirednessHint)
-        , Html.div [ css [ position relative ] ]
-            [ Html.select
-                [ css [ display none ] ]
-                (dropdown.options |> List.map (\option -> Html.option [ name option.name ] [ Html.text option.label ]))
-            , Html.div
-                [ css
-                    [ backgroundColor transparent
-                    , padding4 (rem 0.5) (rem 0.75) (rem 0.5) (rem 0.75)
-                    , border3 (rem 0.0625) solid Colors.grayMedium
-                    , if dropdown.hasFocus then
-                        borderRadius4 (rem 0.25) (rem 0.25) (rem 0.0) (rem 0.0)
+        , Html.select [ css [ display none ] ]
+            (dropdown.options |> List.map (\option -> Html.option [ name option.name ] [ Html.text option.label ]))
+        , Html.div
+            [ css
+                [ backgroundColor transparent
+                , padding4 (rem 0.5) (rem 0.75) (rem 0.5) (rem 0.75)
+                , border3 (rem 0.0625) solid Colors.grayMedium
+                , if dropdown.hasFocus then
+                    borderRadius4 (rem 0.25) (rem 0.25) (rem 0.0) (rem 0.0)
 
-                      else
-                        borderRadius4 (rem 0.25) (rem 0.25) (rem 0.25) (rem 0.25)
-                    , fontSize (rem 1.0)
-                    , lineHeight (rem 1.4)
-                    , color inherit
-                    , cursor pointer
-                    , displayFlex
-                    , alignItems center
-                    , justifyContent spaceBetween
-                    , Css.property "appearance" "none"
-                    ]
+                  else
+                    borderRadius4 (rem 0.25) (rem 0.25) (rem 0.25) (rem 0.25)
+                , fontSize (rem 1.0)
+                , lineHeight (rem 1.4)
+                , color inherit
+                , cursor pointer
+                , displayFlex
+                , alignItems center
+                , justifyContent spaceBetween
+                , Css.property "appearance" "none"
                 ]
-                [ Html.text dropdown.placeholder
-                , Icon.chevronDownFilled [ css [ height (rem 1.5) ] ]
-                ]
-            , viewSelectItems
             ]
+            [ Html.text dropdown.placeholder
+            , Icon.chevronDownFilled [ css [ height (rem 1.5) ] ]
+            ]
+        , viewSelectItems
         , dropdown.hint |> Html.viewMaybe (\hint -> Hint.init { text = hint } |> Hint.view)
         ]
 
