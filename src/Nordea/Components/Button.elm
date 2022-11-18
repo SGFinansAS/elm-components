@@ -260,7 +260,7 @@ variantStyle variant =
             , Themes.color Themes.TextColorOnPrimaryColorBackground Colors.white
             , border3 (rem 0.125) solid Colors.transparent
             , hover
-                [ Themes.backgroundColor Themes.SecondaryColor Colors.blueCloud
+                [ Themes.backgroundColor Themes.SecondaryColor Colors.cloudBlue
                 , Themes.color Themes.PrimaryColor Colors.blueDeep
                 ]
             , focus
@@ -278,12 +278,12 @@ variantStyle variant =
             , border3 (rem 0.125) solid Css.transparent
             , Themes.borderColor Themes.PrimaryColor Colors.blueDeep
             , hover
-                [ Themes.backgroundColor Themes.SecondaryColor (Colors.blueCloud |> Colors.withAlpha 0.5)
+                [ Themes.backgroundColor Themes.SecondaryColor (Colors.cloudBlue |> Colors.withAlpha 0.5)
                 , Themes.color Themes.PrimaryColor Colors.blueDeep
                 ]
             , focus
                 [ outline none
-                , Themes.backgroundColor Themes.SecondaryColor Colors.blueCloud
+                , Themes.backgroundColor Themes.SecondaryColor Colors.cloudBlue
                 , Themes.color Themes.PrimaryColor Colors.blueDeep
                 , Css.property "box-shadow" ("0rem 0rem 0rem 0.125rem " ++ Themes.colorVariable Themes.PrimaryColor Colors.blueDeep)
                 ]

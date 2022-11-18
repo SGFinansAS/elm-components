@@ -100,7 +100,7 @@ view (Accordion config) =
     Html.styled Html.div
         [ Css.padding2 (Css.rem 1) (Css.rem 1.5)
         , Css.borderRadius (Css.rem 0.5)
-        , Themes.backgroundColor Themes.SecondaryColor Colors.blueCloud
+        , Themes.backgroundColor Themes.SecondaryColor Colors.cloudBlue
         ]
         []
         [ Html.viewMaybe viewTitle config.title

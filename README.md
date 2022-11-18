@@ -18,4 +18,4 @@ We currently have three css variables for themeing: `PrimaryColor`, `PrimaryColo
 * blueNordea -> PrimaryColorLight
 * blueMedium -> SecondaryColor
 * blueHaas -> SecondaryColor
-* blueCloud -> SecondaryColor
+* cloudBlue -> SecondaryColor
