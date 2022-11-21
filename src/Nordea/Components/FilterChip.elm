@@ -9,7 +9,9 @@ import Css
         , borderWidth
         , boxSizing
         , center
+        , color
         , cursor
+        , disabled
         , displayFlex
         , fitContent
         , flexDirection
@@ -22,6 +24,7 @@ import Css
         , outline
         , padding2
         , pointer
+        , pointerEvents
         , rem
         , whiteSpace
         , width
@@ -67,6 +70,11 @@ view attrs (FilterChip { label }) =
             , focus
                 [ outline none
                 , Css.property "box-shadow" ("0rem 0rem 0rem 0.125rem " ++ Themes.colorVariable Themes.SecondaryColor Color.blueHaas)
+                ]
+            , disabled
+                [ pointerEvents none
+                , backgroundColor Color.lightGray
+                , color Color.darkGray
                 ]
             ]
          ]
