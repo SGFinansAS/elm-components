@@ -1,24 +1,20 @@
-module Nordea.Components.FilterLabel exposing (init, view)
+module Nordea.Components.FilterChip exposing (init, view)
 
 import Css
     exposing
-        ( alignSelf
-        , border3
+        ( alignItems
         , borderBox
         , borderRadius
+        , borderWidth
         , boxSizing
         , center
-        , cursor
         , displayFlex
         , fitContent
         , flexDirection
-        , fontFamilies
         , maxWidth
         , noWrap
         , padding2
-        , pointer
         , rem
-        , solid
         , whiteSpace
         , width
         )
@@ -30,34 +26,32 @@ import Nordea.Resources.Icons as Icon
 import Nordea.Themes as Themes
 
 
-type FilterLabel
-    = FilterLabel { label : String }
+type FilterChip
+    = FilterChip { label : String }
 
 
-init : { label : String } -> FilterLabel
+init : { label : String } -> FilterChip
 init { label } =
-    FilterLabel { label = label }
+    FilterChip { label = label }
 
 
-view : List (Attribute msg) -> FilterLabel -> Html msg
-view attrs (FilterLabel { label }) =
+view : List (Attribute msg) -> FilterChip -> Html msg
+view attrs (FilterChip { label }) =
     Html.button
         ([ css
             [ padding2 (rem 0.25) (rem 0.75)
             , displayFlex
             , flexDirection Css.row
-            , borderRadius (rem 0.5)
-            , fontFamilies [ "inherit" ]
             , borderRadius (rem 2)
-            , cursor pointer
             , boxSizing borderBox
             , Themes.backgroundColor Themes.SecondaryColor Colors.cloudBlue
             , Themes.color Themes.PrimaryColor Colors.deepBlue
-            , border3 (rem 0.125) solid Colors.transparent
             , maxWidth fitContent
             , Css.property "gap" "1rem"
             , whiteSpace noWrap
-            , alignSelf center
+            , alignItems center
+            , borderWidth (rem 0)
+            , Css.property "appearance" "none"
             ]
          ]
             ++ attrs
