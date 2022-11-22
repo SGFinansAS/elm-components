@@ -165,7 +165,7 @@ view attrs (Checkbox config) =
                     Css.batch
                         [ padding2 topBottomPadding (rem 1)
                         , border3 (rem 0.0625) solid transparent
-                        , Themes.backgroundColor Themes.SecondaryColor Colors.blueCloud |> styleIf config.isChecked
+                        , Themes.backgroundColor Themes.SecondaryColor Colors.cloudBlue |> styleIf config.isChecked
                         , transition [ Css.Transitions.borderColor 100, Css.Transitions.boxShadow 100 ]
                         ]
             in
@@ -180,7 +180,7 @@ view attrs (Checkbox config) =
                         , Css.lastOfType [ borderBottomLeftRadius (rem 0.5), borderBottomRightRadius (rem 0.5) ]
                         , pseudoClass "not(label:first-of-type):not(:hover)" [ borderTopColor transparent ] |> styleIf (not config.isChecked)
                         , pseudoClass "not(label:first-of-type)" [ Css.marginTop (rem -0.0625) ]
-                        , hover [ Themes.backgroundColor Themes.SecondaryColor Colors.blueCloud ] |> styleIf (not isDisabled)
+                        , hover [ Themes.backgroundColor Themes.SecondaryColor Colors.cloudBlue ] |> styleIf (not isDisabled)
                         ]
 
                 Simple ->
@@ -195,7 +195,7 @@ view attrs (Checkbox config) =
                         , borderColor Colors.redDark |> styleIf config.hasError
                         , hover
                             [ Themes.borderColor Themes.PrimaryColorLight Colors.blueNordea |> styleIf (not config.hasError)
-                            , Themes.backgroundColor Themes.SecondaryColor Colors.blueCloud
+                            , Themes.backgroundColor Themes.SecondaryColor Colors.cloudBlue
                             ]
                             |> styleIf (not isDisabled)
                         ]

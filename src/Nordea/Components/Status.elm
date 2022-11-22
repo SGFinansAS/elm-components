@@ -39,7 +39,7 @@ view text statusColor attrs =
                     Color.redStatus
 
                 CloudBlue ->
-                    Color.blueCloudStatus
+                    Color.cloudBlueStatus
 
                 Yellow ->
                     Color.yellowStatus
