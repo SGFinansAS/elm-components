@@ -100,7 +100,7 @@ update msg (InfoLabel config) =
 view : List (Attribute msg) -> List (Html msg) -> Html msg
 view attrs children =
     Html.div
-        (infoLabelContainerStyle :: css [ Themes.backgroundColor Themes.SecondaryColor Colors.blueCloud ] :: attrs)
+        (infoLabelContainerStyle :: css [ Themes.backgroundColor Themes.SecondaryColor Colors.cloudBlue ] :: attrs)
         [ Icon.info [ css [ width (rem 1.5), height (rem 1.5), marginRight (rem 0.5) ] ]
         , Text.bodyTextSmall
             |> Text.view [] children
@@ -163,7 +163,7 @@ openableView language attrs children (InfoLabel config) =
     in
     Html.div
         (css
-            [ Themes.backgroundColor Themes.SecondaryColor Colors.blueCloud
+            [ Themes.backgroundColor Themes.SecondaryColor Colors.cloudBlue
             , displayFlex
             , flexDirection row
             , padding (rem 0.75)
