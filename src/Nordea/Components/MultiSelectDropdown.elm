@@ -63,7 +63,6 @@ import Css
         , solid
         , spaceBetween
         , top
-        , transparent
         , zIndex
         )
 import Html.Styled as Html exposing (Attribute, Html)
@@ -210,7 +209,7 @@ view attrs dropdown =
             (dropdown.options |> List.map (\option -> Html.option [ name option.name ] [ Html.text option.label ]))
         , Html.div
             [ css
-                [ backgroundColor transparent
+                [ backgroundColor Colors.white
                 , padding4 (rem 0.5) (rem 0.75) (rem 0.5) (rem 0.75)
                 , border3 (rem 0.0625) solid Colors.grayMedium
                 , if dropdown.hasFocus then
