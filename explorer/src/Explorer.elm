@@ -16,6 +16,7 @@ import Stories.Error as Error
 import Stories.FeatureBox as FeatureBox
 import Stories.FileDownload as FileDownload
 import Stories.FileUpload as FileUpload
+import Stories.FilterChip as FilterChip
 import Stories.FlatLink as FlatLink
 import Stories.Hamburger as Hamburger
 import Stories.Icons as Icons
@@ -94,6 +95,7 @@ main =
                 , FeatureBox.stories
                 , FileDownload.stories
                 , FileUpload.stories
+                , FilterChip.stories
                 , FlatLink.stories
                 , Hamburger.stories
                 , InfoLabel.stories

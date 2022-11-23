@@ -144,7 +144,7 @@ adjustSlider (Range config) =
             (((config.value - config.min) * 100) / (config.max - config.min)) |> String.fromFloat
 
         cloudBlue =
-            Themes.colorVariable Themes.SecondaryColor Colors.blueCloud
+            Themes.colorVariable Themes.SecondaryColor Colors.cloudBlue
 
         nordeaBlue =
             Themes.colorVariable Themes.PrimaryColorLight Colors.blueNordea

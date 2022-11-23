@@ -1,13 +1,12 @@
 module Nordea.Resources.Colors exposing
     ( black
     , black25
-    , blueCloud
-    , blueCloudStatus
     , blueDeep
     , blueHaas
     , blueMedium
     , blueNordea
     , cloudBlue
+    , cloudBlueStatus
     , coolGray
     , darkGray
     , darkGreen
@@ -110,13 +109,6 @@ blueHaas =
 haasBlue : Color
 haasBlue =
     hex "#AED5FF"
-
-
-{-| Deprecated, use deepBlue
--}
-blueCloud : Color
-blueCloud =
-    hex "#DCEDFF"
 
 
 cloudBlue : Color
@@ -284,8 +276,8 @@ grayHover =
     hex "#F5F6F7"
 
 
-blueCloudStatus : Color
-blueCloudStatus =
+cloudBlueStatus : Color
+cloudBlueStatus =
     hex "#C5E0FE"
 
 
