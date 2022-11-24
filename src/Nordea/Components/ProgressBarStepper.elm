@@ -51,7 +51,7 @@ view attrs { steps, currentStep, nextLabel } =
             , isCompleted = False
             }
             |> ProgressBar.withStrokeWidth 12
-            |> ProgressBar.withUnfilledStrokeColor Colors.blueCloud
+            |> ProgressBar.withUnfilledStrokeColor Colors.cloudBlue
             |> ProgressBar.withCustomCenterLabel centerLabel
             |> ProgressBar.view
                 [ css

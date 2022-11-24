@@ -168,7 +168,7 @@ view (FileUpload config) =
             , if config.isHovering then
                 Css.batch
                     [ border3 (rem 0.0625) dashed Colors.blueDeep
-                    , Themes.backgroundColor Themes.SecondaryColor Colors.blueCloud
+                    , Themes.backgroundColor Themes.SecondaryColor Colors.cloudBlue
                     ]
 
               else
