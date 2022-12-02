@@ -4,7 +4,6 @@ module Nordea.Components.NumberInput exposing
     , view
     , withError
     , withFormatter
-    , withIsDisabled
     , withMax
     , withMin
     , withOnBlur
@@ -38,7 +37,6 @@ type alias Config msg =
     , showError : Bool
     , onBlur : Maybe msg
     , formatter : Maybe (Float -> String)
-    , isDisabled : Bool
     , variant : Variant
     }
 
@@ -64,7 +62,6 @@ init value =
         , showError = False
         , onBlur = Nothing
         , formatter = Nothing
-        , isDisabled = False
         , variant = Standard
         }
 
@@ -107,11 +104,6 @@ withOnBlur msg (NumberInput config) =
 withFormatter : Maybe (Float -> String) -> NumberInput msg -> NumberInput msg
 withFormatter formatter (NumberInput config) =
     NumberInput { config | formatter = formatter }
-
-
-withIsDisabled : Bool -> NumberInput msg -> NumberInput msg
-withIsDisabled val (NumberInput config) =
-    NumberInput { config | isDisabled = val }
 
 
 withSmallSize : NumberInput msg -> NumberInput msg
