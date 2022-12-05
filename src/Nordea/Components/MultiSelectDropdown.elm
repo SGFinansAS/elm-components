@@ -160,6 +160,7 @@ view attrs dropdown =
                     [ displayFlex
                     , flexDirection column
                     , position absolute
+                    , zIndex (int 1)
                     , top (pct 100)
                     , left (rem 0)
                     , right (rem 0)
@@ -189,7 +190,6 @@ view attrs dropdown =
          , tabindex 0
          , css
             [ minWidth fitContent
-            , zIndex (int 1)
             , displayFlex
             , flexDirection column
             , margin (rem 0)
