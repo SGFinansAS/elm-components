@@ -54,7 +54,7 @@ import Html.Styled
 import Html.Styled.Attributes exposing (attribute)
 import Nordea.Html exposing (showIf)
 import Nordea.Resources.Colors as Colors
-import Nordea.Resources.Fonts as Fonts
+import Nordea.Resources.Fonts.Fonts as Fonts
 import Nordea.Resources.Icons as Icons
 import Nordea.Themes as Themes
 

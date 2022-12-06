@@ -34,7 +34,7 @@ import Html.Styled.Attributes as Attrs exposing (maxlength, placeholder, value)
 import Html.Styled.Events exposing (onBlur, onInput)
 import Maybe.Extra as Maybe
 import Nordea.Resources.Colors as Colors
-import Nordea.Resources.Fonts as Fonts
+import Nordea.Resources.Fonts.Fonts as Fonts
 import Nordea.Themes as Themes
 
 
