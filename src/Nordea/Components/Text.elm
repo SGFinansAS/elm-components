@@ -36,7 +36,7 @@ import Css
 import Css.Global as Css
 import Html.Styled as Html exposing (Attribute, Html)
 import Html.Styled.Attributes as Attributes
-import Nordea.Resources.Fonts as Fonts
+import Nordea.Resources.Fonts.Fonts as Fonts
 
 
 
