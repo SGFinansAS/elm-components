@@ -56,7 +56,7 @@ import Html.Styled.Attributes exposing (accept, css, multiple, type_, value)
 import Html.Styled.Events as Events
 import Json.Decode as Decode
 import Nordea.Components.Text as Text
-import Nordea.Html exposing (showIf, styleIf, viewMaybe)
+import Nordea.Html as Html exposing (showIf, styleIf)
 import Nordea.Resources.Colors as Colors
 import Nordea.Resources.I18N exposing (Translation)
 import Nordea.Resources.Icons as Icon
@@ -119,6 +119,95 @@ init translate onFilesSelected onDragEnter onDragLeave =
 view : FileUpload msg -> Html msg
 view (FileUpload config) =
     let
+        attrs =
+            let
+                styleAppearance =
+                    case config.appearance of
+                        Large ->
+                            Css.batch
+                                [ flexDirection column
+                                , justifyContent center
+                                , height (rem 8.375)
+                                , padding2 (rem 1.5) (rem 2)
+                                ]
+
+                        Small ->
+                            Css.batch
+                                [ flexDirection row
+                                , padding2 (rem 0.75) (rem 1)
+                                , justifyContent center |> styleIf config.isHovering
+                                ]
+
+                styleOnHover =
+                    if config.isHovering then
+                        Css.batch
+                            [ border3 (rem 0.0625) dashed Colors.blueDeep
+                            , Themes.backgroundColor Themes.SecondaryColor Colors.cloudBlue
+                            ]
+
+                    else
+                        Css.batch
+                            [ border3 (rem 0.0625) dashed Colors.grayMedium
+                            , hover [ backgroundColor Colors.grayCool ]
+                            ]
+            in
+            [ onFilesDropped
+                config.accept
+                (\first rest ->
+                    config.onFilesSelected
+                        first
+                        (if config.allowMultiple then
+                            rest
+
+                         else
+                            []
+                        )
+                )
+            , preventDefaultOn "dragover" config.onDragEnter
+            , preventDefaultOn "dragleave" config.onDragLeave
+            , css
+                [ displayFlex
+                , styleAppearance
+                , alignItems center
+                , borderRadius (rem 0.25)
+                , cursor pointer
+                , pseudoClass "focus-within" [ border3 (rem 0.0625) dashed Colors.blueDeep ]
+                , styleOnHover
+                ]
+            ]
+
+        iconUpload =
+            Icon.upload
+                [ css
+                    [ Themes.color Themes.PrimaryColorLight Colors.blueNordea
+                    , case config.appearance of
+                        Large ->
+                            marginBottom (rem 1)
+
+                        Small ->
+                            marginRight (rem 1)
+                    ]
+                ]
+
+        description =
+            Text.bodyTextSmall
+                |> Text.view [ css [ color Colors.darkGray ] ]
+                    [ Html.text (config.translate strings.uploadDescription1)
+                    , Html.span
+                        [ css [ Themes.color Themes.PrimaryColorLight Colors.blueNordea ] ]
+                        [ Html.text (config.translate strings.uploadDescription2) ]
+                    , Html.text (config.translate strings.uploadDescription3)
+                    ]
+
+        viewSupportedFileTypesText =
+            supportedFileTypesText config.translate config.accept
+                |> Html.viewMaybe
+                    (\supportedFileTypes ->
+                        Text.textTinyLight
+                            |> Text.view [ css [ color Colors.darkGray, marginTop (rem 0.5) ] ]
+                                [ Html.text supportedFileTypes ]
+                    )
+
         mimeTypesAsString =
             case config.accept of
                 Any ->
@@ -129,83 +218,10 @@ view (FileUpload config) =
                         |> List.map toMimeTypeString
                         |> String.join ","
     in
-    Html.div
-        [ onFilesDropped
-            config.accept
-            (\first rest ->
-                config.onFilesSelected
-                    first
-                    (if config.allowMultiple then
-                        rest
-
-                     else
-                        []
-                    )
-            )
-        , preventDefaultOn "dragover" config.onDragEnter
-        , preventDefaultOn "dragleave" config.onDragLeave
-        , css
-            [ displayFlex
-            , case config.appearance of
-                Large ->
-                    Css.batch
-                        [ flexDirection column
-                        , justifyContent center
-                        , height (rem 8.375)
-                        , padding2 (rem 1.5) (rem 2)
-                        ]
-
-                Small ->
-                    Css.batch
-                        [ flexDirection row
-                        , padding2 (rem 0.75) (rem 1)
-                        , justifyContent center |> styleIf config.isHovering
-                        ]
-            , alignItems center
-            , borderRadius (rem 0.25)
-            , cursor pointer
-            , pseudoClass "focus-within" [ border3 (rem 0.0625) dashed Colors.blueDeep ]
-            , if config.isHovering then
-                Css.batch
-                    [ border3 (rem 0.0625) dashed Colors.blueDeep
-                    , Themes.backgroundColor Themes.SecondaryColor Colors.cloudBlue
-                    ]
-
-              else
-                Css.batch
-                    [ border3 (rem 0.0625) dashed Colors.grayMedium
-                    , hover [ backgroundColor Colors.grayCool ]
-                    ]
-            ]
-        ]
-        [ Icon.upload
-            [ css
-                [ Themes.color Themes.PrimaryColorLight Colors.blueNordea
-                , case config.appearance of
-                    Large ->
-                        marginBottom (rem 1)
-
-                    Small ->
-                        marginRight (rem 1)
-                ]
-            ]
-            |> showIf (not config.isHovering)
-        , Text.bodyTextSmall
-            |> Text.view [ css [ color Colors.grayNordea ] ]
-                [ Html.text (config.translate strings.uploadDescription1)
-                , Html.span
-                    [ css [ Themes.color Themes.PrimaryColorLight Colors.blueNordea ] ]
-                    [ Html.text (config.translate strings.uploadDescription2) ]
-                , Html.text (config.translate strings.uploadDescription3)
-                ]
-            |> showIf (not config.isHovering)
-        , supportedFileTypesText config.translate config.accept
-            |> viewMaybe
-                (\supportedFileTypes ->
-                    Text.textTinyLight
-                        |> Text.view [ css [ color Colors.grayNordea, marginTop (rem 0.5) ] ]
-                            [ Html.text supportedFileTypes ]
-                )
+    Html.div attrs
+        [ iconUpload |> showIf (not config.isHovering)
+        , description |> showIf (not config.isHovering)
+        , viewSupportedFileTypesText
             |> showIf (not config.isHovering && config.appearance == Large)
         , Text.bodyTextSmall
             |> Text.view [ css [ Themes.color Themes.PrimaryColorLight Colors.blueNordea ] ]
