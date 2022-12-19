@@ -476,10 +476,10 @@ elm-live@^4.0.2:
     serve-static "1.14.1"
     ws "7.1.1"
 
-elm-review@^2.7.6:
-  version "2.7.6"
-  resolved "https://registry.yarnpkg.com/elm-review/-/elm-review-2.7.6.tgz#9357d7f58ca0e5af0562e6bae0587a78b3d9264c"
-  integrity sha512-q2CJ0VialKNzQjwUDu1utXRWBslNRgzsi8Ghhhu7oTl2Oee88cAd90XifChmfTVm9dl7oqwHuLPzjxH7c9SCEA==
+elm-review@^2.9.0:
+  version "2.9.0"
+  resolved "https://registry.yarnpkg.com/elm-review/-/elm-review-2.9.0.tgz#6dccd03987c9741eec9e8d3ac5dd2458ac2263b0"
+  integrity sha512-Ce8q9Or6QLn9D2gBCP2SI6eij+3th/g/5Oj7VbYDrJqynvBh/ZYj0Y6LOA0Y7UXTKOf0a1sLxVg6c1BCfl4CMA==
   dependencies:
     chalk "^4.0.0"
     chokidar "^3.5.2"
@@ -491,7 +491,7 @@ elm-review@^2.7.6:
     fs-extra "^9.0.0"
     glob "^7.1.4"
     got "^11.8.5"
-    minimist "^1.2.0"
+    minimist "^1.2.6"
     ora "^5.4.0"
     path-key "^3.1.1"
     prompts "^2.2.1"
@@ -1035,10 +1035,10 @@ minimatch@^3.0.4, minimatch@~3.0.4:
   dependencies:
     brace-expansion "^1.1.7"
 
-minimist@^1.2.0, minimist@^1.2.3, minimist@^1.2.5:
-  version "1.2.6"
-  resolved "https://registry.yarnpkg.com/minimist/-/minimist-1.2.6.tgz#8637a5b759ea0d6e98702cfb3a9283323c93af44"
-  integrity sha512-Jsjnk4bw3YJqYzbdyBiNsPWHPfO++UGG749Cxs6peCu5Xg4nrena6OVxOYxrQTqww0Jmwt+Ref8rggumkTLz9Q==
+minimist@^1.2.3, minimist@^1.2.5, minimist@^1.2.6:
+  version "1.2.7"
+  resolved "https://registry.yarnpkg.com/minimist/-/minimist-1.2.7.tgz#daa1c4d91f507390437c6a8bc01078e7000c4d18"
+  integrity sha512-bzfL1YUZsP41gmu/qjrEk0Q6i2ix/cVeAhbCbqH9u3zYutS1cLg00qhrD0M2MVdCcx4Sc0UpP2eBWo9rotpq6g==
 
 minipass@^3.0.0:
   version "3.1.6"
