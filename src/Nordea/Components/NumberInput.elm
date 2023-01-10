@@ -126,9 +126,10 @@ view attributes (NumberInput config) =
 getAttributes : Config msg -> List (Attribute msg)
 getAttributes config =
     let
+        format : String -> String
         format value =
-            if value == "" then
-                ""
+            if String.endsWith "." value || String.endsWith "," value then
+                value
 
             else
                 Maybe.map2 (\formatter val -> val |> formatter)
