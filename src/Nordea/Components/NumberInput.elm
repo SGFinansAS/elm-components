@@ -126,7 +126,7 @@ view attributes (NumberInput config) =
 getAttributes : Config msg -> List (Attribute msg)
 getAttributes config =
     let
-        format: String -> String
+        format : String -> String
         format value =
             if String.endsWith "." value || String.endsWith "," value then
                 value
