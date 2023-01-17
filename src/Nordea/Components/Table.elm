@@ -1,15 +1,15 @@
 module Nordea.Components.Table exposing
-    ( tbody
+    ( Variant(..)
+    , tbody
     , tbodySmall
+    , tbodyWithVariant
     , td
     , th
     , thead
     , theadSmall
+    , theadWithVariant
     , tr
     , view
-    , Variant(..)
-    , theadWithVariant
-    , tbodyWithVariant
     )
 
 import Css
