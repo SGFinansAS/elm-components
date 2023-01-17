@@ -110,4 +110,19 @@ stories =
                     ]
           , {}
           )
+        , ( "Extra Small"
+          , \_ ->
+                Table.view [ css [ width (rem 60) ] ]
+                    [ Table.theadWithVariant []
+                        [ Table.tr [] (List.repeat 5 (Table.th [ css [ flex (int 1) ] ] [ Html.text "Text" ]))
+                        ]
+                        Table.ExtraSmall
+                    , Table.tbodyWithVariant []
+                        (List.repeat 5 (Table.tr []
+                            (List.repeat 5 (Table.td [ css [ flex (int 1), textAlign center ] ] [ Html.text "Text" ]))
+                        ))
+                        Table.ExtraSmall
+                    ]
+          , {}
+          )
         ]

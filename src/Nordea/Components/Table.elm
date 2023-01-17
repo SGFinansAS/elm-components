@@ -7,7 +7,7 @@ module Nordea.Components.Table exposing
     , theadSmall
     , tr
     , view
-    , Variant
+    , Variant(..)
     , theadWithVariant
     , tbodyWithVariant
     )
