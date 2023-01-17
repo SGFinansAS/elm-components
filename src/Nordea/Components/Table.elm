@@ -47,6 +47,7 @@ import Nordea.Themes as Themes
 type Variant
     = Small
     | Standard
+    | ExtraSmall
 
 
 view : List (Attribute msg) -> List (Html msg) -> Html msg
@@ -70,6 +71,9 @@ theadWithVariant attrs children variant =
 
                 Standard ->
                     rem 3.5
+
+                ExtraSmall ->
+                    rem 1.5
     in
     Html.thead
         (css
@@ -130,6 +134,9 @@ tbodyWithVariant attrs children variant =
 
                 Standard ->
                     rem 4.5
+
+                ExtraSmall ->
+                    rem 2.5
     in
     Html.tbody
         (css
