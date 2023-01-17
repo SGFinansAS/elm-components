@@ -73,7 +73,7 @@ theadWithVariant attrs children variant =
                     rem 3.5
 
                 ExtraSmall ->
-                    rem 1.5
+                    rem 2.5
     in
     Html.thead
         (css
@@ -136,7 +136,7 @@ tbodyWithVariant attrs children variant =
                     rem 4.5
 
                 ExtraSmall ->
-                    rem 2.5
+                    rem 1.5
     in
     Html.tbody
         (css
