@@ -7,6 +7,9 @@ module Nordea.Components.Table exposing
     , theadSmall
     , tr
     , view
+    , Variant
+    , theadWithVariant
+    , tbodyWithVariant
     )
 
 import Css
