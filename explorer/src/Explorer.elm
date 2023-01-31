@@ -37,6 +37,7 @@ import Stories.Spinner as Spinner
 import Stories.Status as Status
 import Stories.StepIndicator as StepIndicator
 import Stories.Table as Table
+import Stories.Tabs as Tabs
 import Stories.Text as Text
 import Stories.TextArea as TextArea
 import Stories.TextInput as TextInput
@@ -114,6 +115,7 @@ main =
                 , Status.stories
                 , StepIndicator.stories
                 , Table.stories
+                , Tabs.stories
                 , TextArea.stories
                 , TextInput.stories
                 , Toggle.stories
