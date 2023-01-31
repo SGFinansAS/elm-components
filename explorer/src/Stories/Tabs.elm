@@ -1,8 +1,7 @@
 module Stories.Tabs exposing (stories)
 
-import Css
 import Html.Styled as Html
-import Html.Styled.Attributes as Attrs exposing (css)
+import Html.Styled.Attributes as Attrs
 import Nordea.Components.Tabs as Tabs
 import Nordea.Html as Html
 import UIExplorer exposing (UI)
