@@ -27,18 +27,21 @@ stories =
                     ]
           , {}
           )
-        , ( "As link"
+        , ( "As button"
           , \_ ->
                 Html.row []
                     [ Tabs.init
                         |> Tabs.withIsActive True
-                        |> Tabs.withHtmlTag Html.a
-                        |> Tabs.view [ Attrs.href "#" ] [ Html.text "test1" ]
+                        |> Tabs.withHtmlTag Html.button
+                        |> Tabs.view [] [ Html.text "test1" ]
                     , Tabs.init
+                        |> Tabs.withHtmlTag Html.button
                         |> Tabs.view [] [ Html.text "test2" ]
                     , Tabs.init
+                        |> Tabs.withHtmlTag Html.button
                         |> Tabs.view [] [ Html.text "test3" ]
                     , Tabs.init
+                        |> Tabs.withHtmlTag Html.button
                         |> Tabs.view [] [ Html.text "test4" ]
                     ]
           , {}

@@ -46,7 +46,7 @@ init : Tab msg
 init =
     Tab
         { isActive = False
-        , htmlTag = Html.button
+        , htmlTag = Html.a
         }
 
 
