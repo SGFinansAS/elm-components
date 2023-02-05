@@ -106,15 +106,14 @@ withShowNumberInput value (Slider config) =
 view : List (Attribute msg) -> Slider msg -> Html msg
 view attributes (Slider config) =
     fieldset
-        ([ css
+        (css
             [ displayFlex
             , flexDirection column
             , border (rem 0)
             , padding (rem 0)
             , margin (rem 0)
             ]
-         ]
-            ++ attributes
+            :: attributes
         )
         [ div [ css [ displayFlex, marginBottom (rem 0.5) ] ]
             [ legend [ css [ flex (int 3) ] ]
