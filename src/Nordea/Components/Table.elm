@@ -1,10 +1,13 @@
 module Nordea.Components.Table exposing
-    ( tbody
+    ( Variant(..)
+    , tbody
     , tbodySmall
+    , tbodyWithVariant
     , td
     , th
     , thead
     , theadSmall
+    , theadWithVariant
     , tr
     , view
     )
@@ -44,6 +47,7 @@ import Nordea.Themes as Themes
 type Variant
     = Small
     | Standard
+    | ExtraSmall
 
 
 view : List (Attribute msg) -> List (Html msg) -> Html msg
@@ -57,8 +61,8 @@ view attrs children =
 
 {-| Groups the header content in a table
 -}
-theadWithVariant : List (Attribute msg) -> List (Html msg) -> Variant -> Html msg
-theadWithVariant attrs children variant =
+theadWithVariant : Variant -> List (Attribute msg) -> List (Html msg) -> Html msg
+theadWithVariant variant attrs =
     let
         headHeight =
             case variant of
@@ -67,6 +71,9 @@ theadWithVariant attrs children variant =
 
                 Standard ->
                     rem 3.5
+
+                ExtraSmall ->
+                    rem 2.5
     in
     Html.thead
         (css
@@ -75,21 +82,20 @@ theadWithVariant attrs children variant =
             ]
             :: attrs
         )
-        children
 
 
 {-| Groups the header content in a table
 -}
 thead : List (Attribute msg) -> List (Html msg) -> Html msg
 thead attrs children =
-    theadWithVariant attrs children Standard
+    theadWithVariant Standard attrs children
 
 
 {-| Groups the header content in a smaller table
 -}
 theadSmall : List (Attribute msg) -> List (Html msg) -> Html msg
 theadSmall attrs children =
-    theadWithVariant attrs children Small
+    theadWithVariant Small attrs children
 
 
 {-| Defines a row in a table
@@ -117,8 +123,8 @@ th attrs children =
 
 {-| Groups the body content in a table
 -}
-tbodyWithVariant : List (Attribute msg) -> List (Html msg) -> Variant -> Html msg
-tbodyWithVariant attrs children variant =
+tbodyWithVariant : Variant -> List (Attribute msg) -> List (Html msg) -> Html msg
+tbodyWithVariant variant attrs =
     let
         trHeight =
             case variant of
@@ -127,6 +133,9 @@ tbodyWithVariant attrs children variant =
 
                 Standard ->
                     rem 4.5
+
+                ExtraSmall ->
+                    rem 1.5
     in
     Html.tbody
         (css
@@ -142,21 +151,20 @@ tbodyWithVariant attrs children variant =
             ]
             :: attrs
         )
-        children
 
 
 {-| Groups the body content in a table
 -}
 tbody : List (Attribute msg) -> List (Html msg) -> Html msg
 tbody attrs children =
-    tbodyWithVariant attrs children Standard
+    tbodyWithVariant Standard attrs children
 
 
 {-| Groups the body content in a smaller table
 -}
 tbodySmall : List (Attribute msg) -> List (Html msg) -> Html msg
 tbodySmall attrs children =
-    tbodyWithVariant attrs children Small
+    tbodyWithVariant Small attrs children
 
 
 {-| Defines a cell in a table
