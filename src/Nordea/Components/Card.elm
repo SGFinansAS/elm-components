@@ -104,13 +104,12 @@ title attrs children =
 infoBox : List (Attribute msg) -> List (Html msg) -> Html msg
 infoBox attrs content =
     Html.column
-        ([ css
+        (css
             [ borderRadius (rem 0.5)
             , border3 (rem 0.0625) solid Colors.grayLight
             , padding (rem 1)
             ]
-         ]
-            ++ attrs
+            :: attrs
         )
         content
 

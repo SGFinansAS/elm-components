@@ -213,7 +213,7 @@ view attrs (Checkbox config) =
                 |> styleIf (not isDisabled)
     in
     Html.label
-        ([ css
+        (css
             [ display inlineFlex
             , Css.property "gap" "0.5rem"
             , alignItems center
@@ -222,8 +222,7 @@ view attrs (Checkbox config) =
             , notDisabledSpecificStyling
             , appearanceStyle
             ]
-         ]
-            ++ attrs
+            :: attrs
         )
         [ Html.input
             [ type_ "checkbox"
