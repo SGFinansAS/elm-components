@@ -21,6 +21,7 @@ import Css
         , borderRadius
         , borderStyle
         , color
+        , cursor
         , focus
         , fontSize
         , height
@@ -31,6 +32,7 @@ import Css
         , padding4
         , paddingRight
         , pct
+        , pointer
         , pointerEvents
         , position
         , property
@@ -255,6 +257,7 @@ view attrs (Dropdown config) =
                 , lineHeight (rem 1.4)
                 , color inherit
                 , withAttribute "disabled" [ color Colors.grayNordea, backgroundColor Colors.grayCool ]
+                , cursor pointer
                 ]
             ]
             (placeholder :: options)
