@@ -2,7 +2,6 @@ module Stories.InfoBanner exposing (stories)
 
 import Html.Styled as Html
 import Nordea.Components.InfoBanner as InfoBanner exposing (Appearance(..), Config(..))
-import Nordea.Html
 import UIExplorer exposing (UI)
 import UIExplorer.Styled exposing (styledStoriesOf)
 
