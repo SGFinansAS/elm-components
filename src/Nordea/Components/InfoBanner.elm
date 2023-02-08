@@ -33,11 +33,11 @@ type Appearance
     | Info
 
 
-type Config msg
+type Config
     = Appearance Appearance
 
 
-view : List (Config msg) -> List (Attribute msg) -> List (Html msg) -> Html msg
+view : List Config -> List (Attribute msg) -> List (Html msg) -> Html msg
 view config attrs children =
     let
         appearance =
