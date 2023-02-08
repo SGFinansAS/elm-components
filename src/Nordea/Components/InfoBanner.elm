@@ -43,8 +43,8 @@ view config attrs children =
         appearance =
             config
                 |> List.filterMap
-                    (\a ->
-                        case a of
+                    (\attr ->
+                        case attr of
                             Appearance app ->
                                 Just app
                     )
