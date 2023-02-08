@@ -20,7 +20,7 @@ import Stories.FilterChip as FilterChip
 import Stories.FlatLink as FlatLink
 import Stories.Hamburger as Hamburger
 import Stories.Icons as Icons
-import Stories.InfoLabel as InfoLabel
+import Stories.InfoBanner as InfoBanner
 import Stories.InfoPanel as InfoPanel
 import Stories.InformationDetails as InformationDetails
 import Stories.Label as Label
@@ -99,7 +99,7 @@ main =
                 , FilterChip.stories
                 , FlatLink.stories
                 , Hamburger.stories
-                , InfoLabel.stories
+                , InfoBanner.stories
                 , InfoPanel.stories
                 , InformationDetails.stories
                 , Label.stories
