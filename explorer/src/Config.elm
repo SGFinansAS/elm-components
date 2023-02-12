@@ -30,6 +30,7 @@ type alias Config =
     , rangeInputValue : Float
     , isToggled : Bool
     , hamburgerIsActive : Bool
+    , accordionMenuIsOpen: Bool
     }
 
 
@@ -54,7 +55,7 @@ type Msg
     | RangeMsg Float
     | ToggleToggle
     | ToggleHamburger
-
+    | ToggleAccordionMenu
 
 init : Config
 init =
@@ -86,6 +87,7 @@ init =
     , sliderInputValue = "5"
     , rangeInputValue = 5
     , hamburgerIsActive = False
+    , accordionMenuIsOpen = False
     }
 
 
@@ -154,3 +156,6 @@ update msg config =
 
         ToggleHamburger ->
             { config | hamburgerIsActive = not config.hamburgerIsActive }
+
+        ToggleAccordionMenu ->
+            {config | accordionMenuIsOpen = not config.accordionMenuIsOpen}

@@ -44,7 +44,7 @@ import Stories.TextInput as TextInput
 import Stories.Toggle as Toggle
 import Stories.Tooltip as Tooltip
 import UIExplorer exposing (UIExplorerProgram)
-
+import Stories.AccordionMenu as AccordionMenu
 
 type alias Model =
     UIExplorer.Model Config Msg {}
@@ -85,6 +85,7 @@ main =
                 ]
             |> UIExplorer.category "Components"
                 [ Accordion.stories
+                , AccordionMenu.stories
                 , Badge.stories
                 , Button.stories
                 , Card.stories
