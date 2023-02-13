@@ -30,7 +30,7 @@ type alias Config =
     , rangeInputValue : Float
     , isToggled : Bool
     , hamburgerIsActive : Bool
-    , accordionMenuIsOpen: Bool
+    , accordionMenuIsOpen : Bool
     }
 
 
@@ -56,6 +56,7 @@ type Msg
     | ToggleToggle
     | ToggleHamburger
     | ToggleAccordionMenu
+
 
 init : Config
 init =
@@ -158,4 +159,4 @@ update msg config =
             { config | hamburgerIsActive = not config.hamburgerIsActive }
 
         ToggleAccordionMenu ->
-            {config | accordionMenuIsOpen = not config.accordionMenuIsOpen}
+            { config | accordionMenuIsOpen = not config.accordionMenuIsOpen }
