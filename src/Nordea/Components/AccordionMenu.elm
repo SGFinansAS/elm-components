@@ -1,10 +1,10 @@
 module Nordea.Components.AccordionMenu exposing (init, view, withItem)
 
-import Css exposing (Rem, alignItems, center, cursor, displayFlex, justifyContent, marginTop, paddingLeft, pointer, rem, spaceBetween, width)
-import Html.Styled as Html exposing (Attribute, Html)
+import Css exposing (alignItems, center, cursor, displayFlex, justifyContent, marginTop, paddingLeft, pointer, rem, spaceBetween, width)
+import Html.Styled as Html exposing (Html)
 import Html.Styled.Attributes exposing (css)
 import Html.Styled.Events exposing (onClick)
-import Nordea.Components.Text as Text exposing (Headline, Variant)
+import Nordea.Components.Text as Text exposing (Headline)
 import Nordea.Resources.Icons as Icons
 
 
