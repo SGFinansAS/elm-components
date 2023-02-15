@@ -1,7 +1,7 @@
 module Stories.AccordionMenu exposing (..)
 
 import Config exposing (Config, Msg(..))
-import Css exposing (cursor, fontSize, listStyle, marginRight, marginTop, middle, none, pointer, rem, verticalAlign, width)
+import Css exposing (cursor, fontSize, listStyle, marginRight, marginTop, middle, none, paddingLeft, pointer, rem, verticalAlign, width)
 import Html.Styled exposing (div, li, span, text, ul)
 import Html.Styled.Attributes exposing (css)
 import Nordea.Components.AccordionMenu as AccordionMenu exposing (..)
@@ -25,6 +25,30 @@ stories =
                             [ li [] [ text "Undertegner identifisert 09.10.22" ]
                             , li [] [ text "E-signering utloper snart 08.10.22" ]
                             , li [] [ text "E-signering sendt 07.10.22" ]
+                            ]
+                        ]
+                    ]
+          , {}
+          )
+        , ( "Nested"
+          , \model ->
+                AccordionMenu.view
+                    [ Status Closed ]
+                    []
+                    [ AccordionMenu.header [] [ text "Parent Accordion " ]
+                    , AccordionMenu.content [ css [ paddingLeft (rem 2) ] ]
+                        [ text "Description"
+                        , AccordionMenu.view
+                            [ Status Closed ]
+                            []
+                            [ AccordionMenu.header [] [ text "Child Accordion" ]
+                            , AccordionMenu.content []
+                                [ ul []
+                                    [ li [] [ text "Undertegner identifisert 09.10.22" ]
+                                    , li [] [ text "E-signering utloper snart 08.10.22" ]
+                                    , li [] [ text "E-signering sendt 07.10.22" ]
+                                    ]
+                                ]
                             ]
                         ]
                     ]
