@@ -18,7 +18,8 @@ stories =
         [ ( "Default"
           , \_ ->
                 AccordionMenu.view
-                    [ Status Closed ]
+                    {isOpen = True}
+                    []
                     []
                     [ AccordionMenu.header [] [ text "Kontrakt e-signert 10.10.22" ]
                     , AccordionMenu.content []
@@ -34,13 +35,15 @@ stories =
         , ( "Nested"
           , \_ ->
                 AccordionMenu.view
-                    [ Status Open ]
+                    {isOpen = True}
+                    []
                     []
                     [ AccordionMenu.header [] [ text "Parent Accordion " ]
                     , AccordionMenu.content [ css [ paddingLeft (rem 2) ] ]
                         [ text "Description"
                         , AccordionMenu.view
-                            [ Status Open ]
+                            {isOpen = True}
+                            []
                             []
                             [ AccordionMenu.header [] [ text "Child Accordion" ]
                             , AccordionMenu.content []
@@ -58,7 +61,8 @@ stories =
         , ( "Styled"
           , \_ ->
                 AccordionMenu.view
-                    [ Status Open ]
+                    {isOpen = True}
+                    []
                     []
                     [ AccordionMenu.header [ css [ cursor pointer ] ] [ Icons.filledCheckmark [ css [ verticalAlign middle, width (rem 2), marginRight (rem 0.5) ] ], text "Kontrakt e-signert 10.10.22" ]
                     , AccordionMenu.content [ css [ fontSize (rem 0.9) ] ]
