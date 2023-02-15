@@ -154,4 +154,3 @@ update msg config =
 
         ToggleHamburger ->
             { config | hamburgerIsActive = not config.hamburgerIsActive }
-
