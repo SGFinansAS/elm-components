@@ -1,7 +1,7 @@
 module Stories.AccordionMenu exposing (..)
 
 import Config exposing (Config, Msg(..))
-import Css exposing (alignItems, bottom, center, cursor, display, displayFlex, fontSize, inlineBlock, justifyContent, listStyle, marginBottom, marginRight, marginTop, middle, none, padding, pointer, rem, spaceBetween, tableCell, top, verticalAlign, width)
+import Css exposing (cursor, fontSize, listStyle, marginRight, marginTop, middle, none, pointer, rem, verticalAlign, width)
 import Html.Styled exposing (div, li, span, text, ul)
 import Html.Styled.Attributes exposing (css)
 import Nordea.Components.AccordionMenu as AccordionMenu exposing (..)

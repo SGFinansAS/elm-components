@@ -1,14 +1,9 @@
 module Nordea.Components.AccordionMenu exposing (OptionalConfig(..), Status(..), content, header, view)
 
-import Css exposing (after, alignItems, auto, block, bottom, center, color, content, cursor, display, displayFlex, first, flexEnd, float, fontSize, fontWeight, inline, inlineBlock, justifyContent, lastChild, left, listStyle, listStyleType, marginRight, marginTop, middle, none, normal, nthLastChild, overflow, paddingLeft, pointer, property, px, rem, rgb, right, scaleX, spaceBetween, sub, super, tableCell, textAlign, textDecoration, top, underline, verticalAlign, vh, vmin, vw, width)
-import Css.Global exposing (children, class, descendants, global, selector, typeSelector, withAttribute)
-import Css.Media exposing (grid)
-import Css.Transitions exposing (transform)
-import Html.Styled as Html exposing (Attribute, Html, div, li, p, span, styled, text, ul)
+import Css exposing (alignItems, center, display, displayFlex, float, inlineBlock, justifyContent, lastChild, listStyle, none, nthLastChild, rem, right, spaceBetween, width)
+import Css.Global exposing (children, typeSelector, withAttribute)
+import Html.Styled as Html exposing (Attribute, Html, div)
 import Html.Styled.Attributes exposing (attribute, css)
-import Html.Styled.Events exposing (onClick)
-import Nordea.Components.Text as Text exposing (Headline)
-import Nordea.Resources.Colors exposing (red)
 import Nordea.Resources.Icons as Icons
 
 
