@@ -16,7 +16,7 @@ stories =
     styledStoriesOf
         "AccordionMenu"
         [ ( "Default"
-          , \model ->
+          , \_ ->
                 AccordionMenu.view
                     [ Status Closed ]
                     []
@@ -32,7 +32,7 @@ stories =
           , {}
           )
         , ( "Nested"
-          , \model ->
+          , \_ ->
                 AccordionMenu.view
                     [ Status Open ]
                     []
@@ -56,7 +56,7 @@ stories =
           , {}
           )
         , ( "Styled"
-          , \model ->
+          , \_ ->
                 AccordionMenu.view
                     [ Status Open ]
                     []
