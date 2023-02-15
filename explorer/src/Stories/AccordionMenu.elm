@@ -1,10 +1,10 @@
 module Stories.AccordionMenu exposing (..)
 
 import Config exposing (Config, Msg(..))
-import Css exposing (rem, width)
-import Html.Styled exposing (div)
+import Css exposing (alignItems, bottom, center, cursor, display, displayFlex, fontSize, inlineBlock, justifyContent, listStyle, marginBottom, marginRight, marginTop, middle, none, padding, pointer, rem, spaceBetween, tableCell, top, verticalAlign, width)
+import Html.Styled exposing (div, li, span, text, ul)
 import Html.Styled.Attributes exposing (css)
-import Nordea.Components.AccordionMenu as AccordionMenu
+import Nordea.Components.AccordionMenu as AccordionMenu exposing (..)
 import Nordea.Resources.Icons as Icons
 import UIExplorer exposing (UI)
 import UIExplorer.Styled exposing (styledStoriesOf)
@@ -14,36 +14,36 @@ stories : UI Config Msg {}
 stories =
     styledStoriesOf
         "AccordionMenu"
-        [ ( "Multiple"
+        [ ( "Default"
           , \model ->
-                AccordionMenu.init model.customModel.accordionMenuIsOpen ToggleAccordionMenu
-                    |> AccordionMenu.withItem
-                        { icon = Icons.filledCheckmark [ css [ width (rem 2) ] ]
-                        , text = "Kontrakt e-signert 10.10.22"
-                        }
-                    |> AccordionMenu.withItem
-                        { icon = Icons.filledInfo [ css [ width (rem 2) ] ]
-                        , text = "Undertegner identifisert 09.10.22"
-                        }
-                    |> AccordionMenu.withItem
-                        { icon = Icons.dismiss [ css [ width (rem 2) ] ]
-                        , text = "E-signering utloper snart 08.10.22"
-                        }
-                    |> AccordionMenu.withItem
-                        { icon = Icons.filledWarning [ css [ width (rem 2) ] ]
-                        , text = "E-signering sendt 07.10.22"
-                        }
-                    |> AccordionMenu.view
+                AccordionMenu.view
+                    [ Status Closed ]
+                    []
+                    [ AccordionMenu.header [] [ text "Kontrakt e-signert 10.10.22" ]
+                    , AccordionMenu.content []
+                        [ ul []
+                            [ li [] [ text "Undertegner identifisert 09.10.22" ]
+                            , li [] [ text "E-signering utloper snart 08.10.22" ]
+                            , li [] [ text "E-signering sendt 07.10.22" ]
+                            ]
+                        ]
+                    ]
           , {}
           )
-        , ( "Single"
+        , ( "Styled"
           , \model ->
-                AccordionMenu.init model.customModel.accordionMenuIsOpen ToggleAccordionMenu
-                    |> AccordionMenu.withItem
-                        { icon = Icons.filledCheckmark [ css [ width (rem 2) ] ]
-                        , text = "Kontrakt e-signert 10.10.22"
-                        }
-                    |> AccordionMenu.view
+                AccordionMenu.view
+                    [ Status Closed ]
+                    []
+                    [ AccordionMenu.header [ css [ cursor pointer ] ] [ Icons.filledCheckmark [ css [ verticalAlign middle, width (rem 2), marginRight (rem 0.5) ] ], text "Kontrakt e-signert 10.10.22" ]
+                    , AccordionMenu.content [ css [ fontSize (rem 0.9) ] ]
+                        [ ul [ css [ listStyle none ] ]
+                            [ li [ css [ marginTop (rem 0.5) ] ] [ Icons.filledInfo [ css [ verticalAlign middle, width (rem 2), marginRight (rem 0.5) ] ], text "Undertegner identifisert 09.10.22" ]
+                            , li [ css [ marginTop (rem 0.5) ] ] [ Icons.dismiss [ css [ verticalAlign middle, width (rem 2), marginRight (rem 0.5) ] ], text "E-signering utloper snart 08.10.22" ]
+                            , li [ css [ marginTop (rem 0.5) ] ] [ Icons.filledWarning [ css [ verticalAlign middle, width (rem 2), marginRight (rem 0.5) ] ], text "E-signering sendt 07.10.22" ]
+                            ]
+                        ]
+                    ]
           , {}
           )
         ]
