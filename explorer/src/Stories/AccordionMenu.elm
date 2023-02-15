@@ -2,6 +2,7 @@ module Stories.AccordionMenu exposing (..)
 
 import Config exposing (Config, Msg(..))
 import Css exposing (cursor, fontSize, listStyle, marginRight, marginTop, middle, none, paddingLeft, pointer, rem, verticalAlign, width)
+import Css.Global exposing (children, typeSelector)
 import Html.Styled exposing (div, li, span, text, ul)
 import Html.Styled.Attributes exposing (css)
 import Nordea.Components.AccordionMenu as AccordionMenu exposing (..)
@@ -33,13 +34,13 @@ stories =
         , ( "Nested"
           , \model ->
                 AccordionMenu.view
-                    [ Status Closed ]
+                    [ Status Open ]
                     []
                     [ AccordionMenu.header [] [ text "Parent Accordion " ]
                     , AccordionMenu.content [ css [ paddingLeft (rem 2) ] ]
                         [ text "Description"
                         , AccordionMenu.view
-                            [ Status Closed ]
+                            [ Status Open ]
                             []
                             [ AccordionMenu.header [] [ text "Child Accordion" ]
                             , AccordionMenu.content []
@@ -57,14 +58,14 @@ stories =
         , ( "Styled"
           , \model ->
                 AccordionMenu.view
-                    [ Status Closed ]
+                    [ Status Open ]
                     []
                     [ AccordionMenu.header [ css [ cursor pointer ] ] [ Icons.filledCheckmark [ css [ verticalAlign middle, width (rem 2), marginRight (rem 0.5) ] ], text "Kontrakt e-signert 10.10.22" ]
                     , AccordionMenu.content [ css [ fontSize (rem 0.9) ] ]
-                        [ ul [ css [ listStyle none ] ]
-                            [ li [ css [ marginTop (rem 0.5) ] ] [ Icons.filledInfo [ css [ verticalAlign middle, width (rem 2), marginRight (rem 0.5) ] ], text "Undertegner identifisert 09.10.22" ]
-                            , li [ css [ marginTop (rem 0.5) ] ] [ Icons.dismiss [ css [ verticalAlign middle, width (rem 2), marginRight (rem 0.5) ] ], text "E-signering utloper snart 08.10.22" ]
-                            , li [ css [ marginTop (rem 0.5) ] ] [ Icons.filledWarning [ css [ verticalAlign middle, width (rem 2), marginRight (rem 0.5) ] ], text "E-signering sendt 07.10.22" ]
+                        [ ul [ css [ listStyle none, children [ typeSelector "li" [ marginTop (rem 0.5) ] ] ] ]
+                            [ li [] [ Icons.filledInfo [ css [ verticalAlign middle, width (rem 2), marginRight (rem 0.5) ] ], text "Undertegner identifisert 09.10.22" ]
+                            , li [] [ Icons.dismiss [ css [ verticalAlign middle, width (rem 2), marginRight (rem 0.5) ] ], text "E-signering utloper snart 08.10.22" ]
+                            , li [] [ Icons.filledWarning [ css [ verticalAlign middle, width (rem 2), marginRight (rem 0.5) ] ], text "E-signering sendt 07.10.22" ]
                             ]
                         ]
                     ]
