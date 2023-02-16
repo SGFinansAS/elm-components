@@ -10,6 +10,9 @@ module Nordea.Components.MultiSelectDropdown exposing
     , withRequirednessHint
     )
 
+--import Nordea.Components.Util.Hint as Hint
+--import Nordea.Components.Util.Label as Label
+
 import Css
     exposing
         ( absolute
@@ -24,6 +27,7 @@ import Css
         , borderLeft3
         , borderRadius4
         , borderRight3
+        , borderTopColor
         , boxSizing
         , center
         , color
@@ -63,20 +67,21 @@ import Css
         , solid
         , spaceBetween
         , top
+        , width
         , zIndex
         )
 import Html.Styled as Html exposing (Attribute, Html)
-import Html.Styled.Attributes exposing (css, name, tabindex)
+import Html.Styled.Attributes exposing (class, css, name, tabindex)
 import Html.Styled.Events as Events
 import Json.Decode as Decode
 import Maybe.Extra as Maybe
 import Nordea.Components.Checkbox as Checkbox
-import Nordea.Components.Util.Hint as Hint
-import Nordea.Components.Util.Label as Label
+import Nordea.Components.Label as Label
 import Nordea.Components.Util.RequirednessHint as RequirednessHint exposing (RequirednessHint)
 import Nordea.Html as Html
 import Nordea.Resources.Colors as Colors
 import Nordea.Resources.Icons as Icon
+import Nordea.Themes as Themes
 
 
 type alias MultiSelectDropdown msg =
@@ -91,7 +96,11 @@ type alias MultiSelectDropdown msg =
 
 
 type alias Option msg =
-    { name : String, label : String, isChecked : Bool, onCheck : Bool -> msg }
+    { name : String
+    , label : String
+    , isChecked : Bool
+    , onCheck : Bool -> msg
+    }
 
 
 init : { onFocus : Bool -> msg } -> MultiSelectDropdown msg
@@ -109,12 +118,6 @@ init { onFocus } =
 view : List (Attribute msg) -> MultiSelectDropdown msg -> Html msg
 view attrs dropdown =
     let
-        isLabel =
-            not (String.isEmpty dropdown.label)
-
-        isRequirednessHint =
-            Maybe.isJust dropdown.requirednessHint
-
         viewSelectItems =
             let
                 viewOption option =
@@ -142,97 +145,75 @@ view attrs dropdown =
                             |> Checkbox.withAppearance Checkbox.Simple
                             |> Checkbox.view []
                         ]
-
-                dropdownStyles =
-                    Css.batch
-                        [ backgroundColor Colors.white
-                        , borderBottom3 (rem 0.0625) solid Colors.grayMedium
-                        , borderLeft3 (rem 0.0625) solid Colors.grayMedium
-                        , borderRight3 (rem 0.0625) solid Colors.grayMedium
-                        , borderBottomLeftRadius (rem 0.25)
-                        , borderBottomRightRadius (rem 0.25)
-                        , boxSizing borderBox
-                        , padding3 (rem 0.5) (rem 0) (rem 0.0)
-                        ]
             in
-            Html.div
+            Html.ul
                 [ css
-                    [ displayFlex
-                    , flexDirection column
+                    [ overflowY scroll
+                    , maxHeight (rem 16.75)
+                    , listStyle none
+                    , margin (rem 0)
+                    , padding3 (rem 0.5) (rem 0) (rem 0.0)
                     , position absolute
-                    , zIndex (int 1)
                     , top (pct 100)
-                    , left (rem 0)
-                    , right (rem 0)
-                    , if dropdown.hasFocus then
-                        display block
+                    , left (rem -0.0625)
+                    , right (rem -0.0625)
+                    , zIndex (int 1)
+                    , if not dropdown.hasFocus then
+                        displayFlex
 
                       else
                         display none
+                    , flexDirection column
+                    , backgroundColor Colors.white
+                    , border3 (rem 0.0625) solid Colors.grayMedium
+                    , borderTopColor Colors.transparent
+                    , borderBottomLeftRadius (rem 0.25)
+                    , borderBottomRightRadius (rem 0.25)
+                    , boxSizing borderBox
                     ]
                 ]
-                [ Html.ul
-                    [ css
-                        [ overflowY scroll
-                        , maxHeight (rem 16.75)
-                        , dropdownStyles
-                        , listStyle none
-                        , margin (rem 0)
-                        , padding (rem 0)
-                        ]
-                    ]
-                    (dropdown.options |> List.map viewOption)
-                ]
+                (dropdown.options |> List.map viewOption)
     in
-    Html.fieldset
-        ([ Events.on "focusout" (Decode.succeed (dropdown.onFocus False))
-         , Events.onClick (dropdown.onFocus (not dropdown.hasFocus))
-         , tabindex 0
-         , css
-            [ minWidth fitContent
-            , displayFlex
-            , flexDirection column
-            , margin (rem 0)
-            , padding (rem 0)
-            , Css.property "border" "none"
-            , position relative
-            ]
-         ]
-            ++ attrs
-        )
-        [ Html.row [ css [ displayFlex, justifyContent spaceBetween, marginBottom (rem 0.2) ] ]
-            [ Label.init { label = dropdown.label } |> Label.withAsLegend |> Label.view []
-            , dropdown.requirednessHint |> Html.viewMaybe RequirednessHint.view
-            ]
-            |> Html.showIf (isLabel || isRequirednessHint)
-        , Html.select [ css [ display none ] ]
-            (dropdown.options |> List.map (\option -> Html.option [ name option.name ] [ Html.text option.label ]))
-        , Html.div
-            [ css
-                [ backgroundColor Colors.white
-                , padding4 (rem 0.5) (rem 0.75) (rem 0.5) (rem 0.75)
-                , border3 (rem 0.0625) solid Colors.grayMedium
-                , if dropdown.hasFocus then
-                    borderRadius4 (rem 0.25) (rem 0.25) (rem 0.0) (rem 0.0)
+    Label.init
+        dropdown.label
+        Label.GroupLabel
+        |> Label.withRequirednessHint dropdown.requirednessHint
+        |> Label.withHintText dropdown.hint
+        |> Label.view
+            ([ Events.on "focusout" (Decode.succeed (dropdown.onFocus False))
+             , Events.onClick (dropdown.onFocus (not dropdown.hasFocus))
+             , tabindex 0
+             ]
+                ++ attrs
+            )
+            [ Html.select [ css [ display none ] ]
+                (dropdown.options
+                    |> List.map (\option -> Html.option [ name option.name ] [ Html.text option.label ])
+                )
+            , Html.div
+                [ class "input-focus-target"
+                , css
+                    [ width (pct 100)
+                    , displayFlex
+                    , alignItems center
+                    , justifyContent spaceBetween
+                    , position relative
+                    , backgroundColor Colors.white
+                    , padding4 (rem 0.5) (rem 0.75) (rem 0.5) (rem 0.75)
+                    , border3 (rem 0.0625) solid Colors.grayMedium
+                    , if not dropdown.hasFocus then
+                        borderRadius4 (rem 0.25) (rem 0.25) (rem 0.0) (rem 0.0)
 
-                  else
-                    borderRadius4 (rem 0.25) (rem 0.25) (rem 0.25) (rem 0.25)
-                , fontSize (rem 1.0)
-                , lineHeight (rem 1.4)
-                , color inherit
-                , cursor pointer
-                , displayFlex
-                , alignItems center
-                , justifyContent spaceBetween
-                , Css.property "appearance" "none"
+                      else
+                        borderRadius4 (rem 0.25) (rem 0.25) (rem 0.25) (rem 0.25)
+                    , cursor pointer
+                    ]
+                ]
+                [ Html.text dropdown.placeholder
+                , Icon.chevronDownFilled [ css [ height (rem 1.5) ] ]
+                , viewSelectItems
                 ]
             ]
-            [ Html.text dropdown.placeholder
-            , Icon.chevronDownFilled [ css [ height (rem 1.5) ] ]
-            ]
-        , viewSelectItems
-        , dropdown.hint |> Html.viewMaybe (\hint -> Hint.init { text = hint } |> Hint.view)
-        ]
 
 
 withLabel : String -> MultiSelectDropdown msg -> MultiSelectDropdown msg

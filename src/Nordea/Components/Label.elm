@@ -14,6 +14,7 @@ import Css
     exposing
         ( Style
         , border
+        , color
         , column
         , displayFlex
         , flexBasis
@@ -23,6 +24,8 @@ import Css
         , marginBottom
         , marginInlineEnd
         , marginInlineStart
+        , none
+        , outline
         , padding
         , pct
         , pseudoClass
@@ -31,8 +34,8 @@ import Css
         , width
         , wrap
         )
-import Css.Global exposing (descendants, everything, typeSelector)
-import Html.Styled
+import Css.Global exposing (descendants, everything, selector)
+import Html.Styled as Html
     exposing
         ( Attribute
         , Html
@@ -44,8 +47,8 @@ import Html.Styled
         )
 import Html.Styled.Attributes exposing (css)
 import Maybe.Extra as Maybe
+import Nordea.Components.Text as Text
 import Nordea.Components.Util.Hint as Hint exposing (CharCounter)
-import Nordea.Components.Util.Label as Label
 import Nordea.Components.Util.RequirednessHint as RequirednessHint exposing (RequirednessHint)
 import Nordea.Html as Html exposing (showIf, styleIf)
 import Nordea.Resources.Colors as Colors
@@ -116,7 +119,10 @@ view attrs children (Label config) =
 
         viewTopInfo =
             div [ css [ displayFlex, justifyContent spaceBetween, marginBottom (rem 0.2) ] ]
-                [ Label.init { label = commonConfig.labelText } |> Label.withIsError (Maybe.isJust commonConfig.errorMessage) |> Label.view []
+                [ Text.textSmallLight
+                    |> Text.view
+                        [ css [ color Colors.redDark |> Html.styleIf (Maybe.isJust commonConfig.errorMessage) ] ]
+                        [ Html.text commonConfig.labelText ]
                 , config.requirednessHint |> Html.viewMaybe RequirednessHint.view
                 ]
 
@@ -171,11 +177,19 @@ view attrs children (Label config) =
 
 focusStyle : Style
 focusStyle =
+    let
+        focusOutline =
+            [ Css.property "box-shadow" ("0rem 0rem 0rem 0.0625rem " ++ Themes.colorVariable Themes.SecondaryColor Colors.blueNordea)
+            , outline none
+            ]
+    in
     Css.batch
-        [ pseudoClass "focus-within"
+        [ outline none
+        , pseudoClass "focus-within"
             [ descendants
-                [ typeSelector "span"
-                    [ Themes.color Themes.PrimaryColorLight Colors.blueNordea ]
+                [ selector "*" [ Themes.color Themes.PrimaryColorLight Colors.blueNordea ]
+                , selector "input" focusOutline
+                , selector ".input-focus-target" focusOutline
                 ]
             ]
         ]
