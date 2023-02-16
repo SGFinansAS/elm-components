@@ -1,46 +1,31 @@
-module Nordea.Components.AccordionMenu exposing (OptionalConfig(..), Status(..), content, header, view)
+module Nordea.Components.AccordionMenu exposing (content, header, view)
 
 import Css exposing (alignItems, center, display, displayFlex, float, inlineBlock, justifyContent, lastChild, listStyle, none, nthLastChild, rem, right, spaceBetween, width)
-import Css.Global exposing (children, typeSelector, withAttribute)
+import Css.Global exposing (children, class, descendants, typeSelector, withAttribute)
+import Html.Attributes
 import Html.Styled as Html exposing (Attribute, Html, div)
 import Html.Styled.Attributes exposing (attribute, css)
 import Nordea.Resources.Icons as Icons
 
 
-type Status
-    = Open
-    | Closed
+type alias Config =
+    { isOpen : Bool }
 
 
-type OptionalConfig
-    = Status Status
-
-
-view : List OptionalConfig -> List (Attribute msg) -> List (Html msg) -> Html msg
-view config attrs children_ =
+view : Config -> List a -> List (Attribute msg) -> List (Html msg) -> Html msg
+view config optionalConfig attrs children_ =
     let
-        config_ =
-            config
-                |> List.foldl
-                    (\attr acc ->
-                        case attr of
-                            Status x ->
-                                { acc | status = x }
-                    )
-                    { status = Open }
-
         openAttr =
-            case config_.status of
-                Open ->
-                    attribute "open" "" :: attrs
+            if config.isOpen then
+                attribute "open" "" :: attrs
 
-                Closed ->
-                    attrs
+            else
+                attrs
 
         attrs_ =
             css
-                [ children [ typeSelector "summary" [ listStyle none, children [ typeSelector "div" [ lastChild [ display inlineBlock ], nthLastChild "2" [ display none ] ] ] ] ]
-                , withAttribute "open" [ children [ typeSelector "summary" [ children [ typeSelector "div" [ lastChild [ display none ], nthLastChild "2" [ display inlineBlock ] ] ] ] ] ]
+                [ children [ typeSelector "summary" [ listStyle none, descendants [ class "accordion-close-icon" [ display inlineBlock ], class "accordion-open-icon" [ display none ] ] ] ]
+                , withAttribute "open" [ children [ typeSelector "summary" [ descendants [ class "accordion-close-icon" [ display none ], class "accordion-open-icon" [ display inlineBlock ] ] ] ] ]
                 ]
                 :: openAttr
     in
@@ -51,11 +36,10 @@ header : List (Attribute msg) -> List (Html msg) -> Html msg
 header attrs children =
     Html.summary
         (css [ displayFlex, alignItems center, justifyContent spaceBetween ] :: attrs)
-        (List.append [ div [] children ]
-            [ div [ css [ float right ] ] [ Icons.chevronDown [ css [ width (rem 1.5) ] ] ]
-            , div [ css [ float right ] ] [ Icons.chevronLeft [ css [ width (rem 1.5) ] ] ]
-            ]
-        )
+        [ div [] children
+        , div [ Html.Styled.Attributes.class "accordion-open-icon", css [ float right ] ] [ Icons.chevronDown [ css [ width (rem 1.5) ] ] ]
+        , div [ Html.Styled.Attributes.class "accordion-close-icon", css [ float right ] ] [ Icons.chevronUp [ css [ width (rem 1.5) ] ] ]
+        ]
 
 
 content : List (Attribute msg) -> List (Html msg) -> Html msg
