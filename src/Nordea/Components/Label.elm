@@ -1,29 +1,31 @@
 module Nordea.Components.Label exposing
     ( Label
     , LabelType(..)
+    , RequirednessHint(..)
     , init
     , view
     , withCharCounter
     , withErrorMessage
     , withHintText
     , withRequirednessHint
-    , withShowFocusOutline
     )
 
 import Css
     exposing
         ( Style
         , border
+        , borderColor
         , color
-        , column
         , displayFlex
+        , flex
         , flexBasis
-        , flexDirection
         , flexWrap
         , justifyContent
         , marginBottom
         , marginInlineEnd
         , marginInlineStart
+        , marginRight
+        , marginTop
         , none
         , outline
         , padding
@@ -34,24 +36,14 @@ import Css
         , width
         , wrap
         )
-import Css.Global exposing (descendants, everything, selector)
-import Html.Styled as Html
-    exposing
-        ( Attribute
-        , Html
-        , div
-        , fieldset
-        , label
-        , legend
-        , styled
-        )
-import Html.Styled.Attributes exposing (css)
-import Maybe.Extra as Maybe
+import Css.Global exposing (descendants, everything, selector, typeSelector)
+import Html.Styled as Html exposing (Attribute, Html)
+import Html.Styled.Attributes exposing (class, css)
 import Nordea.Components.Text as Text
-import Nordea.Components.Util.Hint as Hint exposing (CharCounter)
-import Nordea.Components.Util.RequirednessHint as RequirednessHint exposing (RequirednessHint)
-import Nordea.Html as Html exposing (showIf, styleIf)
+import Nordea.Html as Html exposing (showIf)
 import Nordea.Resources.Colors as Colors
+import Nordea.Resources.I18N exposing (Translation)
+import Nordea.Resources.Icons as Icons
 import Nordea.Themes as Themes
 
 
@@ -61,11 +53,22 @@ type LabelType
     | TextLabel
 
 
+type RequirednessHint
+    = Mandatory (Translation -> String)
+    | Optional (Translation -> String)
+    | Custom String
+
+
+type alias CharCounter =
+    { current : Int
+    , max : Int
+    }
+
+
 type alias InputProperties =
     { labelText : String
     , labelType : LabelType
     , requirednessHint : Maybe RequirednessHint
-    , showFocusOutline : Bool
     , errorMessage : Maybe String
     , hintText : Maybe String
     , charCounter : Maybe CharCounter
@@ -82,7 +85,6 @@ init labelText labelType =
         { labelText = labelText
         , labelType = labelType
         , requirednessHint = Nothing
-        , showFocusOutline = True
         , errorMessage = Nothing
         , hintText = Nothing
         , charCounter = Nothing
@@ -92,106 +94,149 @@ init labelText labelType =
 view : List (Attribute msg) -> List (Html msg) -> Label -> Html msg
 view attrs children (Label config) =
     let
-        commonConfig =
+        topInfo =
             let
-                fromLabelRequirednessHint requirednessHint =
-                    requirednessHint
-                        |> Maybe.map
-                            (\hint ->
-                                case hint of
-                                    RequirednessHint.Mandatory a ->
-                                        RequirednessHint.Mandatory a
+                requirednessHintView requirednessHint =
+                    Text.textSmallLight
+                        |> Text.view
+                            [ css [ color Colors.grayDark ] ]
+                            [ Html.text <|
+                                case requirednessHint of
+                                    Mandatory translate ->
+                                        translate strings.mandatory
 
-                                    RequirednessHint.Optional a ->
-                                        RequirednessHint.Optional a
+                                    Optional translate ->
+                                        translate strings.optional
 
-                                    RequirednessHint.Custom a ->
-                                        RequirednessHint.Custom a
-                            )
+                                    Custom string ->
+                                        string
+                            ]
             in
-            { labelText = config.labelText
-            , requirednessHint = config.requirednessHint |> fromLabelRequirednessHint
-            , showFocusOutline = config.showFocusOutline
-            , errorMessage = config.errorMessage
-            , hintText = config.hintText
-            , charCounter = config.charCounter
-            }
-
-        viewTopInfo =
-            div [ css [ displayFlex, justifyContent spaceBetween, marginBottom (rem 0.2) ] ]
+            Html.row
+                [ css
+                    [ justifyContent spaceBetween
+                    , flexBasis (pct 100)
+                    , marginBottom (rem 0.2)
+                    ]
+                ]
                 [ Text.textSmallLight
                     |> Text.view
-                        [ css [ color Colors.redDark |> Html.styleIf (Maybe.isJust commonConfig.errorMessage) ] ]
-                        [ Html.text commonConfig.labelText ]
-                , config.requirednessHint |> Html.viewMaybe RequirednessHint.view
+                        [ class "input-focus-color" ]
+                        [ Html.text config.labelText ]
+                , config.requirednessHint |> Html.viewMaybe requirednessHintView
                 ]
 
-        viewHint =
-            [ Hint.init { text = commonConfig.hintText |> Maybe.withDefault "" }
-                |> Hint.withCharCounter commonConfig.charCounter
-                |> Hint.withError commonConfig.errorMessage
-                |> Hint.view
-            ]
+        bottomInfo =
+            let
+                viewHintText text =
+                    Text.textSmallLight
+                        |> Text.view [ css [ color Colors.grayDark ] ] [ Html.text text ]
+
+                viewError errorText =
+                    Text.textSmallLight
+                        |> Text.view
+                            [ class "input-focus-color", css [ displayFlex ] ]
+                            [ Icons.error [ css [ marginRight (rem 0.5), flex none ] ]
+                            , Html.text errorText
+                            ]
+
+                viewCharCounter counter =
+                    Text.textSmallLight
+                        |> Text.view
+                            [ css [ color Colors.grayDark ] ]
+                            [ String.fromInt counter.current ++ "/" ++ String.fromInt counter.max |> Html.text ]
+            in
+            Html.row
+                [ css
+                    [ justifyContent spaceBetween
+                    , flexBasis (pct 100)
+                    , marginTop (rem 0.2)
+                    ]
+                ]
+                [ Html.column []
+                    [ config.errorMessage |> Html.viewMaybe viewError
+                    , config.hintText |> Html.viewMaybe viewHintText
+                    ]
+                , config.charCounter |> Html.viewMaybe viewCharCounter
+                ]
+                |> showIf (config.errorMessage /= Nothing || config.hintText /= Nothing || config.charCounter /= Nothing)
     in
     case config.labelType of
         InputLabel ->
-            styled label
-                [ displayFlex
-                , flexWrap wrap
-                , focusStyle |> styleIf config.showFocusOutline
-                , Css.Global.children [ everything [ flexBasis (pct 100) ] ]
-                ]
-                attrs
-                (viewTopInfo :: children ++ viewHint)
+            Html.label
+                (css
+                    [ displayFlex
+                    , flexWrap wrap
+                    , stateStyles { hasError = config.errorMessage /= Nothing }
+                    , Css.Global.children [ everything [ flexBasis (pct 100) ] ]
+                    ]
+                    :: attrs
+                )
+                (topInfo :: children ++ [ bottomInfo ])
 
         GroupLabel ->
-            styled fieldset
-                [ displayFlex
-                , flexWrap wrap
-                , focusStyle |> styleIf config.showFocusOutline
-                , marginInlineStart (rem 0)
-                , marginInlineEnd (rem 0)
-                , padding (rem 0)
-                , border (rem 0)
-                ]
-                attrs
-                ((legend
+            Html.fieldset
+                (css
+                    [ displayFlex
+                    , flexWrap wrap
+                    , stateStyles { hasError = config.errorMessage /= Nothing }
+                    , marginInlineStart (rem 0)
+                    , marginInlineEnd (rem 0)
+                    , padding (rem 0)
+                    , border (rem 0)
+                    ]
+                    :: attrs
+                )
+                ((Html.legend
                     [ css [ width (pct 100), padding (rem 0), Css.Global.children [ everything [ flexBasis (pct 100) ] ] ] ]
-                    [ viewTopInfo ]
-                    |> showIf (not (String.isEmpty config.labelText) || Maybe.isJust config.requirednessHint)
+                    [ topInfo ]
+                    |> showIf (config.labelText /= "" || config.requirednessHint /= Nothing)
                  )
                     :: children
-                    ++ viewHint
+                    ++ [ bottomInfo ]
                 )
 
         TextLabel ->
-            styled div
-                [ displayFlex
-                , flexDirection column
-                , focusStyle |> styleIf config.showFocusOutline
-                , Css.Global.children [ everything [ flexBasis (pct 100) ] ]
-                ]
-                attrs
-                (viewTopInfo :: children ++ viewHint)
+            Html.column
+                (css
+                    [ stateStyles { hasError = config.errorMessage /= Nothing }
+                    , Css.Global.children [ everything [ flexBasis (pct 100) ] ]
+                    ]
+                    :: attrs
+                )
+                (topInfo :: children ++ [ bottomInfo ])
 
 
-focusStyle : Style
-focusStyle =
+stateStyles : { hasError : Bool } -> Style
+stateStyles { hasError } =
     let
-        focusOutline =
-            [ Css.property "box-shadow" ("0rem 0rem 0rem 0.0625rem " ++ Themes.colorVariable Themes.SecondaryColor Colors.blueNordea)
-            , outline none
-            ]
+        color =
+            if hasError then
+                Colors.toString Colors.darkRed
+
+            else
+                Themes.colorVariable Themes.SecondaryColor Colors.blueNordea
+
+        outlineStyle =
+            Css.batch
+                [ Css.property "box-shadow" ("0rem 0rem 0rem 0.0625rem " ++ color)
+                , outline none
+                ]
+
+        styles =
+            descendants
+                [ typeSelector "input" [ outlineStyle, borderColor Css.transparent |> Css.important ]
+                , selector ".input-focus-outline" [ outlineStyle ]
+                , selector ".input-focus-color" [ Css.property "color" color ]
+                ]
     in
     Css.batch
         [ outline none
-        , pseudoClass "focus-within"
-            [ descendants
-                [ selector "*" [ Themes.color Themes.PrimaryColorLight Colors.blueNordea ]
-                , selector "input" focusOutline
-                , selector ".input-focus-target" focusOutline
-                ]
-            ]
+        , if hasError then
+            styles
+
+          else
+            pseudoClass "focus-within" [ styles ]
         ]
 
 
@@ -215,6 +260,17 @@ withCharCounter charCounter (Label config) =
     Label { config | charCounter = charCounter }
 
 
-withShowFocusOutline : Bool -> Label -> Label
-withShowFocusOutline focus (Label config) =
-    Label { config | showFocusOutline = focus }
+strings =
+    { mandatory =
+        { no = "Påkrevd"
+        , se = "Krävs"
+        , dk = "Påkrævet"
+        , en = "Required"
+        }
+    , optional =
+        { no = "Valgfritt"
+        , se = "Valfritt"
+        , dk = "Valgfrit"
+        , en = "Optional"
+        }
+    }

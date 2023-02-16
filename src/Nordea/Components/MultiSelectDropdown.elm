@@ -10,51 +10,35 @@ module Nordea.Components.MultiSelectDropdown exposing
     , withRequirednessHint
     )
 
---import Nordea.Components.Util.Hint as Hint
---import Nordea.Components.Util.Label as Label
-
 import Css
     exposing
         ( absolute
         , alignItems
         , backgroundColor
-        , block
         , border3
-        , borderBottom3
         , borderBottomLeftRadius
         , borderBottomRightRadius
         , borderBox
-        , borderLeft3
         , borderRadius4
-        , borderRight3
-        , borderTopColor
         , boxSizing
         , center
-        , color
         , column
         , cursor
         , display
         , displayFlex
-        , fitContent
         , flexDirection
-        , fontSize
         , height
         , hover
-        , inherit
         , int
         , justifyContent
         , left
-        , lineHeight
         , listStyle
         , margin
-        , marginBottom
         , maxHeight
         , maxWidth
-        , minWidth
         , none
         , overflowY
         , padding
-        , padding3
         , padding4
         , pct
         , pointer
@@ -71,13 +55,11 @@ import Css
         , zIndex
         )
 import Html.Styled as Html exposing (Attribute, Html)
-import Html.Styled.Attributes exposing (class, css, name, tabindex)
+import Html.Styled.Attributes exposing (css, name, tabindex)
 import Html.Styled.Events as Events
 import Json.Decode as Decode
-import Maybe.Extra as Maybe
 import Nordea.Components.Checkbox as Checkbox
-import Nordea.Components.Label as Label
-import Nordea.Components.Util.RequirednessHint as RequirednessHint exposing (RequirednessHint)
+import Nordea.Components.Label as Label exposing (RequirednessHint(..))
 import Nordea.Html as Html
 import Nordea.Resources.Colors as Colors
 import Nordea.Resources.Icons as Icon
@@ -148,17 +130,17 @@ view attrs dropdown =
             in
             Html.ul
                 [ css
-                    [ overflowY scroll
-                    , maxHeight (rem 16.75)
-                    , listStyle none
-                    , margin (rem 0)
-                    , padding3 (rem 0.5) (rem 0) (rem 0.0)
-                    , position absolute
+                    [ position absolute
                     , top (pct 100)
                     , left (rem -0.0625)
                     , right (rem -0.0625)
                     , zIndex (int 1)
-                    , if not dropdown.hasFocus then
+                    , overflowY scroll
+                    , maxHeight (rem 16.75)
+                    , listStyle none
+                    , margin (rem 0)
+                    , padding (rem 0)
+                    , if dropdown.hasFocus then
                         displayFlex
 
                       else
@@ -166,7 +148,7 @@ view attrs dropdown =
                     , flexDirection column
                     , backgroundColor Colors.white
                     , border3 (rem 0.0625) solid Colors.grayMedium
-                    , borderTopColor Colors.transparent
+                    , Themes.borderColor Themes.SecondaryColor Colors.blueNordea
                     , borderBottomLeftRadius (rem 0.25)
                     , borderBottomRightRadius (rem 0.25)
                     , boxSizing borderBox
@@ -191,8 +173,7 @@ view attrs dropdown =
                     |> List.map (\option -> Html.option [ name option.name ] [ Html.text option.label ])
                 )
             , Html.div
-                [ class "input-focus-target"
-                , css
+                [ css
                     [ width (pct 100)
                     , displayFlex
                     , alignItems center
@@ -201,8 +182,11 @@ view attrs dropdown =
                     , backgroundColor Colors.white
                     , padding4 (rem 0.5) (rem 0.75) (rem 0.5) (rem 0.75)
                     , border3 (rem 0.0625) solid Colors.grayMedium
-                    , if not dropdown.hasFocus then
-                        borderRadius4 (rem 0.25) (rem 0.25) (rem 0.0) (rem 0.0)
+                    , if dropdown.hasFocus then
+                        Css.batch
+                            [ borderRadius4 (rem 0.25) (rem 0.25) (rem 0.0) (rem 0.0)
+                            , Themes.borderColor Themes.SecondaryColor Colors.blueNordea
+                            ]
 
                       else
                         borderRadius4 (rem 0.25) (rem 0.25) (rem 0.25) (rem 0.25)

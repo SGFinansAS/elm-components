@@ -2,7 +2,7 @@ module Stories.MultiSelectDropdown exposing (..)
 
 import Config exposing (Msg(..))
 import Nordea.Components.MultiSelectDropdown as MultiSelectDropdown
-import Nordea.Components.Util.RequirednessHint as RequirednessHint
+import Nordea.Components.Label as Label
 import UIExplorer exposing (UI)
 import UIExplorer.Styled exposing (styledStoriesOf)
 
@@ -17,7 +17,7 @@ stories =
                     |> MultiSelectDropdown.withLabel "Label"
                     |> MultiSelectDropdown.withPlaceholder "Choose an option"
                     |> MultiSelectDropdown.withHasFocus model.customModel.hasMultiSelectDropdownFocus
-                    |> MultiSelectDropdown.withRequirednessHint (Just (RequirednessHint.Mandatory .no))
+                    |> MultiSelectDropdown.withRequirednessHint (Just (Label.Mandatory .no))
                     |> MultiSelectDropdown.withHintText (Just "Hint")
                     |> MultiSelectDropdown.withOptions
                         [ { name = "1", label = "Valg 1", isChecked = model.customModel.isChoice1, onCheck = \_ -> OnCheckChoice1 }
