@@ -219,14 +219,14 @@ stateStyles { hasError } =
 
         outlineStyle =
             Css.batch
-                [ Css.property "box-shadow" ("0rem 0rem 0rem 0.0625rem " ++ color)
+                [ Css.property "box-shadow" ("0rem 0rem 0rem 0.0625rem " ++ color) |> Css.important
                 , outline none
                 ]
 
         styles =
             descendants
                 [ typeSelector "input" [ outlineStyle, borderColor Css.transparent |> Css.important ]
-                , selector ".input-focus-outline" [ outlineStyle ]
+                , typeSelector "select" [ outlineStyle, borderColor Css.transparent |> Css.important ]
                 , selector ".input-focus-color" [ Css.property "color" color ]
                 ]
     in
