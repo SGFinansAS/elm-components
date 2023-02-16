@@ -1,8 +1,7 @@
 module Nordea.Components.AccordionMenu exposing (content, header, view)
 
-import Css exposing (alignItems, center, display, displayFlex, float, inlineBlock, justifyContent, lastChild, listStyle, none, nthLastChild, rem, right, spaceBetween, width)
+import Css exposing (alignItems, center, display, displayFlex, float, inlineBlock, justifyContent, listStyle, none, rem, right, spaceBetween, width)
 import Css.Global exposing (children, class, descendants, typeSelector, withAttribute)
-import Html.Attributes
 import Html.Styled as Html exposing (Attribute, Html, div)
 import Html.Styled.Attributes exposing (attribute, css)
 import Nordea.Resources.Icons as Icons
@@ -13,7 +12,7 @@ type alias Config =
 
 
 view : Config -> List a -> List (Attribute msg) -> List (Html msg) -> Html msg
-view config optionalConfig attrs children_ =
+view config _ attrs children_ =
     let
         openAttr =
             if config.isOpen then
