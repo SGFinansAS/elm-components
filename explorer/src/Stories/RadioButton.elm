@@ -5,7 +5,6 @@ import Css exposing (column, displayFlex, flexDirection, maxWidth, rem)
 import Html.Styled as Html exposing (text)
 import Html.Styled.Attributes exposing (css, disabled)
 import Nordea.Components.RadioButton as RadioButton
-import Nordea.Components.RadioGroup as RadioGroup
 import UIExplorer exposing (UI)
 import UIExplorer.Styled exposing (styledStoriesOf)
 
@@ -178,47 +177,6 @@ stories =
                                     |> RadioButton.view []
                             )
                     )
-          , {}
-          )
-        , ( "Group"
-          , \_ ->
-                RadioGroup.init
-                    "Group label"
-                    |> RadioGroup.view
-                        []
-                        [ RadioButton.init
-                            "simple"
-                            (text "Click me: ")
-                            NoOp
-                            |> RadioButton.view []
-                        , RadioButton.init
-                            "simple"
-                            (text "Click me: ")
-                            NoOp
-                            |> RadioButton.view []
-                        ]
-          , {}
-          )
-        , ( "Group with error"
-          , \_ ->
-                RadioGroup.init
-                    "Group label"
-                    |> RadioGroup.withErrorMessage "Some error message"
-                    |> RadioGroup.view
-                        []
-                        [ RadioButton.init
-                            "simple"
-                            (text "Click me: ")
-                            NoOp
-                            |> RadioButton.withHasError True
-                            |> RadioButton.view []
-                        , RadioButton.init
-                            "simple"
-                            (text "Click me: ")
-                            NoOp
-                            |> RadioButton.withHasError True
-                            |> RadioButton.view []
-                        ]
           , {}
           )
         ]
