@@ -476,10 +476,10 @@ elm-live@^4.0.2:
     serve-static "1.14.1"
     ws "7.1.1"
 
-elm-review@^2.9.0:
-  version "2.9.0"
-  resolved "https://registry.yarnpkg.com/elm-review/-/elm-review-2.9.0.tgz#6dccd03987c9741eec9e8d3ac5dd2458ac2263b0"
-  integrity sha512-Ce8q9Or6QLn9D2gBCP2SI6eij+3th/g/5Oj7VbYDrJqynvBh/ZYj0Y6LOA0Y7UXTKOf0a1sLxVg6c1BCfl4CMA==
+elm-review@^2.9.1:
+  version "2.9.1"
+  resolved "https://registry.yarnpkg.com/elm-review/-/elm-review-2.9.1.tgz#6a17acc230f569da3b16d12d33f8d018d9dd0e42"
+  integrity sha512-n8NwLRqD7HWGP/BCzNdb1iIu7b4tLtlKf27ydDrBUkA+CmwyocHQ3yUV2WOrMttiy2IkJrHszLXsngnebaWWbA==
   dependencies:
     chalk "^4.0.0"
     chokidar "^3.5.2"
@@ -764,9 +764,9 @@ has@^1.0.3:
     function-bind "^1.1.1"
 
 http-cache-semantics@^4.0.0:
-  version "4.1.0"
-  resolved "https://registry.yarnpkg.com/http-cache-semantics/-/http-cache-semantics-4.1.0.tgz#49e91c5cbf36c9b94bcfcd71c23d5249ec74e390"
-  integrity sha512-carPklcUh7ROWRK7Cv27RPtdhYhUsela/ue5/jKzjegVvXDqM2ILE9Q2BGn9JZJh1g87cp56su/FgQSzcWS8cQ==
+  version "4.1.1"
+  resolved "https://registry.yarnpkg.com/http-cache-semantics/-/http-cache-semantics-4.1.1.tgz#abe02fcb2985460bf0323be664436ec3476a6d5a"
+  integrity sha512-er295DKPVsV82j5kw1Gjt+ADA/XYHsajl82cGNQG2eyoPkvgUhX+nDIyelzhIWbbsXP39EHcI6l5tYs2FYqYXQ==
 
 http-errors@~1.7.2:
   version "1.7.3"
@@ -1246,8 +1246,9 @@ punycode@^2.1.0, punycode@^2.1.1:
   resolved "https://registry.npmjs.org/punycode/-/punycode-2.1.1.tgz"
 
 qs@~6.5.2:
-  version "6.5.2"
-  resolved "https://registry.npmjs.org/qs/-/qs-6.5.2.tgz"
+  version "6.5.3"
+  resolved "https://registry.yarnpkg.com/qs/-/qs-6.5.3.tgz#3aeeffc91967ef6e35c0e488ef46fb296ab76aad"
+  integrity sha512-qxXIEh4pCGfHICj1mAJQ2/2XVZkjCDTcEgfoSQxc/fYivUZxTkk7L3bDBJSoNrEzXI17oUO5Dp07ktqE5KzczA==
 
 quick-lru@^5.1.1:
   version "5.1.1"

@@ -46,7 +46,7 @@ init { label } =
 view : List (Attribute msg) -> FilterChip -> Html msg
 view attrs (FilterChip { label }) =
     Html.button
-        ([ css
+        (css
             [ padding2 (rem 0.25) (rem 0.75)
             , minHeight fitContent
             , displayFlex
@@ -69,8 +69,7 @@ view attrs (FilterChip { label }) =
                 , Css.property "box-shadow" ("0rem 0rem 0rem 0.125rem " ++ Themes.colorVariable Themes.SecondaryColor Color.blueHaas)
                 ]
             ]
-         ]
-            ++ attrs
+            :: attrs
         )
         [ Text.bodyTextSmall |> Text.view [] [ Html.text label ]
         , Icon.cross [ css [ width (rem 1.0) ] ]

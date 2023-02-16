@@ -20,7 +20,7 @@ import Stories.FilterChip as FilterChip
 import Stories.FlatLink as FlatLink
 import Stories.Hamburger as Hamburger
 import Stories.Icons as Icons
-import Stories.InfoLabel as InfoLabel
+import Stories.InfoBanner as InfoBanner
 import Stories.InfoPanel as InfoPanel
 import Stories.InformationDetails as InformationDetails
 import Stories.Label as Label
@@ -37,6 +37,7 @@ import Stories.Spinner as Spinner
 import Stories.Status as Status
 import Stories.StepIndicator as StepIndicator
 import Stories.Table as Table
+import Stories.Tabs as Tabs
 import Stories.Text as Text
 import Stories.TextArea as TextArea
 import Stories.TextInput as TextInput
@@ -98,7 +99,7 @@ main =
                 , FilterChip.stories
                 , FlatLink.stories
                 , Hamburger.stories
-                , InfoLabel.stories
+                , InfoBanner.stories
                 , InfoPanel.stories
                 , InformationDetails.stories
                 , Label.stories
@@ -114,6 +115,7 @@ main =
                 , Status.stories
                 , StepIndicator.stories
                 , Table.stories
+                , Tabs.stories
                 , TextArea.stories
                 , TextInput.stories
                 , Toggle.stories
