@@ -1,8 +1,8 @@
 module Stories.MultiSelectDropdown exposing (..)
 
 import Config exposing (Msg(..))
-import Nordea.Components.MultiSelectDropdown as MultiSelectDropdown
 import Nordea.Components.Label as Label
+import Nordea.Components.MultiSelectDropdown as MultiSelectDropdown
 import UIExplorer exposing (UI)
 import UIExplorer.Styled exposing (styledStoriesOf)
 
