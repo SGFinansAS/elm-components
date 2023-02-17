@@ -9,7 +9,6 @@ import Nordea.Components.Dropdown as Dropdown
 import Nordea.Components.Label as Label
 import Nordea.Components.RadioButton as RadioButton
 import Nordea.Components.TextInput as TextInput
-import Nordea.Components.Util.RequirednessHint as RequirednessHint
 import UIExplorer exposing (UI)
 import UIExplorer.Styled exposing (styledStoriesOf)
 
@@ -48,13 +47,13 @@ stories =
                                 |> TextInput.view []
                             ]
                     , Label.init "Customer name (with requiredness)" Label.InputLabel
-                        |> Label.withRequirednessHint (Just (RequirednessHint.Mandatory .no))
+                        |> Label.withRequirednessHint (Just (Label.Mandatory .no))
                         |> Label.view []
                             [ TextInput.init "Text"
                                 |> TextInput.view []
                             ]
                     , Label.init "Customer name (with requiredness)" Label.InputLabel
-                        |> Label.withRequirednessHint (Just (RequirednessHint.Optional .no))
+                        |> Label.withRequirednessHint (Just (Label.Optional .no))
                         |> Label.view []
                             [ TextInput.init "Text"
                                 |> TextInput.withError True
