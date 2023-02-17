@@ -3,7 +3,6 @@ module Nordea.Components.TextInput exposing
     , init
     , view
     , withCurrency
-    , withError
     , withMaxLength
     , withOnBlur
     , withOnEnterPress
@@ -65,16 +64,9 @@ import Nordea.Themes as Themes
 -- CONFIG
 
 
-type alias Config msg =
+type alias Config =
     { value : String
-    , onInput : Maybe (String -> msg)
-    , placeholder : Maybe String
-    , showError : Bool
-    , maxLength : Maybe Int
-    , pattern : Maybe String
     , hasSearchIcon : Bool
-    , onBlur : Maybe msg
-    , onEnterPress : Maybe msg
     , size : Size
     , currency : Maybe String
     }
@@ -85,123 +77,98 @@ type Size
     | Large
 
 
-type TextInput msg
-    = TextInput (Config msg)
+type TextInput
+    = TextInput Config
 
 
-init : String -> TextInput msg
+init : String -> TextInput
 init value =
     TextInput
         { value = value
-        , onInput = Nothing
-        , placeholder = Nothing
-        , showError = False
-        , maxLength = Nothing
-        , pattern = Nothing
         , hasSearchIcon = False
-        , onBlur = Nothing
-        , onEnterPress = Nothing
         , size = Large
         , currency = Nothing
         }
 
 
-withOnInput : (String -> msg) -> TextInput msg -> TextInput msg
-withOnInput onInput (TextInput config) =
-    TextInput { config | onInput = Just onInput }
-
-
-withPlaceholder : String -> TextInput msg -> TextInput msg
-withPlaceholder placeholder (TextInput config) =
-    TextInput { config | placeholder = Just placeholder }
-
-
-withMaxLength : Int -> TextInput msg -> TextInput msg
-withMaxLength maxLength (TextInput config) =
-    TextInput { config | maxLength = Just maxLength }
-
-
-withPattern : String -> TextInput msg -> TextInput msg
-withPattern pattern (TextInput config) =
-    TextInput { config | pattern = Just pattern }
-
-
-withError : Bool -> TextInput msg -> TextInput msg
-withError condition (TextInput config) =
-    TextInput { config | showError = condition }
-
-
-withSearchIcon : Bool -> TextInput msg -> TextInput msg
+withSearchIcon : Bool -> TextInput -> TextInput
 withSearchIcon condition (TextInput config) =
     TextInput { config | hasSearchIcon = condition }
 
 
-withOnBlur : msg -> TextInput msg -> TextInput msg
-withOnBlur msg (TextInput config) =
-    TextInput { config | onBlur = Just msg }
-
-
-withOnEnterPress : msg -> TextInput msg -> TextInput msg
-withOnEnterPress msg (TextInput config) =
-    TextInput { config | onEnterPress = Just msg }
-
-
-withSmallSize : TextInput msg -> TextInput msg
+withSmallSize : TextInput -> TextInput
 withSmallSize (TextInput config) =
     TextInput { config | size = Small }
 
 
-withCurrency : String -> TextInput msg -> TextInput msg
+withCurrency : String -> TextInput -> TextInput
 withCurrency currency (TextInput config) =
     TextInput { config | currency = Just currency }
-
-
-onEnterPress : msg -> Attribute msg
-onEnterPress msg =
-    let
-        isEnter code =
-            if code == 13 then
-                Json.succeed msg
-
-            else
-                Json.fail "not ENTER"
-    in
-    on "keydown" (Json.andThen isEnter keyCode)
 
 
 
 -- VIEW
 
 
-view : List (Attribute msg) -> TextInput msg -> Html msg
+view : List (Attribute msg) -> TextInput -> Html msg
 view attributes (TextInput config) =
-    if config.hasSearchIcon then
-        let
-            iconColor =
-                if config.showError then
-                    Colors.redDark
+    let
+        borderColorStyle =
+            if config.showError then
+                Colors.redDark
 
-                else
-                    Colors.blueNordea
-        in
+            else
+                Colors.grayMedium
+
+        lol =
+            [ fontSize (rem 1)
+            , height
+                (case config.size of
+                    Small ->
+                        NordeaCss.smallInputHeight
+
+                    Large ->
+                        NordeaCss.standardInputHeight
+                )
+            , padding2 (rem 0.75) (rem 0.75)
+            , borderRadius (rem 0.25)
+            , border3 (rem 0.0625) solid borderColorStyle
+            , boxSizing borderBox
+            , width (pct 100)
+            , disabled [ backgroundColor Colors.grayWarm ]
+            , paddingLeft (rem 2) |> styleIf config.hasSearchIcon
+            , focus
+                [ outline none
+                , Themes.borderColor Themes.PrimaryColorLight Colors.blueNordea
+                ]
+            ]
+
+        lal =
+            Maybe.values
+                [ Just config.value |> Maybe.map value
+                , config.onInput |> Maybe.map onInput
+                , config.placeholder |> Maybe.map placeholder
+                , config.maxLength |> Maybe.map maxlength
+                , config.pattern |> Maybe.map pattern
+                , config.onBlur |> Maybe.map onBlur
+                , config.onEnterPress |> Maybe.map onEnterPress
+                ]
+    in
+    if config.hasSearchIcon then
         Html.div
-            (css [ displayFlex, position relative ]
-                :: attributes
-            )
+            (css [ displayFlex, position relative ] :: attributes)
             [ Icons.search
                 [ css
                     [ width (rem 1)
-                    , height (rem 1)
                     , opacity (num 0.5)
                     , position absolute
-                    , color iconColor
                     , left (rem 0.7)
                     , top (pct 50)
                     , transform (translateY (pct -50))
                     , pointerEvents none
                     ]
                 ]
-            , styled input
+            , Html.input
                 (getStyles config)
                 (getAttributes config)
                 []
@@ -211,7 +178,7 @@ view attributes (TextInput config) =
     else
         Html.div
             (css [ displayFlex, position relative ] :: attributes)
-            [ styled input
+            [ Html.input
                 (getStyles config)
                 (getAttributes config ++ attributes)
                 []
@@ -238,53 +205,3 @@ viewCurrency config =
                             |> Html.text
                         ]
             )
-
-
-getAttributes : Config msg -> List (Attribute msg)
-getAttributes config =
-    Maybe.values
-        [ Just config.value |> Maybe.map value
-        , config.onInput |> Maybe.map onInput
-        , config.placeholder |> Maybe.map placeholder
-        , config.maxLength |> Maybe.map maxlength
-        , config.pattern |> Maybe.map pattern
-        , config.onBlur |> Maybe.map onBlur
-        , config.onEnterPress |> Maybe.map onEnterPress
-        ]
-
-
-
--- STYLES
-
-
-getStyles : Config msg -> List Style
-getStyles config =
-    let
-        borderColorStyle =
-            if config.showError then
-                Colors.redDark
-
-            else
-                Colors.grayMedium
-    in
-    [ fontSize (rem 1)
-    , height
-        (case config.size of
-            Small ->
-                NordeaCss.smallInputHeight
-
-            Large ->
-                NordeaCss.standardInputHeight
-        )
-    , padding2 (rem 0.75) (rem 0.75)
-    , borderRadius (rem 0.25)
-    , border3 (rem 0.0625) solid borderColorStyle
-    , boxSizing borderBox
-    , width (pct 100)
-    , disabled [ backgroundColor Colors.grayWarm ]
-    , paddingLeft (rem 2) |> styleIf config.hasSearchIcon
-    , focus
-        [ outline none
-        , Themes.borderColor Themes.PrimaryColorLight Colors.blueNordea
-        ]
-    ]

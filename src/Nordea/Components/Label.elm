@@ -14,16 +14,14 @@ import Css
     exposing
         ( Style
         , border
-        , borderColor
         , color
         , displayFlex
         , flex
         , flexBasis
         , flexWrap
         , justifyContent
+        , margin
         , marginBottom
-        , marginInlineEnd
-        , marginInlineStart
         , marginRight
         , marginTop
         , none
@@ -33,10 +31,9 @@ import Css
         , pseudoClass
         , rem
         , spaceBetween
-        , width
         , wrap
         )
-import Css.Global exposing (descendants, everything, selector, typeSelector)
+import Css.Global exposing (children, descendants, everything)
 import Html.Styled as Html exposing (Attribute, Html)
 import Html.Styled.Attributes exposing (class, css)
 import Nordea.Components.Text as Text
@@ -92,7 +89,7 @@ init labelText labelType =
 
 
 view : List (Attribute msg) -> List (Html msg) -> Label -> Html msg
-view attrs children (Label config) =
+view attrs children_ (Label config) =
     let
         topInfo =
             let
@@ -121,7 +118,7 @@ view attrs children (Label config) =
                 ]
                 [ Text.textSmallLight
                     |> Text.view
-                        [ class "input-focus-color" ]
+                        [ class "input-state-aware-color" ]
                         [ Html.text config.labelText ]
                 , config.requirednessHint |> Html.viewMaybe requirednessHintView
                 ]
@@ -134,8 +131,9 @@ view attrs children (Label config) =
 
                 viewError errorText =
                     Text.textSmallLight
+                        |> Text.withHtmlTag Html.strong
                         |> Text.view
-                            [ class "input-focus-color", css [ displayFlex ] ]
+                            [ class "input-state-aware-color", css [ displayFlex ] ]
                             [ Icons.error [ css [ marginRight (rem 0.5), flex none ] ]
                             , Html.text errorText
                             ]
@@ -168,11 +166,11 @@ view attrs children (Label config) =
                     [ displayFlex
                     , flexWrap wrap
                     , stateStyles { hasError = config.errorMessage /= Nothing }
-                    , Css.Global.children [ everything [ flexBasis (pct 100) ] ]
+                    , children [ everything [ flexBasis (pct 100) ] ]
                     ]
                     :: attrs
                 )
-                (topInfo :: children ++ [ bottomInfo ])
+                (topInfo :: children_ ++ [ bottomInfo ])
 
         GroupLabel ->
             Html.fieldset
@@ -180,19 +178,18 @@ view attrs children (Label config) =
                     [ displayFlex
                     , flexWrap wrap
                     , stateStyles { hasError = config.errorMessage /= Nothing }
-                    , marginInlineStart (rem 0)
-                    , marginInlineEnd (rem 0)
+                    , margin (rem 0)
                     , padding (rem 0)
                     , border (rem 0)
                     ]
                     :: attrs
                 )
                 ((Html.legend
-                    [ css [ width (pct 100), padding (rem 0), Css.Global.children [ everything [ flexBasis (pct 100) ] ] ] ]
+                    [ css [ displayFlex, flexBasis (pct 100), padding (rem 0) ] ]
                     [ topInfo ]
                     |> showIf (config.labelText /= "" || config.requirednessHint /= Nothing)
                  )
-                    :: children
+                    :: children_
                     ++ [ bottomInfo ]
                 )
 
@@ -200,43 +197,34 @@ view attrs children (Label config) =
             Html.column
                 (css
                     [ stateStyles { hasError = config.errorMessage /= Nothing }
-                    , Css.Global.children [ everything [ flexBasis (pct 100) ] ]
+                    , children [ everything [ flexBasis (pct 100) ] ]
                     ]
                     :: attrs
                 )
-                (topInfo :: children ++ [ bottomInfo ])
+                (topInfo :: children_ ++ [ bottomInfo ])
 
 
 stateStyles : { hasError : Bool } -> Style
 stateStyles { hasError } =
     let
-        color =
-            if hasError then
-                Colors.toString Colors.darkRed
-
-            else
-                Themes.colorVariable Themes.SecondaryColor Colors.blueNordea
-
-        outlineStyle =
-            Css.batch
-                [ Css.property "box-shadow" ("0rem 0rem 0rem 0.0625rem " ++ color) |> Css.important
-                , outline none
-                ]
-
-        styles =
+        styles color =
             descendants
-                [ typeSelector "input" [ outlineStyle, borderColor Css.transparent |> Css.important ]
-                , typeSelector "select" [ outlineStyle, borderColor Css.transparent |> Css.important ]
-                , selector ".input-focus-color" [ Css.property "color" color ]
+                [ Css.Global.class "input-state-aware-color" [ Css.property "color" color ]
+                , Css.Global.class "input-state-aware-outline"
+                    [ Css.batch
+                        [ Css.property "border" ("0.0625rem solid" ++ color)
+                        , outline none
+                        ]
+                    ]
                 ]
     in
     Css.batch
         [ outline none
         , if hasError then
-            styles
+            styles (Colors.toString Colors.darkRed)
 
           else
-            pseudoClass "focus-within" [ styles ]
+            pseudoClass "focus-within" [ styles (Themes.colorVariable Themes.SecondaryColor Colors.blueNordea) ]
         ]
 
 
