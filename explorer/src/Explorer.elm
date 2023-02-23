@@ -1,6 +1,5 @@
 module Explorer exposing (main)
 
-import Browser.Navigation as Nav
 import Config exposing (Config, Msg(..))
 import Html exposing (Html)
 import Html.Styled exposing (toUnstyled)
@@ -45,7 +44,7 @@ import Stories.TextArea as TextArea
 import Stories.TextInput as TextInput
 import Stories.Toggle as Toggle
 import Stories.Tooltip as Tooltip
-import Stories.TutorialTooltip as TutorialTooltip
+import Stories.Coachmark as Coachmark
 import UIExplorer exposing (UIExplorerProgram)
 
 
@@ -124,6 +123,6 @@ main =
                 , TextInput.stories
                 , Toggle.stories
                 , Tooltip.stories
-                , TutorialTooltip.stories
+                , Coachmark.stories
                 ]
         )

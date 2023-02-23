@@ -1,4 +1,4 @@
-module Nordea.Components.TutorialTooltip exposing
+module Nordea.Components.Coachmark exposing
     ( OptionalConfig(..)
     , OptionalPageConfig(..)
     , nextButton
