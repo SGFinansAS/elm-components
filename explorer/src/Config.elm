@@ -30,6 +30,7 @@ type alias Config =
     , rangeInputValue : Float
     , isToggled : Bool
     , hamburgerIsActive : Bool
+    , showCoachMarkPage : Maybe Int
     }
 
 
@@ -54,6 +55,7 @@ type Msg
     | RangeMsg Float
     | ToggleToggle
     | ToggleHamburger
+    | UpdateCouchMarkPage (Maybe Int)
 
 
 init : Config
@@ -86,6 +88,7 @@ init =
     , sliderInputValue = "5"
     , rangeInputValue = 5
     , hamburgerIsActive = False
+    , showCoachMarkPage = Nothing
     }
 
 
@@ -154,3 +157,6 @@ update msg config =
 
         ToggleHamburger ->
             { config | hamburgerIsActive = not config.hamburgerIsActive }
+
+        UpdateCouchMarkPage p ->
+            { config | showCoachMarkPage = p }
