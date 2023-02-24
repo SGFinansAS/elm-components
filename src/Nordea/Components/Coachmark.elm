@@ -42,6 +42,7 @@ import Css
         , rem
         , right
         , scale
+        , solid
         , spaceBetween
         , top
         , transform
@@ -160,8 +161,9 @@ view { onChangeStep, translate, ariaLabel } optionalConfig attrs children_ =
                     , width (pct 100)
                     , height (pct 100)
                     , borderWidth (rem 0.2)
+                    , borderStyle solid
                     , borderRadius (pct 50)
-                    , Themes.borderColor Themes.PrimaryColorLight Colors.black
+                    , Themes.borderColor Themes.PrimaryColorLight Colors.cloudBlue
                     , animationName anim
                     , animationDuration (ms 1000)
                     , animationDelay (ms (1000 + delay))
