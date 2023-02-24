@@ -38,6 +38,7 @@ import Css
         , top
         , transform
         , translate2
+        , transparent
         , width
         , zIndex
         )
@@ -69,6 +70,7 @@ type OptionalConfig
 type alias RequiredProps msg =
     { onChangePage : Maybe Int -> msg
     , translate : Translation -> String
+    , ariaLabel : String
     }
 
 
@@ -83,7 +85,7 @@ type alias Page msg =
 
 
 view : RequiredProps msg -> List OptionalConfig -> List (Attribute msg) -> List (Page msg) -> Html msg
-view { onChangePage, translate } optionalConfig attrs children_ =
+view { onChangePage, translate, ariaLabel } optionalConfig attrs children_ =
     let
         { classesToHighlight, placement, showPage, showStepLegend } =
             optionalConfig
@@ -154,11 +156,12 @@ view { onChangePage, translate } optionalConfig attrs children_ =
 
                   else
                     Events.onClick (onChangePage (Just 0))
+                , Attrs.attribute "aria-label" ariaLabel
                 , css
                     [ width (rem 2.5)
                     , height (rem 2.5)
                     , borderStyle none
-                    , backgroundColor Css.transparent
+                    , backgroundColor transparent
                     , cursor pointer
                     , before
                         [ Css.property "content" "''"
@@ -253,7 +256,7 @@ page attrs children_ { translate, showStepLegend, onChangePage, currentStep, tot
                             , css
                                 [ marginLeft auto
                                 , borderStyle none
-                                , backgroundColor Css.transparent
+                                , backgroundColor transparent
                                 , cursor pointer
                                 ]
                             , Events.onClick (onChangePage Nothing)

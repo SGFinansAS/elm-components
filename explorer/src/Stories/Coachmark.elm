@@ -23,6 +23,7 @@ stories =
                     , Coachmark.view
                         { translate = .no
                         , onChangePage = UpdateCouchMarkPage
+                        , ariaLabel = "New feature introduction"
                         }
                         [ Coachmark.HighlightedClass "new-button"
                         , Coachmark.Placement Tooltip.Right
