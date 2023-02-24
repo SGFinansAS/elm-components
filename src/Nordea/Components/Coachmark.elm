@@ -7,6 +7,7 @@ module Nordea.Components.Coachmark exposing
 import Css
     exposing
         ( absolute
+        , after
         , alignItems
         , animationDelay
         , animationDuration
@@ -14,9 +15,9 @@ import Css
         , auto
         , backgroundColor
         , before
+        , border3
         , borderRadius
         , borderStyle
-        , borderWidth
         , bottom
         , cursor
         , displayFlex
@@ -24,6 +25,7 @@ import Css
         , flexStart
         , focus
         , height
+        , hover
         , int
         , justifyContent
         , left
@@ -45,7 +47,6 @@ import Css
         , solid
         , spaceBetween
         , top
-        , transform
         , transforms
         , translate2
         , transparent
@@ -54,6 +55,7 @@ import Css
         )
 import Css.Animations as Animations exposing (keyframes)
 import Css.Global
+import Css.Transitions exposing (easeInOut, transition)
 import Html.Styled as Html exposing (Attribute, Html)
 import Html.Styled.Attributes as Attrs exposing (css)
 import Html.Styled.Events as Events
@@ -121,6 +123,16 @@ view { onChangeStep, translate, ariaLabel } optionalConfig attrs children_ =
                     , showStepLegend = True
                     }
 
+        absoluteCenter scale_ =
+            Css.batch
+                [ position absolute
+                , top (pct 50)
+                , left (pct 50)
+                , transforms [ translate2 (pct -50) (pct -50), scale scale_ ]
+                , width (pct 100)
+                , height (pct 100)
+                ]
+
         prepare steps =
             steps
                 |> List.indexedMap
@@ -154,22 +166,17 @@ view { onChangeStep, translate, ariaLabel } optionalConfig attrs children_ =
             in
             Html.div
                 [ css
-                    [ position absolute
-                    , top (pct 50)
-                    , left (pct 50)
-                    , transforms [ translate2 (pct -50) (pct -50), scale 0.5 ]
-                    , width (pct 100)
-                    , height (pct 100)
-                    , borderWidth (rem 0.2)
-                    , borderStyle solid
-                    , borderRadius (pct 50)
+                    [ absoluteCenter 0.5
+                    , border3 (rem 0.2) solid transparent
                     , Themes.borderColor Themes.PrimaryColorLight Colors.cloudBlue
+                    , borderRadius (pct 50)
                     , animationName anim
                     , animationDuration (ms 1000)
                     , animationDelay (ms (1000 + delay))
                     , Css.property "animation-iteration-count" "1"
                     , Css.property "animation-timing-function" "linear"
                     , Css.property "animation-fill-mode" "forwards"
+                    , Css.pointerEvents none
                     ]
                 ]
                 []
@@ -219,33 +226,24 @@ view { onChangeStep, translate, ariaLabel } optionalConfig attrs children_ =
                         ]
                     , before
                         [ Css.property "content" "''"
-                        , position absolute
-                        , top (pct 50)
-                        , left (pct 50)
-                        , transform (translate2 (pct -50) (pct -50))
-                        , width (pct 100)
-                        , height (pct 100)
+                        , absoluteCenter 1
                         , borderRadius (pct 50)
                         , Themes.backgroundColor Themes.PrimaryColorLight Colors.cloudBlue
                         , opacity (num 0.5)
+                        ]
+                    , after
+                        [ Css.property "content" "''"
+                        , absoluteCenter 0.6
+                        , borderRadius (pct 50)
+                        , Themes.backgroundColor Themes.PrimaryColorLight Colors.cloudBlue
+                        , transition [ Css.Transitions.transform3 300 0 easeInOut ]
+                        , hover [ transforms [ translate2 (pct -50) (pct -50), scale 1 ] ]
                         ]
                     , zIndex (int 100)
                     , position relative
                     ]
                 ]
-                [ Icons.lightBulb
-                    [ css
-                        [ position absolute
-                        , top (pct 50)
-                        , left (pct 50)
-                        , transform (translate2 (pct -50) (pct -50))
-                        , width (pct 60)
-                        , height (pct 60)
-                        , padding (pct 16)
-                        , borderRadius (pct 50)
-                        , Themes.backgroundColor Themes.PrimaryColorLight Colors.cloudBlue
-                        ]
-                    ]
+                [ Icons.lightBulb [ css [ absoluteCenter 0.3, zIndex (int 100) ] ]
                 , rippleAnimation 0
                 , rippleAnimation 300
                 , rippleAnimation 600
