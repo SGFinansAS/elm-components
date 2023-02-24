@@ -14,6 +14,7 @@ import Css
         , borderRadius
         , borderStyle
         , bottom
+        , cursor
         , displayFlex
         , fixed
         , flexStart
@@ -28,6 +29,7 @@ import Css
         , padding
         , padding2
         , pct
+        , pointer
         , position
         , relative
         , rem
@@ -157,6 +159,7 @@ view { onChangePage, translate } optionalConfig attrs children_ =
                     , height (rem 2.5)
                     , borderStyle none
                     , backgroundColor Css.transparent
+                    , cursor pointer
                     , before
                         [ Css.property "content" "''"
                         , position absolute
@@ -246,7 +249,13 @@ page attrs children_ { translate, showStepLegend, onChangePage, currentStep, tot
             |> Text.view [ css [ Css.property "gap" "1rem", alignItems flexStart ] ]
                 (children_
                     ++ [ Html.button
-                            [ css [ marginLeft auto, borderStyle none ]
+                            [ Attrs.attribute "aria-label" (translate strings.close)
+                            , css
+                                [ marginLeft auto
+                                , borderStyle none
+                                , backgroundColor Css.transparent
+                                , cursor pointer
+                                ]
                             , Events.onClick (onChangePage Nothing)
                             ]
                             [ Icons.cross [ css [ width (rem 1) ] ] ]
