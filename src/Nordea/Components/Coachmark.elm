@@ -161,7 +161,7 @@ view { onChangeStep, translate, ariaLabel } optionalConfig attrs children_ =
                     , height (pct 100)
                     , borderWidth (rem 0.2)
                     , borderRadius (pct 50)
-                    , Themes.borderColor Themes.PrimaryColorLight Colors.cloudBlue
+                    , Themes.borderColor Themes.PrimaryColorLight Colors.black
                     , animationName anim
                     , animationDuration (ms 1000)
                     , animationDelay (ms (1000 + delay))
