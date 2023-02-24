@@ -285,7 +285,6 @@ highlightElements classes =
             , zIndex (int 99)
             , backgroundColor Colors.black
             , opacity (num 0.5)
-            , Css.pointerEvents Css.none
             ]
         ]
         [ classes
