@@ -299,13 +299,13 @@ strings =
     { step =
         { no = "Steg"
         , se = "Steg"
-        , dk = "Steg"
+        , dk = "Trin"
         , en = "Step"
         }
     , of_ =
         { no = "av"
         , se = "av"
-        , dk = "av"
+        , dk = "af"
         , en = "of"
         }
     , start =
@@ -316,14 +316,14 @@ strings =
         }
     , next =
         { no = "Neste"
-        , se = "Neste"
-        , dk = "Neste"
+        , se = "Nästa"
+        , dk = "Næste"
         , en = "Next"
         }
     , close =
         { no = "Lukk"
-        , se = "Lukk"
-        , dk = "Lukk"
+        , se = "Stänga"
+        , dk = "Luk"
         , en = "Close"
         }
     }
