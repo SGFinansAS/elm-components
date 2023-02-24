@@ -5,6 +5,7 @@ import Css exposing (backgroundColor, displayFlex, height, rem, width)
 import Html.Styled as Html
 import Html.Styled.Attributes exposing (class, css)
 import Html.Styled.Events as Events
+import Nordea.Components.Button as Button
 import Nordea.Components.Coachmark as Coachmark
 import Nordea.Components.Tooltip as Tooltip
 import UIExplorer exposing (UI)
@@ -17,18 +18,15 @@ stories =
         "Coachmark"
         [ ( "Standard"
           , \config ->
-                Html.div [ css [ displayFlex ] ]
-                    [ Html.div
-                        [ class "omgash"
-                        , css [ height (rem 2), width (rem 10), backgroundColor (Css.hex "#FF0000") ]
-                        ]
-                        []
+                Html.div [ css [ displayFlex, Css.property "gap" "1rem" ] ]
+                    [ Button.secondary
+                        |> Button.view [ class "new-button" ] [ Html.text "Some new feature button" ]
                     , Coachmark.view
                         { translate = .no
                         , onClickOpen = UpdateCouchMarkPage (Just 0)
                         , onClickClose = UpdateCouchMarkPage Nothing
                         }
-                        [ Coachmark.HighlightedClass "omgash"
+                        [ Coachmark.HighlightedClass "new-button"
                         , Coachmark.Placement Tooltip.Right
                         , Coachmark.ShowPage config.customModel.showCoachMarkPage
                         , Coachmark.ShowStepLegend True
