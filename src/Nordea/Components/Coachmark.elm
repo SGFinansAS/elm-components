@@ -8,24 +8,31 @@ import Css
     exposing
         ( absolute
         , alignItems
+        , animationDelay
+        , animationDuration
+        , animationName
         , auto
         , backgroundColor
         , before
         , borderRadius
         , borderStyle
+        , borderWidth
         , bottom
         , cursor
         , displayFlex
         , fixed
         , flexStart
+        , focus
         , height
         , int
         , justifyContent
         , left
         , marginLeft
+        , ms
         , none
         , num
         , opacity
+        , outline
         , padding
         , padding2
         , pct
@@ -34,14 +41,17 @@ import Css
         , relative
         , rem
         , right
+        , scale
         , spaceBetween
         , top
         , transform
+        , transforms
         , translate2
         , transparent
         , width
         , zIndex
         )
+import Css.Animations as Animations exposing (keyframes)
 import Css.Global
 import Html.Styled as Html exposing (Attribute, Html)
 import Html.Styled.Attributes as Attrs exposing (css)
@@ -124,6 +134,43 @@ view { onChangeStep, translate, ariaLabel } optionalConfig attrs children_ =
                     )
                 |> List.getAt (showStep |> Maybe.withDefault 0)
                 |> Maybe.toList
+
+        rippleAnimation delay =
+            let
+                anim =
+                    keyframes
+                        [ ( 0
+                          , [ Animations.transform [ translate2 (pct -50) (pct -50), scale 0.5 ]
+                            , Animations.opacity (num 1)
+                            ]
+                          )
+                        , ( 100
+                          , [ Animations.transform [ translate2 (pct -50) (pct -50), scale 1.6 ]
+                            , Animations.opacity (num 0)
+                            ]
+                          )
+                        ]
+            in
+            Html.div
+                [ css
+                    [ position absolute
+                    , top (pct 50)
+                    , left (pct 50)
+                    , transforms [ translate2 (pct -50) (pct -50), scale 0.5 ]
+                    , width (pct 100)
+                    , height (pct 100)
+                    , borderWidth (rem 0.2)
+                    , borderRadius (pct 50)
+                    , Themes.borderColor Themes.PrimaryColorLight Colors.cloudBlue
+                    , animationName anim
+                    , animationDuration (ms 1000)
+                    , animationDelay (ms (1000 + delay))
+                    , Css.property "animation-iteration-count" "1"
+                    , Css.property "animation-timing-function" "linear"
+                    , Css.property "animation-fill-mode" "forwards"
+                    ]
+                ]
+                []
     in
     Tooltip.init
         |> Tooltip.withVisibility
@@ -161,8 +208,13 @@ view { onChangeStep, translate, ariaLabel } optionalConfig attrs children_ =
                     [ width (rem 2.5)
                     , height (rem 2.5)
                     , borderStyle none
+                    , borderRadius (pct 50)
                     , backgroundColor transparent
                     , cursor pointer
+                    , focus
+                        [ Css.property "box-shadow" ("0rem 0rem 0rem 0.0625rem " ++ Themes.colorVariable Themes.SecondaryColor Colors.blueNordea)
+                        , outline none
+                        ]
                     , before
                         [ Css.property "content" "''"
                         , position absolute
@@ -192,6 +244,9 @@ view { onChangeStep, translate, ariaLabel } optionalConfig attrs children_ =
                         , Themes.backgroundColor Themes.PrimaryColorLight Colors.cloudBlue
                         ]
                     ]
+                , rippleAnimation 0
+                , rippleAnimation 300
+                , rippleAnimation 600
                 ]
             , highlightElements classesToHighlight |> Html.showIf (Maybe.withDefault 0 showStep > 0)
             ]
