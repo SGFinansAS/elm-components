@@ -1,7 +1,7 @@
 module Stories.Coachmark exposing (stories)
 
 import Config exposing (Config, Msg(..))
-import Css exposing (backgroundColor, displayFlex, height, rem, width)
+import Css exposing (displayFlex)
 import Html.Styled as Html
 import Html.Styled.Attributes exposing (class, css)
 import Html.Styled.Events as Events
