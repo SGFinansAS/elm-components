@@ -5,8 +5,8 @@ import Css exposing (backgroundColor, displayFlex, height, rem, width)
 import Html.Styled as Html
 import Html.Styled.Attributes exposing (class, css)
 import Html.Styled.Events as Events
-import Nordea.Components.Tooltip as Tooltip
 import Nordea.Components.Coachmark as Coachmark
+import Nordea.Components.Tooltip as Tooltip
 import UIExplorer exposing (UI)
 import UIExplorer.Styled exposing (styledStoriesOf)
 

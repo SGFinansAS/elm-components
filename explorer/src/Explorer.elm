@@ -10,6 +10,7 @@ import Stories.Badge as Badge
 import Stories.Button as Button
 import Stories.Card as Card
 import Stories.Checkbox as Checkbox
+import Stories.Coachmark as Coachmark
 import Stories.Colors as Colors
 import Stories.Dropdown as Dropdown
 import Stories.DropdownFilter as Search
@@ -44,7 +45,6 @@ import Stories.TextArea as TextArea
 import Stories.TextInput as TextInput
 import Stories.Toggle as Toggle
 import Stories.Tooltip as Tooltip
-import Stories.Coachmark as Coachmark
 import UIExplorer exposing (UIExplorerProgram)
 
 
