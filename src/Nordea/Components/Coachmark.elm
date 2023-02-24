@@ -1,7 +1,5 @@
 module Nordea.Components.Coachmark exposing
     ( OptionalConfig(..)
-    , OptionalPageConfig(..)
-    , nextButton
     , page
     , view
     )
@@ -41,7 +39,7 @@ import Css
         , width
         , zIndex
         )
-import Css.Global exposing (children)
+import Css.Global
 import Html.Styled as Html exposing (Attribute, Html)
 import Html.Styled.Attributes as Attrs exposing (css)
 import Html.Styled.Events as Events
@@ -67,19 +65,23 @@ type OptionalConfig
 
 
 type alias RequiredProps msg =
-    { onClickOpen : msg, onClickClose : msg, translate : Translation -> String }
+    { onChangePage : Maybe Int -> msg
+    , translate : Translation -> String
+    }
 
 
 type alias Page msg =
     { translate : Translation -> String
-    , onClickClose : msg
-    , stepLegend : Maybe { currentStep : Int, totalSteps : Int }
+    , onChangePage : Maybe Int -> msg
+    , currentStep : Int
+    , totalSteps : Int
+    , showStepLegend : Bool
     }
     -> Html msg
 
 
 view : RequiredProps msg -> List OptionalConfig -> List (Attribute msg) -> List (Page msg) -> Html msg
-view { onClickOpen, onClickClose, translate } optionalConfig attrs children_ =
+view { onChangePage, translate } optionalConfig attrs children_ =
     let
         { classesToHighlight, placement, showPage, showStepLegend } =
             optionalConfig
@@ -101,22 +103,19 @@ view { onClickOpen, onClickClose, translate } optionalConfig attrs children_ =
                     { classesToHighlight = Set.empty
                     , placement = Tooltip.Top
                     , showPage = Nothing
-                    , showStepLegend = False
+                    , showStepLegend = True
                     }
 
         prepare pages =
             pages
                 |> List.indexedMap
-                    (\i p ->
-                        p
+                    (\i page_ ->
+                        page_
                             { translate = translate
-                            , onClickClose = onClickClose
-                            , stepLegend =
-                                if showStepLegend && i > 0 then
-                                    Just { currentStep = i, totalSteps = List.length pages - 1 }
-
-                                else
-                                    Nothing
+                            , onChangePage = onChangePage
+                            , currentStep = i
+                            , totalSteps = List.length pages - 1
+                            , showStepLegend = showStepLegend && i > 0
                             }
                     )
                 |> List.getAt (showPage |> Maybe.withDefault 0)
@@ -133,7 +132,7 @@ view { onClickOpen, onClickClose, translate } optionalConfig attrs children_ =
         |> Tooltip.withPlacement placement
         |> Tooltip.withContent
             (\arrow ->
-                Html.wrappedRow
+                Html.column
                     (Attrs.class "tooltip-content-default-margin"
                         :: css
                             [ width (rem 13)
@@ -148,11 +147,16 @@ view { onClickOpen, onClickClose, translate } optionalConfig attrs children_ =
             )
         |> Tooltip.view attrs
             [ Html.button
-                [ Events.onClick onClickOpen
+                [ if showPage /= Nothing then
+                    Events.onClick (onChangePage Nothing)
+
+                  else
+                    Events.onClick (onChangePage (Just 0))
                 , css
                     [ width (rem 2.5)
                     , height (rem 2.5)
                     , borderStyle none
+                    , backgroundColor Css.transparent
                     , before
                         [ Css.property "content" "''"
                         , position absolute
@@ -165,7 +169,7 @@ view { onClickOpen, onClickClose, translate } optionalConfig attrs children_ =
                         , Themes.backgroundColor Themes.PrimaryColorLight Colors.cloudBlue
                         , opacity (num 0.5)
                         ]
-                    , zIndex (int 10)
+                    , zIndex (int 100)
                     , position relative
                     ]
                 ]
@@ -187,47 +191,48 @@ view { onClickOpen, onClickClose, translate } optionalConfig attrs children_ =
             ]
 
 
-type OptionalPageConfig msg
-    = NextButton (Html msg)
-
-
-page : List (OptionalPageConfig msg) -> List (Attribute msg) -> List (Html msg) -> Page msg
-page optionalConfig attrs children_ { translate, stepLegend, onClickClose } =
+page : List (Attribute msg) -> List (Html msg) -> Page msg
+page attrs children_ { translate, showStepLegend, onChangePage, currentStep, totalSteps } =
     let
-        { nextButton_ } =
-            optionalConfig
-                |> List.foldl
-                    (\e acc ->
-                        case e of
-                            NextButton nextButton__ ->
-                                { acc | nextButton_ = Just nextButton__ }
-                    )
-                    { nextButton_ = Nothing }
+        nextButtonView =
+            Button.flatLinkStyle
+                |> Button.view
+                    [ css [ marginLeft auto ]
+                    , if currentStep < totalSteps then
+                        Events.onClick (onChangePage (Just (currentStep + 1)))
+
+                      else
+                        Events.onClick (onChangePage Nothing)
+                    ]
+                    [ if currentStep == 0 && totalSteps > 1 then
+                        Html.text (translate strings.start)
+
+                      else if currentStep < totalSteps then
+                        Html.text (translate strings.next)
+
+                      else
+                        Html.text (translate strings.close)
+                    ]
 
         stepLegendView =
-            stepLegend
-                |> Html.viewMaybe
-                    (\{ currentStep, totalSteps } ->
-                        Text.textTinyHeavy
-                            |> Text.view
-                                (css
-                                    [ borderRadius (rem 1.25)
-                                    , padding2 (rem 0.25) (rem 0.5)
-                                    , backgroundColor Colors.mediumBlue
-                                    , Css.alignSelf flexStart
-                                    ]
-                                    :: Attrs.class "coachmark-step-legend"
-                                    :: attrs
-                                )
-                                [ [ translate strings.step
-                                  , String.fromInt currentStep
-                                  , translate strings.of_
-                                  , String.fromInt totalSteps
-                                  ]
-                                    |> String.join " "
-                                    |> Html.text
-                                ]
+            Text.textTinyHeavy
+                |> Text.view
+                    (css
+                        [ borderRadius (rem 1.25)
+                        , padding2 (rem 0.25) (rem 0.5)
+                        , backgroundColor Colors.mediumBlue
+                        , Css.alignSelf flexStart
+                        ]
+                        :: attrs
                     )
+                    [ [ translate strings.step
+                      , String.fromInt currentStep
+                      , translate strings.of_
+                      , String.fromInt totalSteps
+                      ]
+                        |> String.join " "
+                        |> Html.text
+                    ]
     in
     Html.column
         (css
@@ -236,28 +241,23 @@ page optionalConfig attrs children_ { translate, stepLegend, onClickClose } =
             ]
             :: attrs
         )
-        [ Html.row [ css [ Css.property "gap" "1rem", alignItems flexStart ] ]
-            (children_
-                ++ [ Html.button
-                        [ css [ marginLeft auto, borderStyle none ]
-                        , Events.onClick onClickClose
-                        ]
-                        [ Icons.cross [ css [ width (rem 1) ] ] ]
-                   ]
-            )
+        [ Text.textSmallLight
+            |> Text.withHtmlTag Html.row
+            |> Text.view [ css [ Css.property "gap" "1rem", alignItems flexStart ] ]
+                (children_
+                    ++ [ Html.button
+                            [ css [ marginLeft auto, borderStyle none ]
+                            , Events.onClick (onChangePage Nothing)
+                            ]
+                            [ Icons.cross [ css [ width (rem 1) ] ] ]
+                       ]
+                )
         , Html.row
             []
-            [ stepLegendView
-            , nextButton_ |> Html.viewMaybe identity
+            [ stepLegendView |> Html.showIf showStepLegend
+            , nextButtonView
             ]
         ]
-
-
-nextButton : List (Attribute msg) -> List (Html msg) -> OptionalPageConfig msg
-nextButton attrs children =
-    Button.flatLinkStyle
-        |> Button.view (css [ marginLeft auto ] :: attrs) children
-        |> NextButton
 
 
 highlightElements : Set.Set String -> Html msg
@@ -270,7 +270,7 @@ highlightElements classes =
             , top (rem 0)
             , right (rem 0)
             , bottom (rem 0)
-            , zIndex (int 9)
+            , zIndex (int 99)
             , backgroundColor Colors.black
             , opacity (num 0.5)
             , Css.pointerEvents Css.none
@@ -295,5 +295,23 @@ strings =
         , se = "av"
         , dk = "av"
         , en = "of"
+        }
+    , start =
+        { no = "Start"
+        , se = "Start"
+        , dk = "Start"
+        , en = "Start"
+        }
+    , next =
+        { no = "Neste"
+        , se = "Neste"
+        , dk = "Neste"
+        , en = "Next"
+        }
+    , close =
+        { no = "Lukk"
+        , se = "Lukk"
+        , dk = "Lukk"
+        , en = "Close"
         }
     }

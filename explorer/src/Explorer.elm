@@ -92,6 +92,7 @@ main =
                 , Button.stories
                 , Card.stories
                 , Checkbox.stories
+                , Coachmark.stories
                 , Dropdown.stories
                 , MultiSelectDropdown.stories
                 , Search.stories
@@ -123,6 +124,5 @@ main =
                 , TextInput.stories
                 , Toggle.stories
                 , Tooltip.stories
-                , Coachmark.stories
                 ]
         )
