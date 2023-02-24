@@ -207,7 +207,7 @@ view attrs children (Tooltip config) =
                     [ position absolute
                     , display none
                     , flexDirection column
-                    , zIndex (int 10)
+                    , zIndex (int 100)
                     , minWidth (pct 100)
                     , tooltipPosition
                     , case config.visibility of

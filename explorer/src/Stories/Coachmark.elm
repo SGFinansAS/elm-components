@@ -22,18 +22,18 @@ stories =
                         |> Button.view [ class "new-button" ] [ Html.text "Some new feature button" ]
                     , Coachmark.view
                         { translate = .no
-                        , onChangePage = UpdateCouchMarkPage
+                        , onChangeStep = UpdateCoachmarkStep
                         , ariaLabel = "New feature introduction"
                         }
                         [ Coachmark.HighlightedClass "new-button"
                         , Coachmark.Placement Tooltip.Right
-                        , Coachmark.ShowPage config.customModel.showCoachMarkPage
+                        , Coachmark.ShowStep config.customModel.showCoachMarkStep
                         ]
                         []
-                        [ Coachmark.page [] [ Html.text ("Page 0. " ++ lorem) ]
-                        , Coachmark.page [] [ Html.text ("Page 1. " ++ lorem) ]
-                        , Coachmark.page [] [ Html.text ("Page 2. " ++ lorem) ]
-                        , Coachmark.page [] [ Html.text ("Page 3. " ++ lorem) ]
+                        [ Coachmark.step [] [ Html.text ("step 0. " ++ lorem) ]
+                        , Coachmark.step [] [ Html.text ("step 1. " ++ lorem) ]
+                        , Coachmark.step [] [ Html.text ("step 2. " ++ lorem) ]
+                        , Coachmark.step [] [ Html.text ("step 3. " ++ lorem) ]
                         ]
                     ]
           , {}

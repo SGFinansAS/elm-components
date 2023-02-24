@@ -84,6 +84,7 @@ stories =
                         [ Icons.downloaded [ css [ width (rem 1.5) ] ]
                         , Icons.abacus [ css [ width (rem 1.5) ] ]
                         , Icons.object [ css [ width (rem 1.5) ] ]
+                        , Icons.lightBulb [ css [ width (rem 1.5) ] ]
                         ]
                     ]
           , {}

@@ -1,6 +1,6 @@
 module Nordea.Components.Coachmark exposing
     ( OptionalConfig(..)
-    , page
+    , step
     , view
     )
 
@@ -63,20 +63,20 @@ import Set
 type OptionalConfig
     = HighlightedClass String
     | Placement Tooltip.Placement
-    | ShowPage (Maybe Int)
+    | ShowStep (Maybe Int)
     | ShowStepLegend Bool
 
 
 type alias RequiredProps msg =
-    { onChangePage : Maybe Int -> msg
+    { onChangeStep : Maybe Int -> msg
     , translate : Translation -> String
     , ariaLabel : String
     }
 
 
-type alias Page msg =
+type alias Step msg =
     { translate : Translation -> String
-    , onChangePage : Maybe Int -> msg
+    , onChangeStep : Maybe Int -> msg
     , currentStep : Int
     , totalSteps : Int
     , showStepLegend : Bool
@@ -84,10 +84,10 @@ type alias Page msg =
     -> Html msg
 
 
-view : RequiredProps msg -> List OptionalConfig -> List (Attribute msg) -> List (Page msg) -> Html msg
-view { onChangePage, translate, ariaLabel } optionalConfig attrs children_ =
+view : RequiredProps msg -> List OptionalConfig -> List (Attribute msg) -> List (Step msg) -> Html msg
+view { onChangeStep, translate, ariaLabel } optionalConfig attrs children_ =
     let
-        { classesToHighlight, placement, showPage, showStepLegend } =
+        { classesToHighlight, placement, showStep, showStepLegend } =
             optionalConfig
                 |> List.foldl
                     (\e acc ->
@@ -98,36 +98,36 @@ view { onChangePage, translate, ariaLabel } optionalConfig attrs children_ =
                             Placement placement_ ->
                                 { acc | placement = placement_ }
 
-                            ShowPage pageNum ->
-                                { acc | showPage = pageNum }
+                            ShowStep stepNum ->
+                                { acc | showStep = stepNum }
 
                             ShowStepLegend showStepLegend_ ->
                                 { acc | showStepLegend = showStepLegend_ }
                     )
                     { classesToHighlight = Set.empty
                     , placement = Tooltip.Top
-                    , showPage = Nothing
+                    , showStep = Nothing
                     , showStepLegend = True
                     }
 
-        prepare pages =
-            pages
+        prepare steps =
+            steps
                 |> List.indexedMap
-                    (\i page_ ->
-                        page_
+                    (\i step_ ->
+                        step_
                             { translate = translate
-                            , onChangePage = onChangePage
+                            , onChangeStep = onChangeStep
                             , currentStep = i
-                            , totalSteps = List.length pages - 1
+                            , totalSteps = List.length steps - 1
                             , showStepLegend = showStepLegend && i > 0
                             }
                     )
-                |> List.getAt (showPage |> Maybe.withDefault 0)
+                |> List.getAt (showStep |> Maybe.withDefault 0)
                 |> Maybe.toList
     in
     Tooltip.init
         |> Tooltip.withVisibility
-            (if showPage == Nothing then
+            (if showStep == Nothing then
                 Tooltip.Hidden
 
              else
@@ -151,11 +151,11 @@ view { onChangePage, translate, ariaLabel } optionalConfig attrs children_ =
             )
         |> Tooltip.view attrs
             [ Html.button
-                [ if showPage /= Nothing then
-                    Events.onClick (onChangePage Nothing)
+                [ if showStep /= Nothing then
+                    Events.onClick (onChangeStep Nothing)
 
                   else
-                    Events.onClick (onChangePage (Just 0))
+                    Events.onClick (onChangeStep (Just 0))
                 , Attrs.attribute "aria-label" ariaLabel
                 , css
                     [ width (rem 2.5)
@@ -193,22 +193,22 @@ view { onChangePage, translate, ariaLabel } optionalConfig attrs children_ =
                         ]
                     ]
                 ]
-            , highlightElements classesToHighlight |> Html.showIf (Maybe.withDefault 0 showPage > 0)
+            , highlightElements classesToHighlight |> Html.showIf (Maybe.withDefault 0 showStep > 0)
             ]
 
 
-page : List (Attribute msg) -> List (Html msg) -> Page msg
-page attrs children_ { translate, showStepLegend, onChangePage, currentStep, totalSteps } =
+step : List (Attribute msg) -> List (Html msg) -> Step msg
+step attrs children_ { translate, showStepLegend, onChangeStep, currentStep, totalSteps } =
     let
         nextButtonView =
             Button.flatLinkStyle
                 |> Button.view
                     [ css [ marginLeft auto ]
                     , if currentStep < totalSteps then
-                        Events.onClick (onChangePage (Just (currentStep + 1)))
+                        Events.onClick (onChangeStep (Just (currentStep + 1)))
 
                       else
-                        Events.onClick (onChangePage Nothing)
+                        Events.onClick (onChangeStep Nothing)
                     ]
                     [ if currentStep == 0 && totalSteps > 1 then
                         Html.text (translate strings.start)
@@ -259,7 +259,7 @@ page attrs children_ { translate, showStepLegend, onChangePage, currentStep, tot
                                 , backgroundColor transparent
                                 , cursor pointer
                                 ]
-                            , Events.onClick (onChangePage Nothing)
+                            , Events.onClick (onChangeStep Nothing)
                             ]
                             [ Icons.cross [ css [ width (rem 1) ] ] ]
                        ]
