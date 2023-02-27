@@ -10,6 +10,7 @@ import Stories.Badge as Badge
 import Stories.Button as Button
 import Stories.Card as Card
 import Stories.Checkbox as Checkbox
+import Stories.Coachmark as Coachmark
 import Stories.Colors as Colors
 import Stories.Dropdown as Dropdown
 import Stories.DropdownFilter as Search
@@ -91,6 +92,7 @@ main =
                 , Button.stories
                 , Card.stories
                 , Checkbox.stories
+                , Coachmark.stories
                 , Dropdown.stories
                 , MultiSelectDropdown.stories
                 , Search.stories

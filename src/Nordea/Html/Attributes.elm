@@ -1,5 +1,6 @@
 module Nordea.Html.Attributes exposing
-    ( boolProperty
+    ( attrMaybe
+    , boolProperty
     , floatProperty
     , intProperty
     , stringProperty
@@ -28,3 +29,10 @@ floatProperty key value =
 boolProperty : String -> Bool -> Attribute msg
 boolProperty key value =
     Attrs.property key (Encode.bool value)
+
+
+attrMaybe : (a -> Attribute msg) -> Maybe a -> Attribute msg
+attrMaybe f mby =
+    mby
+        |> Maybe.map f
+        |> Maybe.withDefault (stringProperty "optionalAttrProp" "")
