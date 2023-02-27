@@ -19,6 +19,7 @@ import Css
         , borderRadius
         , borderStyle
         , bottom
+        , color
         , cursor
         , displayFlex
         , fixed
@@ -157,6 +158,11 @@ view { onChangeStep, translate, ariaLabel } optionalConfig attrs children_ =
                             , Animations.opacity (num 1)
                             ]
                           )
+                        , ( 66
+                          , [ Animations.transform [ translate2 (pct -50) (pct -50), scale 0.5 ]
+                            , Animations.opacity (num 1)
+                            ]
+                          )
                         , ( 100
                           , [ Animations.transform [ translate2 (pct -50) (pct -50), scale 1.6 ]
                             , Animations.opacity (num 0)
@@ -168,12 +174,12 @@ view { onChangeStep, translate, ariaLabel } optionalConfig attrs children_ =
                 [ css
                     [ absoluteCenter 0.5
                     , border3 (rem 0.2) solid transparent
-                    , Themes.borderColor Themes.PrimaryColorLight Colors.cloudBlue
+                    , Themes.borderColor Themes.SecondaryColor Colors.nordeaBlue
                     , borderRadius (pct 50)
                     , animationName anim
-                    , animationDuration (ms 1000)
-                    , animationDelay (ms (1000 + delay))
-                    , Css.property "animation-iteration-count" "1"
+                    , animationDuration (ms 3000)
+                    , animationDelay (ms delay)
+                    , Css.property "animation-iteration-count" "3"
                     , Css.property "animation-timing-function" "linear"
                     , Css.property "animation-fill-mode" "forwards"
                     , Css.pointerEvents none
@@ -198,7 +204,8 @@ view { onChangeStep, translate, ariaLabel } optionalConfig attrs children_ =
                             [ width (rem 13)
                             , borderRadius (rem 0.25)
                             , padding (rem 0.75)
-                            , Themes.backgroundColor Themes.PrimaryColorLight Colors.cloudBlue
+                            , Themes.backgroundColor Themes.PrimaryColorLight Colors.nordeaBlue
+                            , color Colors.white
                             , position relative
                             ]
                         :: attrs
@@ -221,21 +228,21 @@ view { onChangeStep, translate, ariaLabel } optionalConfig attrs children_ =
                     , backgroundColor transparent
                     , cursor pointer
                     , focus
-                        [ Css.property "box-shadow" ("0rem 0rem 0rem 0.0625rem " ++ Themes.colorVariable Themes.SecondaryColor Colors.blueNordea)
+                        [ Css.property "box-shadow" ("0rem 0rem 0rem 0.0625rem " ++ Themes.colorVariable Themes.PrimaryColorLight Colors.blueNordea)
                         , outline none
                         ]
                     , before
                         [ Css.property "content" "''"
                         , absoluteCenter 1
                         , borderRadius (pct 50)
-                        , Themes.backgroundColor Themes.PrimaryColorLight Colors.cloudBlue
-                        , opacity (num 0.5)
+                        , Themes.backgroundColor Themes.PrimaryColorLight Colors.nordeaBlue
+                        , opacity (num 0.2)
                         ]
                     , after
                         [ Css.property "content" "''"
                         , absoluteCenter 0.6
                         , borderRadius (pct 50)
-                        , Themes.backgroundColor Themes.PrimaryColorLight Colors.cloudBlue
+                        , Themes.backgroundColor Themes.PrimaryColorLight Colors.nordeaBlue
                         , transition [ Css.Transitions.transform3 300 0 easeInOut ]
                         , hover [ transforms [ translate2 (pct -50) (pct -50), scale 1 ] ]
                         ]
@@ -243,7 +250,7 @@ view { onChangeStep, translate, ariaLabel } optionalConfig attrs children_ =
                     , position relative
                     ]
                 ]
-                [ Icons.lightBulb [ css [ absoluteCenter 0.3, zIndex (int 100) ] ]
+                [ Icons.lightBulb [ css [ absoluteCenter 0.3, zIndex (int 100), color Colors.white ] ]
                 , rippleAnimation 0
                 , rippleAnimation 300
                 , rippleAnimation 600
@@ -258,7 +265,7 @@ step attrs children_ { translate, showStepLegend, onChangeStep, currentStep, tot
         nextButtonView =
             Button.flatLinkStyle
                 |> Button.view
-                    [ css [ marginLeft auto ]
+                    [ css [ marginLeft auto, color Colors.white ]
                     , if currentStep < totalSteps then
                         Events.onClick (onChangeStep (Just (currentStep + 1)))
 
@@ -281,7 +288,8 @@ step attrs children_ { translate, showStepLegend, onChangeStep, currentStep, tot
                     (css
                         [ borderRadius (rem 1.25)
                         , padding2 (rem 0.25) (rem 0.5)
-                        , backgroundColor Colors.mediumBlue
+                        , Themes.backgroundColor Themes.SecondaryColor Colors.mediumBlue
+                        , Themes.color Themes.PrimaryColor Colors.deepBlue
                         , Css.alignSelf flexStart
                         ]
                         :: attrs
@@ -312,6 +320,7 @@ step attrs children_ { translate, showStepLegend, onChangeStep, currentStep, tot
                                 [ marginLeft auto
                                 , borderStyle none
                                 , backgroundColor transparent
+                                , color Colors.white
                                 , cursor pointer
                                 ]
                             , Events.onClick (onChangeStep Nothing)
