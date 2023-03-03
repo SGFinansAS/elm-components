@@ -174,7 +174,7 @@ view { onChangeStep, translate, ariaLabel } optionalConfig attrs children_ =
                 [ css
                     [ absoluteCenter 0.5
                     , border3 (rem 0.2) solid transparent
-                    , Themes.borderColor Themes.SecondaryColor Colors.nordeaBlue
+                    , Themes.borderColor Themes.PrimaryColorLight Colors.nordeaBlue
                     , borderRadius (pct 50)
                     , animationName anim
                     , animationDuration (ms 3000)
