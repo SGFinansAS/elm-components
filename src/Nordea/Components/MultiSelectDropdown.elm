@@ -148,7 +148,7 @@ view attrs dropdown =
                     , flexDirection column
                     , backgroundColor Colors.white
                     , border3 (rem 0.0625) solid Colors.grayMedium
-                    , Themes.borderColor Themes.SecondaryColor Colors.blueNordea
+                    , Themes.borderColor Themes.PrimaryColorLight Colors.blueNordea
                     , borderBottomLeftRadius (rem 0.25)
                     , borderBottomRightRadius (rem 0.25)
                     , boxSizing borderBox
@@ -185,7 +185,7 @@ view attrs dropdown =
                     , if dropdown.hasFocus then
                         Css.batch
                             [ borderRadius4 (rem 0.25) (rem 0.25) (rem 0.0) (rem 0.0)
-                            , Themes.borderColor Themes.SecondaryColor Colors.blueNordea
+                            , Themes.borderColor Themes.PrimaryColorLight Colors.blueNordea
                             ]
 
                       else
