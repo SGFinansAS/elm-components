@@ -228,7 +228,7 @@ view { onChangeStep, translate, ariaLabel } optionalConfig attrs children_ =
                     , backgroundColor transparent
                     , cursor pointer
                     , focus
-                        [ Css.property "box-shadow" ("0rem 0rem 0rem 0.0625rem " ++ Themes.colorVariable Colors.blueNordea)
+                        [ Css.property "box-shadow" ("0rem 0rem 0rem 0.0625rem " ++ Themes.colorVariable Colors.nordeaBlue)
                         , outline none
                         ]
                     , before

@@ -66,7 +66,7 @@ view attrs children (Card config) =
             , displayFlex
             , flexDirection column
             , backgroundColor Colors.white
-            , boxShadow4 (rem 0) (rem 0.25) (rem 2.5) Colors.grayLight
+            , boxShadow4 (rem 0) (rem 0.25) (rem 2.5) Colors.lightGray
                 |> styleIf config.hasShadow
             ]
             :: attrs
@@ -86,7 +86,7 @@ header attrs children =
                         [ width auto
                         , borderStyle none
                         , height (rem 0.0625)
-                        , backgroundColor Colors.grayCool
+                        , backgroundColor Colors.coolGray
                         , margin2 (rem 1) (rem -1.5)
                         ]
                     ]
@@ -106,7 +106,7 @@ infoBox attrs content =
     Html.column
         (css
             [ borderRadius (rem 0.5)
-            , border3 (rem 0.0625) solid Colors.grayLight
+            , border3 (rem 0.0625) solid Colors.lightGray
             , padding (rem 1)
             ]
             :: attrs
@@ -123,7 +123,7 @@ footer attrs children =
                 [ width auto
                 , borderStyle none
                 , height (rem 0.0625)
-                , backgroundColor Colors.grayCool
+                , backgroundColor Colors.coolGray
                 , margin2 (rem 1) (rem -1.5)
                 ]
             ]

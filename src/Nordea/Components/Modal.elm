@@ -151,7 +151,7 @@ header variant title onClickMsg =
                 |> NordeaButton.view
                     [ Events.onClick onClick, css [ alignItems center, marginLeft auto ] ]
                     [ Icons.cross
-                        [ css [ Themes.color Colors.blueDeep, Css.width (rem 1.385) ] ]
+                        [ css [ Themes.color Colors.deepBlue, Css.width (rem 1.385) ] ]
                     ]
     in
     case variant of
@@ -160,7 +160,7 @@ header variant title onClickMsg =
                 [ css
                     [ padding4 (rem 1.5) (rem 1.5) (rem 1.5) (rem 2.5)
                     , alignItems center
-                    , borderBottom3 (rem 0.0625) solid Colors.grayCool
+                    , borderBottom3 (rem 0.0625) solid Colors.coolGray
                     , displayFlex
                     ]
                 ]

@@ -6,7 +6,23 @@ module Nordea.Components.InformationDetails exposing
     , value
     )
 
-import Css exposing (color, column, displayFlex, flexBasis, flexDirection, flexGrow, flexWrap, lineHeight, marginBottom, marginRight, num, pct, rem, wrap)
+import Css
+    exposing
+        ( color
+        , column
+        , displayFlex
+        , flexBasis
+        , flexDirection
+        , flexGrow
+        , flexWrap
+        , lineHeight
+        , marginBottom
+        , marginRight
+        , num
+        , pct
+        , rem
+        , wrap
+        )
 import Css.Global as Css exposing (children)
 import Html.Styled as Html exposing (Attribute, Html)
 import Html.Styled.Attributes exposing (css)
@@ -75,7 +91,7 @@ label attrs content =
         |> Text.view
             (css
                 [ lineHeight (rem 1.5) |> Css.important
-                , color Colors.grayDark |> Css.important
+                , color Colors.darkGray |> Css.important
                 ]
                 :: attrs
             )

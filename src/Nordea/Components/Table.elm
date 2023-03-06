@@ -78,7 +78,7 @@ theadWithVariant variant attrs =
     Html.thead
         (css
             [ height headHeight
-            , borderBottom3 (rem 0.0625) solid Colors.grayLight
+            , borderBottom3 (rem 0.0625) solid Colors.lightGray
             ]
             :: attrs
         )

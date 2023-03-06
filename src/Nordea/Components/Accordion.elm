@@ -114,7 +114,7 @@ viewTitle title =
         [ Css.padding2 (Css.rem 1) Css.zero
         , Fonts.fromSize 1.125
         , Css.fontWeight (Css.int 500)
-        , Themes.color Colors.blueDeep
+        , Themes.color Colors.deepBlue
         ]
         []
         [ Html.text title ]
@@ -136,7 +136,7 @@ viewItem item =
     Html.styled Html.div
         [ Css.borderBottom3 (Css.rem 0.0625) Css.solid Css.transparent
         , Css.firstChild [ Css.borderTop3 (Css.rem 0.0625) Css.solid Css.transparent ]
-        , Themes.borderColor Colors.blueHaas
+        , Themes.borderColor Colors.haasBlue
         ]
         []
         [ viewItemTitle item
@@ -151,7 +151,7 @@ viewItemTitle item =
         , Css.alignItems Css.center
         , Css.padding2 (Css.rem 1) Css.zero
         , Fonts.fromSize 1
-        , Themes.color Colors.blueDeep
+        , Themes.color Colors.deepBlue
         , Css.cursor Css.pointer
         ]
         [ Events.onClick (Toggle item) ]

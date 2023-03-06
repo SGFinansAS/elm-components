@@ -159,7 +159,7 @@ closeButton closeMsg =
                 [ css
                     [ width (rem 1)
                     , height (rem 1)
-                    , Themes.color Colors.blueDeep
+                    , Themes.color Colors.deepBlue
                     ]
                 ]
             ]

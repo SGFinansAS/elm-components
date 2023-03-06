@@ -235,7 +235,7 @@ variantStyle variant =
                 , padding (rem 1)
                 , borderRadius (rem 0.5)
                 , borderStyle none
-                , boxShadow4 (rem 0) (rem 0.25) (rem 2.5) Colors.grayLight
+                , boxShadow4 (rem 0) (rem 0.25) (rem 2.5) Colors.lightGray
                 , descendants
                     [ everything
                         [ withClass "arrowicon"
@@ -256,53 +256,53 @@ variantStyle variant =
                 ]
 
         primaryStyling =
-            [ Themes.backgroundColor Colors.blueDeep
+            [ Themes.backgroundColor Colors.deepBlue
             , Themes.color Colors.white
             , border3 (rem 0.125) solid Colors.transparent
             , hover
                 [ Themes.backgroundColor Colors.cloudBlue
-                , Themes.color Colors.blueDeep
+                , Themes.color Colors.deepBlue
                 ]
             , focus
                 [ outline none
-                , Themes.backgroundColor Colors.blueNordea
-                , Themes.color Colors.blueHaas
-                , Css.property "box-shadow" ("0rem 0rem 0rem 0.25rem " ++ Themes.colorVariable Colors.blueHaas)
+                , Themes.backgroundColor Colors.nordeaBlue
+                , Themes.color Colors.haasBlue
+                , Css.property "box-shadow" ("0rem 0rem 0rem 0.25rem " ++ Themes.colorVariable Colors.haasBlue)
                 ]
             , hoverTransition
             ]
 
         secondaryStyling =
             [ backgroundColor Colors.white
-            , Themes.color Colors.blueDeep
+            , Themes.color Colors.deepBlue
             , border3 (rem 0.125) solid Css.transparent
-            , Themes.borderColor Colors.blueDeep
+            , Themes.borderColor Colors.deepBlue
             , hover
                 [ Themes.backgroundColor (Colors.cloudBlue |> Colors.withAlpha 0.5)
-                , Themes.color Colors.blueDeep
+                , Themes.color Colors.deepBlue
                 ]
             , focus
                 [ outline none
                 , Themes.backgroundColor Colors.cloudBlue
-                , Themes.color Colors.blueDeep
-                , Css.property "box-shadow" ("0rem 0rem 0rem 0.125rem " ++ Themes.colorVariable Colors.blueDeep)
+                , Themes.color Colors.deepBlue
+                , Css.property "box-shadow" ("0rem 0rem 0rem 0.125rem " ++ Themes.colorVariable Colors.deepBlue)
                 ]
             , hoverTransition
             ]
 
         tertiaryStyling =
             [ backgroundColor Colors.transparent
-            , Themes.color Colors.blueDeep
+            , Themes.color Colors.deepBlue
             , border3 (rem 0.125) solid Colors.transparent
             , hover
                 [ backgroundColor Colors.transparent
-                , Themes.color Colors.blueNordea
+                , Themes.color Colors.nordeaBlue
                 ]
             , focus
                 [ outline none
                 , backgroundColor Colors.transparent
-                , Themes.color Colors.blueDeep
-                , Css.property "box-shadow" ("0rem 0rem 0rem 0.25rem " ++ Themes.colorVariable Colors.blueHaas)
+                , Themes.color Colors.deepBlue
+                , Css.property "box-shadow" ("0rem 0rem 0rem 0.25rem " ++ Themes.colorVariable Colors.haasBlue)
                 ]
             , hoverTransition
             ]
@@ -376,10 +376,10 @@ variantStyle variant =
                 [ textDecoration underline
                 , fontSize (rem 0.875)
                 , padding (rem 0)
-                , Themes.color Colors.blueDeep
+                , Themes.color Colors.deepBlue
                 , border (rem 0)
                 , backgroundColor transparent
-                , hover [ Themes.color Colors.blueNordea ]
+                , hover [ Themes.color Colors.nordeaBlue ]
                 , focus [ outline none ]
                 ]
 

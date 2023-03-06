@@ -66,7 +66,7 @@ view attrs (FilterChip { label }) =
             , hover [ backgroundColor Color.lightGray ]
             , focus
                 [ outline none
-                , Css.property "box-shadow" ("0rem 0rem 0rem 0.125rem " ++ Themes.colorVariable Color.blueHaas)
+                , Css.property "box-shadow" ("0rem 0rem 0rem 0.125rem " ++ Themes.colorVariable Color.haasBlue)
                 ]
             ]
             :: attrs

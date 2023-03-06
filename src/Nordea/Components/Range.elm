@@ -116,7 +116,7 @@ sliderStyle (Range config) =
             , width (rem 1.5)
             , height (rem 1.5)
             , borderRadius (pct 100)
-            , Themes.backgroundColor Colors.blueDeep
+            , Themes.backgroundColor Colors.deepBlue
             , marginTop (rem -0.625)
             ]
 
@@ -130,7 +130,7 @@ sliderStyle (Range config) =
             [ width (rem 1.5)
             , height (rem 1.5)
             , borderRadius (pct 100)
-            , Themes.backgroundColor Colors.blueDeep
+            , Themes.backgroundColor Colors.deepBlue
             , marginTop (rem -0.625)
             ]
         , adjustSlider (Range config)
@@ -147,7 +147,7 @@ adjustSlider (Range config) =
             Themes.colorVariable Colors.cloudBlue
 
         nordeaBlue =
-            Themes.colorVariable Colors.blueNordea
+            Themes.colorVariable Colors.nordeaBlue
 
         gradientValue =
             "linear-gradient(to right," ++ nordeaBlue ++ " 0% " ++ visibleWidth ++ "%, " ++ cloudBlue ++ " " ++ visibleWidth ++ "%" ++ " 100% )"

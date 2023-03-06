@@ -16,7 +16,7 @@ stories =
         "Hamburger"
         [ ( "Simple"
           , \model ->
-                div [ css [ backgroundColor Colors.blueDeep, padding (rem 2) ] ]
+                div [ css [ backgroundColor Colors.deepBlue, padding (rem 2) ] ]
                     [ Hamburger.init .no model.customModel.hamburgerIsActive ToggleHamburger
                         |> Hamburger.view
                     ]
@@ -24,7 +24,7 @@ stories =
           )
         , ( "With Text"
           , \model ->
-                div [ css [ backgroundColor Colors.blueDeep, padding (rem 2) ] ]
+                div [ css [ backgroundColor Colors.deepBlue, padding (rem 2) ] ]
                     [ Hamburger.init .no model.customModel.hamburgerIsActive ToggleHamburger
                         |> Hamburger.withText
                         |> Hamburger.view
@@ -33,10 +33,10 @@ stories =
           )
         , ( "With custom color"
           , \model ->
-                div [ css [ backgroundColor Colors.blueDeep, padding (rem 2) ] ]
+                div [ css [ backgroundColor Colors.deepBlue, padding (rem 2) ] ]
                     [ Hamburger.init .no model.customModel.hamburgerIsActive ToggleHamburger
                         |> Hamburger.withText
-                        |> Hamburger.withCustomColor Colors.greenDark
+                        |> Hamburger.withCustomColor Colors.darkGreen
                         |> Hamburger.view
                     ]
           , {}

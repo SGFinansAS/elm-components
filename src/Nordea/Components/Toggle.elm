@@ -74,14 +74,14 @@ view attrs toggleProperties =
                 , height zero
                 , width zero
                 , pseudoClass "checked ~ .nfe-toggle"
-                    [ Themes.backgroundColor Colors.blueDeep
-                    , Themes.borderColor Colors.blueDeep
+                    [ Themes.backgroundColor Colors.deepBlue
+                    , Themes.borderColor Colors.deepBlue
                     , after [ left (rem 1.125) ]
                     ]
                 , pseudoClass "disabled ~ .nfe-toggle"
-                    [ backgroundColor Colors.grayLight
-                    , border3 (rem 0.125) solid Colors.grayLight
-                    , after [ backgroundColor Colors.grayMedium ]
+                    [ backgroundColor Colors.lightGray
+                    , border3 (rem 0.125) solid Colors.lightGray
+                    , after [ backgroundColor Colors.mediumGray ]
                     ]
                 ]
             ]
@@ -91,8 +91,8 @@ view attrs toggleProperties =
             , css
                 [ width (pct 100)
                 , height (pct 100)
-                , backgroundColor Colors.grayMedium
-                , border3 (rem 0.125) solid Colors.grayMedium
+                , backgroundColor Colors.mediumGray
+                , border3 (rem 0.125) solid Colors.mediumGray
                 , borderRadius (rem 1)
                 , position relative
                 , after

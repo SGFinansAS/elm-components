@@ -18,7 +18,7 @@ stories =
           , \_ ->
                 Html.div
                     [ css
-                        [ Css.backgroundColor Colors.grayLight
+                        [ Css.backgroundColor Colors.lightGray
                         , Css.padding (Css.rem 2)
                         ]
                     ]

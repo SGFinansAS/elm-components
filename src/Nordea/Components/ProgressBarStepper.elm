@@ -70,7 +70,7 @@ view attrs { steps, currentStep, nextLabel } =
                     (\step ->
                         Text.textTiny
                             |> Text.view
-                                [ css [ color Colors.grayDark ] ]
+                                [ css [ color Colors.darkGray ] ]
                                 [ Html.text (nextLabel strings.next ++ step) ]
                     )
             ]

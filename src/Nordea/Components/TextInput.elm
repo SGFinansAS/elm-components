@@ -179,10 +179,10 @@ view attributes (TextInput config) =
         let
             iconColor =
                 if config.showError then
-                    Colors.redDark
+                    Colors.darkRed
 
                 else
-                    Colors.blueNordea
+                    Colors.nordeaBlue
         in
         Html.div
             (css [ displayFlex, position relative ]
@@ -262,10 +262,10 @@ getStyles config =
     let
         borderColorStyle =
             if config.showError then
-                Colors.redDark
+                Colors.darkRed
 
             else
-                Colors.grayMedium
+                Colors.mediumGray
     in
     [ fontSize (rem 1)
     , height
@@ -285,6 +285,6 @@ getStyles config =
     , paddingLeft (rem 2) |> styleIf config.hasSearchIcon
     , focus
         [ outline none
-        , Themes.borderColor Colors.blueNordea
+        , Themes.borderColor Colors.nordeaBlue
         ]
     ]
