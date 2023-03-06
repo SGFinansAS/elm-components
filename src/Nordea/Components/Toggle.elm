@@ -74,8 +74,8 @@ view attrs toggleProperties =
                 , height zero
                 , width zero
                 , pseudoClass "checked ~ .nfe-toggle"
-                    [ Themes.backgroundColor Themes.PrimaryColor Colors.blueDeep
-                    , Themes.borderColor Themes.PrimaryColor Colors.blueDeep
+                    [ Themes.backgroundColor Colors.blueDeep
+                    , Themes.borderColor Colors.blueDeep
                     , after [ left (rem 1.125) ]
                     ]
                 , pseudoClass "disabled ~ .nfe-toggle"

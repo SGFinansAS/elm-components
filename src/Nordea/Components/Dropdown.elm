@@ -250,7 +250,7 @@ view attrs (Dropdown config) =
                 , borderColor Colors.redDark |> styleIf config.hasError
                 , borderRadius (rem 0.25)
                 , focus
-                    [ Css.property "box-shadow" ("0rem 0rem 0rem 0.0625rem " ++ Themes.colorVariable Themes.PrimaryColorLight Colors.blueNordea)
+                    [ Css.property "box-shadow" ("0rem 0rem 0rem 0.0625rem " ++ Themes.colorVariable Colors.blueNordea)
                     , outline none
                     ]
                 , fontSize (rem 1.0)

@@ -116,7 +116,7 @@ sliderStyle (Range config) =
             , width (rem 1.5)
             , height (rem 1.5)
             , borderRadius (pct 100)
-            , Themes.backgroundColor Themes.PrimaryColor Colors.blueDeep
+            , Themes.backgroundColor Colors.blueDeep
             , marginTop (rem -0.625)
             ]
 
@@ -130,7 +130,7 @@ sliderStyle (Range config) =
             [ width (rem 1.5)
             , height (rem 1.5)
             , borderRadius (pct 100)
-            , Themes.backgroundColor Themes.PrimaryColor Colors.blueDeep
+            , Themes.backgroundColor Colors.blueDeep
             , marginTop (rem -0.625)
             ]
         , adjustSlider (Range config)
@@ -144,10 +144,10 @@ adjustSlider (Range config) =
             (((config.value - config.min) * 100) / (config.max - config.min)) |> String.fromFloat
 
         cloudBlue =
-            Themes.colorVariable Themes.SecondaryColor Colors.cloudBlue
+            Themes.colorVariable Colors.cloudBlue
 
         nordeaBlue =
-            Themes.colorVariable Themes.PrimaryColorLight Colors.blueNordea
+            Themes.colorVariable Colors.blueNordea
 
         gradientValue =
             "linear-gradient(to right," ++ nordeaBlue ++ " 0% " ++ visibleWidth ++ "%, " ++ cloudBlue ++ " " ++ visibleWidth ++ "%" ++ " 100% )"

@@ -106,7 +106,7 @@ view (Hamburger config) =
                 , height (rem 0.2)
                 , case config.customColor of
                     Nothing ->
-                        Themes.backgroundColor Themes.TextColorOnPrimaryColorBackground Colors.white
+                        Themes.backgroundColor Colors.white
 
                     Just customColor ->
                         backgroundColor customColor
@@ -131,7 +131,7 @@ view (Hamburger config) =
                 , paddingLeft (rem 0) |> Css.important
                 , case config.customColor of
                     Nothing ->
-                        Themes.color Themes.TextColorOnPrimaryColorBackground Colors.white |> Css.important
+                        Themes.color Colors.white |> Css.important
 
                     Just customColor ->
                         color customColor |> Css.important

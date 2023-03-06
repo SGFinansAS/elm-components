@@ -9,6 +9,7 @@ module Nordea.Themes exposing
 
 import Css
 import Nordea.Css as Css
+import Nordea.Resources.Colors as Colors
 
 
 type ThemeColor
@@ -22,24 +23,62 @@ type ThemeColor
 -- Utils
 
 
-backgroundColor : ThemeColor -> Css.Color -> Css.Style
-backgroundColor themeColor fallbackColor =
-    Css.propertyWithColorVariable "background-color" (toString themeColor) fallbackColor
+backgroundColor : Css.Color -> Css.Style
+backgroundColor color_ =
+    color_
+        |> themeVariableForColor
+        |> Maybe.map toString
+        |> Maybe.withDefault (Css.colorToString color_)
+        |> (\themeColor -> Css.propertyWithColorVariable "background-color" themeColor color_)
 
 
-color : ThemeColor -> Css.Color -> Css.Style
-color themeColor fallbackColor =
-    Css.propertyWithColorVariable "color" (toString themeColor) fallbackColor
+color : Css.Color -> Css.Style
+color color_ =
+    color_
+        |> themeVariableForColor
+        |> Maybe.map toString
+        |> Maybe.withDefault (Css.colorToString color_)
+        |> (\themeColor -> Css.propertyWithColorVariable "color" themeColor color_)
 
 
-borderColor : ThemeColor -> Css.Color -> Css.Style
-borderColor themeColor fallbackColor =
-    Css.propertyWithColorVariable "border-color" (toString themeColor) fallbackColor
+borderColor : Css.Color -> Css.Style
+borderColor color_ =
+    color_
+        |> themeVariableForColor
+        |> Maybe.map toString
+        |> Maybe.withDefault (Css.colorToString color_)
+        |> (\themeColor -> Css.propertyWithColorVariable "border-color" themeColor color_)
 
 
-colorVariable : ThemeColor -> Css.Color -> String
-colorVariable themeColor fallbackColor =
-    Css.colorVariable (toString themeColor) fallbackColor
+colorVariable : Css.Color -> String
+colorVariable color_ =
+    color_
+        |> themeVariableForColor
+        |> Maybe.map toString
+        |> Maybe.withDefault (Css.colorToString color_)
+        |> (\themeColor -> Css.colorVariable themeColor color_)
+
+
+themeVariableForColor : Css.Color -> Maybe ThemeColor
+themeVariableForColor color_ =
+    let
+        color__ =
+            Colors.withAlpha 1 color_
+    in
+    if color__ == Colors.deepBlue then
+        Just PrimaryColor
+
+    else if color__ == Colors.nordeaBlue then
+        Just PrimaryColorLight
+
+    else if List.member color__ [ Colors.mediumBlue, Colors.haasBlue, Colors.cloudBlue ] then
+        Just SecondaryColor
+
+    else if color__ == Colors.white then
+        Just TextColorOnPrimaryColorBackground
+
+    else
+        Nothing
 
 
 toString : ThemeColor -> String

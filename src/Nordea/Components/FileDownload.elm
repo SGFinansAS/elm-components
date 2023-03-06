@@ -123,7 +123,7 @@ view attrs (FileDownload config) =
             |> Text.view
                 [ css
                     [ lineHeight (rem 1.5)
-                    , Themes.color Themes.PrimaryColor Colors.deepBlue
+                    , Themes.color Colors.deepBlue
                     , textDecoration underline
                     , marginLeft auto
                     , children [ everything [ verticalAlign middle ] ]

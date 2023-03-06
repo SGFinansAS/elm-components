@@ -189,7 +189,7 @@ divStylesActive =
     , width (rem 2)
     , borderRadius (pct 50)
     , border3 (rem 0.125) solid Colors.white
-    , Themes.backgroundColor Themes.PrimaryColor Colors.blueDeep
+    , Themes.backgroundColor Colors.blueDeep
     , boxSizing borderBox
     , color Colors.white
     ]

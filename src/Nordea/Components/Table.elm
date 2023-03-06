@@ -144,7 +144,7 @@ tbodyWithVariant variant attrs =
             , Css.children
                 [ typeSelector "tr"
                     [ height trHeight
-                    , hover [ Themes.backgroundColor Themes.SecondaryColor Colors.cloudBlue |> Css.important ]
+                    , hover [ Themes.backgroundColor Colors.cloudBlue |> Css.important ]
                     , nthChild "even" [ backgroundColor Colors.grayLightBorder ]
                     ]
                 ]

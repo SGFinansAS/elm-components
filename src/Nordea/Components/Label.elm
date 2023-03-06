@@ -215,7 +215,7 @@ stateStyles { hasError } =
                 Colors.toString Colors.darkRed
 
             else
-                Themes.colorVariable Themes.PrimaryColorLight Colors.blueNordea
+                Themes.colorVariable Colors.blueNordea
 
         outlineStyle =
             Css.batch

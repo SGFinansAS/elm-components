@@ -256,53 +256,53 @@ variantStyle variant =
                 ]
 
         primaryStyling =
-            [ Themes.backgroundColor Themes.PrimaryColor Colors.blueDeep
-            , Themes.color Themes.TextColorOnPrimaryColorBackground Colors.white
+            [ Themes.backgroundColor Colors.blueDeep
+            , Themes.color Colors.white
             , border3 (rem 0.125) solid Colors.transparent
             , hover
-                [ Themes.backgroundColor Themes.SecondaryColor Colors.cloudBlue
-                , Themes.color Themes.PrimaryColor Colors.blueDeep
+                [ Themes.backgroundColor Colors.cloudBlue
+                , Themes.color Colors.blueDeep
                 ]
             , focus
                 [ outline none
-                , Themes.backgroundColor Themes.PrimaryColorLight Colors.blueNordea
-                , Themes.color Themes.SecondaryColor Colors.blueHaas
-                , Css.property "box-shadow" ("0rem 0rem 0rem 0.25rem " ++ Themes.colorVariable Themes.SecondaryColor Colors.blueHaas)
+                , Themes.backgroundColor Colors.blueNordea
+                , Themes.color Colors.blueHaas
+                , Css.property "box-shadow" ("0rem 0rem 0rem 0.25rem " ++ Themes.colorVariable Colors.blueHaas)
                 ]
             , hoverTransition
             ]
 
         secondaryStyling =
             [ backgroundColor Colors.white
-            , Themes.color Themes.PrimaryColor Colors.blueDeep
+            , Themes.color Colors.blueDeep
             , border3 (rem 0.125) solid Css.transparent
-            , Themes.borderColor Themes.PrimaryColor Colors.blueDeep
+            , Themes.borderColor Colors.blueDeep
             , hover
-                [ Themes.backgroundColor Themes.SecondaryColor (Colors.cloudBlue |> Colors.withAlpha 0.5)
-                , Themes.color Themes.PrimaryColor Colors.blueDeep
+                [ Themes.backgroundColor (Colors.cloudBlue |> Colors.withAlpha 0.5)
+                , Themes.color Colors.blueDeep
                 ]
             , focus
                 [ outline none
-                , Themes.backgroundColor Themes.SecondaryColor Colors.cloudBlue
-                , Themes.color Themes.PrimaryColor Colors.blueDeep
-                , Css.property "box-shadow" ("0rem 0rem 0rem 0.125rem " ++ Themes.colorVariable Themes.PrimaryColor Colors.blueDeep)
+                , Themes.backgroundColor Colors.cloudBlue
+                , Themes.color Colors.blueDeep
+                , Css.property "box-shadow" ("0rem 0rem 0rem 0.125rem " ++ Themes.colorVariable Colors.blueDeep)
                 ]
             , hoverTransition
             ]
 
         tertiaryStyling =
             [ backgroundColor Colors.transparent
-            , Themes.color Themes.PrimaryColor Colors.blueDeep
+            , Themes.color Colors.blueDeep
             , border3 (rem 0.125) solid Colors.transparent
             , hover
                 [ backgroundColor Colors.transparent
-                , Themes.color Themes.PrimaryColorLight Colors.blueNordea
+                , Themes.color Colors.blueNordea
                 ]
             , focus
                 [ outline none
                 , backgroundColor Colors.transparent
-                , Themes.color Themes.PrimaryColor Colors.blueDeep
-                , Css.property "box-shadow" ("0rem 0rem 0rem 0.25rem " ++ Themes.colorVariable Themes.SecondaryColor Colors.blueHaas)
+                , Themes.color Colors.blueDeep
+                , Css.property "box-shadow" ("0rem 0rem 0rem 0.25rem " ++ Themes.colorVariable Colors.blueHaas)
                 ]
             , hoverTransition
             ]
@@ -376,13 +376,11 @@ variantStyle variant =
                 [ textDecoration underline
                 , fontSize (rem 0.875)
                 , padding (rem 0)
-                , Themes.color Themes.PrimaryColor Colors.blueDeep
+                , Themes.color Colors.blueDeep
                 , border (rem 0)
                 , backgroundColor transparent
-                , hover
-                    [ Themes.color Themes.PrimaryColorLight Colors.blueNordea ]
-                , focus
-                    [ outline none ]
+                , hover [ Themes.color Colors.blueNordea ]
+                , focus [ outline none ]
                 ]
 
         Circular ->
@@ -395,7 +393,7 @@ variantStyle variant =
                 , displayFlex
                 , justifyContent center
                 , alignItems stretch
-                , hover [ Themes.backgroundColor Themes.SecondaryColor Colors.cloudBlue ]
+                , hover [ Themes.backgroundColor Colors.cloudBlue ]
                 , position relative
                 , children [ everything [ flex (num 1) ] ]
                 ]

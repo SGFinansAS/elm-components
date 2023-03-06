@@ -10,9 +10,9 @@ import Nordea.Themes as Themes
 
 small : List (Attribute msg) -> Html msg
 small attrs =
-    Icons.spinner (css [ width (rem 3.75), Themes.color Themes.PrimaryColor Colors.blueDeep ] :: attrs)
+    Icons.spinner (css [ width (rem 3.75), Themes.color Colors.blueDeep ] :: attrs)
 
 
 custom : List (Attribute msg) -> Html msg
 custom attrs =
-    Icons.spinner (css [ Themes.color Themes.PrimaryColor Colors.blueDeep ] :: attrs)
+    Icons.spinner (css [ Themes.color Colors.blueDeep ] :: attrs)

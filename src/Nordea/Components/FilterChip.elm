@@ -53,8 +53,8 @@ view attrs (FilterChip { label }) =
             , flexDirection Css.row
             , borderRadius (rem 2)
             , boxSizing borderBox
-            , Themes.backgroundColor Themes.SecondaryColor Color.cloudBlue
-            , Themes.color Themes.PrimaryColor Color.deepBlue
+            , Themes.backgroundColor Color.cloudBlue
+            , Themes.color Color.deepBlue
             , maxWidth fitContent
             , Css.property "gap" "1rem"
             , Css.property "height" "fit-content"
@@ -66,7 +66,7 @@ view attrs (FilterChip { label }) =
             , hover [ backgroundColor Color.lightGray ]
             , focus
                 [ outline none
-                , Css.property "box-shadow" ("0rem 0rem 0rem 0.125rem " ++ Themes.colorVariable Themes.SecondaryColor Color.blueHaas)
+                , Css.property "box-shadow" ("0rem 0rem 0rem 0.125rem " ++ Themes.colorVariable Color.blueHaas)
                 ]
             ]
             :: attrs

@@ -54,7 +54,7 @@ view config attrs children =
         backgroundColor_ =
             case appearance of
                 Info ->
-                    Themes.backgroundColor Themes.SecondaryColor Colors.cloudBlue
+                    Themes.backgroundColor Colors.cloudBlue
 
                 Warning ->
                     backgroundColor Colors.yellow

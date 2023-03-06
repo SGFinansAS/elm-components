@@ -285,6 +285,6 @@ getStyles config =
     , paddingLeft (rem 2) |> styleIf config.hasSearchIcon
     , focus
         [ outline none
-        , Themes.borderColor Themes.PrimaryColorLight Colors.blueNordea
+        , Themes.borderColor Colors.blueNordea
         ]
     ]

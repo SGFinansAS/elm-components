@@ -210,7 +210,7 @@ view attrs config =
                                     [ Attrs.css
                                         [ containerStyle
                                         , fontFamilies [ "Nordea Sans Small" ]
-                                        , Themes.color Themes.PrimaryColor Colors.blueDeep
+                                        , Themes.color Colors.blueDeep
                                         , fontSize (rem 0.875)
                                         , fontWeight (int 500)
                                         , lineHeight (rem 0)

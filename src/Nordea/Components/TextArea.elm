@@ -146,6 +146,6 @@ getStyles config =
     , overflow auto
     , focus
         [ outline none
-        , Themes.borderColor Themes.PrimaryColorLight Colors.blueNordea
+        , Themes.borderColor Colors.blueNordea
         ]
     ]

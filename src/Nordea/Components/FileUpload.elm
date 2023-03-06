@@ -142,7 +142,7 @@ view (FileUpload config) =
                     if config.isHovering then
                         Css.batch
                             [ border3 (rem 0.0625) dashed Colors.blueDeep
-                            , Themes.backgroundColor Themes.SecondaryColor Colors.cloudBlue
+                            , Themes.backgroundColor Colors.cloudBlue
                             ]
 
                     else
@@ -179,7 +179,7 @@ view (FileUpload config) =
         iconUpload =
             Icon.upload
                 [ css
-                    [ Themes.color Themes.PrimaryColorLight Colors.blueNordea
+                    [ Themes.color Colors.blueNordea
                     , case config.appearance of
                         Large ->
                             marginBottom (rem 1)
@@ -194,7 +194,7 @@ view (FileUpload config) =
                 |> Text.view [ css [ color Colors.darkGray ] ]
                     [ Html.text (config.translate strings.uploadDescription1)
                     , Html.span
-                        [ css [ Themes.color Themes.PrimaryColorLight Colors.blueNordea ] ]
+                        [ css [ Themes.color Colors.blueNordea ] ]
                         [ Html.text (config.translate strings.uploadDescription2) ]
                     , Html.text (config.translate strings.uploadDescription3)
                     ]
@@ -224,7 +224,7 @@ view (FileUpload config) =
         , viewSupportedFileTypesText
             |> showIf (not config.isHovering && config.appearance == Large)
         , Text.bodyTextSmall
-            |> Text.view [ css [ Themes.color Themes.PrimaryColorLight Colors.blueNordea ] ]
+            |> Text.view [ css [ Themes.color Colors.blueNordea ] ]
                 [ Html.text (config.translate strings.dropToUploadFile) ]
             |> showIf config.isHovering
         , Html.input
@@ -300,7 +300,7 @@ uploadedFilesView files onClickRemove translate attrs =
                                     , backgroundColor Colors.transparent
                                     ]
                                 ]
-                                [ Icon.trash [ css [ Themes.color Themes.PrimaryColorLight Colors.blueDeep ] ] ]
+                                [ Icon.trash [ css [ Themes.color Colors.blueDeep ] ] ]
                             ]
                     )
             )
