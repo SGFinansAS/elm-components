@@ -59,16 +59,16 @@ colorVariable color_ =
 themeVariableForColor : Css.Color -> Maybe ThemeColor
 themeVariableForColor color_ =
     let
-        color__ =
-            Colors.withAlpha 1 color_
+        isEqual c1 c2 =
+            Colors.withAlpha 1 c1 == Colors.withAlpha 1 c2
     in
-    if color__ == Colors.deepBlue then
+    if isEqual color_ Colors.deepBlue then
         Just PrimaryColor
 
-    else if color__ == Colors.nordeaBlue then
+    else if isEqual color_ Colors.nordeaBlue then
         Just PrimaryColorLight
 
-    else if List.member color__ [ Colors.mediumBlue, Colors.haasBlue, Colors.cloudBlue ] then
+    else if List.any (isEqual color_) [ Colors.mediumBlue, Colors.haasBlue, Colors.cloudBlue ] then
         Just SecondaryColor
 
     else
