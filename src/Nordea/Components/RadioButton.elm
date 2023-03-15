@@ -16,7 +16,6 @@ import Css
         , alignItems
         , backgroundColor
         , block
-        , bold
         , border3
         , borderBottomLeftRadius
         , borderBottomRightRadius
@@ -32,7 +31,6 @@ import Css
         , display
         , flex
         , flexBasis
-        , fontWeight
         , height
         , hover
         , inlineFlex
