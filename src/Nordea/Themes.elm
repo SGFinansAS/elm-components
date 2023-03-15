@@ -28,7 +28,7 @@ backgroundColor color_ =
     color_
         |> themeVariableForColor
         |> Maybe.map toString
-        |> Maybe.withDefault (Css.colorToString color_)
+        |> Maybe.withDefault "--not-existing"
         |> (\themeColor -> Css.propertyWithColorVariable "background-color" themeColor color_)
 
 
@@ -37,7 +37,7 @@ color color_ =
     color_
         |> themeVariableForColor
         |> Maybe.map toString
-        |> Maybe.withDefault (Css.colorToString color_)
+        |> Maybe.withDefault "--not-existing"
         |> (\themeColor -> Css.propertyWithColorVariable "color" themeColor color_)
 
 
@@ -46,7 +46,7 @@ borderColor color_ =
     color_
         |> themeVariableForColor
         |> Maybe.map toString
-        |> Maybe.withDefault (Css.colorToString color_)
+        |> Maybe.withDefault "--not-existing"
         |> (\themeColor -> Css.propertyWithColorVariable "border-color" themeColor color_)
 
 
@@ -55,7 +55,7 @@ colorVariable color_ =
     color_
         |> themeVariableForColor
         |> Maybe.map toString
-        |> Maybe.withDefault (Css.colorToString color_)
+        |> Maybe.withDefault "--not-existing"
         |> (\themeColor -> Css.colorVariable themeColor color_)
 
 
