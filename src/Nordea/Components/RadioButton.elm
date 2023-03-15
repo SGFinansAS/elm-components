@@ -198,7 +198,7 @@ view attrs (RadioButton config) =
                         , borderColor Colors.darkRed |> styleIf config.showError
                         , Css.batch
                             [ borderWidth (rem 0.09375)
-                            , padding2 (rem (0.75 - 0.03125)) (rem (1 - 0.03125))
+                            , padding2 (rem (0.5 - 0.03125)) (rem (1 - 0.03125))
                             , Themes.color Colors.nordeaBlue
                             , Themes.borderColor Colors.nordeaBlue
                                 |> styleIf (not config.showError)
