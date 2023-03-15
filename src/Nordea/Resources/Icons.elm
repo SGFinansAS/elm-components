@@ -198,7 +198,7 @@ chevronDownFilled attrs =
                 [ fillRule "evenodd"
                 , clipRule "evenodd"
                 , d "M20.5303 13.5304L14.9999 19.0607L9.46961 13.5304L10.5303 12.4697L14.9999 16.9391L19.4696 12.4697L20.5303 13.5304Z"
-                , fill (Colors.toString Colors.grayEclipse)
+                , fill (Colors.toString Colors.eclipse)
                 ]
                 []
             ]

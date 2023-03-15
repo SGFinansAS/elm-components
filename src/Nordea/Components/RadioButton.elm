@@ -114,13 +114,13 @@ view attrs (RadioButton config) =
                     , backgroundColor Colors.white
                     , border3 (rem 0.125) solid Css.transparent
                     , if isDisabled then
-                        borderColor Colors.grayMedium
+                        borderColor Colors.mediumGray
 
                       else
-                        Themes.borderColor Themes.PrimaryColorLight Colors.blueNordea
-                    , borderColor Colors.redDark
+                        Themes.borderColor Colors.nordeaBlue
+                    , borderColor Colors.darkRed
                         |> styleIf (config.showError && config.appearance == Simple)
-                    , borderColor Colors.grayMedium
+                    , borderColor Colors.mediumGray
                         |> styleIf (config.showError && List.member config.appearance [ Standard, ListStyle ])
                     , borderRadius (pct 50)
                     , boxSizing borderBox
@@ -133,10 +133,10 @@ view attrs (RadioButton config) =
                         , width (rem 0.75)
                         , height (rem 0.75)
                         , if isDisabled then
-                            backgroundColor Colors.grayNordea
+                            backgroundColor Colors.nordeaGray
 
                           else
-                            Themes.backgroundColor Themes.PrimaryColorLight Colors.blueNordea
+                            Themes.backgroundColor Colors.nordeaBlue
                         , borderRadius (pct 50)
                         , boxSizing borderBox
                         , display none
@@ -159,7 +159,7 @@ view attrs (RadioButton config) =
                     Css.batch
                         [ padding2 topBottomPadding (rem 1)
                         , border3 (rem 0.0625) solid transparent
-                        , Themes.backgroundColor Themes.SecondaryColor Colors.cloudBlue |> styleIf config.isSelected
+                        , Themes.backgroundColor Colors.cloudBlue |> styleIf config.isSelected
                         , transition [ Css.Transitions.borderColor 100, Css.Transitions.boxShadow 100 ]
                         ]
             in
@@ -168,13 +168,13 @@ view attrs (RadioButton config) =
                     Css.batch
                         [ commonNonSimpleStyles
                         , flexBasis (pct 100)
-                        , borderColor Colors.grayMedium
-                        , borderColor Colors.redDark |> styleIf config.showError
+                        , borderColor Colors.mediumGray
+                        , borderColor Colors.darkRed |> styleIf config.showError
                         , Css.firstOfType [ borderTopLeftRadius (rem 0.5), borderTopRightRadius (rem 0.5) ]
                         , Css.lastOfType [ borderBottomLeftRadius (rem 0.5), borderBottomRightRadius (rem 0.5) ]
                         , pseudoClass "not(label:first-of-type):not(:hover)" [ borderTopColor transparent ] |> styleIf (not config.isSelected)
                         , pseudoClass "not(label:first-of-type)" [ Css.marginTop (rem -0.0625) ]
-                        , hover [ Themes.backgroundColor Themes.SecondaryColor Colors.cloudBlue ] |> styleIf (not isDisabled)
+                        , hover [ Themes.backgroundColor Colors.cloudBlue ] |> styleIf (not isDisabled)
                         ]
 
                 Simple ->
@@ -185,11 +185,11 @@ view attrs (RadioButton config) =
                         [ commonNonSimpleStyles
                         , borderRadius (rem 0.25)
                         , minHeight (rem 2.5)
-                        , borderColor Colors.grayMedium |> styleIf (not config.isSelected)
-                        , borderColor Colors.redDark |> styleIf config.showError
+                        , borderColor Colors.mediumGray |> styleIf (not config.isSelected)
+                        , borderColor Colors.darkRed |> styleIf config.showError
                         , hover
-                            [ Themes.borderColor Themes.PrimaryColorLight Colors.blueNordea |> styleIf (not config.showError)
-                            , Themes.backgroundColor Themes.SecondaryColor Colors.cloudBlue
+                            [ Themes.borderColor Colors.nordeaBlue |> styleIf (not config.showError)
+                            , Themes.backgroundColor Colors.cloudBlue
                             ]
                             |> styleIf (not isDisabled)
                         ]
@@ -197,7 +197,7 @@ view attrs (RadioButton config) =
         notDisabledSpecificStyling =
             let
                 hoverShadow =
-                    Css.property "box-shadow" ("0rem 0rem 0rem 0.0625rem " ++ Themes.colorVariable Themes.SecondaryColor Colors.blueMedium)
+                    Css.property "box-shadow" ("0rem 0rem 0rem 0.0625rem " ++ Themes.colorVariable Colors.mediumBlue)
             in
             Css.batch
                 [ pseudoClass "hover .nfe-radiomark:before" [ hoverShadow ]

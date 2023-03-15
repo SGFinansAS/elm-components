@@ -141,14 +141,14 @@ view (FileUpload config) =
                 styleOnHover =
                     if config.isHovering then
                         Css.batch
-                            [ border3 (rem 0.0625) dashed Colors.blueDeep
-                            , Themes.backgroundColor Themes.SecondaryColor Colors.cloudBlue
+                            [ border3 (rem 0.0625) dashed Colors.deepBlue
+                            , Themes.backgroundColor Colors.cloudBlue
                             ]
 
                     else
                         Css.batch
-                            [ border3 (rem 0.0625) dashed Colors.grayMedium
-                            , hover [ backgroundColor Colors.grayCool ]
+                            [ border3 (rem 0.0625) dashed Colors.mediumGray
+                            , hover [ backgroundColor Colors.coolGray ]
                             ]
             in
             [ onFilesDropped
@@ -171,7 +171,7 @@ view (FileUpload config) =
                 , alignItems center
                 , borderRadius (rem 0.25)
                 , cursor pointer
-                , pseudoClass "focus-within" [ border3 (rem 0.0625) dashed Colors.blueDeep ]
+                , pseudoClass "focus-within" [ border3 (rem 0.0625) dashed Colors.deepBlue ]
                 , styleOnHover
                 ]
             ]
@@ -179,7 +179,7 @@ view (FileUpload config) =
         iconUpload =
             Icon.upload
                 [ css
-                    [ Themes.color Themes.PrimaryColorLight Colors.blueNordea
+                    [ Themes.color Colors.nordeaBlue
                     , case config.appearance of
                         Large ->
                             marginBottom (rem 1)
@@ -194,7 +194,7 @@ view (FileUpload config) =
                 |> Text.view [ css [ color Colors.darkGray ] ]
                     [ Html.text (config.translate strings.uploadDescription1)
                     , Html.span
-                        [ css [ Themes.color Themes.PrimaryColorLight Colors.blueNordea ] ]
+                        [ css [ Themes.color Colors.nordeaBlue ] ]
                         [ Html.text (config.translate strings.uploadDescription2) ]
                     , Html.text (config.translate strings.uploadDescription3)
                     ]
@@ -224,7 +224,7 @@ view (FileUpload config) =
         , viewSupportedFileTypesText
             |> showIf (not config.isHovering && config.appearance == Large)
         , Text.bodyTextSmall
-            |> Text.view [ css [ Themes.color Themes.PrimaryColorLight Colors.blueNordea ] ]
+            |> Text.view [ css [ Themes.color Colors.nordeaBlue ] ]
                 [ Html.text (config.translate strings.dropToUploadFile) ]
             |> showIf config.isHovering
         , Html.input
@@ -277,7 +277,7 @@ uploadedFilesView files onClickRemove translate attrs =
                                 , alignItems center
                                 , listStyle none
                                 , padding2 (rem 0.75) (rem 1.25)
-                                , backgroundColor Colors.grayCool
+                                , backgroundColor Colors.coolGray
                                 , borderRadius (rem 0.5)
                                 , pseudoClass "not(:last-child)" [ marginBottom (rem 1) ]
                                 ]
@@ -300,7 +300,7 @@ uploadedFilesView files onClickRemove translate attrs =
                                     , backgroundColor Colors.transparent
                                     ]
                                 ]
-                                [ Icon.trash [ css [ Themes.color Themes.PrimaryColorLight Colors.blueDeep ] ] ]
+                                [ Icon.trash [ css [ Themes.color Colors.deepBlue ] ] ]
                             ]
                     )
             )

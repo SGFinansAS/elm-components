@@ -285,7 +285,7 @@ infoTooltip attrs children arrow =
     Html.div
         ([ Attr.class "tooltip-content-default-margin"
          , css
-            [ backgroundColor Colors.grayDarkest
+            [ backgroundColor Colors.darkestGray
             , color Colors.white
             , padding2 (rem 0.5) (rem 1)
             , borderRadius (rem 0.5)

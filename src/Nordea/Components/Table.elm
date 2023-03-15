@@ -78,7 +78,7 @@ theadWithVariant variant attrs =
     Html.thead
         (css
             [ height headHeight
-            , borderBottom3 (rem 0.0625) solid Colors.grayLight
+            , borderBottom3 (rem 0.0625) solid Colors.lightGray
             ]
             :: attrs
         )
@@ -144,7 +144,7 @@ tbodyWithVariant variant attrs =
             , Css.children
                 [ typeSelector "tr"
                     [ height trHeight
-                    , hover [ Themes.backgroundColor Themes.SecondaryColor Colors.cloudBlue |> Css.important ]
+                    , hover [ Themes.backgroundColor Colors.cloudBlue |> Css.important ]
                     , nthChild "even" [ backgroundColor Colors.grayLightBorder ]
                     ]
                 ]

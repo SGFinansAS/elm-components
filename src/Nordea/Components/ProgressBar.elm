@@ -68,9 +68,9 @@ type alias ViewConfig msg =
 init : { progress : Float, isCompleted : Bool } -> ViewConfig msg
 init { progress, isCompleted } =
     { strokeWidth = 6
-    , strokeColor = Colors.blueDeep
-    , unfilledStrokeColor = Colors.grayCool
-    , checkmarkColor = Colors.greenDark
+    , strokeColor = Colors.deepBlue
+    , unfilledStrokeColor = Colors.coolGray
+    , checkmarkColor = Colors.darkGreen
     , animDurationMs = 1000
     , progress = progress
     , isCompleted = isCompleted
@@ -211,7 +211,7 @@ view attrs config =
                                     [ Attrs.css
                                         [ containerStyle
                                         , fontFamilies [ "Nordea Sans Small" ]
-                                        , Themes.color Themes.PrimaryColor Colors.blueDeep
+                                        , Themes.color Colors.deepBlue
                                         , fontSize (rem 0.875)
                                         , fontWeight (int 500)
                                         , lineHeight (rem 0)

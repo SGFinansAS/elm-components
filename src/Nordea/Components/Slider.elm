@@ -120,7 +120,7 @@ view attributes (Slider config) =
                 [ NordeaText.textSmallLight
                     |> NordeaText.view [] [ Html.text config.labelString ]
                 , NordeaText.textTinyLight
-                    |> NordeaText.view [ css [ color Colors.grayNordea ] ] [ Html.text config.description ]
+                    |> NordeaText.view [ css [ color Colors.nordeaGray ] ] [ Html.text config.description ]
                 ]
             , label [ css [ flex (int 1) ] ]
                 [ showIf config.showNumberInput

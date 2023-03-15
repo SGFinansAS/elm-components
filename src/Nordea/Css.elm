@@ -1,5 +1,6 @@
 module Nordea.Css exposing
-    ( colorVariable
+    ( colorToString
+    , colorVariable
     , propertyWithColorVariable
     , propertyWithVariable
     , smallInputHeight

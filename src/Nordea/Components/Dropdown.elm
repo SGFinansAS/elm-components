@@ -203,7 +203,7 @@ view attrs (Dropdown config) =
                             , transform (translateY (pct -50))
                             , right (rem 0.3125)
                             , pointerEvents none
-                            , color Colors.grayCool
+                            , color Colors.coolGray
                             ]
                         ]
             in
@@ -243,20 +243,20 @@ view attrs (Dropdown config) =
                 , padding4 (rem 0.5) (rem 2) (rem 0.5) (rem 1)
                 , paddingRight (rem 3) |> styleIf (config.variant /= Simple)
                 , if config.variant /= Simple || config.hasError then
-                    border3 (rem 0.0625) solid Colors.grayMedium
+                    border3 (rem 0.0625) solid Colors.mediumGray
 
                   else
                     borderStyle none
-                , borderColor Colors.redDark |> styleIf config.hasError
+                , borderColor Colors.darkRed |> styleIf config.hasError
                 , borderRadius (rem 0.25)
                 , focus
-                    [ Css.property "box-shadow" ("0rem 0rem 0rem 0.0625rem " ++ Themes.colorVariable Themes.PrimaryColorLight Colors.blueNordea)
+                    [ Css.property "box-shadow" ("0rem 0rem 0rem 0.0625rem " ++ Themes.colorVariable Colors.nordeaBlue)
                     , outline none
                     ]
                 , fontSize (rem 1.0)
                 , lineHeight (rem 1.4)
                 , color inherit
-                , withAttribute "disabled" [ color Colors.grayNordea, backgroundColor Colors.grayCool ]
+                , withAttribute "disabled" [ color Colors.nordeaGray, backgroundColor Colors.coolGray ]
                 , cursor pointer
                 ]
             ]

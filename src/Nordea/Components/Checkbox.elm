@@ -117,14 +117,14 @@ view attrs (Checkbox config) =
                     , backgroundColor Colors.white
                     , border3 (rem 0.125) solid Css.transparent
                     , if isDisabled then
-                        borderColor Colors.grayMedium
+                        borderColor Colors.mediumGray
 
                       else
-                        Themes.borderColor Themes.PrimaryColorLight Colors.blueNordea
+                        Themes.borderColor Colors.nordeaBlue
                     , borderRadius (rem 0.125)
-                    , borderColor Colors.redDark
+                    , borderColor Colors.darkRed
                         |> styleIf (config.hasError && config.appearance == Simple)
-                    , borderColor Colors.grayMedium
+                    , borderColor Colors.mediumGray
                         |> styleIf (config.hasError && List.member config.appearance [ Standard, ListStyle ])
                     , position relative
                     , boxSizing borderBox
@@ -140,7 +140,7 @@ view attrs (Checkbox config) =
                         , height (rem 0.813)
                         , transforms [ rotate (deg 45) ]
                         , if isDisabled then
-                            border3 (rem 0.0625) solid Colors.grayNordea
+                            border3 (rem 0.0625) solid Colors.nordeaGray
 
                           else
                             border3 (rem 0.0625) solid Colors.white
@@ -165,7 +165,7 @@ view attrs (Checkbox config) =
                     Css.batch
                         [ padding2 topBottomPadding (rem 1)
                         , border3 (rem 0.0625) solid transparent
-                        , Themes.backgroundColor Themes.SecondaryColor Colors.cloudBlue |> styleIf config.isChecked
+                        , Themes.backgroundColor Colors.cloudBlue |> styleIf config.isChecked
                         , transition [ Css.Transitions.borderColor 100, Css.Transitions.boxShadow 100 ]
                         ]
             in
@@ -174,13 +174,13 @@ view attrs (Checkbox config) =
                     Css.batch
                         [ commonNonSimpleStyles
                         , flexBasis (pct 100)
-                        , borderColor Colors.grayMedium
-                        , borderColor Colors.redDark |> styleIf config.hasError
+                        , borderColor Colors.mediumGray
+                        , borderColor Colors.darkRed |> styleIf config.hasError
                         , Css.firstOfType [ borderTopLeftRadius (rem 0.5), borderTopRightRadius (rem 0.5) ]
                         , Css.lastOfType [ borderBottomLeftRadius (rem 0.5), borderBottomRightRadius (rem 0.5) ]
                         , pseudoClass "not(label:first-of-type):not(:hover)" [ borderTopColor transparent ] |> styleIf (not config.isChecked)
                         , pseudoClass "not(label:first-of-type)" [ Css.marginTop (rem -0.0625) ]
-                        , hover [ Themes.backgroundColor Themes.SecondaryColor Colors.cloudBlue ] |> styleIf (not isDisabled)
+                        , hover [ Themes.backgroundColor Colors.cloudBlue ] |> styleIf (not isDisabled)
                         ]
 
                 Simple ->
@@ -191,11 +191,11 @@ view attrs (Checkbox config) =
                         [ commonNonSimpleStyles
                         , borderRadius (rem 0.25)
                         , minHeight (rem 2.5)
-                        , borderColor Colors.grayMedium |> styleIf (not config.isChecked)
-                        , borderColor Colors.redDark |> styleIf config.hasError
+                        , borderColor Colors.mediumGray |> styleIf (not config.isChecked)
+                        , borderColor Colors.darkRed |> styleIf config.hasError
                         , hover
-                            [ Themes.borderColor Themes.PrimaryColorLight Colors.blueNordea |> styleIf (not config.hasError)
-                            , Themes.backgroundColor Themes.SecondaryColor Colors.cloudBlue
+                            [ Themes.borderColor Colors.nordeaBlue |> styleIf (not config.hasError)
+                            , Themes.backgroundColor Colors.cloudBlue
                             ]
                             |> styleIf (not isDisabled)
                         ]
@@ -203,7 +203,7 @@ view attrs (Checkbox config) =
         notDisabledSpecificStyling =
             let
                 hoverShadow =
-                    Css.property "box-shadow" ("0rem 0rem 0rem 0.0625rem " ++ Themes.colorVariable Themes.SecondaryColor Colors.blueMedium)
+                    Css.property "box-shadow" ("0rem 0rem 0rem 0.0625rem " ++ Themes.colorVariable Colors.mediumBlue)
             in
             Css.batch
                 [ pseudoClass "hover .nfe-checkbox" [ hoverShadow ]
@@ -240,10 +240,10 @@ view attrs (Checkbox config) =
                 , pseudoClass "checked ~ .nfe-checkbox"
                     [ after [ display block ]
                     , if isDisabled then
-                        backgroundColor Colors.grayMedium
+                        backgroundColor Colors.mediumGray
 
                       else
-                        Themes.backgroundColor Themes.PrimaryColorLight Colors.blueNordea
+                        Themes.backgroundColor Colors.nordeaBlue
                     ]
                 ]
             ]

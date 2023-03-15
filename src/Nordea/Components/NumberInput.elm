@@ -162,10 +162,10 @@ getStyles config =
     let
         borderColorStyle =
             if config.showError then
-                Colors.redDark
+                Colors.darkRed
 
             else
-                Colors.grayMedium
+                Colors.mediumGray
 
         inputHeight =
             case config.variant of
@@ -189,6 +189,6 @@ getStyles config =
     , disabled [ backgroundColor Colors.grayWarm ]
     , focus
         [ outline none
-        , Themes.borderColor Themes.PrimaryColorLight Colors.blueNordea
+        , Themes.borderColor Colors.nordeaBlue
         ]
     ]

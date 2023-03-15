@@ -174,7 +174,7 @@ view { onChangeStep, translate, ariaLabel } optionalConfig attrs children_ =
                 [ css
                     [ absoluteCenter 0.5
                     , border3 (rem 0.2) solid transparent
-                    , Themes.borderColor Themes.PrimaryColorLight Colors.nordeaBlue
+                    , Themes.borderColor Colors.nordeaBlue
                     , borderRadius (pct 50)
                     , animationName anim
                     , animationDuration (ms 3000)
@@ -204,7 +204,7 @@ view { onChangeStep, translate, ariaLabel } optionalConfig attrs children_ =
                             [ width (rem 13)
                             , borderRadius (rem 0.25)
                             , padding (rem 0.75)
-                            , Themes.backgroundColor Themes.PrimaryColorLight Colors.nordeaBlue
+                            , Themes.backgroundColor Colors.nordeaBlue
                             , color Colors.white
                             , position relative
                             ]
@@ -228,21 +228,21 @@ view { onChangeStep, translate, ariaLabel } optionalConfig attrs children_ =
                     , backgroundColor transparent
                     , cursor pointer
                     , focus
-                        [ Css.property "box-shadow" ("0rem 0rem 0rem 0.0625rem " ++ Themes.colorVariable Themes.PrimaryColorLight Colors.blueNordea)
+                        [ Css.property "box-shadow" ("0rem 0rem 0rem 0.0625rem " ++ Themes.colorVariable Colors.nordeaBlue)
                         , outline none
                         ]
                     , before
                         [ Css.property "content" "''"
                         , absoluteCenter 1
                         , borderRadius (pct 50)
-                        , Themes.backgroundColor Themes.PrimaryColorLight Colors.nordeaBlue
+                        , Themes.backgroundColor Colors.nordeaBlue
                         , opacity (num 0.2)
                         ]
                     , after
                         [ Css.property "content" "''"
                         , absoluteCenter 0.6
                         , borderRadius (pct 50)
-                        , Themes.backgroundColor Themes.PrimaryColorLight Colors.nordeaBlue
+                        , Themes.backgroundColor Colors.nordeaBlue
                         , transition [ Css.Transitions.transform3 300 0 easeInOut ]
                         , hover [ transforms [ translate2 (pct -50) (pct -50), scale 1 ] ]
                         ]
@@ -288,8 +288,8 @@ step attrs children_ { translate, showStepLegend, onChangeStep, currentStep, tot
                     (css
                         [ borderRadius (rem 1.25)
                         , padding2 (rem 0.25) (rem 0.5)
-                        , Themes.backgroundColor Themes.SecondaryColor Colors.mediumBlue
-                        , Themes.color Themes.PrimaryColor Colors.deepBlue
+                        , Themes.backgroundColor Colors.mediumBlue
+                        , Themes.color Colors.deepBlue
                         , Css.alignSelf flexStart
                         ]
                         :: attrs

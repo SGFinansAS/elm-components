@@ -80,8 +80,8 @@ commonTabStyle isActive =
         , borderBottom3 (rem 0.25) solid Color.transparent
         , Css.hover [ borderBottom3 (rem 0.25) solid Color.lightGray ] |> styleIf (not isActive)
         , textDecoration none
-        , Themes.color Themes.PrimaryColor Color.deepBlue
+        , Themes.color Color.deepBlue
         , backgroundColor transparent
-        , Themes.borderColor Themes.PrimaryColorLight Color.mediumBlue |> styleIf isActive
+        , Themes.borderColor Color.mediumBlue |> styleIf isActive
         , fontWeight (int 500) |> styleIf isActive
         ]

@@ -130,10 +130,10 @@ getStyles config =
     let
         borderColorStyle =
             if config.showError then
-                Colors.redDark
+                Colors.darkRed
 
             else
-                Colors.grayMedium
+                Colors.mediumGray
     in
     [ Fonts.fromSize 1
     , padding2 (rem 0.5) (rem 0.75)
@@ -146,6 +146,6 @@ getStyles config =
     , overflow auto
     , focus
         [ outline none
-        , Themes.borderColor Themes.PrimaryColorLight Colors.blueNordea
+        , Themes.borderColor Colors.nordeaBlue
         ]
     ]

@@ -171,9 +171,9 @@ view attrs (DropdownFilter config) =
         dropdownStyles =
             Css.batch
                 [ backgroundColor Colors.white
-                , borderBottom3 (rem 0.0625) solid Colors.grayMedium
-                , borderLeft3 (rem 0.0625) solid Colors.grayMedium
-                , borderRight3 (rem 0.0625) solid Colors.grayMedium
+                , borderBottom3 (rem 0.0625) solid Colors.mediumGray
+                , borderLeft3 (rem 0.0625) solid Colors.mediumGray
+                , borderRight3 (rem 0.0625) solid Colors.mediumGray
                 , borderBottomLeftRadius (rem 0.25)
                 , borderBottomRightRadius (rem 0.25)
                 , boxSizing borderBox
@@ -230,7 +230,7 @@ view attrs (DropdownFilter config) =
                           else
                             transforms [ translateY (pct -50) ]
                         , pointerEvents none
-                        , color Colors.grayCool
+                        , color Colors.coolGray
                         ]
                     ]
                     |> hideIf config.hasSearchIcon

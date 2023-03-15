@@ -119,9 +119,9 @@ inline attrs children =
             { styles =
                 [ Css.display inlineFlex
                 , Css.fontWeight Css.inherit
-                , Themes.color Themes.PrimaryColorLight Colors.blueNordea
-                , hover [ Themes.color Themes.PrimaryColor Colors.blueDeep ]
-                , focus [ Themes.color Themes.PrimaryColor Colors.blueDeep ]
+                , Themes.color Colors.nordeaBlue
+                , hover [ Themes.color Colors.deepBlue ]
+                , focus [ Themes.color Colors.deepBlue ]
                 , visited [ Css.color Colors.purple ]
                 ]
             , isDisabled = Just (List.member (Html.Styled.Attributes.disabled True) attrs)
@@ -139,13 +139,13 @@ outer attrs children =
         (FlatLink
             { styles =
                 [ Css.fontWeight Css.inherit
-                , Themes.color Themes.PrimaryColorLight Colors.blueNordea
+                , Themes.color Colors.nordeaBlue
                 , textDecoration none
                 , hover
-                    [ Themes.color Themes.PrimaryColor Colors.blueDeep
+                    [ Themes.color Colors.deepBlue
                     , textDecoration underline
                     ]
-                , focus [ Themes.color Themes.PrimaryColor Colors.blueDeep ]
+                , focus [ Themes.color Colors.deepBlue ]
                 , visited [ Css.color Colors.purple ]
                 ]
             , isDisabled = Just (List.member (Html.Styled.Attributes.disabled True) attrs)
@@ -166,9 +166,9 @@ baseStyle =
         , cursor pointer
         , boxSizing borderBox
         , textDecoration underline
-        , Themes.color Themes.PrimaryColor Colors.blueDeep
-        , hover [ Themes.color Themes.PrimaryColorLight Colors.blueNordea ]
-        , focus [ Themes.color Themes.PrimaryColorLight Colors.blueNordea ]
+        , Themes.color Colors.deepBlue
+        , hover [ Themes.color Colors.nordeaBlue ]
+        , focus [ Themes.color Colors.nordeaBlue ]
         , fontWeight (int 500)
         ]
 

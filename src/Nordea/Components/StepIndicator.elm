@@ -156,10 +156,10 @@ divStyles =
     , height (rem 2)
     , width (rem 2)
     , borderRadius (pct 50)
-    , border3 (rem 0.125) solid Colors.grayMedium
+    , border3 (rem 0.125) solid Colors.mediumGray
     , boxSizing borderBox
     , fontSize (rem 1)
-    , color Colors.grayEclipse
+    , color Colors.eclipse
     , backgroundColor Colors.white
     ]
 
@@ -189,7 +189,7 @@ divStylesActive =
     , width (rem 2)
     , borderRadius (pct 50)
     , border3 (rem 0.125) solid Colors.white
-    , Themes.backgroundColor Themes.PrimaryColor Colors.blueDeep
+    , Themes.backgroundColor Colors.deepBlue
     , boxSizing borderBox
     , color Colors.white
     ]
@@ -235,7 +235,7 @@ viewLine =
             , Css.right (Css.rem 2)
             , Css.width (Css.rem 6)
             , Css.height (Css.rem 0.1)
-            , Css.backgroundColor Colors.grayMedium
+            , Css.backgroundColor Colors.mediumGray
             ]
         ]
         []

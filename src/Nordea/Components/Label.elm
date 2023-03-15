@@ -99,7 +99,7 @@ view attrs children (Label config) =
                 requirednessHintView requirednessHint =
                     Text.textSmallLight
                         |> Text.view
-                            [ css [ color Colors.grayDark ] ]
+                            [ css [ color Colors.darkGray ] ]
                             [ Html.text <|
                                 case requirednessHint of
                                     Mandatory translate ->
@@ -130,7 +130,7 @@ view attrs children (Label config) =
             let
                 viewHintText text =
                     Text.textSmallLight
-                        |> Text.view [ css [ color Colors.grayDark ] ] [ Html.text text ]
+                        |> Text.view [ css [ color Colors.darkGray ] ] [ Html.text text ]
 
                 viewError errorText =
                     Text.textSmallLight
@@ -143,7 +143,7 @@ view attrs children (Label config) =
                 viewCharCounter counter =
                     Text.textSmallLight
                         |> Text.view
-                            [ css [ color Colors.grayDark ] ]
+                            [ css [ color Colors.darkGray ] ]
                             [ String.fromInt counter.current ++ "/" ++ String.fromInt counter.max |> Html.text ]
             in
             Html.row
@@ -215,7 +215,7 @@ stateStyles { hasError } =
                 Colors.toString Colors.darkRed
 
             else
-                Themes.colorVariable Themes.PrimaryColorLight Colors.blueNordea
+                Themes.colorVariable Colors.nordeaBlue
 
         outlineStyle =
             Css.batch
