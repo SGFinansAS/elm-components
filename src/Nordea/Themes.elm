@@ -27,36 +27,33 @@ backgroundColor : Css.Color -> Css.Style
 backgroundColor color_ =
     color_
         |> themeVariableForColor
-        |> Maybe.map toString
-        |> Maybe.withDefault "--not-existing"
-        |> (\themeColor -> Css.propertyWithColorVariable "background-color" themeColor color_)
+        |> Maybe.map (\themeColor -> Css.propertyWithColorVariable "background-color" (toString themeColor) color_)
+        |> Maybe.withDefault (Css.backgroundColor color_)
 
 
 color : Css.Color -> Css.Style
 color color_ =
-    color_
-        |> themeVariableForColor
-        |> Maybe.map toString
-        |> Maybe.withDefault "--not-existing"
-        |> (\themeColor -> Css.propertyWithColorVariable "color" themeColor color_)
+    if color_ == Colors.white then
+        Css.propertyWithColorVariable "color" (toString TextColorOnPrimaryColorBackground) color_
+
+    else
+        Css.color color_
 
 
 borderColor : Css.Color -> Css.Style
 borderColor color_ =
     color_
         |> themeVariableForColor
-        |> Maybe.map toString
-        |> Maybe.withDefault "--not-existing"
-        |> (\themeColor -> Css.propertyWithColorVariable "border-color" themeColor color_)
+        |> Maybe.map (\themeColor -> Css.propertyWithColorVariable "border-color" (toString themeColor) color_)
+        |> Maybe.withDefault (Css.borderColor color_)
 
 
 colorVariable : Css.Color -> String
 colorVariable color_ =
     color_
         |> themeVariableForColor
-        |> Maybe.map toString
-        |> Maybe.withDefault "--not-existing"
-        |> (\themeColor -> Css.colorVariable themeColor color_)
+        |> Maybe.map (\themeColor -> Css.colorVariable (toString themeColor) color_)
+        |> Maybe.withDefault (Css.colorToString color_)
 
 
 themeVariableForColor : Css.Color -> Maybe ThemeColor
@@ -73,9 +70,6 @@ themeVariableForColor color_ =
 
     else if List.member color__ [ Colors.mediumBlue, Colors.haasBlue, Colors.cloudBlue ] then
         Just SecondaryColor
-
-    else if color__ == Colors.white then
-        Just TextColorOnPrimaryColorBackground
 
     else
         Nothing
