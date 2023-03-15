@@ -86,6 +86,7 @@ view attrs config =
 
         progress =
             floor config.progress
+                |> clamp 0 100
 
         maxProgress =
             max 100 progress
