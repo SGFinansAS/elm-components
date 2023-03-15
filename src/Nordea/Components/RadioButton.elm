@@ -34,6 +34,7 @@ import Css
         , height
         , hover
         , inlineFlex
+        , justifyContent
         , left
         , minHeight
         , none
@@ -192,6 +193,7 @@ view attrs (RadioButton config) =
                 StandardNew ->
                     Css.batch
                         [ commonNonSimpleStyles
+                        , justifyContent center
                         , borderRadius (rem 0.25)
                         , minHeight (rem 2.5)
                         , borderColor Colors.mediumGray
