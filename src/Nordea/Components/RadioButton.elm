@@ -27,7 +27,6 @@ import Css
         , borderTopRightRadius
         , boxSizing
         , center
-        , cursor
         , display
         , flex
         , flexBasis
@@ -41,7 +40,6 @@ import Css
         , opacity
         , padding2
         , pct
-        , pointer
         , position
         , pseudoClass
         , relative
@@ -57,7 +55,7 @@ import Css.Transitions exposing (transition)
 import Html.Styled as Html exposing (Attribute, Html)
 import Html.Styled.Attributes as Attrs exposing (css, disabled, name, type_)
 import Html.Styled.Events as Events
-import Nordea.Html exposing (styleIf)
+import Nordea.Html exposing (showIf, styleIf)
 import Nordea.Resources.Colors as Colors
 import Nordea.Themes as Themes
 
@@ -79,6 +77,7 @@ type RadioButton msg
 
 type Appearance
     = Standard
+    | StandardNew
     | Simple
     | ListStyle
     | Small
@@ -159,8 +158,13 @@ view attrs (RadioButton config) =
                     Css.batch
                         [ padding2 topBottomPadding (rem 1)
                         , border3 (rem 0.0625) solid transparent
-                        , Themes.backgroundColor Colors.cloudBlue |> styleIf config.isSelected
-                        , transition [ Css.Transitions.borderColor 100, Css.Transitions.boxShadow 100 ]
+                        , Themes.backgroundColor Colors.cloudBlue
+                            |> styleIf config.isSelected
+                        , transition
+                            [ Css.Transitions.borderColor 100
+                            , Css.Transitions.backgroundColor 100
+                            , Css.Transitions.boxShadow 100
+                            ]
                         ]
             in
             case config.appearance of
@@ -172,13 +176,43 @@ view attrs (RadioButton config) =
                         , borderColor Colors.darkRed |> styleIf config.showError
                         , Css.firstOfType [ borderTopLeftRadius (rem 0.5), borderTopRightRadius (rem 0.5) ]
                         , Css.lastOfType [ borderBottomLeftRadius (rem 0.5), borderBottomRightRadius (rem 0.5) ]
-                        , pseudoClass "not(label:first-of-type):not(:hover)" [ borderTopColor transparent ] |> styleIf (not config.isSelected)
+                        , pseudoClass "not(label:first-of-type):not(:hover)" [ borderTopColor transparent ]
+                            |> styleIf (not config.isSelected)
                         , pseudoClass "not(label:first-of-type)" [ Css.marginTop (rem -0.0625) ]
-                        , hover [ Themes.backgroundColor Colors.cloudBlue ] |> styleIf (not isDisabled)
+                        , hover [ Themes.backgroundColor Colors.cloudBlue ]
+                            |> styleIf (not isDisabled)
+                        , pseudoClass "focus-within" [ Themes.backgroundColor Colors.cloudBlue ]
+                            |> styleIf (not isDisabled)
                         ]
 
                 Simple ->
                     Css.batch []
+
+                StandardNew ->
+                    Css.batch
+                        [ commonNonSimpleStyles
+                        , borderRadius (rem 0.25)
+                        , minHeight (rem 2.5)
+                        , borderColor Colors.mediumGray
+                        , borderColor Colors.darkRed |> styleIf config.showError
+                        , Css.batch
+                            [ border3 (rem 0.09375) solid transparent
+                            , padding2 (rem (0.75 - 0.03125)) (rem (1 - 0.03125))
+                            , Themes.color Colors.nordeaBlue
+                            , Themes.borderColor Colors.nordeaBlue
+                                |> styleIf (not config.showError)
+                            ]
+                            |> styleIf (config.isSelected && not isDisabled)
+                        , hover
+                            [ Themes.borderColor Colors.nordeaBlue
+                                |> styleIf (not config.showError)
+                            , Themes.backgroundColor Colors.cloudBlue
+                            ]
+                            |> styleIf (not isDisabled)
+                        , pseudoClass "focus-within"
+                            [ Themes.borderColor Colors.nordeaBlue ]
+                            |> styleIf (not config.showError && not isDisabled)
+                        ]
 
                 _ ->
                     Css.batch
@@ -188,23 +222,27 @@ view attrs (RadioButton config) =
                         , borderColor Colors.mediumGray |> styleIf (not config.isSelected)
                         , borderColor Colors.darkRed |> styleIf config.showError
                         , hover
-                            [ Themes.borderColor Colors.nordeaBlue |> styleIf (not config.showError)
+                            [ Themes.borderColor Colors.nordeaBlue
+                                |> styleIf (not config.showError)
                             , Themes.backgroundColor Colors.cloudBlue
                             ]
                             |> styleIf (not isDisabled)
+                        , pseudoClass "focus-within"
+                            [ Themes.borderColor Colors.nordeaBlue ]
+                            |> styleIf (not config.showError && not isDisabled)
                         ]
 
-        notDisabledSpecificStyling =
-            let
-                hoverShadow =
-                    Css.property "box-shadow" ("0rem 0rem 0rem 0.0625rem " ++ Themes.colorVariable Colors.mediumBlue)
-            in
-            Css.batch
-                [ pseudoClass "hover .nfe-radiomark:before" [ hoverShadow ]
-                , pseudoClass "focus-within .nfe-radiomark:before" [ hoverShadow ]
-                , cursor pointer
-                ]
-                |> styleIf (not isDisabled)
+        -- notDisabledSpecificStyling =
+        --     let
+        --         hoverShadow =
+        --             Css.property "box-shadow" ("0rem 0rem 0rem 0.0625rem " ++ Themes.colorVariable Themes.SecondaryColor Colors.blueMedium)
+        --     in
+        --     Css.batch
+        --         [ pseudoClass "hover .nfe-radiomark::after" [ hoverShadow ]
+        --         , pseudoClass "focus-within .nfe-radiomark::after" [ hoverShadow ]
+        --         , cursor pointer
+        --         ]
+        --         |> styleIf (not isDisabled)
     in
     Html.label
         (css
@@ -213,7 +251,8 @@ view attrs (RadioButton config) =
             , alignItems center
             , boxSizing borderBox
             , position relative
-            , notDisabledSpecificStyling
+
+            --, notDisabledSpecificStyling
             , appearanceStyle
             ]
             :: attrs
@@ -235,7 +274,7 @@ view attrs (RadioButton config) =
                 ]
             ]
             []
-        , radiomark
+        , radiomark |> showIf (config.appearance /= StandardNew)
         , config.label
         ]
 
