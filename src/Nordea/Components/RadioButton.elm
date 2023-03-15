@@ -155,6 +155,9 @@ view attrs (RadioButton config) =
                         Small ->
                             rem 0.5
 
+                        StandardNew ->
+                            rem 0.5
+
                         _ ->
                             rem 0.75
 
