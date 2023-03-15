@@ -28,6 +28,7 @@ import Css
         , borderWidth
         , boxSizing
         , center
+        , cursor
         , display
         , flex
         , flexBasis
@@ -42,6 +43,7 @@ import Css
         , opacity
         , padding2
         , pct
+        , pointer
         , position
         , pseudoClass
         , relative
@@ -256,6 +258,7 @@ view attrs (RadioButton config) =
             , position relative
 
             --, notDisabledSpecificStyling
+            , cursor pointer |> styleIf (not isDisabled)
             , appearanceStyle
             ]
             :: attrs
