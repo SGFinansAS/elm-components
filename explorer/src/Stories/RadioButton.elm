@@ -19,15 +19,14 @@ stories =
                     [ RadioButton.init
                         "simple"
                         (text "Click me")
-                         (UpdateActiveRadioButton "first") 
-                         |> RadioButton.withIsSelected (config.customModel.activeRadioButton == "first")
+                        (UpdateActiveRadioButton "first")
+                        |> RadioButton.withIsSelected (config.customModel.activeRadioButton == "first")
                         |> RadioButton.view []
                     , RadioButton.init
                         "simple"
                         (text "Click me")
-                        (UpdateActiveRadioButton "second") 
+                        (UpdateActiveRadioButton "second")
                         |> RadioButton.withIsSelected (config.customModel.activeRadioButton == "second")
-                        
                         |> RadioButton.view []
                     ]
           , {}
@@ -38,17 +37,16 @@ stories =
                     [ RadioButton.init
                         "simple"
                         (text "Click me")
-                         (UpdateActiveRadioButton "first") 
-                         |> RadioButton.withIsSelected (config.customModel.activeRadioButton == "first")
+                        (UpdateActiveRadioButton "first")
+                        |> RadioButton.withIsSelected (config.customModel.activeRadioButton == "first")
                         |> RadioButton.withHasError True
                         |> RadioButton.view []
                     , RadioButton.init
                         "simple"
                         (text "Click me")
-                        (UpdateActiveRadioButton "second") 
+                        (UpdateActiveRadioButton "second")
                         |> RadioButton.withIsSelected (config.customModel.activeRadioButton == "second")
                         |> RadioButton.withHasError True
-                       
                         |> RadioButton.view []
                     ]
           , {}
@@ -59,32 +57,32 @@ stories =
                     [ RadioButton.init
                         "simple"
                         (text "Click me")
-                         (UpdateActiveRadioButton "first") 
-                         |> RadioButton.withIsSelected (config.customModel.activeRadioButton == "first")
+                        (UpdateActiveRadioButton "first")
+                        |> RadioButton.withIsSelected (config.customModel.activeRadioButton == "first")
                         |> RadioButton.view [ disabled True ]
                     , RadioButton.init
                         "simple"
                         (text "Click me")
-                        (UpdateActiveRadioButton "second") 
+                        (UpdateActiveRadioButton "second")
                         |> RadioButton.withIsSelected (config.customModel.activeRadioButton == "second")
                         |> RadioButton.view [ disabled True ]
                     ]
           , {}
-          ),
-          ( "Standard (new)"
+          )
+        , ( "Standard (new)"
           , \config ->
                 Html.div [ css [ displayFlex, Css.property "gap" "1rem" ] ]
                     [ RadioButton.init
                         "simple"
                         (text "Click me")
-                        (UpdateActiveRadioButton "first") 
+                        (UpdateActiveRadioButton "first")
                         |> RadioButton.withAppearance RadioButton.StandardNew
                         |> RadioButton.withIsSelected (config.customModel.activeRadioButton == "first")
                         |> RadioButton.view []
                     , RadioButton.init
                         "simple"
                         (text "Click me")
-                        (UpdateActiveRadioButton "second") 
+                        (UpdateActiveRadioButton "second")
                         |> RadioButton.withAppearance RadioButton.StandardNew
                         |> RadioButton.withIsSelected (config.customModel.activeRadioButton == "second")
                         |> RadioButton.view []
@@ -97,14 +95,14 @@ stories =
                     [ RadioButton.init
                         "small"
                         (text "Click me")
-                         (UpdateActiveRadioButton "first") 
-                         |> RadioButton.withIsSelected (config.customModel.activeRadioButton == "first")
+                        (UpdateActiveRadioButton "first")
+                        |> RadioButton.withIsSelected (config.customModel.activeRadioButton == "first")
                         |> RadioButton.withAppearance RadioButton.Small
                         |> RadioButton.view []
                     , RadioButton.init
                         "small"
                         (text "Click me")
-                        (UpdateActiveRadioButton "second") 
+                        (UpdateActiveRadioButton "second")
                         |> RadioButton.withAppearance RadioButton.Small
                         |> RadioButton.withIsSelected (config.customModel.activeRadioButton == "second")
                         |> RadioButton.view []
@@ -117,14 +115,14 @@ stories =
                     [ RadioButton.init
                         "simple"
                         (text "Click me")
-                         (UpdateActiveRadioButton "first") 
-                         |> RadioButton.withIsSelected (config.customModel.activeRadioButton == "first")
+                        (UpdateActiveRadioButton "first")
+                        |> RadioButton.withIsSelected (config.customModel.activeRadioButton == "first")
                         |> RadioButton.withAppearance RadioButton.Simple
                         |> RadioButton.view []
                     , RadioButton.init
                         "simple"
                         (text "Click me")
-                        (UpdateActiveRadioButton "second") 
+                        (UpdateActiveRadioButton "second")
                         |> RadioButton.withAppearance RadioButton.Simple
                         |> RadioButton.withIsSelected (config.customModel.activeRadioButton == "second")
                         |> RadioButton.view []
@@ -137,15 +135,15 @@ stories =
                     [ RadioButton.init
                         "simple"
                         (text "Click me")
-                         (UpdateActiveRadioButton "first") 
-                         |> RadioButton.withIsSelected (config.customModel.activeRadioButton == "first")
+                        (UpdateActiveRadioButton "first")
+                        |> RadioButton.withIsSelected (config.customModel.activeRadioButton == "first")
                         |> RadioButton.withAppearance RadioButton.Simple
                         |> RadioButton.withHasError True
                         |> RadioButton.view []
                     , RadioButton.init
                         "simple"
                         (text "Click me")
-                        (UpdateActiveRadioButton "second") 
+                        (UpdateActiveRadioButton "second")
                         |> RadioButton.withAppearance RadioButton.Simple
                         |> RadioButton.withHasError True
                         |> RadioButton.withIsSelected (config.customModel.activeRadioButton == "second")
@@ -159,14 +157,14 @@ stories =
                     [ RadioButton.init
                         "simple"
                         (text "Click me")
-                         (UpdateActiveRadioButton "first") 
-                         |> RadioButton.withIsSelected (config.customModel.activeRadioButton == "first")
+                        (UpdateActiveRadioButton "first")
+                        |> RadioButton.withIsSelected (config.customModel.activeRadioButton == "first")
                         |> RadioButton.withAppearance RadioButton.Simple
                         |> RadioButton.view [ disabled True ]
                     , RadioButton.init
                         "simple"
                         (text "Click me")
-                        (UpdateActiveRadioButton "second") 
+                        (UpdateActiveRadioButton "second")
                         |> RadioButton.withAppearance RadioButton.Simple
                         |> RadioButton.withIsSelected (config.customModel.activeRadioButton == "second")
                         |> RadioButton.view [ disabled True ]

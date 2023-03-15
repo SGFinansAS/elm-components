@@ -16,6 +16,7 @@ import Css
         , alignItems
         , backgroundColor
         , block
+        , bold
         , border3
         , borderBottomLeftRadius
         , borderBottomRightRadius
@@ -30,6 +31,7 @@ import Css
         , display
         , flex
         , flexBasis
+        , fontWeight
         , height
         , hover
         , inlineFlex
@@ -210,7 +212,7 @@ view attrs (RadioButton config) =
                             ]
                             |> styleIf (not isDisabled)
                         , pseudoClass "focus-within"
-                            [ Themes.borderColor Colors.nordeaBlue ]
+                            [ Themes.backgroundColor Colors.cloudBlue ]
                             |> styleIf (not config.showError && not isDisabled)
                         ]
 
