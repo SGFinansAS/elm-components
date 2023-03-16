@@ -16,6 +16,7 @@ import Css
         , alignItems
         , backgroundColor
         , block
+        , bold
         , border3
         , borderBottomLeftRadius
         , borderBottomRightRadius
@@ -32,6 +33,7 @@ import Css
         , display
         , flex
         , flexBasis
+        , fontWeight
         , height
         , hover
         , inlineFlex
@@ -84,7 +86,6 @@ type Appearance
     | StandardNew
     | Simple
     | ListStyle
-    | Small
 
 
 init : String -> Html msg -> msg -> RadioButton msg
@@ -149,21 +150,10 @@ view attrs (RadioButton config) =
                 []
 
         appearanceStyle =
-            let
-                topBottomPadding =
-                    case config.appearance of
-                        Small ->
-                            rem 0.5
-
-                        StandardNew ->
-                            rem 0.5
-
-                        _ ->
-                            rem 0.75
-
-                commonNonSimpleStyles =
+            case config.appearance of
+                ListStyle ->
                     Css.batch
-                        [ padding2 topBottomPadding (rem 1)
+                        [ padding2 (rem 0.5) (rem 1)
                         , border3 (rem 0.0625) solid transparent
                         , Themes.backgroundColor Colors.cloudBlue
                             |> styleIf config.isSelected
@@ -172,12 +162,6 @@ view attrs (RadioButton config) =
                             , Css.Transitions.backgroundColor 100
                             , Css.Transitions.boxShadow 100
                             ]
-                        ]
-            in
-            case config.appearance of
-                ListStyle ->
-                    Css.batch
-                        [ commonNonSimpleStyles
                         , flexBasis (pct 100)
                         , borderColor Colors.mediumGray
                         , borderColor Colors.darkRed |> styleIf config.showError
@@ -197,24 +181,41 @@ view attrs (RadioButton config) =
 
                 StandardNew ->
                     Css.batch
-                        [ commonNonSimpleStyles
-                        , justifyContent center
+                        [ padding2 (rem 0.5) (rem 1)
+                        , border3 (rem 0.0625) solid transparent
                         , borderRadius (rem 0.25)
                         , minHeight (rem 2.5)
-                        , borderColor Colors.mediumGray
-                        , borderColor Colors.darkRed |> styleIf config.showError
+                        , justifyContent center
+                        , Themes.backgroundColor Colors.cloudBlue
+                            |> styleIf config.isSelected
+                        , transition
+                            [ Css.Transitions.borderColor 100
+                            , Css.Transitions.backgroundColor 100
+                            , Css.Transitions.boxShadow 100
+                            ]
+                        , if config.showError then
+                            borderColor Colors.darkRed
+
+                          else
+                            borderColor Colors.mediumGray
                         , Css.batch
                             [ borderWidth (rem 0.09375)
+
+                            -- we must adjust the padding after increasing the border to avoid movement
                             , padding2 (rem (0.5 - 0.03125)) (rem (1 - 0.03125))
                             , Themes.color Colors.nordeaBlue
-                            , Themes.borderColor Colors.nordeaBlue
-                                |> styleIf (not config.showError)
+                            , Themes.borderColor Colors.nordeaBlue |> styleIf (not config.showError)
                             ]
                             |> styleIf (config.isSelected && not isDisabled)
                         , hover
-                            [ Themes.borderColor Colors.nordeaBlue
-                                |> styleIf (not config.showError)
+                            [ borderWidth (rem 0.0625)
+                            , Themes.borderColor Colors.transparent |> styleIf (not config.showError)
                             , Themes.backgroundColor Colors.cloudBlue
+                            , Themes.color Colors.nordeaBlue
+                            , fontWeight bold
+
+                            -- we must adjust the padding when changing font weight to avoid movement
+                            , padding2 (rem 0.5) (rem (1 - 0.1396875))
                             ]
                             |> styleIf (not isDisabled)
                         , pseudoClass "focus-within"
@@ -224,7 +225,15 @@ view attrs (RadioButton config) =
 
                 _ ->
                     Css.batch
-                        [ commonNonSimpleStyles
+                        [ padding2 (rem 0.5) (rem 1)
+                        , border3 (rem 0.0625) solid transparent
+                        , Themes.backgroundColor Colors.cloudBlue
+                            |> styleIf config.isSelected
+                        , transition
+                            [ Css.Transitions.borderColor 100
+                            , Css.Transitions.backgroundColor 100
+                            , Css.Transitions.boxShadow 100
+                            ]
                         , borderRadius (rem 0.25)
                         , minHeight (rem 2.5)
                         , borderColor Colors.mediumGray |> styleIf (not config.isSelected)
@@ -239,18 +248,6 @@ view attrs (RadioButton config) =
                             [ Themes.borderColor Colors.nordeaBlue ]
                             |> styleIf (not config.showError && not isDisabled)
                         ]
-
-        -- notDisabledSpecificStyling =
-        --     let
-        --         hoverShadow =
-        --             Css.property "box-shadow" ("0rem 0rem 0rem 0.0625rem " ++ Themes.colorVariable Themes.SecondaryColor Colors.blueMedium)
-        --     in
-        --     Css.batch
-        --         [ pseudoClass "hover .nfe-radiomark::after" [ hoverShadow ]
-        --         , pseudoClass "focus-within .nfe-radiomark::after" [ hoverShadow ]
-        --         , cursor pointer
-        --         ]
-        --         |> styleIf (not isDisabled)
     in
     Html.label
         (css
@@ -259,8 +256,6 @@ view attrs (RadioButton config) =
             , alignItems center
             , boxSizing borderBox
             , position relative
-
-            --, notDisabledSpecificStyling
             , cursor pointer |> styleIf (not isDisabled)
             , appearanceStyle
             ]

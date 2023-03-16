@@ -74,17 +74,24 @@ stories =
                 Html.div [ css [ displayFlex, Css.property "gap" "1rem" ] ]
                     [ RadioButton.init
                         "simple"
-                        (text "Click me")
+                        (text "Click me 22 2")
                         (UpdateActiveRadioButton "first")
                         |> RadioButton.withAppearance RadioButton.StandardNew
                         |> RadioButton.withIsSelected (config.customModel.activeRadioButton == "first")
                         |> RadioButton.view []
                     , RadioButton.init
                         "simple"
-                        (text "Click me")
+                        (text "Click me 12 13")
                         (UpdateActiveRadioButton "second")
                         |> RadioButton.withAppearance RadioButton.StandardNew
                         |> RadioButton.withIsSelected (config.customModel.activeRadioButton == "second")
+                        |> RadioButton.view []
+                    , RadioButton.init
+                        "simple"
+                        (text "Click me 12 13 wqd")
+                        (UpdateActiveRadioButton "third")
+                        |> RadioButton.withAppearance RadioButton.StandardNew
+                        |> RadioButton.withIsSelected (config.customModel.activeRadioButton == "third")
                         |> RadioButton.view []
                     ]
           , {}
@@ -106,26 +113,6 @@ stories =
                         (UpdateActiveRadioButton "second")
                         |> RadioButton.withAppearance RadioButton.StandardNew
                         |> RadioButton.withHasError True
-                        |> RadioButton.withIsSelected (config.customModel.activeRadioButton == "second")
-                        |> RadioButton.view []
-                    ]
-          , {}
-          )
-        , ( "Small"
-          , \config ->
-                Html.div [ css [ displayFlex, Css.property "gap" "1rem" ] ]
-                    [ RadioButton.init
-                        "small"
-                        (text "Click me")
-                        (UpdateActiveRadioButton "first")
-                        |> RadioButton.withIsSelected (config.customModel.activeRadioButton == "first")
-                        |> RadioButton.withAppearance RadioButton.Small
-                        |> RadioButton.view []
-                    , RadioButton.init
-                        "small"
-                        (text "Click me")
-                        (UpdateActiveRadioButton "second")
-                        |> RadioButton.withAppearance RadioButton.Small
                         |> RadioButton.withIsSelected (config.customModel.activeRadioButton == "second")
                         |> RadioButton.view []
                     ]

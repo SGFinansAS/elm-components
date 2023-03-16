@@ -203,9 +203,9 @@ yellowStatus =
     hex "#FEDC76"
 
 
-transparent : ColorValue NonMixable
+transparent : Color
 transparent =
-    Css.transparent
+    rgba 0 0 0 0
 
 
 withAlpha : Float -> Color -> Color

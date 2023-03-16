@@ -126,25 +126,4 @@ stories =
                     [ DropdownFilter.view [] defaultOptions ]
           , {}
           )
-        , ( "Small"
-          , \model ->
-                Html.div [ css [ displayFlex, flexDirection column ] ]
-                    [ DropdownFilter.init
-                        { onInput = SearchComponentInput
-                        , input = model.customModel.searchComponentInput
-                        , onSelect = SearchComponentSelected
-                        , items = searchResult
-                        }
-                        |> DropdownFilter.withHasFocus model.customModel.searchHasFocus
-                        |> DropdownFilter.withOnFocus SearchComponentFocus
-                        |> DropdownFilter.withSmallSize
-                        |> DropdownFilter.view []
-                    ]
-          , {}
-          )
-        , ( "interactive with async"
-          , \_ ->
-                Html.text "TODO debouncer and RemoteData"
-          , {}
-          )
         ]
