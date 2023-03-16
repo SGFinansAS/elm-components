@@ -37,7 +37,10 @@ color color_ =
         Css.propertyWithColorVariable "color" (toString TextColorOnPrimaryColorBackground) color_
 
     else
-        Css.color color_
+        color_
+            |> themeVariableForColor
+            |> Maybe.map (\themeColor -> Css.propertyWithColorVariable "color" (toString themeColor) color_)
+            |> Maybe.withDefault (Css.color color_)
 
 
 borderColor : Css.Color -> Css.Style
