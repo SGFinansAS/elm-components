@@ -219,7 +219,11 @@ view attrs (RadioButton config) =
                             ]
                             |> styleIf (not isDisabled)
                         , pseudoClass "focus-within"
-                            [ Themes.backgroundColor Colors.cloudBlue ]
+                            [ Themes.borderColor Colors.transparent |> styleIf (not config.showError)
+                            , Themes.backgroundColor Colors.cloudBlue
+                            , Themes.color Colors.nordeaBlue
+                            , fontWeight bold
+                            ]
                             |> styleIf (not config.showError && not isDisabled)
                         ]
 

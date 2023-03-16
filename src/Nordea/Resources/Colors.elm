@@ -38,8 +38,6 @@ module Nordea.Resources.Colors exposing
 import Css
     exposing
         ( Color
-        , ColorValue
-        , NonMixable
         , hex
         , rgba
         )
