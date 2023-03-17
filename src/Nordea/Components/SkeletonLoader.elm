@@ -12,16 +12,19 @@ import Html.Styled as Html
         ( Attribute
         , Html
         )
-import Html.Styled.Attributes exposing (css)
+import Html.Styled.Attributes as Attrs exposing (css)
 
 
 view : List (Attribute msg) -> Html msg
 view attrs =
     Html.div
-        (css
+        ([ Attrs.attribute "aria-busy" "true"
+         , Attrs.attribute "aria-live" "polite"
+         , css
             [ skeletonLoading
             ]
-            :: attrs
+         ]
+            ++ attrs
         )
         []
 
