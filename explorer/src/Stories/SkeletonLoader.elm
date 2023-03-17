@@ -23,7 +23,7 @@ stories =
           , \_ -> SkeletonLoader.view [css [ width (pct 50), height (rem 2.5), borderRadius (rem 0.25) ]]
           , {}
           )
-          , ( "Button"
+        , ( "Button"
           , \_ -> SkeletonLoader.view [ css [borderRadius (rem 2), width (rem 6), height (rem 2.5)] ]
           , {}
           )
