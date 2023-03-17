@@ -181,14 +181,6 @@ view attrs (RadioButton config) =
                     Css.batch []
 
                 StandardNew ->
-                    let
-                        focusAndHover =
-                            [ Themes.borderColor Colors.transparent |> styleIf (not config.showError)
-                            , Themes.backgroundColor Colors.cloudBlue
-                            , Themes.color Colors.nordeaBlue
-                            , fontWeight bold
-                            ]
-                    in
                     Css.batch
                         [ padding2 (rem 0.5) (rem 1)
                         , border3 (rem 0.0625) solid transparent
@@ -215,10 +207,24 @@ view attrs (RadioButton config) =
                             , Themes.borderColor Colors.nordeaBlue |> styleIf (not config.showError)
                             ]
                             |> styleIf (config.isSelected && not isDisabled)
-                        , hover focusAndHover
+                        , hover
+                            [ Themes.borderColor Colors.transparent |> styleIf (not config.showError)
+                            , Themes.backgroundColor Colors.cloudBlue
+                            , Themes.color Colors.nordeaBlue
+                            , fontWeight bold
+                            ]
+                            |> styleIf (not config.isSelected && not isDisabled)
+                        , pseudoClass "focus-within"
+                            [ Themes.borderColor Colors.transparent |> styleIf (not config.showError && not config.isSelected)
+                            , Themes.backgroundColor Colors.cloudBlue
+                            , Themes.color Colors.nordeaBlue
+                            , fontWeight bold
+                            , borderWidth (rem 0.125)
+
+                            -- we must adjust the padding after increasing the border to avoid movement
+                            , padding2 (rem (0.5 - 0.0625)) (rem (1 - 0.0625))
+                            ]
                             |> styleIf (not isDisabled)
-                        , pseudoClass "focus-within" focusAndHover
-                            |> styleIf (not config.showError && not isDisabled)
                         ]
 
                 Standard ->
