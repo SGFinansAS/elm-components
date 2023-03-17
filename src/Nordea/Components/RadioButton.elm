@@ -35,6 +35,7 @@ import Css
         , flexBasis
         , fontWeight
         , height
+        , hidden
         , hover
         , inlineFlex
         , justifyContent
@@ -55,6 +56,7 @@ import Css
         , transform
         , translate2
         , transparent
+        , visibility
         , width
         )
 import Css.Transitions exposing (transition)
@@ -160,7 +162,6 @@ view attrs (RadioButton config) =
                         , transition
                             [ Css.Transitions.borderColor 100
                             , Css.Transitions.backgroundColor 100
-                            , Css.Transitions.boxShadow 100
                             ]
                         , flexBasis (pct 100)
                         , borderColor Colors.mediumGray
@@ -180,6 +181,14 @@ view attrs (RadioButton config) =
                     Css.batch []
 
                 StandardNew ->
+                    let
+                        focusAndHover =
+                            [ Themes.borderColor Colors.transparent |> styleIf (not config.showError)
+                            , Themes.backgroundColor Colors.cloudBlue
+                            , Themes.color Colors.nordeaBlue
+                            , fontWeight bold
+                            ]
+                    in
                     Css.batch
                         [ padding2 (rem 0.5) (rem 1)
                         , border3 (rem 0.0625) solid transparent
@@ -191,7 +200,6 @@ view attrs (RadioButton config) =
                         , transition
                             [ Css.Transitions.borderColor 100
                             , Css.Transitions.backgroundColor 100
-                            , Css.Transitions.boxShadow 100
                             ]
                         , if config.showError then
                             borderColor Colors.darkRed
@@ -207,27 +215,13 @@ view attrs (RadioButton config) =
                             , Themes.borderColor Colors.nordeaBlue |> styleIf (not config.showError)
                             ]
                             |> styleIf (config.isSelected && not isDisabled)
-                        , hover
-                            [ borderWidth (rem 0.0625)
-                            , Themes.borderColor Colors.transparent |> styleIf (not config.showError)
-                            , Themes.backgroundColor Colors.cloudBlue
-                            , Themes.color Colors.nordeaBlue
-                            , fontWeight bold
-
-                            -- we must adjust the padding when changing font weight to avoid movement
-                            , padding2 (rem 0.5) (rem (1 - 0.1396875))
-                            ]
+                        , hover focusAndHover
                             |> styleIf (not isDisabled)
-                        , pseudoClass "focus-within"
-                            [ Themes.borderColor Colors.transparent |> styleIf (not config.showError)
-                            , Themes.backgroundColor Colors.cloudBlue
-                            , Themes.color Colors.nordeaBlue
-                            , fontWeight bold
-                            ]
+                        , pseudoClass "focus-within" focusAndHover
                             |> styleIf (not config.showError && not isDisabled)
                         ]
 
-                _ ->
+                Standard ->
                     Css.batch
                         [ padding2 (rem 0.5) (rem 1)
                         , border3 (rem 0.0625) solid transparent
@@ -236,7 +230,6 @@ view attrs (RadioButton config) =
                         , transition
                             [ Css.Transitions.borderColor 100
                             , Css.Transitions.backgroundColor 100
-                            , Css.Transitions.boxShadow 100
                             ]
                         , borderRadius (rem 0.25)
                         , minHeight (rem 2.5)
@@ -283,7 +276,21 @@ view attrs (RadioButton config) =
             ]
             []
         , radiomark |> showIf (config.appearance /= StandardNew)
-        , config.label
+        , config.label |> showIf (config.appearance /= StandardNew)
+        , Html.div
+            [ css [ position absolute ] ]
+            [ config.label ]
+            |> showIf (config.appearance == StandardNew)
+        , Html.div
+            [ Attrs.attribute "aria-hidden" "true"
+            , css
+                [ fontWeight bold
+                , Themes.color Colors.transparent
+                , visibility hidden
+                ]
+            ]
+            [ config.label ]
+            |> showIf (config.appearance == StandardNew)
         ]
 
 

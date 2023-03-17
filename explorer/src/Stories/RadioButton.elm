@@ -74,21 +74,21 @@ stories =
                 Html.div [ css [ displayFlex, Css.property "gap" "1rem" ] ]
                     [ RadioButton.init
                         "simple"
-                        (text "Click me 22 2")
+                        (text "Leasing")
                         (UpdateActiveRadioButton "first")
                         |> RadioButton.withAppearance RadioButton.StandardNew
                         |> RadioButton.withIsSelected (config.customModel.activeRadioButton == "first")
                         |> RadioButton.view []
                     , RadioButton.init
                         "simple"
-                        (text "Click me 12 13")
+                        (text "Lån")
                         (UpdateActiveRadioButton "second")
                         |> RadioButton.withAppearance RadioButton.StandardNew
                         |> RadioButton.withIsSelected (config.customModel.activeRadioButton == "second")
                         |> RadioButton.view []
                     , RadioButton.init
                         "simple"
-                        (text "Click me 12 13 wqd")
+                        (text "Kjøpekontrakt")
                         (UpdateActiveRadioButton "third")
                         |> RadioButton.withAppearance RadioButton.StandardNew
                         |> RadioButton.withIsSelected (config.customModel.activeRadioButton == "third")
