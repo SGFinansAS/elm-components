@@ -5,7 +5,7 @@ module Nordea.Components.Dropdown exposing
     , optionInit
     , optionIsDisabled
     , simple
-    , small
+    , standard
     , view
     , withHasError
     , withPlaceholder
@@ -52,7 +52,6 @@ import Html.Styled as Html exposing (Attribute, Html, div, option, text)
 import Html.Styled.Attributes as Attrs exposing (css, disabled, selected, value)
 import Html.Styled.Events as Events exposing (targetValue)
 import Json.Decode as Decode
-import Nordea.Css as NordeaCss
 import Nordea.Html exposing (styleIf, viewMaybe)
 import Nordea.Resources.Colors as Colors
 import Nordea.Resources.Icons as Icon
@@ -62,7 +61,6 @@ import Nordea.Themes as Themes
 type Variant
     = Standard
     | Simple
-    | Small
 
 
 type alias Option a =
@@ -109,13 +107,13 @@ simple options optionToString onInput =
     Dropdown { config | variant = Simple }
 
 
-small : List { value : a, text : String } -> (a -> String) -> (a -> msg) -> Dropdown a msg
-small options optionToString onInput =
+standard : List { value : a, text : String } -> (a -> String) -> (a -> msg) -> Dropdown a msg
+standard options optionToString onInput =
     let
         (Dropdown config) =
             init options optionToString onInput
     in
-    Dropdown { config | variant = Small }
+    Dropdown { config | variant = Standard }
 
 
 init : List { value : a, text : String } -> (a -> String) -> (a -> msg) -> Dropdown a msg
@@ -182,17 +180,6 @@ view attrs (Dropdown config) =
         isDisabled =
             List.member (Attrs.disabled True) attrs
 
-        dropdownHeight =
-            case config.variant of
-                Standard ->
-                    NordeaCss.standardInputHeight
-
-                Simple ->
-                    NordeaCss.standardInputHeight
-
-                Small ->
-                    NordeaCss.smallInputHeight
-
         iconChevron =
             let
                 standardIcon =
@@ -209,9 +196,6 @@ view attrs (Dropdown config) =
             in
             case config.variant of
                 Standard ->
-                    standardIcon
-
-                Small ->
                     standardIcon
 
                 Simple ->
@@ -234,7 +218,7 @@ view attrs (Dropdown config) =
             [ Events.on "change" decoder
             , Attrs.disabled isDisabled
             , css
-                [ height dropdownHeight
+                [ height (rem 2.5)
                 , width (pct 100)
                 , property "appearance" "none"
                 , property "-moz-appearance" "none"

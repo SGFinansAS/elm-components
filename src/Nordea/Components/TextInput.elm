@@ -11,7 +11,6 @@ module Nordea.Components.TextInput exposing
     , withPattern
     , withPlaceholder
     , withSearchIcon
-    , withSmallSize
     )
 
 import Css
@@ -54,7 +53,6 @@ import Html.Styled.Events exposing (keyCode, on, onBlur, onInput)
 import Json.Decode as Json
 import Maybe.Extra as Maybe
 import Nordea.Components.Text as Text
-import Nordea.Css as NordeaCss
 import Nordea.Html as Html exposing (styleIf)
 import Nordea.Resources.Colors as Colors
 import Nordea.Resources.Icons as Icons
@@ -75,14 +73,8 @@ type alias Config msg =
     , hasSearchIcon : Bool
     , onBlur : Maybe msg
     , onEnterPress : Maybe msg
-    , size : Size
     , currency : Maybe String
     }
-
-
-type Size
-    = Small
-    | Large
 
 
 type TextInput msg
@@ -101,7 +93,6 @@ init value =
         , hasSearchIcon = False
         , onBlur = Nothing
         , onEnterPress = Nothing
-        , size = Large
         , currency = Nothing
         }
 
@@ -144,11 +135,6 @@ withOnBlur msg (TextInput config) =
 withOnEnterPress : msg -> TextInput msg -> TextInput msg
 withOnEnterPress msg (TextInput config) =
     TextInput { config | onEnterPress = Just msg }
-
-
-withSmallSize : TextInput msg -> TextInput msg
-withSmallSize (TextInput config) =
-    TextInput { config | size = Small }
 
 
 withCurrency : String -> TextInput msg -> TextInput msg
@@ -268,14 +254,7 @@ getStyles config =
                 Colors.mediumGray
     in
     [ fontSize (rem 1)
-    , height
-        (case config.size of
-            Small ->
-                NordeaCss.smallInputHeight
-
-            Large ->
-                NordeaCss.standardInputHeight
-        )
+    , height (rem 2.5)
     , padding2 (rem 0.75) (rem 0.75)
     , borderRadius (rem 0.25)
     , border3 (rem 0.0625) solid borderColorStyle

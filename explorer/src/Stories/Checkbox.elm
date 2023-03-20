@@ -66,25 +66,6 @@ stories =
                     ]
           , {}
           )
-        , ( "Small"
-          , \_ ->
-                Html.div [ css [ displayFlex, Css.property "gap" "1rem" ] ]
-                    [ Checkbox.init
-                        "simple"
-                        (text "Click me")
-                        (\_ -> NoOp)
-                        |> Checkbox.withAppearance Checkbox.Small
-                        |> Checkbox.view []
-                    , Checkbox.init
-                        "simple"
-                        (text "Click me")
-                        (\_ -> NoOp)
-                        |> Checkbox.withAppearance Checkbox.Small
-                        |> Checkbox.withIsChecked True
-                        |> Checkbox.view []
-                    ]
-          , {}
-          )
         , ( "Simple"
           , \_ ->
                 Html.div [ css [ displayFlex, Css.property "gap" "1rem" ] ]
