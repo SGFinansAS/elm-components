@@ -16,7 +16,6 @@ import Css
         , alignItems
         , backgroundColor
         , block
-        , bold
         , border3
         , borderBottomLeftRadius
         , borderBottomRightRadius
@@ -33,9 +32,7 @@ import Css
         , display
         , flex
         , flexBasis
-        , fontWeight
         , height
-        , hidden
         , hover
         , inlineFlex
         , justifyContent
@@ -56,7 +53,6 @@ import Css
         , transform
         , translate2
         , transparent
-        , visibility
         , width
         )
 import Css.Transitions exposing (transition)
@@ -199,11 +195,7 @@ view attrs (RadioButton config) =
                           else
                             borderColor Colors.mediumGray
                         , Css.batch
-                            [ borderWidth (rem 0.09375)
-
-                            -- we must adjust the padding after increasing the border to avoid movement
-                            , padding2 (rem (0.5 - 0.03125)) (rem (1 - 0.03125))
-                            , Themes.color Colors.nordeaBlue
+                            [ Themes.color Colors.nordeaBlue
                             , Themes.borderColor Colors.nordeaBlue |> styleIf (not config.showError)
                             ]
                             |> styleIf (config.isSelected && not isDisabled)
@@ -211,18 +203,15 @@ view attrs (RadioButton config) =
                             [ Themes.borderColor Colors.transparent |> styleIf (not config.showError)
                             , Themes.backgroundColor Colors.cloudBlue
                             , Themes.color Colors.nordeaBlue
-                            , fontWeight bold
                             ]
                             |> styleIf (not config.isSelected && not isDisabled)
                         , pseudoClass "focus-within"
-                            [ Themes.borderColor Colors.transparent |> styleIf (not config.showError && not config.isSelected)
-                            , Themes.backgroundColor Colors.cloudBlue
+                            [ Themes.backgroundColor Colors.cloudBlue
                             , Themes.color Colors.nordeaBlue
-                            , fontWeight bold
-                            , borderWidth (rem 0.125)
+                            , borderWidth (rem 0.25)
 
                             -- we must adjust the padding after increasing the border to avoid movement
-                            , padding2 (rem (0.5 - 0.0625)) (rem (1 - 0.0625))
+                            , padding2 (rem (0.5 - 0.1875)) (rem (1 - 0.1875))
                             ]
                             |> styleIf (not isDisabled)
                         ]
@@ -282,21 +271,7 @@ view attrs (RadioButton config) =
             ]
             []
         , radiomark |> showIf (config.appearance /= StandardNew)
-        , config.label |> showIf (config.appearance /= StandardNew)
-        , Html.div
-            [ css [ position absolute ] ]
-            [ config.label ]
-            |> showIf (config.appearance == StandardNew)
-        , Html.div
-            [ Attrs.attribute "aria-hidden" "true"
-            , css
-                [ fontWeight bold
-                , Themes.color Colors.transparent
-                , visibility hidden
-                ]
-            ]
-            [ config.label ]
-            |> showIf (config.appearance == StandardNew)
+        , config.label
         ]
 
 
