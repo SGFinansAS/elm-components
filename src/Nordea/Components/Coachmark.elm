@@ -246,7 +246,11 @@ view { onChangeStep, translate, ariaLabel } optionalConfig attrs children_ =
                         , transition [ Css.Transitions.transform3 300 0 easeInOut ]
                         , hover [ transforms [ translate2 (pct -50) (pct -50), scale 1 ] ]
                         ]
-                    , zIndex (int 100)
+                    , if showStep /= Nothing then
+                        zIndex (int 100)
+
+                      else
+                        zIndex (int 1)
                     , position relative
                     ]
                 ]
@@ -265,7 +269,7 @@ step attrs children_ { translate, showStepLegend, onChangeStep, currentStep, tot
         nextButtonView =
             Button.flatLinkStyle
                 |> Button.view
-                    [ css [ marginLeft auto, color Colors.white ]
+                    [ css [ marginLeft auto, color Colors.mediumBlue, hover [ color Colors.cloudBlue ] ]
                     , if currentStep < totalSteps then
                         Events.onClick (onChangeStep (Just (currentStep + 1)))
 
