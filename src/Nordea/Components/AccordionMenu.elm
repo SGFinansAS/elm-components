@@ -5,8 +5,10 @@ import Css
         ( alignItems
         , auto
         , center
+        , column
         , display
         , displayFlex
+        , flexDirection
         , inlineBlock
         , listStyle
         , marginLeft
@@ -36,7 +38,9 @@ view config attrs children_ =
     in
     Html.details
         (css
-            [ children
+            [ displayFlex
+            , flexDirection column
+            , children
                 [ typeSelector "summary"
                     [ listStyle none
                     , children
