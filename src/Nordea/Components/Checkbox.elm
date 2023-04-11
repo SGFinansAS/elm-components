@@ -84,7 +84,6 @@ type Appearance
     = Standard
     | Simple
     | ListStyle
-    | Small
 
 
 init : String -> Html msg -> (Bool -> msg) -> Checkbox msg
@@ -153,17 +152,9 @@ view attrs (Checkbox config) =
 
         appearanceStyle =
             let
-                topBottomPadding =
-                    case config.appearance of
-                        Small ->
-                            rem 0.5
-
-                        _ ->
-                            rem 0.75
-
                 commonNonSimpleStyles =
                     Css.batch
-                        [ padding2 topBottomPadding (rem 1)
+                        [ padding2 (rem 0.5) (rem 1)
                         , border3 (rem 0.0625) solid transparent
                         , Themes.backgroundColor Colors.cloudBlue |> styleIf config.isChecked
                         , transition [ Css.Transitions.borderColor 100, Css.Transitions.boxShadow 100 ]

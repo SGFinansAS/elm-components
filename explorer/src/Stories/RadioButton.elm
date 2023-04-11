@@ -1,6 +1,6 @@
 module Stories.RadioButton exposing (stories)
 
-import Config exposing (Msg(..))
+import Config exposing (Config, Msg(..))
 import Css exposing (column, displayFlex, flexDirection, maxWidth, rem)
 import Html.Styled as Html exposing (text)
 import Html.Styled.Attributes exposing (css, disabled)
@@ -9,137 +9,173 @@ import UIExplorer exposing (UI)
 import UIExplorer.Styled exposing (styledStoriesOf)
 
 
-stories : UI a Msg {}
+stories : UI Config Msg {}
 stories =
     styledStoriesOf
         "RadioButton"
         [ ( "Standard"
-          , \_ ->
+          , \config ->
                 Html.div [ css [ displayFlex, Css.property "gap" "1rem" ] ]
                     [ RadioButton.init
                         "simple"
                         (text "Click me")
-                        NoOp
+                        (UpdateActiveRadioButton "first")
+                        |> RadioButton.withIsSelected (config.customModel.activeRadioButton == "first")
                         |> RadioButton.view []
                     , RadioButton.init
                         "simple"
                         (text "Click me")
-                        NoOp
-                        |> RadioButton.withIsSelected True
+                        (UpdateActiveRadioButton "second")
+                        |> RadioButton.withIsSelected (config.customModel.activeRadioButton == "second")
                         |> RadioButton.view []
                     ]
           , {}
           )
         , ( "Standard with error"
-          , \_ ->
+          , \config ->
                 Html.div [ css [ displayFlex, Css.property "gap" "1rem" ] ]
                     [ RadioButton.init
                         "simple"
                         (text "Click me")
-                        NoOp
+                        (UpdateActiveRadioButton "first")
+                        |> RadioButton.withIsSelected (config.customModel.activeRadioButton == "first")
                         |> RadioButton.withHasError True
                         |> RadioButton.view []
                     , RadioButton.init
                         "simple"
                         (text "Click me")
-                        NoOp
+                        (UpdateActiveRadioButton "second")
+                        |> RadioButton.withIsSelected (config.customModel.activeRadioButton == "second")
                         |> RadioButton.withHasError True
-                        |> RadioButton.withIsSelected True
                         |> RadioButton.view []
                     ]
           , {}
           )
         , ( "Standard disabled"
-          , \_ ->
+          , \config ->
                 Html.div [ css [ displayFlex, Css.property "gap" "1rem" ] ]
                     [ RadioButton.init
                         "simple"
                         (text "Click me")
-                        NoOp
+                        (UpdateActiveRadioButton "first")
+                        |> RadioButton.withIsSelected (config.customModel.activeRadioButton == "first")
                         |> RadioButton.view [ disabled True ]
                     , RadioButton.init
                         "simple"
                         (text "Click me")
-                        NoOp
-                        |> RadioButton.withIsSelected True
+                        (UpdateActiveRadioButton "second")
+                        |> RadioButton.withIsSelected (config.customModel.activeRadioButton == "second")
                         |> RadioButton.view [ disabled True ]
                     ]
           , {}
           )
-        , ( "Small"
-          , \_ ->
+        , ( "Standard (new)"
+          , \config ->
                 Html.div [ css [ displayFlex, Css.property "gap" "1rem" ] ]
                     [ RadioButton.init
-                        "small"
-                        (text "Click me")
-                        NoOp
-                        |> RadioButton.withAppearance RadioButton.Small
+                        "simple"
+                        (text "Leasing")
+                        (UpdateActiveRadioButton "first")
+                        |> RadioButton.withAppearance RadioButton.StandardNew
+                        |> RadioButton.withIsSelected (config.customModel.activeRadioButton == "first")
                         |> RadioButton.view []
                     , RadioButton.init
-                        "small"
+                        "simple"
+                        (text "Lån")
+                        (UpdateActiveRadioButton "second")
+                        |> RadioButton.withAppearance RadioButton.StandardNew
+                        |> RadioButton.withIsSelected (config.customModel.activeRadioButton == "second")
+                        |> RadioButton.view []
+                    , RadioButton.init
+                        "simple"
+                        (text "Kjøpekontrakt")
+                        (UpdateActiveRadioButton "third")
+                        |> RadioButton.withAppearance RadioButton.StandardNew
+                        |> RadioButton.withIsSelected (config.customModel.activeRadioButton == "third")
+                        |> RadioButton.view []
+                    ]
+          , {}
+          )
+        , ( "Standard with error (new)"
+          , \config ->
+                Html.div [ css [ displayFlex, Css.property "gap" "1rem" ] ]
+                    [ RadioButton.init
+                        "simple"
                         (text "Click me")
-                        NoOp
-                        |> RadioButton.withAppearance RadioButton.Small
-                        |> RadioButton.withIsSelected True
+                        (UpdateActiveRadioButton "first")
+                        |> RadioButton.withAppearance RadioButton.StandardNew
+                        |> RadioButton.withHasError True
+                        |> RadioButton.withIsSelected (config.customModel.activeRadioButton == "first")
+                        |> RadioButton.view []
+                    , RadioButton.init
+                        "simple"
+                        (text "Click me")
+                        (UpdateActiveRadioButton "second")
+                        |> RadioButton.withAppearance RadioButton.StandardNew
+                        |> RadioButton.withHasError True
+                        |> RadioButton.withIsSelected (config.customModel.activeRadioButton == "second")
                         |> RadioButton.view []
                     ]
           , {}
           )
         , ( "Simple"
-          , \_ ->
+          , \config ->
                 Html.div [ css [ displayFlex, Css.property "gap" "1rem" ] ]
                     [ RadioButton.init
                         "simple"
                         (text "Click me")
-                        NoOp
+                        (UpdateActiveRadioButton "first")
+                        |> RadioButton.withIsSelected (config.customModel.activeRadioButton == "first")
                         |> RadioButton.withAppearance RadioButton.Simple
                         |> RadioButton.view []
                     , RadioButton.init
                         "simple"
                         (text "Click me")
-                        NoOp
+                        (UpdateActiveRadioButton "second")
                         |> RadioButton.withAppearance RadioButton.Simple
-                        |> RadioButton.withIsSelected True
+                        |> RadioButton.withIsSelected (config.customModel.activeRadioButton == "second")
                         |> RadioButton.view []
                     ]
           , {}
           )
         , ( "Simple with error"
-          , \_ ->
+          , \config ->
                 Html.div [ css [ displayFlex, Css.property "gap" "1rem" ] ]
                     [ RadioButton.init
                         "simple"
                         (text "Click me")
-                        NoOp
+                        (UpdateActiveRadioButton "first")
+                        |> RadioButton.withIsSelected (config.customModel.activeRadioButton == "first")
                         |> RadioButton.withAppearance RadioButton.Simple
                         |> RadioButton.withHasError True
                         |> RadioButton.view []
                     , RadioButton.init
                         "simple"
                         (text "Click me")
-                        NoOp
+                        (UpdateActiveRadioButton "second")
                         |> RadioButton.withAppearance RadioButton.Simple
                         |> RadioButton.withHasError True
-                        |> RadioButton.withIsSelected True
+                        |> RadioButton.withIsSelected (config.customModel.activeRadioButton == "second")
                         |> RadioButton.view []
                     ]
           , {}
           )
         , ( "Simple disabled"
-          , \_ ->
+          , \config ->
                 Html.div [ css [ displayFlex, Css.property "gap" "1rem" ] ]
                     [ RadioButton.init
                         "simple"
                         (text "Click me")
-                        NoOp
+                        (UpdateActiveRadioButton "first")
+                        |> RadioButton.withIsSelected (config.customModel.activeRadioButton == "first")
                         |> RadioButton.withAppearance RadioButton.Simple
                         |> RadioButton.view [ disabled True ]
                     , RadioButton.init
                         "simple"
                         (text "Click me")
-                        NoOp
+                        (UpdateActiveRadioButton "second")
                         |> RadioButton.withAppearance RadioButton.Simple
-                        |> RadioButton.withIsSelected True
+                        |> RadioButton.withIsSelected (config.customModel.activeRadioButton == "second")
                         |> RadioButton.view [ disabled True ]
                     ]
           , {}

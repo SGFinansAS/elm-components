@@ -31,6 +31,7 @@ type alias Config =
     , isToggled : Bool
     , hamburgerIsActive : Bool
     , showCoachMarkStep : Maybe Int
+    , activeRadioButton : String
     }
 
 
@@ -56,6 +57,7 @@ type Msg
     | ToggleToggle
     | ToggleHamburger
     | UpdateCoachmarkStep (Maybe Int)
+    | UpdateActiveRadioButton String
 
 
 init : Config
@@ -89,6 +91,7 @@ init =
     , rangeInputValue = 5
     , hamburgerIsActive = False
     , showCoachMarkStep = Nothing
+    , activeRadioButton = "second"
     }
 
 
@@ -160,3 +163,6 @@ update msg config =
 
         UpdateCoachmarkStep p ->
             { config | showCoachMarkStep = p }
+
+        UpdateActiveRadioButton s ->
+            { config | activeRadioButton = s }

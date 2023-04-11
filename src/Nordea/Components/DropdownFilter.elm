@@ -7,7 +7,6 @@ module Nordea.Components.DropdownFilter exposing
     , withIsLoading
     , withOnFocus
     , withSearchIcon
-    , withSmallSize
     )
 
 import Css
@@ -91,7 +90,6 @@ type alias DropdownFilterProperties a msg =
     , hasError : Bool
     , isLoading : Bool
     , hasSearchIcon : Bool
-    , isSmallSize : Bool
     }
 
 
@@ -117,7 +115,6 @@ init { onInput, input, onSelect, items } =
         , hasError = False
         , isLoading = False
         , hasSearchIcon = False
-        , isSmallSize = False
         }
 
 
@@ -185,12 +182,6 @@ view attrs (DropdownFilter config) =
                 |> TextInput.withError (config.hasError || showHasNoMatch)
                 |> TextInput.withOnInput config.onInput
                 |> TextInput.withSearchIcon config.hasSearchIcon
-                |> (if config.isSmallSize then
-                        TextInput.withSmallSize
-
-                    else
-                        identity
-                   )
                 |> TextInput.view
                     [ css
                         [ width (pct 100)
@@ -306,8 +297,3 @@ withIsLoading isLoading (DropdownFilter config) =
 withSearchIcon : Bool -> DropdownFilter a msg -> DropdownFilter a msg
 withSearchIcon hasSearchIcon (DropdownFilter config) =
     DropdownFilter { config | hasSearchIcon = hasSearchIcon }
-
-
-withSmallSize : DropdownFilter a msg -> DropdownFilter a msg
-withSmallSize (DropdownFilter config) =
-    DropdownFilter { config | isSmallSize = True }
