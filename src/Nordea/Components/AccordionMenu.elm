@@ -29,10 +29,10 @@ view config attrs children_ =
     let
         openAttr =
             if config.isOpen then
-                attribute "open" ""
+                attribute "open" "true"
 
             else
-                attribute "closed" ""
+                attribute "closed" "false"
     in
     Html.details
         (css
