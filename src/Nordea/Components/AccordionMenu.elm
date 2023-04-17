@@ -17,8 +17,9 @@ import Css
         , width
         )
 import Css.Global exposing (children, class, typeSelector, withAttribute)
+import Html.Attributes.Extra exposing (empty)
 import Html.Styled as Html exposing (Attribute, Html)
-import Html.Styled.Attributes as Html exposing (attribute, css)
+import Html.Styled.Attributes as Html exposing (attribute, css, fromUnstyled)
 import Nordea.Resources.Icons as Icons
 
 
@@ -34,7 +35,7 @@ view config attrs children_ =
                 attribute "open" ""
 
             else
-                attribute "closed" ""
+                fromUnstyled empty
     in
     Html.details
         (css
