@@ -2,30 +2,30 @@
 # yarn lockfile v1
 
 
-"@avh4/elm-format-darwin-arm64@0.8.6-2":
-  version "0.8.6-2"
-  resolved "https://registry.yarnpkg.com/@avh4/elm-format-darwin-arm64/-/elm-format-darwin-arm64-0.8.6-2.tgz#557142c63a6679f695dfcb3ed5974f7e128652e2"
-  integrity sha512-DCK8/BHNnZq1DIn4zVm2oSA/kBt5O4lleMo8XOC6R7ZhxrS4xGw6qmwdinKjEcawI2yV9YHkuuwmkhT+jCyAGg==
+"@avh4/elm-format-darwin-arm64@0.8.7-2":
+  version "0.8.7-2"
+  resolved "https://registry.yarnpkg.com/@avh4/elm-format-darwin-arm64/-/elm-format-darwin-arm64-0.8.7-2.tgz#7ef272e77ed22804c3d18e99cffdf8952b88cf6a"
+  integrity sha512-F5JD44mJ3KX960J5GkXMfh1/dtkXuPcQpX2EToHQKjLTZUfnhZ++ytQQt0gAvrJ0bzoOvhNzjNjUHDA1ruTVbg==
 
-"@avh4/elm-format-darwin-x64@0.8.6-2":
-  version "0.8.6-2"
-  resolved "https://registry.yarnpkg.com/@avh4/elm-format-darwin-x64/-/elm-format-darwin-x64-0.8.6-2.tgz#65787139d9ed24d1ab545337773b160fb7d6e99f"
-  integrity sha512-t4sUuJf9d45brhEbPGyP0+O0wwn0rCXV4ojr4xHpni2uy+LxMIrJmhnWImpf7ozQzcr5Lh0GrPniOENOxDlMxw==
+"@avh4/elm-format-darwin-x64@0.8.7-2":
+  version "0.8.7-2"
+  resolved "https://registry.yarnpkg.com/@avh4/elm-format-darwin-x64/-/elm-format-darwin-x64-0.8.7-2.tgz#c43eb3af88edec45aae405fda7d703e343614965"
+  integrity sha512-4pfF1cl0KyTion+7Mg4XKM3yi4Yc7vP76Kt/DotLVGJOSag4ISGic1og2mt8RZZ7XArybBmHNyYkiUbe/cEiCw==
 
-"@avh4/elm-format-linux-arm64@0.8.6-2":
-  version "0.8.6-2"
-  resolved "https://registry.yarnpkg.com/@avh4/elm-format-linux-arm64/-/elm-format-linux-arm64-0.8.6-2.tgz#7620a8e08d889635f713d6682e1f1e8a1e174e5f"
-  integrity sha512-EgG5fDvW2DLN7GX6fj8kr+T4vkojHRy4IMYI/FV6z1W0220B0b+KKvJjBJyRBAz5BFaV1PJNMgaySu14AoTbow==
+"@avh4/elm-format-linux-arm64@0.8.7-2":
+  version "0.8.7-2"
+  resolved "https://registry.yarnpkg.com/@avh4/elm-format-linux-arm64/-/elm-format-linux-arm64-0.8.7-2.tgz#e01a088c051aa5734453f83e9f63aa572ffb7439"
+  integrity sha512-WkVmuce2zU6s9dupHhqPc886Vaqpea8dZlxv2fpZ4wSzPUbiiKHoHZzoVndMIMTUL0TZukP3Ps0n/lWO5R5+FA==
 
-"@avh4/elm-format-linux-x64@0.8.6-2":
-  version "0.8.6-2"
-  resolved "https://registry.yarnpkg.com/@avh4/elm-format-linux-x64/-/elm-format-linux-x64-0.8.6-2.tgz#3345da22bf960e2211051cb84f8d36803db4d98d"
-  integrity sha512-bgEXHumfXNbYwGbuBKTuYhSPIQ3bY/pQcUTzTHW/+4tZnaEObMZnLm8tfukIzWHrM/oK5MtYAvj5B7UmmZO5Pg==
+"@avh4/elm-format-linux-x64@0.8.7-2":
+  version "0.8.7-2"
+  resolved "https://registry.yarnpkg.com/@avh4/elm-format-linux-x64/-/elm-format-linux-x64-0.8.7-2.tgz#50f60f3bfb11223d9e72a34a0cc28640726f5bae"
+  integrity sha512-kmncfJrTBjVT94JtQvMf4M5Pn2Yl0sZt3wo7AzgFiDnB/CiZ+KjJyXuWM64NeGiv4MQqzPq65tsFXUH1CIJeiQ==
 
-"@avh4/elm-format-win32-x64@0.8.6-2":
-  version "0.8.6-2"
-  resolved "https://registry.yarnpkg.com/@avh4/elm-format-win32-x64/-/elm-format-win32-x64-0.8.6-2.tgz#135ed6b05ee54070c06242ab481b6011035473bd"
-  integrity sha512-ERzWQ2rutVNeryaBqKQMKghw/HdxVww7ujPBW5mJ99PwWGHYZdJCpw6P4m/s3zOqLKviRM44WCrH0LgDSuwcXQ==
+"@avh4/elm-format-win32-x64@0.8.7-2":
+  version "0.8.7-2"
+  resolved "https://registry.yarnpkg.com/@avh4/elm-format-win32-x64/-/elm-format-win32-x64-0.8.7-2.tgz#4a4e7489a7b519a810a8a89798c4aab3805626ab"
+  integrity sha512-sBdMBGq/8mD8Y5C+fIr5vlb3N50yB7S1MfgeAq2QEbvkr/sKrCZI540i43lZDH9gWsfA1w2W8wCe0penFYzsGw==
 
 "@sindresorhus/is@^4.0.0":
   version "4.6.0"
@@ -437,16 +437,16 @@ ee-first@1.1.1:
   version "1.1.1"
   resolved "https://registry.npmjs.org/ee-first/-/ee-first-1.1.1.tgz"
 
-elm-format@^0.8.6:
-  version "0.8.6"
-  resolved "https://registry.yarnpkg.com/elm-format/-/elm-format-0.8.6.tgz#3d8e0cd3195f7003ef039c047e4f4c0b7961e18c"
-  integrity sha512-hUYo7PNH6iUR6km1r9teEYYyf/sSzBEuPtbCj4aTbHg1u9B2btGz4oxuIL12yXMxyzXiGoggLS9nnsaLQ1C2rg==
+elm-format@^0.8.7:
+  version "0.8.7"
+  resolved "https://registry.yarnpkg.com/elm-format/-/elm-format-0.8.7.tgz#23d8a320ef896400b01b26609f99f579b2ed2d84"
+  integrity sha512-sVzFXfWnb+6rzXK+q3e3Ccgr6/uS5mFbFk1VSmigC+x2XZ28QycAa7lS8owl009ALPhRQk+pZ95Eq5ANjpEZsQ==
   optionalDependencies:
-    "@avh4/elm-format-darwin-arm64" "0.8.6-2"
-    "@avh4/elm-format-darwin-x64" "0.8.6-2"
-    "@avh4/elm-format-linux-arm64" "0.8.6-2"
-    "@avh4/elm-format-linux-x64" "0.8.6-2"
-    "@avh4/elm-format-win32-x64" "0.8.6-2"
+    "@avh4/elm-format-darwin-arm64" "0.8.7-2"
+    "@avh4/elm-format-darwin-x64" "0.8.7-2"
+    "@avh4/elm-format-linux-arm64" "0.8.7-2"
+    "@avh4/elm-format-linux-x64" "0.8.7-2"
+    "@avh4/elm-format-win32-x64" "0.8.7-2"
 
 elm-hot@1.1.4:
   version "1.1.4"
