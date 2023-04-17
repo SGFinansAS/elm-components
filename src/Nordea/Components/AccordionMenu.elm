@@ -34,7 +34,7 @@ view config attrs children_ =
                 attribute "open" "true"
 
             else
-                attribute "closed" "false"
+                attribute "open" "false"
     in
     Html.details
         (css
