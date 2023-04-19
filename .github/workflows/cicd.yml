@@ -46,12 +46,14 @@ jobs:
         run: cd explorer && yarn run build
 
       - name: Upload explorer project artifacts
+        if: github.ref == 'refs/heads/master'
         uses: actions/upload-pages-artifact@v1
         with:
           path: './explorer/public'
 
   deploy:
     needs: build
+    if: github.ref == 'refs/heads/master'
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
