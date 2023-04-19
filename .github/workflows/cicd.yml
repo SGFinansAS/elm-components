@@ -9,7 +9,7 @@ on:
       - master
 
 jobs:
-  verify-formatting-linting:
+  build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -49,6 +49,7 @@ jobs:
           path: './explorer/public'
 
   deploy:
+    needs: build
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
