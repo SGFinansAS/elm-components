@@ -91,4 +91,4 @@ styleIf condition style =
         style
 
     else
-        Css.property "" ""
+        Css.property "_" "_"
