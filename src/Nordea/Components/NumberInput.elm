@@ -159,7 +159,7 @@ getStyles config =
     , pseudoElement "-webkit-inner-spin-button" [ display none ]
     , property "-moz-appearance" "textfield"
     , textAlign right
-    , padding2 (rem 0.75) (rem 0.75)
+    , padding2 (rem 0) (rem 0.75)
     , borderRadius (rem 0.25)
     , border3 (rem 0.0625) solid borderColorStyle
     , boxSizing borderBox

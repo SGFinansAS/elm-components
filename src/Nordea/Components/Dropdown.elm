@@ -181,8 +181,8 @@ view attrs (Dropdown config) =
             List.member (Attrs.disabled True) attrs
 
         iconChevron =
-            let
-                standardIcon =
+            case config.variant of
+                Standard ->
                     Icon.chevronDownFilled
                         [ css
                             [ position absolute
@@ -193,10 +193,6 @@ view attrs (Dropdown config) =
                             , color Colors.coolGray
                             ]
                         ]
-            in
-            case config.variant of
-                Standard ->
-                    standardIcon
 
                 Simple ->
                     Icon.chevronDown
@@ -224,8 +220,8 @@ view attrs (Dropdown config) =
                 , property "-moz-appearance" "none"
                 , property "-webkit-appearance" "none"
                 , backgroundColor transparent
-                , padding4 (rem 0.5) (rem 2) (rem 0.5) (rem 1)
-                , paddingRight (rem 3) |> styleIf (config.variant /= Simple)
+                , padding4 (rem 0.25) (rem 2) (rem 0.25) (rem 0.75)
+                , paddingRight (rem 2.5) |> styleIf (config.variant /= Simple)
                 , if config.variant /= Simple || config.hasError then
                     border3 (rem 0.0625) solid Colors.mediumGray
 
