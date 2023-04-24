@@ -361,10 +361,10 @@ elm-format@^0.8.7:
     "@avh4/elm-format-linux-x64" "0.8.7-2"
     "@avh4/elm-format-win32-x64" "0.8.7-2"
 
-elm-review@^2.10.0:
-  version "2.10.0"
-  resolved "https://registry.yarnpkg.com/elm-review/-/elm-review-2.10.0.tgz#7c17bda16295d17f72c366f0cf4fd190c36aa119"
-  integrity sha512-Lum155yNir0OCWSKVqBxv9hn3xW+YmkWGkkuVQPLpRF6VDwofmP6VvU1kWnuwecLebahDvVcAhkpFzZ6QUd0NQ==
+elm-review@^2.10.1:
+  version "2.10.1"
+  resolved "https://registry.yarnpkg.com/elm-review/-/elm-review-2.10.1.tgz#89ef9fe14424a628e80bf448d9e5104a5e14cead"
+  integrity sha512-uEc4McppMqmWEaRo+jo5RowbDyfcBr0MTFN0kZt9gWrmmK6hPilTJJGtRmoH+K/aJtq4ZPDDF97oAFdkylD1gg==
   dependencies:
     chalk "^4.0.0"
     chokidar "^3.5.2"
