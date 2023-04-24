@@ -78,7 +78,7 @@ import Css.Global exposing (children, everything)
 import Html.Styled as Html exposing (Attribute, Html, div, styled)
 import Html.Styled.Attributes exposing (css)
 import Nordea.Resources.Colors as Colors
-import Svg.Styled as Svg exposing (Svg, ellipse, rect, svg)
+import Svg.Styled as Svg exposing (Svg, ellipse, svg)
 import Svg.Styled.Attributes as SvgAttrs
     exposing
         ( clipRule
@@ -87,12 +87,14 @@ import Svg.Styled.Attributes as SvgAttrs
         , d
         , fill
         , fillRule
+        , height
         , r
         , rx
         , ry
         , stroke
         , strokeWidth
         , viewBox
+        , width
         )
 
 
@@ -193,13 +195,25 @@ info attrs =
 chevronDownFilled : List (Attribute msg) -> Html msg
 chevronDownFilled attrs =
     iconContainer (css [ Css.width (rem 2) ] :: attrs)
-        [ svg [ viewBox "0 0 30 30", fill "none" ]
-            [ rect [ rx "2", fill (Colors.toString Colors.eclipse) ] []
+        [ svg
+            [ width "30"
+            , height "30"
+            , viewBox "0 0 30 30"
+            , fill "none"
+            , SvgAttrs.css [ Css.transform (Css.rotateZ (Css.deg 180)) ]
+            ]
+            [ Svg.rect
+                [ width "30"
+                , height "30"
+                , rx "2"
+                , fill (Colors.toString Colors.coolGray)
+                ]
+                []
             , Svg.path
                 [ fillRule "evenodd"
                 , clipRule "evenodd"
-                , d "M20.5303 13.5304L14.9999 19.0607L9.46961 13.5304L10.5303 12.4697L14.9999 16.9391L19.4696 12.4697L20.5303 13.5304Z"
-                , fill (Colors.toString Colors.eclipse)
+                , d "M9.46967 16.4697L15 10.9393L20.5303 16.4697L19.4697 17.5303L15 13.061L10.5303 17.5303L9.46967 16.4697Z"
+                , fill (Colors.toString Colors.darkestGray)
                 ]
                 []
             ]

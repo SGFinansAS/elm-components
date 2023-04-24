@@ -27,7 +27,6 @@ import Css
         , display
         , displayFlex
         , flexDirection
-        , height
         , hover
         , int
         , justifyContent
@@ -180,7 +179,7 @@ view attrs dropdown =
                     , justifyContent spaceBetween
                     , position relative
                     , backgroundColor Colors.white
-                    , padding4 (rem 0.5) (rem 0.75) (rem 0.5) (rem 0.75)
+                    , padding4 (rem 0.25) (rem 0.25) (rem 0.25) (rem 0.75)
                     , border3 (rem 0.0625) solid Colors.mediumGray
                     , if dropdown.hasFocus then
                         Css.batch
@@ -194,7 +193,7 @@ view attrs dropdown =
                     ]
                 ]
                 [ Html.text dropdown.placeholder
-                , Icon.chevronDownFilled [ css [ height (rem 1.5) ] ]
+                , Icon.chevronDownFilled []
                 , viewSelectItems
                 ]
             ]

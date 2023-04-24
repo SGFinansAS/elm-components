@@ -188,9 +188,7 @@ view attrs (DropdownFilter config) =
                         , borderBottomLeftRadius (pct 0) |> Css.important |> styleIf config.hasFocus
                         , borderBottomRightRadius (pct 0) |> Css.important |> styleIf config.hasFocus
                         , descendants
-                            [ typeSelector "input"
-                                [ paddingRight (rem 3)
-                                ]
+                            [ typeSelector "input" [ paddingRight (rem 2.5) ]
                             ]
                         ]
                     ]
