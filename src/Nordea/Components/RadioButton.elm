@@ -178,7 +178,7 @@ view attrs (RadioButton config) =
 
                 StandardNew ->
                     Css.batch
-                        [ padding2 (rem 0.5) (rem 1)
+                        [ padding2 (rem 0.5) (rem 0.75)
                         , border3 (rem 0.0625) solid transparent
                         , borderRadius (rem 0.25)
                         , minHeight (rem 2.5)
@@ -211,7 +211,7 @@ view attrs (RadioButton config) =
                             , borderWidth (rem 0.25)
 
                             -- we must adjust the padding after increasing the border to avoid movement
-                            , padding2 (rem (0.5 - 0.1875)) (rem (1 - 0.1875))
+                            , padding2 (rem (0.5 - 0.1875)) (rem (0.75 - 0.1875))
                             ]
                             |> styleIf (not isDisabled)
                         ]
