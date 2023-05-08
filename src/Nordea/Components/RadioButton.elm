@@ -81,7 +81,6 @@ type RadioButton msg
 
 type Appearance
     = Standard
-    | StandardNew
     | Simple
     | ListStyle
 
@@ -176,7 +175,7 @@ view attrs (RadioButton config) =
                 Simple ->
                     Css.batch []
 
-                StandardNew ->
+                Standard ->
                     Css.batch
                         [ padding2 (rem 0.5) (rem 0.75)
                         , border3 (rem 0.0625) solid transparent
@@ -215,31 +214,6 @@ view attrs (RadioButton config) =
                             ]
                             |> styleIf (not isDisabled)
                         ]
-
-                Standard ->
-                    Css.batch
-                        [ padding2 (rem 0.5) (rem 1)
-                        , border3 (rem 0.0625) solid transparent
-                        , Themes.backgroundColor Colors.cloudBlue
-                            |> styleIf config.isSelected
-                        , transition
-                            [ Css.Transitions.borderColor 100
-                            , Css.Transitions.backgroundColor 100
-                            ]
-                        , borderRadius (rem 0.25)
-                        , minHeight (rem 2.5)
-                        , borderColor Colors.mediumGray |> styleIf (not config.isSelected)
-                        , borderColor Colors.darkRed |> styleIf config.showError
-                        , hover
-                            [ Themes.borderColor Colors.nordeaBlue
-                                |> styleIf (not config.showError)
-                            , Themes.backgroundColor Colors.cloudBlue
-                            ]
-                            |> styleIf (not isDisabled)
-                        , pseudoClass "focus-within"
-                            [ Themes.borderColor Colors.nordeaBlue ]
-                            |> styleIf (not config.showError && not isDisabled)
-                        ]
     in
     Html.label
         (css
@@ -270,7 +244,7 @@ view attrs (RadioButton config) =
                 ]
             ]
             []
-        , radiomark |> showIf (config.appearance /= StandardNew)
+        , radiomark |> showIf (config.appearance /= Standard)
         , config.label
         ]
 
