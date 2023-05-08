@@ -69,7 +69,6 @@ stories =
                     ]
           , {}
           )
-        
         , ( "Simple"
           , \config ->
                 Html.div [ css [ displayFlex, Css.property "gap" "1rem" ] ]
