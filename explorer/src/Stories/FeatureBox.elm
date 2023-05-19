@@ -1,7 +1,9 @@
 module Stories.FeatureBox exposing (stories)
 
 import Config exposing (Msg(..))
+import Css exposing (rem, width)
 import Html.Styled as Html
+import Html.Styled.Attributes exposing (css)
 import Html.Styled.Events exposing (onClick)
 import Nordea.Components.Button as Button
 import Nordea.Components.FeatureBox as FeatureBox
@@ -21,7 +23,7 @@ stories =
                         |> Button.view [ onClick ToggleFeatureBox ] [ Html.text "Show FeatureBox" ]
                     , if model.customModel.isFeatureBoxOpen then
                         FeatureBox.init model.customModel.isFeatureBoxOpen ToggleFeatureBox "New feature" "Place tolltip message here thats is over 2 lines max"
-                            |> FeatureBox.withIcon Illustrations.confetti2
+                            |> FeatureBox.withIcon (Illustrations.confetti2 [ css [ width (rem 10) ] ])
                             |> FeatureBox.withButton
                                 (Button.primary
                                     |> Button.view [] [ Html.text "Click me" ]
