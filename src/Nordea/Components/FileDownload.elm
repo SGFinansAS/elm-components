@@ -97,10 +97,17 @@ view attrs (FileDownload config) =
 
                 NotAsked ->
                     Icon.download [ css [ flexShrink (num 0), width (rem 0.875), marginLeft (rem 0.5) ] ]
+
+        downloadOnClick =
+            case config.downloadStatus of
+                Loading ->
+                    []
+
+                _ ->
+                    [ onClick config.onDownload ]
     in
     Html.a
-        ([ onClick config.onDownload
-         , css
+        (css
             [ displayFlex
             , alignItems center
             , borderRadius (rem 0.5)
@@ -110,7 +117,7 @@ view attrs (FileDownload config) =
             , flexBasis (pct 100)
             , cursor pointer
             ]
-         ]
+            :: downloadOnClick
             ++ attrs
         )
         [ Layout.column []
