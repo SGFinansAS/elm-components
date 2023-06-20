@@ -30,7 +30,6 @@ import Css
         , none
         , outline
         , padding4
-        , paddingRight
         , pct
         , pointer
         , pointerEvents
