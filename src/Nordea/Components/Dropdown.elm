@@ -201,8 +201,8 @@ view attrs (Dropdown config) =
                             , top (pct 50)
                             , transform (translateY (pct -50))
                             , right (rem 0.75)
-                            , width (rem 0.75) |> Css.important
-                            , height (rem 0.75)
+                            , width (rem 1) |> Css.important
+                            , height (rem 1)
                             , pointerEvents none
                             , color inherit
                             ]
@@ -220,8 +220,7 @@ view attrs (Dropdown config) =
                 , property "-moz-appearance" "none"
                 , property "-webkit-appearance" "none"
                 , backgroundColor transparent
-                , padding4 (rem 0.25) (rem 2) (rem 0.25) (rem 0.75)
-                , paddingRight (rem 2.5) |> styleIf (config.variant /= Simple)
+                , padding4 (rem 0.25) (rem 2.5) (rem 0.25) (rem 0.75)
                 , if config.variant /= Simple || config.hasError then
                     border3 (rem 0.0625) solid Colors.mediumGray
 
