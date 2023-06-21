@@ -514,6 +514,7 @@ chevronDown attrs =
             ]
         ]
 
+
 chevronDownBolded : List (Attribute msg) -> Html msg
 chevronDownBolded attrs =
     iconContainer attrs
