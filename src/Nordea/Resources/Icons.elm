@@ -8,6 +8,7 @@ module Nordea.Resources.Icons exposing
     , arrowRight
     , check
     , chevronDown
+    , chevronDownBolded
     , chevronDownFilled
     , chevronLeft
     , chevronRight
@@ -507,6 +508,19 @@ chevronDown attrs =
             [ viewBox "0 0 32 32", fill "none" ]
             [ Svg.path
                 [ d "M16 24.71C16.2872 24.7096 16.5604 24.5858 16.75 24.37L28.75 10.66C29.0858 10.2431 29.0337 9.63564 28.6318 9.28198C28.23 8.92833 27.6208 8.95389 27.25 9.33997L16 22.2L4.75001 9.33997C4.51938 9.05363 4.15022 8.91695 3.78872 8.98404C3.42722 9.05114 3.1317 9.3112 3.01919 9.66123C2.90667 10.0113 2.99532 10.3948 3.25001 10.66L15.25 24.37C15.4396 24.5858 15.7128 24.7096 16 24.71Z"
+                , fill "currentColor"
+                ]
+                []
+            ]
+        ]
+
+chevronDownBolded : List (Attribute msg) -> Html msg
+chevronDownBolded attrs =
+    iconContainer attrs
+        [ Svg.svg
+            [ viewBox "0 0 13 12", fill "none" ]
+            [ Svg.path
+                [ d "M0.969666 4.53033L6.5 10.0607L12.0303 4.53033L10.9697 3.46967L6.5 7.939L2.03033 3.46967L0.969666 4.53033Z"
                 , fill "currentColor"
                 ]
                 []

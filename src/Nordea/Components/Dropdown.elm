@@ -194,14 +194,14 @@ view attrs (Dropdown config) =
                         ]
 
                 Simple ->
-                    Icon.chevronDown
+                    Icon.chevronDownBolded
                         [ css
                             [ position absolute
                             , top (pct 50)
                             , transform (translateY (pct -50))
                             , right (rem 0.75)
-                            , width (rem 1) |> Css.important
-                            , height (rem 1)
+                            , width (rem 0.75) |> Css.important
+                            , height (rem 0.75)
                             , pointerEvents none
                             , color inherit
                             ]
