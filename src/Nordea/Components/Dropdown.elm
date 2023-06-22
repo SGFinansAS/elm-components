@@ -22,6 +22,7 @@ import Css
         , borderStyle
         , color
         , cursor
+        , ellipsis
         , focus
         , fontSize
         , height
@@ -39,6 +40,7 @@ import Css
         , rem
         , right
         , solid
+        , textOverflow
         , top
         , transform
         , translateY
@@ -236,6 +238,7 @@ view attrs (Dropdown config) =
                 , color inherit
                 , withAttribute "disabled" [ color Colors.nordeaGray, backgroundColor Colors.coolGray ]
                 , cursor pointer
+                , textOverflow ellipsis |> styleIf (config.variant == Simple)
                 ]
             ]
             (placeholder :: options)
