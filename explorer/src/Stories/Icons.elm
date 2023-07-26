@@ -60,6 +60,8 @@ stories =
                         , Icons.search2 [ css [ width (rem 1.5) ] ]
                         , Icons.edit [ css [ width (rem 1.5) ] ]
                         , Icons.settings [ css [ width (rem 1.5) ] ]
+                                                , Icons.notificationBell [ css [ width (rem 1.5) ] ]
+                                                , Icons.star [ css [ width (rem 1.5) ] ]
                         ]
                     , iconCategoryHeader "Add, remove, accept and cancel"
                     , iconsRow
