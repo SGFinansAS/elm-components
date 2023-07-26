@@ -970,8 +970,8 @@ lightBulb attrs =
         ]
 
 
-notificationBell : List (Attribute msg) -> Html msg
-notificationBell attrs =
+bell : List (Attribute msg) -> Html msg
+bell attrs =
     iconContainer attrs
         [ Svg.svg
             [ viewBox "0 0 25 23", fill "none" ]
