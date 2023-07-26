@@ -6,6 +6,7 @@ module Nordea.Resources.Icons exposing
     , arrowBack
     , arrowLeft
     , arrowRight
+    , bell
     , check
     , chevronDown
     , chevronDownBolded
@@ -37,7 +38,6 @@ module Nordea.Resources.Icons exposing
     , lightBulb
     , logout
     , mediumPlus
-    , notificationBell
     , object
     , orders
     , outerLink
