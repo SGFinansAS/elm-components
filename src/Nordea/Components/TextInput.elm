@@ -24,6 +24,7 @@ import Css
         , borderRadius
         , boxSizing
         , color
+        , cursor
         , disabled
         , displayFlex
         , focus
@@ -39,6 +40,7 @@ import Css
         , paddingLeft
         , paddingRight
         , pct
+        , pointer
         , pointerEvents
         , position
         , relative
@@ -50,8 +52,16 @@ import Css
         , translateY
         , width
         )
-import Html.Styled as Html exposing (Attribute, Html, a, input, styled)
-import Html.Styled.Attributes exposing (css, maxlength, pattern, placeholder, value)
+import Html.Styled as Html exposing (Attribute, Html, input, styled)
+import Html.Styled.Attributes
+    exposing
+        ( css
+        , maxlength
+        , pattern
+        , placeholder
+        , tabindex
+        , value
+        )
 import Html.Styled.Events exposing (keyCode, on, onBlur, onClick, onInput)
 import Json.Decode as Json
 import Maybe.Extra as Maybe
@@ -182,15 +192,22 @@ view attributes (TextInput config) =
             (css [ displayFlex, position relative ]
                 :: attributes
             )
-            [ styled a
-                [ backgroundColor Colors.transparent
-                , position absolute
-                , right (rem 0)
-                , border3 (rem 0.125) solid Colors.transparent
-                , padding4 (rem 0.35) (rem 0.7) (rem 0.3) (rem 1)
-                ]
-                (Maybe.values [ config.onClearInput |> Maybe.map onClick ])
-                [ Icons.roundedCross [ css [ width (rem 1.5), color Colors.mediumGray ] ] ]
+            [ Icons.roundedCross
+                (Maybe.values
+                    [ Just
+                        (css
+                            [ width (rem 2.5)
+                            , color Colors.mediumGray
+                            , position absolute
+                            , padding4 (rem 0.35) (rem 0.25) (rem 0.25) (rem 0.25)
+                            , right (rem 0)
+                            , cursor pointer
+                            ]
+                        )
+                    , config.onClearInput |> Maybe.map onClick
+                    , Just (tabindex 0)
+                    ]
+                )
             , styled input
                 (getStyles config)
                 (getAttributes config)
