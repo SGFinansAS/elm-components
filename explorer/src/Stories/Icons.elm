@@ -39,7 +39,6 @@ stories =
                         , Icons.chevronUp [ css [ width (rem 1.5) ] ]
                         , Icons.chevronDown [ css [ width (rem 1.5) ] ]
                         , Icons.chevronRight [ css [ width (rem 1.5) ] ]
-                        , Icons.chevronRightThin [ css [ width (rem 1.5) ] ]
                         , Icons.triangleDown [ css [ width (rem 1.5) ] ]
                         , Icons.triangleUp [ css [ width (rem 1.5) ] ]
                         ]
