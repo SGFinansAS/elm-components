@@ -10,6 +10,7 @@ module Nordea.Components.TextInput exposing
     , withOnInput
     , withPattern
     , withPlaceholder
+    , withRemoveInput
     , withSearchIcon
     )
 
@@ -35,6 +36,7 @@ import Css
         , outline
         , padding2
         , paddingLeft
+        , paddingRight
         , pct
         , pointerEvents
         , position
@@ -47,9 +49,9 @@ import Css
         , translateY
         , width
         )
-import Html.Styled as Html exposing (Attribute, Html, input, styled)
+import Html.Styled as Html exposing (Attribute, Html, a, input, styled)
 import Html.Styled.Attributes exposing (css, maxlength, pattern, placeholder, value)
-import Html.Styled.Events exposing (keyCode, on, onBlur, onInput)
+import Html.Styled.Events exposing (keyCode, on, onBlur, onClick, onInput)
 import Json.Decode as Json
 import Maybe.Extra as Maybe
 import Nordea.Components.Text as Text
@@ -71,6 +73,8 @@ type alias Config msg =
     , maxLength : Maybe Int
     , pattern : Maybe String
     , hasSearchIcon : Bool
+    , hasRemoveInputButton : Bool
+    , onRemoveInput : Maybe msg
     , onBlur : Maybe msg
     , onEnterPress : Maybe msg
     , currency : Maybe String
@@ -91,6 +95,8 @@ init value =
         , maxLength = Nothing
         , pattern = Nothing
         , hasSearchIcon = False
+        , hasRemoveInputButton = False
+        , onRemoveInput = Nothing
         , onBlur = Nothing
         , onEnterPress = Nothing
         , currency = Nothing
@@ -142,6 +148,15 @@ withCurrency currency (TextInput config) =
     TextInput { config | currency = Just currency }
 
 
+withRemoveInput : Bool -> msg -> TextInput msg -> TextInput msg
+withRemoveInput condition onRemoveInput (TextInput config) =
+    TextInput
+        { config
+            | hasRemoveInputButton = condition
+            , onRemoveInput = Just onRemoveInput
+        }
+
+
 onEnterPress : msg -> Attribute msg
 onEnterPress msg =
     let
@@ -161,7 +176,28 @@ onEnterPress msg =
 
 view : List (Attribute msg) -> TextInput msg -> Html msg
 view attributes (TextInput config) =
-    if config.hasSearchIcon then
+    if config.hasRemoveInputButton then
+        Html.div
+            (css [ displayFlex, position relative ]
+                :: attributes
+            )
+            [ styled a
+                [ backgroundColor Colors.transparent
+                , position absolute
+                , right (rem 0.35)
+                , top (rem 0.35)
+                , border3 (rem 0.125) solid Colors.transparent
+                ]
+                (Maybe.values [ config.onRemoveInput |> Maybe.map onClick ])
+                [ Icons.roundedCross [ css [ width (rem 1.5), color Colors.mediumGray ] ] ]
+            , styled input
+                (getStyles config)
+                (getAttributes config)
+                []
+            , viewCurrency config
+            ]
+
+    else if config.hasSearchIcon then
         let
             iconColor =
                 if config.showError then
@@ -262,6 +298,7 @@ getStyles config =
     , width (pct 100)
     , disabled [ backgroundColor Colors.grayWarm ]
     , paddingLeft (rem 2) |> styleIf config.hasSearchIcon
+    , paddingRight (rem 2.5) |> styleIf config.hasRemoveInputButton
     , focus
         [ outline none
         , Themes.borderColor Colors.nordeaBlue
