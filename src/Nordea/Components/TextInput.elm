@@ -2,6 +2,7 @@ module Nordea.Components.TextInput exposing
     ( TextInput
     , init
     , view
+    , withClearInput
     , withCurrency
     , withError
     , withMaxLength
@@ -10,7 +11,6 @@ module Nordea.Components.TextInput exposing
     , withOnInput
     , withPattern
     , withPlaceholder
-    , withRemoveInput
     , withSearchIcon
     )
 
@@ -35,6 +35,7 @@ import Css
         , opacity
         , outline
         , padding2
+        , padding4
         , paddingLeft
         , paddingRight
         , pct
@@ -73,8 +74,7 @@ type alias Config msg =
     , maxLength : Maybe Int
     , pattern : Maybe String
     , hasSearchIcon : Bool
-    , hasRemoveInputButton : Bool
-    , onRemoveInput : Maybe msg
+    , onClearInput : Maybe msg
     , onBlur : Maybe msg
     , onEnterPress : Maybe msg
     , currency : Maybe String
@@ -95,8 +95,7 @@ init value =
         , maxLength = Nothing
         , pattern = Nothing
         , hasSearchIcon = False
-        , hasRemoveInputButton = False
-        , onRemoveInput = Nothing
+        , onClearInput = Nothing
         , onBlur = Nothing
         , onEnterPress = Nothing
         , currency = Nothing
@@ -148,12 +147,11 @@ withCurrency currency (TextInput config) =
     TextInput { config | currency = Just currency }
 
 
-withRemoveInput : Bool -> msg -> TextInput msg -> TextInput msg
-withRemoveInput condition onRemoveInput (TextInput config) =
+withClearInput : msg -> TextInput msg -> TextInput msg
+withClearInput onRemoveInput (TextInput config) =
     TextInput
         { config
-            | hasRemoveInputButton = condition
-            , onRemoveInput = Just onRemoveInput
+            | onClearInput = Just onRemoveInput
         }
 
 
@@ -176,7 +174,10 @@ onEnterPress msg =
 
 view : List (Attribute msg) -> TextInput msg -> Html msg
 view attributes (TextInput config) =
-    if config.hasRemoveInputButton then
+    if
+        (config.value |> String.isEmpty |> not)
+            && Maybe.isJust config.onClearInput
+    then
         Html.div
             (css [ displayFlex, position relative ]
                 :: attributes
@@ -184,11 +185,11 @@ view attributes (TextInput config) =
             [ styled a
                 [ backgroundColor Colors.transparent
                 , position absolute
-                , right (rem 0.35)
-                , top (rem 0.35)
+                , right (rem 0)
                 , border3 (rem 0.125) solid Colors.transparent
+                , padding4 (rem 0.35) (rem 0.7) (rem 0.3) (rem 1)
                 ]
-                (Maybe.values [ config.onRemoveInput |> Maybe.map onClick ])
+                (Maybe.values [ config.onClearInput |> Maybe.map onClick ])
                 [ Icons.roundedCross [ css [ width (rem 1.5), color Colors.mediumGray ] ] ]
             , styled input
                 (getStyles config)
@@ -298,7 +299,11 @@ getStyles config =
     , width (pct 100)
     , disabled [ backgroundColor Colors.grayWarm ]
     , paddingLeft (rem 2) |> styleIf config.hasSearchIcon
-    , paddingRight (rem 2.5) |> styleIf config.hasRemoveInputButton
+    , paddingRight (rem 3)
+        |> styleIf
+            ((config.value |> String.isEmpty |> not)
+                && Maybe.isJust config.onClearInput
+            )
     , focus
         [ outline none
         , Themes.borderColor Colors.nordeaBlue
