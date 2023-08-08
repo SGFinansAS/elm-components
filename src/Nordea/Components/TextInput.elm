@@ -2,6 +2,7 @@ module Nordea.Components.TextInput exposing
     ( TextInput
     , init
     , view
+    , withClearInput
     , withCurrency
     , withError
     , withMaxLength
@@ -23,6 +24,7 @@ import Css
         , borderRadius
         , boxSizing
         , color
+        , cursor
         , disabled
         , displayFlex
         , focus
@@ -34,8 +36,11 @@ import Css
         , opacity
         , outline
         , padding2
+        , padding4
         , paddingLeft
+        , paddingRight
         , pct
+        , pointer
         , pointerEvents
         , position
         , relative
@@ -48,8 +53,16 @@ import Css
         , width
         )
 import Html.Styled as Html exposing (Attribute, Html, input, styled)
-import Html.Styled.Attributes exposing (css, maxlength, pattern, placeholder, value)
-import Html.Styled.Events exposing (keyCode, on, onBlur, onInput)
+import Html.Styled.Attributes
+    exposing
+        ( css
+        , maxlength
+        , pattern
+        , placeholder
+        , tabindex
+        , value
+        )
+import Html.Styled.Events exposing (keyCode, on, onBlur, onClick, onInput)
 import Json.Decode as Json
 import Maybe.Extra as Maybe
 import Nordea.Components.Text as Text
@@ -71,6 +84,7 @@ type alias Config msg =
     , maxLength : Maybe Int
     , pattern : Maybe String
     , hasSearchIcon : Bool
+    , onClearInput : Maybe msg
     , onBlur : Maybe msg
     , onEnterPress : Maybe msg
     , currency : Maybe String
@@ -91,6 +105,7 @@ init value =
         , maxLength = Nothing
         , pattern = Nothing
         , hasSearchIcon = False
+        , onClearInput = Nothing
         , onBlur = Nothing
         , onEnterPress = Nothing
         , currency = Nothing
@@ -142,6 +157,14 @@ withCurrency currency (TextInput config) =
     TextInput { config | currency = Just currency }
 
 
+withClearInput : msg -> TextInput msg -> TextInput msg
+withClearInput onRemoveInput (TextInput config) =
+    TextInput
+        { config
+            | onClearInput = Just onRemoveInput
+        }
+
+
 onEnterPress : msg -> Attribute msg
 onEnterPress msg =
     let
@@ -161,7 +184,38 @@ onEnterPress msg =
 
 view : List (Attribute msg) -> TextInput msg -> Html msg
 view attributes (TextInput config) =
-    if config.hasSearchIcon then
+    if
+        (config.value |> String.isEmpty |> not)
+            && Maybe.isJust config.onClearInput
+    then
+        Html.div
+            (css [ displayFlex, position relative ]
+                :: attributes
+            )
+            [ Icons.roundedCross
+                (Maybe.values
+                    [ Just
+                        (css
+                            [ width (rem 2.5)
+                            , color Colors.mediumGray
+                            , position absolute
+                            , padding4 (rem 0.35) (rem 0.25) (rem 0.25) (rem 0.25)
+                            , right (rem 0)
+                            , cursor pointer
+                            ]
+                        )
+                    , config.onClearInput |> Maybe.map onClick
+                    , Just (tabindex 0)
+                    ]
+                )
+            , styled input
+                (getStyles config)
+                (getAttributes config)
+                []
+            , viewCurrency config
+            ]
+
+    else if config.hasSearchIcon then
         let
             iconColor =
                 if config.showError then
@@ -262,6 +316,11 @@ getStyles config =
     , width (pct 100)
     , disabled [ backgroundColor Colors.grayWarm ]
     , paddingLeft (rem 2) |> styleIf config.hasSearchIcon
+    , paddingRight (rem 3)
+        |> styleIf
+            ((config.value |> String.isEmpty |> not)
+                && Maybe.isJust config.onClearInput
+            )
     , focus
         [ outline none
         , Themes.borderColor Colors.nordeaBlue
