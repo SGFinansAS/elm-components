@@ -6,43 +6,7 @@ module Nordea.Components.Modal exposing
     , withTitle
     )
 
-import Css
-    exposing
-        ( alignItems
-        , auto
-        , backgroundColor
-        , borderBottom3
-        , borderRadius
-        , bottom
-        , center
-        , color
-        , column
-        , displayFlex
-        , fixed
-        , flexDirection
-        , hidden
-        , int
-        , justifyContent
-        , left
-        , margin
-        , marginLeft
-        , maxWidth
-        , minWidth
-        , none
-        , outline
-        , overflow
-        , padding
-        , padding3
-        , padding4
-        , pct
-        , position
-        , rem
-        , solid
-        , textAlign
-        , top
-        , width
-        , zIndex
-        )
+import Css exposing (..)
 import Css.Global as Global
 import Css.Media as Media
 import Html.Styled as Html exposing (Attribute, Html)
