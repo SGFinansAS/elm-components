@@ -40,6 +40,7 @@ import Css
         , solid
         , textAlign
         , top
+        , width
         , zIndex
         )
 import Css.Global as Global
@@ -129,7 +130,7 @@ view attrs children (Modal config) =
             , outline none
             , overflow auto
             , displayFlex
-            , minWidth (pct 100)
+            , width (pct 100)
             , justifyContent center
             , alignItems center
             , padding (rem 0)
