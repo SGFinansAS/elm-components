@@ -66,7 +66,7 @@ import Html.Styled.Events exposing (keyCode, on, onBlur, onClick, onInput)
 import Json.Decode as Json
 import Maybe.Extra as Maybe
 import Nordea.Components.Text as Text
-import Nordea.Html as Html exposing (styleIf)
+import Nordea.Html as Html exposing (showIf, styleIf)
 import Nordea.Resources.Colors as Colors
 import Nordea.Resources.Icons as Icons
 import Nordea.Themes as Themes
@@ -184,10 +184,7 @@ onEnterPress msg =
 
 view : List (Attribute msg) -> TextInput msg -> Html msg
 view attributes (TextInput config) =
-    if
-        (config.value |> String.isEmpty |> not)
-            && Maybe.isJust config.onClearInput
-    then
+    if Maybe.isJust config.onClearInput then
         Html.div
             (css [ displayFlex, position relative ]
                 :: attributes
@@ -208,6 +205,7 @@ view attributes (TextInput config) =
                     , Just (tabindex 0)
                     ]
                 )
+                |> showIf (config.value |> String.isEmpty |> not)
             , styled input
                 (getStyles config)
                 (getAttributes config)
