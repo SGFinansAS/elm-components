@@ -94,7 +94,7 @@ view attrs children (Modal config) =
             , outline none
             , overflow auto
             , displayFlex
-            , width (pct 100)
+            , minWidth (pct 100)
             , justifyContent center
             , alignItems center
             , padding (rem 0)
