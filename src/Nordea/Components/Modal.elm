@@ -70,8 +70,6 @@ view attrs children (Modal config) =
                         , backgroundColor Colors.white
                         , displayFlex
                         , flexDirection column
-                        , minWidth (rem 18)
-                        , maxWidth (rem 60)
                         , margin auto
                         , Media.withMedia
                             [ Media.only Media.screen [ Media.minWidth (rem 47) ] ]
