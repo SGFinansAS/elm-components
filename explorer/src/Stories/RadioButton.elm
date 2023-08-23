@@ -131,39 +131,4 @@ stories =
                     ]
           , {}
           )
-        , ( "Liststyle"
-          , \_ ->
-                Html.div [ css [ displayFlex, flexDirection column, maxWidth (rem 30) ] ]
-                    (List.range 0 5
-                        |> List.map
-                            (\i ->
-                                RadioButton.init
-                                    "simple"
-                                    (text ("Click me: " ++ String.fromInt i))
-                                    NoOp
-                                    |> RadioButton.withAppearance RadioButton.ListStyle
-                                    |> RadioButton.withIsSelected (i == 2)
-                                    |> RadioButton.view []
-                            )
-                    )
-          , {}
-          )
-        , ( "Liststyle with error"
-          , \_ ->
-                Html.div [ css [ displayFlex, flexDirection column, maxWidth (rem 30) ] ]
-                    (List.range 0 5
-                        |> List.map
-                            (\i ->
-                                RadioButton.init
-                                    "simple"
-                                    (text ("Click me: " ++ String.fromInt i))
-                                    NoOp
-                                    |> RadioButton.withAppearance RadioButton.ListStyle
-                                    |> RadioButton.withHasError True
-                                    |> RadioButton.withIsSelected (i == 2)
-                                    |> RadioButton.view []
-                            )
-                    )
-          , {}
-          )
         ]

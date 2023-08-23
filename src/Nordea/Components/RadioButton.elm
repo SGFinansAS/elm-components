@@ -17,21 +17,15 @@ import Css
         , backgroundColor
         , block
         , border3
-        , borderBottomLeftRadius
-        , borderBottomRightRadius
         , borderBox
         , borderColor
         , borderRadius
-        , borderTopColor
-        , borderTopLeftRadius
-        , borderTopRightRadius
         , borderWidth
         , boxSizing
         , center
         , cursor
         , display
         , flex
-        , flexBasis
         , height
         , hover
         , inlineFlex
@@ -82,7 +76,6 @@ type RadioButton msg
 type Appearance
     = Standard
     | Simple
-    | ListStyle
 
 
 init : String -> Html msg -> msg -> RadioButton msg
@@ -122,7 +115,7 @@ view attrs (RadioButton config) =
                     , borderColor Colors.darkRed
                         |> styleIf (config.showError && config.appearance == Simple)
                     , borderColor Colors.mediumGray
-                        |> styleIf (config.showError && List.member config.appearance [ Standard, ListStyle ])
+                        |> styleIf (config.showError && List.member config.appearance [ Standard ])
                     , borderRadius (pct 50)
                     , boxSizing borderBox
                     , after
@@ -148,30 +141,6 @@ view attrs (RadioButton config) =
 
         appearanceStyle =
             case config.appearance of
-                ListStyle ->
-                    Css.batch
-                        [ padding2 (rem 0.5) (rem 1)
-                        , border3 (rem 0.0625) solid transparent
-                        , Themes.backgroundColor Colors.cloudBlue
-                            |> styleIf config.isSelected
-                        , transition
-                            [ Css.Transitions.borderColor 100
-                            , Css.Transitions.backgroundColor 100
-                            ]
-                        , flexBasis (pct 100)
-                        , borderColor Colors.mediumGray
-                        , borderColor Colors.darkRed |> styleIf config.showError
-                        , Css.firstOfType [ borderTopLeftRadius (rem 0.5), borderTopRightRadius (rem 0.5) ]
-                        , Css.lastOfType [ borderBottomLeftRadius (rem 0.5), borderBottomRightRadius (rem 0.5) ]
-                        , pseudoClass "not(label:first-of-type):not(:hover)" [ borderTopColor transparent ]
-                            |> styleIf (not config.isSelected)
-                        , pseudoClass "not(label:first-of-type)" [ Css.marginTop (rem -0.0625) ]
-                        , hover [ Themes.backgroundColor Colors.cloudBlue ]
-                            |> styleIf (not isDisabled)
-                        , pseudoClass "focus-within" [ Themes.backgroundColor Colors.cloudBlue ]
-                            |> styleIf (not isDisabled)
-                        ]
-
                 Simple ->
                     Css.batch []
 
