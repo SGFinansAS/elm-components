@@ -1,7 +1,7 @@
 module Stories.RadioButton exposing (stories)
 
 import Config exposing (Config, Msg(..))
-import Css exposing (column, displayFlex, flexDirection)
+import Css exposing (displayFlex)
 import Html.Styled as Html exposing (text)
 import Html.Styled.Attributes exposing (css, disabled)
 import Nordea.Components.RadioButton as RadioButton
