@@ -133,35 +133,6 @@ stories =
                                 |> RadioButton.withHasError True
                                 |> RadioButton.view []
                             ]
-                    , Label.init "State of object" Label.GroupLabel
-                        |> Label.view []
-                            (List.range 0 5
-                                |> List.map
-                                    (\i ->
-                                        RadioButton.init
-                                            "simple"
-                                            (text ("Click me: " ++ String.fromInt i))
-                                            NoOp
-                                            |> RadioButton.withAppearance RadioButton.ListStyle
-                                            |> RadioButton.withIsSelected (i == 2)
-                                            |> RadioButton.view []
-                                    )
-                            )
-                    , Label.init "State of object (with error)" Label.GroupLabel
-                        |> Label.withErrorMessage (Just "State of object is required")
-                        |> Label.view []
-                            (List.range 0 5
-                                |> List.map
-                                    (\i ->
-                                        RadioButton.init
-                                            "simple"
-                                            (text ("Click me: " ++ String.fromInt i))
-                                            NoOp
-                                            |> RadioButton.withAppearance RadioButton.ListStyle
-                                            |> RadioButton.withHasError True
-                                            |> RadioButton.view []
-                                    )
-                            )
                     ]
           , {}
           )

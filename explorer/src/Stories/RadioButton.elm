@@ -1,7 +1,7 @@
 module Stories.RadioButton exposing (stories)
 
 import Config exposing (Config, Msg(..))
-import Css exposing (column, displayFlex, flexDirection, maxWidth, rem)
+import Css exposing (displayFlex)
 import Html.Styled as Html exposing (text)
 import Html.Styled.Attributes exposing (css, disabled)
 import Nordea.Components.RadioButton as RadioButton
@@ -129,41 +129,6 @@ stories =
                         |> RadioButton.withIsSelected (config.customModel.activeRadioButton == "second")
                         |> RadioButton.view [ disabled True ]
                     ]
-          , {}
-          )
-        , ( "Liststyle"
-          , \_ ->
-                Html.div [ css [ displayFlex, flexDirection column, maxWidth (rem 30) ] ]
-                    (List.range 0 5
-                        |> List.map
-                            (\i ->
-                                RadioButton.init
-                                    "simple"
-                                    (text ("Click me: " ++ String.fromInt i))
-                                    NoOp
-                                    |> RadioButton.withAppearance RadioButton.ListStyle
-                                    |> RadioButton.withIsSelected (i == 2)
-                                    |> RadioButton.view []
-                            )
-                    )
-          , {}
-          )
-        , ( "Liststyle with error"
-          , \_ ->
-                Html.div [ css [ displayFlex, flexDirection column, maxWidth (rem 30) ] ]
-                    (List.range 0 5
-                        |> List.map
-                            (\i ->
-                                RadioButton.init
-                                    "simple"
-                                    (text ("Click me: " ++ String.fromInt i))
-                                    NoOp
-                                    |> RadioButton.withAppearance RadioButton.ListStyle
-                                    |> RadioButton.withHasError True
-                                    |> RadioButton.withIsSelected (i == 2)
-                                    |> RadioButton.view []
-                            )
-                    )
           , {}
           )
         ]
