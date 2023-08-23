@@ -115,7 +115,7 @@ view attrs (RadioButton config) =
                     , borderColor Colors.darkRed
                         |> styleIf (config.showError && config.appearance == Simple)
                     , borderColor Colors.mediumGray
-                        |> styleIf (config.showError && List.member config.appearance [ Standard ])
+                        |> styleIf (config.showError && config.appearance == Standard)
                     , borderRadius (pct 50)
                     , boxSizing borderBox
                     , after
