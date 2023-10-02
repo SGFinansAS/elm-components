@@ -281,7 +281,7 @@ viewCurrency config =
 getAttributes : Config msg -> List (Attribute msg)
 getAttributes config =
     Maybe.values
-        [ Just config.value |> Maybe.map value
+        [ config.value |> value |> Just
         , config.onInput |> Maybe.map onInput
         , config.placeholder |> Maybe.map placeholder
         , config.maxLength |> Maybe.map maxlength

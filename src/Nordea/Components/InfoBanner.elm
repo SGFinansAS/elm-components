@@ -42,13 +42,11 @@ view config attrs children =
     let
         appearance =
             config
-                |> List.filterMap
-                    (\attr ->
-                        case attr of
-                            Appearance app ->
-                                Just app
-                    )
                 |> List.head
+                |> Maybe.map
+                    (\(Appearance app) ->
+                        app
+                    )
                 |> Maybe.withDefault Info
 
         backgroundColor_ =
