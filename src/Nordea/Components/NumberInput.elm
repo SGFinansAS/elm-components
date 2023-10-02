@@ -128,14 +128,14 @@ getAttributes config =
                     |> Maybe.withDefault value
     in
     Maybe.values
-        [ Just "text" |> Maybe.map type_
+        [ "text" |> type_ |> Just
         , config.min |> Maybe.map String.fromFloat |> Maybe.map Attributes.min
         , config.max |> Maybe.map String.fromFloat |> Maybe.map Attributes.max
         , config.step |> Maybe.map String.fromFloat |> Maybe.map step
         , config.placeholder |> Maybe.map placeholder
         , config.onInput |> Maybe.map onInput
         , config.onBlur |> Maybe.map onBlur
-        , Just config.value |> Maybe.map format |> Maybe.map value
+        , config.value |> format |> value |> Just
         ]
 
 
