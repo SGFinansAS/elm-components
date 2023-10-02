@@ -6,28 +6,14 @@ module Nordea.Components.InformationDetails exposing
     , value
     )
 
-import Css
-    exposing
-        ( color
-        , column
-        , displayFlex
-        , flexBasis
-        , flexDirection
-        , flexGrow
-        , flexWrap
-        , lineHeight
-        , marginBottom
-        , marginRight
-        , num
-        , pct
-        , rem
-        , wrap
-        )
+import Css exposing (auto, color, column, cursor, default, displayFlex, flexBasis, flexDirection, flexGrow, flexWrap, lineHeight, marginBottom, marginLeft, marginRight, marginTop, num, padding2, pct, pointer, rem, wrap)
 import Css.Global as Css exposing (children)
 import Html.Styled as Html exposing (Attribute, Html)
 import Html.Styled.Attributes exposing (css)
+import Nordea.Components.AccordionMenu as AccordionMenu
 import Nordea.Components.Card as Card
 import Nordea.Components.Text as Text
+import Nordea.Html as Html
 import Nordea.Resources.Colors as Colors
 
 
@@ -57,6 +43,37 @@ card attrs children title =
                     ]
                 ]
                 children
+            ]
+
+
+cardCollapsable : List (Attribute msg) -> String -> List (Html msg) -> Html msg
+cardCollapsable attrs title children =
+    Card.init
+        |> Card.view
+            attrs
+            [ AccordionMenu.view
+                { isOpen = False }
+                (css [] :: attrs)
+                [ AccordionMenu.header [ css [ cursor pointer ] ]
+                    [ Text.bodyTextHeavy |> Text.view [ css [] ] [ Html.text title ]
+                    , value [ css [ marginLeft auto, cursor default, padding2 (rem 0) (rem 2) ] ]
+                        [ Html.text "test" ]
+                    ]
+                , Html.wrappedRow
+                    [ css
+                        [ marginTop (rem 2)
+                        , marginBottom (rem -1.5)
+                        , marginRight (rem -1)
+                        , Css.children
+                            [ Css.everything
+                                [ marginBottom (rem 1.5)
+                                , marginRight (rem 1)
+                                ]
+                            ]
+                        ]
+                    ]
+                    children
+                ]
             ]
 
 
