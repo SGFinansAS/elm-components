@@ -510,16 +510,16 @@ elm-live@^4.0.2:
     serve-static "1.14.1"
     ws "7.1.1"
 
-elm-review@^2.10.2:
-  version "2.10.2"
-  resolved "https://registry.yarnpkg.com/elm-review/-/elm-review-2.10.2.tgz#45244ab78aa276ef0353a960f068393c7d7fffce"
-  integrity sha512-9cgv3ILetV/Gb/cr42ZHYWHK5hrnl1UsGuxah1DL/NI6EZlu+GrwaSng4DvYsETrccaoNzRJMuhfv7JoPCdK/A==
+elm-review@^2.10.3:
+  version "2.10.3"
+  resolved "https://registry.yarnpkg.com/elm-review/-/elm-review-2.10.3.tgz#0f8a83be4ac1d7d726e19eb1eec8809156d18f16"
+  integrity sha512-9gBqLc5Xm3v9Ncpf8y2haEaBZZyMX25vmwQkrNqSIaNYQ2vdGOIx1eyqRtt1xwX5O8pZdqU8IWC/ENyTrOTKbw==
   dependencies:
     chalk "^4.0.0"
     chokidar "^3.5.2"
     cross-spawn "^7.0.3"
-    elm-tooling "^1.6.0"
-    fast-levenshtein "^3.0.0"
+    elm-tooling "^1.14.1"
+    fastest-levenshtein "^1.0.16"
     find-up "^4.1.0"
     folder-hash "^3.3.0"
     fs-extra "^9.0.0"
@@ -536,10 +536,10 @@ elm-review@^2.10.2:
     which "^2.0.2"
     wrap-ansi "^6.2.0"
 
-elm-tooling@^1.6.0:
-  version "1.7.0"
-  resolved "https://registry.yarnpkg.com/elm-tooling/-/elm-tooling-1.7.0.tgz#c365b3f7aa21ee67eb4104136c146d500d1887f4"
-  integrity sha512-EHZ54voWrG3BhUONbH/wFw5U95H6N7R4QFgXHDrPIaDBDdeyNkpFu4QWArSWkhzxyCF7hqT8ya2yy7SferDsgg==
+elm-tooling@^1.14.1:
+  version "1.15.0"
+  resolved "https://registry.yarnpkg.com/elm-tooling/-/elm-tooling-1.15.0.tgz#e1f2ad4df34d3f890c906a43c9a3d295d3c6331d"
+  integrity sha512-quRE5LGJyrkPBoJ3MvFQ5RGgf80J0L0d3NkduStvXh4TmZuMXNC3Z/l2ZRoq2UTUaNWeYfO1Zx5wns1AvsTrnw==
 
 elm@^0.19.1-5:
   version "0.19.1-5"
@@ -615,17 +615,10 @@ fast-json-stable-stringify@^2.0.0:
   version "2.1.0"
   resolved "https://registry.npmjs.org/fast-json-stable-stringify/-/fast-json-stable-stringify-2.1.0.tgz"
 
-fast-levenshtein@^3.0.0:
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/fast-levenshtein/-/fast-levenshtein-3.0.0.tgz#37b899ae47e1090e40e3fd2318e4d5f0142ca912"
-  integrity sha512-hKKNajm46uNmTlhHSyZkmToAc56uZJwYq7yrciZjqOxnlfQwERDQJmHPUp7m1m9wx8vgOe8IaCKZ5Kv2k1DdCQ==
-  dependencies:
-    fastest-levenshtein "^1.0.7"
-
-fastest-levenshtein@^1.0.7:
-  version "1.0.12"
-  resolved "https://registry.yarnpkg.com/fastest-levenshtein/-/fastest-levenshtein-1.0.12.tgz#9990f7d3a88cc5a9ffd1f1745745251700d497e2"
-  integrity sha512-On2N+BpYJ15xIC974QNVuYGMOlEVt4s0EOI3wwMqOmK1fdDY+FN/zltPV8vosq4ad4c/gJ1KHScUn/6AWIgiow==
+fastest-levenshtein@^1.0.16:
+  version "1.0.16"
+  resolved "https://registry.yarnpkg.com/fastest-levenshtein/-/fastest-levenshtein-1.0.16.tgz#210e61b6ff181de91ea9b3d1b84fdedd47e034e5"
+  integrity sha512-eRnCtTTtGZFpQCwhJiUOuxPQWRXVKYDn0b2PeHfXL6/Zi53SLAzAHfVhVWK2AryC/WH05kGfxhFIPvTF0SXQzg==
 
 fill-range@^7.0.1:
   version "7.0.1"
