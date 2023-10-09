@@ -2,9 +2,11 @@ module Stories.InformationDetails exposing (stories)
 
 import Config exposing (Config, Msg(..))
 import Css
+import Css.Transitions
 import Html.Styled as Html
-import Html.Styled.Attributes exposing (css)
+import Html.Styled.Attributes as Html exposing (css)
 import Nordea.Components.InformationDetails as InformationDetails
+import Nordea.Components.Text as Text
 import Nordea.Resources.Colors as Colors
 import UIExplorer exposing (UI)
 import UIExplorer.Styled exposing (styledStoriesOf)
@@ -63,7 +65,20 @@ stories =
                     [ InformationDetails.collapsibleCard
                         { attrs = []
                         , title = "Title"
-                        , emphasisedText = "Emphasised Text"
+                        , emphasisedText =
+                            Text.textLight
+                                |> Text.view
+                                    [ css
+                                        [ Css.marginLeft Css.auto
+                                        , Css.paddingRight (Css.rem 0.75)
+                                        , Css.maxWidth (Css.rem 13.25)
+                                        , Css.textOverflow Css.ellipsis
+                                        , Css.overflow Css.hidden
+                                        , Css.Transitions.transition [ Css.Transitions.opacity3 400 0 Css.Transitions.ease ]
+                                        ]
+                                    , Html.class "accordion-closed-text"
+                                    ]
+                                    [ Html.text "Emphasised Text" ]
                         , isOpen = False
                         , children =
                             [ InformationDetails.fullWidthElement []

@@ -85,61 +85,32 @@ card attrs children title =
 collapsibleCard :
     { attrs : List (Attribute msg)
     , title : String
-    , emphasisedText : String
-    , isOpen : Bool
+    , emphasisedText : Html msg
     , children : List (Html msg)
+    , isOpen : Bool
     }
     -> Html msg
-collapsibleCard { attrs, title, emphasisedText, isOpen, children } =
-    AccordionMenu.view { isOpen = isOpen }
-        (css
-            [ cursor Css.default
-            , borderRadius (rem 0.5)
-            , padding (rem 1.5)
-            , backgroundColor Colors.white
-            ]
-            :: attrs
-        )
-        [ Html.summary
-            (css [ displayFlex, alignItems center, cursor pointer ] :: attrs)
-            [ Text.bodyTextHeavy |> Text.view [ css [] ] [ Html.text title ]
-            , Text.textLight
-                |> Text.view
-                    [ css
-                        [ marginLeft auto
-                        , paddingRight (rem 0.75)
-                        , maxWidth (rem 13.25)
-                        , textOverflow ellipsis
-                        , overflow hidden
-                        , transition [ Css.Transitions.opacity3 400 0 Css.Transitions.ease ]
-                        ]
-                    , Html.class "accordion-closed-text"
-                    ]
-                    [ Html.text emphasisedText ]
-            , Icons.chevronDown
-                [ Html.class "accordion-open-icon"
-                , css [ width (rem 1.25), color Colors.deepBlue ]
-                ]
-            , Icons.chevronUp
-                [ Html.class "accordion-closed-icon"
-                , css [ width (rem 1.25), color Colors.deepBlue ]
-                ]
-            ]
-        , Html.wrappedRow
-            [ css
-                [ marginTop (rem 2)
-                , marginBottom (rem -1.5)
-                , marginRight (rem -1)
-                , Css.children
-                    [ Css.everything
-                        [ marginBottom (rem 1.5)
-                        , marginRight (rem 1)
+collapsibleCard { attrs, title, emphasisedText, children, isOpen } =
+    Card.init
+        |> Card.withTitle title
+        |> Card.viewCollapsible
+            attrs
+            emphasisedText
+            isOpen
+            [ Html.wrappedRow
+                [ css
+                    [ marginBottom (rem -1.5)
+                    , marginRight (rem -1)
+                    , Css.children
+                        [ Css.everything
+                            [ marginBottom (rem 1.5)
+                            , marginRight (rem 1)
+                            ]
                         ]
                     ]
                 ]
+                children
             ]
-            children
-        ]
 
 
 element : List (Attribute msg) -> List (Html msg) -> Html msg

@@ -6,36 +6,74 @@ module Nordea.Components.Card exposing
     , init
     , title
     , view
+    , viewCollapsible
     , withShadow
     , withTitle
     )
 
 import Css
     exposing
-        ( auto
+        ( active
+        , alignItems
+        , alignSelf
+        , auto
         , backgroundColor
+        , before
         , border3
         , borderRadius
         , borderStyle
         , boxShadow4
+        , center
+        , color
         , column
+        , cursor
+        , default
         , displayFlex
+        , ellipsis
+        , flexBasis
         , flexDirection
+        , flexEnd
+        , flexGrow
         , height
+        , hidden
+        , hover
         , left
+        , listStyle
         , margin2
+        , marginBottom
+        , marginLeft
+        , marginRight
+        , marginTop
+        , maxWidth
+        , noWrap
         , none
+        , num
+        , opacity
+        , overflow
         , padding
+        , padding2
+        , paddingRight
+        , pct
+        , pointer
+        , pseudoClass
         , rem
+        , scale2
         , solid
         , textAlign
+        , textOverflow
+        , transform
+        , whiteSpace
         , width
         )
+import Css.Global as Css
+import Css.Transitions exposing (transition)
 import Html.Styled as Html exposing (Attribute, Html)
-import Html.Styled.Attributes exposing (css)
+import Html.Styled.Attributes as Html exposing (css)
+import Nordea.Components.AccordionMenu as AccordionMenu
 import Nordea.Components.Text as Text
 import Nordea.Html as Html exposing (styleIf, viewMaybe)
 import Nordea.Resources.Colors as Colors
+import Nordea.Resources.Icons as Icons
 
 
 type alias CardProperties =
@@ -74,6 +112,47 @@ view attrs children (Card config) =
         ((config.title |> viewMaybe (\title_ -> header [] [ title [] [ Html.text title_ ] ]))
             :: children
         )
+
+
+viewCollapsible : List (Attribute msg) -> Html msg -> Bool -> List (Html msg) -> Card msg -> Html msg
+viewCollapsible attrs emphasisedText isOpen children (Card config) =
+    AccordionMenu.view { isOpen = isOpen }
+        (css
+            [ cursor Css.default
+            , borderRadius (rem 0.5)
+            , padding (rem 1.5)
+            , backgroundColor Colors.white
+            ]
+            :: attrs
+        )
+        [ Html.summary
+            (css [ displayFlex, alignItems center, cursor pointer ] :: attrs)
+            [ config.title |> viewMaybe (\title_ -> Text.bodyTextHeavy |> Text.view [ css [] ] [ Html.text title_ ])
+            , emphasisedText
+            , Icons.chevronDown
+                [ Html.class "accordion-open-icon"
+                , css [ width (rem 1.25), color Colors.deepBlue ]
+                ]
+            , Icons.chevronUp
+                [ Html.class "accordion-closed-icon"
+                , css [ width (rem 1.25), color Colors.deepBlue ]
+                ]
+            ]
+        , Html.wrappedRow
+            [ css
+                [ marginTop (rem 2)
+                , marginBottom (rem -1.5)
+                , marginRight (rem -1)
+                , Css.children
+                    [ Css.everything
+                        [ marginBottom (rem 1.5)
+                        , marginRight (rem 1)
+                        ]
+                    ]
+                ]
+            ]
+            children
+        ]
 
 
 header : List (Attribute msg) -> List (Html msg) -> Html msg
