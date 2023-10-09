@@ -52,7 +52,7 @@ stories =
                     ]
           , {}
           )
-        , ( "Collapsable"
+        , ( "Collapsible"
           , \_ ->
                 Html.div
                     [ css
@@ -60,7 +60,7 @@ stories =
                         , Css.padding (Css.rem 2)
                         ]
                     ]
-                    [ InformationDetails.collapsableCard
+                    [ InformationDetails.collapsibleCard
                         { attrs = []
                         , title = "Title"
                         , emphasisedText = "Emphasised Text"

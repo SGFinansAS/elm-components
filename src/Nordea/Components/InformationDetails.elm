@@ -1,6 +1,6 @@
 module Nordea.Components.InformationDetails exposing
     ( card
-    , collapsableCard
+    , collapsibleCard
     , element
     , fullWidthElement
     , label
@@ -82,7 +82,7 @@ card attrs children title =
             ]
 
 
-collapsableCard :
+collapsibleCard :
     { attrs : List (Attribute msg)
     , title : String
     , emphasisedText : String
@@ -90,7 +90,7 @@ collapsableCard :
     , children : List (Html msg)
     }
     -> Html msg
-collapsableCard { attrs, title, emphasisedText, isOpen, children } =
+collapsibleCard { attrs, title, emphasisedText, isOpen, children } =
     AccordionMenu.view { isOpen = isOpen }
         (css
             [ cursor Css.default
