@@ -9,48 +9,29 @@ module Nordea.Components.InformationDetails exposing
 
 import Css
     exposing
-        ( alignItems
-        , auto
-        , backgroundColor
-        , borderRadius
-        , center
-        , color
+        ( color
         , column
-        , cursor
         , displayFlex
-        , ellipsis
         , flexBasis
         , flexDirection
         , flexGrow
         , flexWrap
-        , hidden
         , lineHeight
         , marginBottom
-        , marginLeft
         , marginRight
         , marginTop
-        , maxWidth
         , num
-        , overflow
-        , padding
-        , paddingRight
         , pct
-        , pointer
         , rem
-        , textOverflow
-        , width
         , wrap
         )
 import Css.Global as Css exposing (children)
-import Css.Transitions exposing (transition)
 import Html.Styled as Html exposing (Attribute, Html)
 import Html.Styled.Attributes as Html exposing (css)
-import Nordea.Components.AccordionMenu as AccordionMenu
 import Nordea.Components.Card as Card
 import Nordea.Components.Text as Text
 import Nordea.Html as Html
 import Nordea.Resources.Colors as Colors
-import Nordea.Resources.Icons as Icons
 
 
 card : List (Attribute msg) -> List (Html msg) -> Maybe String -> Html msg
@@ -93,14 +74,16 @@ collapsibleCard :
 collapsibleCard { attrs, title, emphasisedText, children, isOpen } =
     Card.init
         |> Card.withTitle title
-        |> Card.viewCollapsible
+        |> Card.isCollapsible emphasisedText isOpen
+        |> Card.view
             attrs
-            emphasisedText
-            isOpen
-            [ Html.wrappedRow
+            [ Html.div
                 [ css
-                    [ marginBottom (rem -1.5)
+                    [ displayFlex
+                    , flexWrap wrap
+                    , marginBottom (rem -1.5)
                     , marginRight (rem -1)
+                    , marginTop (rem 1.5)
                     , Css.children
                         [ Css.everything
                             [ marginBottom (rem 1.5)

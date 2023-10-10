@@ -4,21 +4,18 @@ module Nordea.Components.Card exposing
     , header
     , infoBox
     , init
+    , isCollapsible
     , title
     , view
-    , viewCollapsible
     , withShadow
     , withTitle
     )
 
 import Css
     exposing
-        ( active
-        , alignItems
-        , alignSelf
+        ( alignItems
         , auto
         , backgroundColor
-        , before
         , border3
         , borderRadius
         , borderStyle
@@ -27,46 +24,21 @@ import Css
         , color
         , column
         , cursor
-        , default
         , displayFlex
-        , ellipsis
-        , flexBasis
         , flexDirection
-        , flexEnd
-        , flexGrow
         , height
-        , hidden
-        , hover
         , left
-        , listStyle
         , margin2
-        , marginBottom
         , marginLeft
-        , marginRight
-        , marginTop
-        , maxWidth
-        , noWrap
         , none
-        , num
-        , opacity
-        , overflow
         , padding
-        , padding2
-        , paddingRight
-        , pct
         , pointer
-        , pseudoClass
         , rem
-        , scale2
         , solid
         , textAlign
-        , textOverflow
-        , transform
-        , whiteSpace
         , width
         )
-import Css.Global as Css
-import Css.Transitions exposing (transition)
+import Css.Transitions as Transitions exposing (transition)
 import Html.Styled as Html exposing (Attribute, Html)
 import Html.Styled.Attributes as Html exposing (css)
 import Nordea.Components.AccordionMenu as AccordionMenu
@@ -76,83 +48,63 @@ import Nordea.Resources.Colors as Colors
 import Nordea.Resources.Icons as Icons
 
 
-type alias CardProperties =
+type alias CardProperties msg =
     { title : Maybe String
+    , emphasisedText : Maybe (Html msg)
     , hasShadow : Bool
+    , isCollapsible : Bool
+    , isOpen : Bool
     }
 
 
 type Card msg
-    = Card CardProperties
+    = Card (CardProperties msg)
 
 
 init : Card msg
 init =
     Card
         { title = Nothing
+        , emphasisedText = Nothing
         , hasShadow = False
+        , isCollapsible = False
+        , isOpen = False
         }
 
 
 view : List (Attribute msg) -> List (Html msg) -> Card msg -> Html msg
 view attrs children (Card config) =
-    Html.div
-        (css
-            [ borderRadius (rem 0.5)
-            , padding (rem 1.5)
-            , textAlign left
-            , displayFlex
-            , flexDirection column
-            , backgroundColor Colors.white
-            , boxShadow4 (rem 0) (rem 0.25) (rem 2.5) Colors.lightGray
-                |> styleIf config.hasShadow
-            ]
-            :: attrs
-        )
-        ((config.title |> viewMaybe (\title_ -> header [] [ title [] [ Html.text title_ ] ]))
-            :: children
-        )
+    let
+        baseStyle =
+            css
+                [ borderRadius (rem 0.5)
+                , padding (rem 1.5)
+                , textAlign left
+                , displayFlex
+                , flexDirection column
+                , backgroundColor Colors.white
+                , boxShadow4 (rem 0) (rem 0.25) (rem 2.5) Colors.lightGray
+                    |> styleIf config.hasShadow
+                ]
+                :: attrs
+    in
+    if config.isCollapsible then
+        AccordionMenu.view { isOpen = config.isOpen }
+            baseStyle
+            (headerCollapsible attrs
+                [ config.title |> viewMaybe (\title_ -> Text.bodyTextHeavy |> Text.view [ css [] ] [ Html.text title_ ])
+                , config.emphasisedText
+                    |> viewMaybe
+                        (\emphasisedText_ -> emphasisedTextWithTransition emphasisedText_)
+                ]
+                :: children
+            )
 
-
-viewCollapsible : List (Attribute msg) -> Html msg -> Bool -> List (Html msg) -> Card msg -> Html msg
-viewCollapsible attrs emphasisedText isOpen children (Card config) =
-    AccordionMenu.view { isOpen = isOpen }
-        (css
-            [ cursor Css.default
-            , borderRadius (rem 0.5)
-            , padding (rem 1.5)
-            , backgroundColor Colors.white
-            ]
-            :: attrs
-        )
-        [ Html.summary
-            (css [ displayFlex, alignItems center, cursor pointer ] :: attrs)
-            [ config.title |> viewMaybe (\title_ -> Text.bodyTextHeavy |> Text.view [ css [] ] [ Html.text title_ ])
-            , emphasisedText
-            , Icons.chevronDown
-                [ Html.class "accordion-open-icon"
-                , css [ width (rem 1.25), color Colors.deepBlue ]
-                ]
-            , Icons.chevronUp
-                [ Html.class "accordion-closed-icon"
-                , css [ width (rem 1.25), color Colors.deepBlue ]
-                ]
-            ]
-        , Html.wrappedRow
-            [ css
-                [ marginTop (rem 2)
-                , marginBottom (rem -1.5)
-                , marginRight (rem -1)
-                , Css.children
-                    [ Css.everything
-                        [ marginBottom (rem 1.5)
-                        , marginRight (rem 1)
-                        ]
-                    ]
-                ]
-            ]
-            children
-        ]
+    else
+        Html.div baseStyle
+            ((config.title |> viewMaybe (\title_ -> header [] [ title [] [ Html.text title_ ] ]))
+                :: children
+            )
 
 
 header : List (Attribute msg) -> List (Html msg) -> Html msg
@@ -172,6 +124,36 @@ header attrs children =
                     []
                ]
         )
+
+
+headerCollapsible : List (Attribute msg) -> List (Html msg) -> Html msg
+headerCollapsible attrs children =
+    Html.summary
+        (css [ displayFlex, alignItems center, cursor pointer ] :: attrs)
+        (children
+            ++ [ Icons.chevronDown
+                    [ Html.class "accordion-open-icon"
+                    , css [ width (rem 1.25), color Colors.deepBlue ]
+                    ]
+               , Icons.chevronUp
+                    [ Html.class "accordion-closed-icon"
+                    , css [ width (rem 1.25), color Colors.deepBlue ]
+                    ]
+               ]
+        )
+
+
+emphasisedTextWithTransition : Html msg -> Html msg
+emphasisedTextWithTransition emphasisedText =
+    Html.div
+        [ css
+            [ transition [ Transitions.opacity3 400 0 Transitions.ease ]
+            , displayFlex
+            , marginLeft auto
+            ]
+        , Html.class "accordion-closed-text"
+        ]
+        [ emphasisedText ]
 
 
 title : List (Attribute msg) -> List (Html msg) -> Html msg
@@ -219,3 +201,13 @@ withTitle title_ (Card config) =
 withShadow : Card msg -> Card msg
 withShadow (Card config) =
     Card { config | hasShadow = True }
+
+
+isCollapsible : Html msg -> Bool -> Card msg -> Card msg
+isCollapsible emphasisedText isOpen (Card config) =
+    Card
+        { config
+            | isCollapsible = True
+            , emphasisedText = Just emphasisedText
+            , isOpen = isOpen
+        }

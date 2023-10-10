@@ -69,14 +69,11 @@ stories =
                             Text.textLight
                                 |> Text.view
                                     [ css
-                                        [ Css.marginLeft Css.auto
-                                        , Css.paddingRight (Css.rem 0.75)
+                                        [ Css.paddingRight (Css.rem 0.75)
                                         , Css.maxWidth (Css.rem 13.25)
                                         , Css.textOverflow Css.ellipsis
                                         , Css.overflow Css.hidden
-                                        , Css.Transitions.transition [ Css.Transitions.opacity3 400 0 Css.Transitions.ease ]
                                         ]
-                                    , Html.class "accordion-closed-text"
                                     ]
                                     [ Html.text "Emphasised Text" ]
                         , isOpen = False
