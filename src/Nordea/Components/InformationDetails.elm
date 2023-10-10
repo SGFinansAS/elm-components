@@ -36,11 +36,11 @@ import Nordea.Resources.Colors as Colors
 
 card :
     List (Attribute msg)
-    -> Maybe String
     -> List (Html msg)
+    -> Maybe String
     -> Maybe { emphasisedText : Html msg, isOpen : Bool }
     -> Html msg
-card attrs title children collapsibleProps =
+card attrs children title collapsibleProps =
     let
         withOptionalTitle =
             Maybe.map Card.withTitle title

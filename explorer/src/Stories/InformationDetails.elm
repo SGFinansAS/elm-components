@@ -25,7 +25,6 @@ stories =
                     ]
                     [ InformationDetails.card
                         []
-                        (Just "Title")
                         [ InformationDetails.fullWidthElement []
                             [ InformationDetails.label [] [ Html.text "Full width" ]
                             , InformationDetails.value [] [ Html.text "Full width" ]
@@ -51,6 +50,7 @@ stories =
                             , InformationDetails.value [] [ Html.text "3" ]
                             ]
                         ]
+                        (Just "Title")
                         Nothing
                     ]
           , {}
@@ -65,7 +65,6 @@ stories =
                     ]
                     [ InformationDetails.card
                         []
-                        (Just "Title")
                         [ InformationDetails.fullWidthElement []
                             [ InformationDetails.label [] [ Html.text "Full width" ]
                             , InformationDetails.value [] [ Html.text "Full width" ]
@@ -91,6 +90,7 @@ stories =
                             , InformationDetails.value [] [ Html.text "3" ]
                             ]
                         ]
+                        (Just "Title")
                         (Just
                             { emphasisedText =
                                 Text.textLight
