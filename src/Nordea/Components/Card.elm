@@ -203,11 +203,19 @@ withShadow (Card config) =
     Card { config | hasShadow = True }
 
 
-isCollapsible : Html msg -> Bool -> Card msg -> Card msg
-isCollapsible emphasisedText isOpen (Card config) =
-    Card
-        { config
-            | isCollapsible = True
-            , emphasisedText = Just emphasisedText
-            , isOpen = isOpen
-        }
+isCollapsible :
+    Maybe { emphasisedText : Html msg, isOpen : Bool }
+    -> Card msg
+    -> Card msg
+isCollapsible collapsibleProps (Card config) =
+    case collapsibleProps of
+        Nothing ->
+            Card config
+
+        Just props ->
+            Card
+                { config
+                    | isCollapsible = True
+                    , emphasisedText = Just props.emphasisedText
+                    , isOpen = props.isOpen
+                }
