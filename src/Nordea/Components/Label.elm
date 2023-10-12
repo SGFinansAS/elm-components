@@ -16,9 +16,11 @@ import Css
         , border
         , borderColor
         , color
+        , column
         , displayFlex
         , flex
         , flexBasis
+        , flexDirection
         , flexWrap
         , justifyContent
         , marginBottom
@@ -166,7 +168,7 @@ view attrs children (Label config) =
             Html.label
                 (css
                     [ displayFlex
-                    , flexWrap wrap
+                    , flexDirection column
                     , stateStyles { hasError = config.errorMessage /= Nothing }
                     , Css.Global.children [ everything [ flexBasis (pct 100) ] ]
                     ]
@@ -188,7 +190,7 @@ view attrs children (Label config) =
                     :: attrs
                 )
                 ((Html.legend
-                    [ css [ width (pct 100), padding (rem 0), Css.Global.children [ everything [ flexBasis (pct 100) ] ] ] ]
+                    [ css [ padding (rem 0), Css.Global.children [ everything [ flexBasis (pct 100) ] ] ] ]
                     [ topInfo ]
                     |> showIf (config.labelText /= "" || config.requirednessHint /= Nothing)
                  )
