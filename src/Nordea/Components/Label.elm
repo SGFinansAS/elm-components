@@ -35,7 +35,6 @@ import Css
         , pseudoClass
         , rem
         , spaceBetween
-        , width
         , wrap
         )
 import Css.Global exposing (descendants, everything, selector, typeSelector)
