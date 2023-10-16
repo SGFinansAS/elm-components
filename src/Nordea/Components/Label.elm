@@ -16,9 +16,11 @@ import Css
         , border
         , borderColor
         , color
+        , column
         , displayFlex
         , flex
         , flexBasis
+        , flexDirection
         , flexWrap
         , justifyContent
         , marginBottom
@@ -33,7 +35,6 @@ import Css
         , pseudoClass
         , rem
         , spaceBetween
-        , width
         , wrap
         )
 import Css.Global exposing (descendants, everything, selector, typeSelector)
@@ -115,7 +116,6 @@ view attrs children (Label config) =
             Html.row
                 [ css
                     [ justifyContent spaceBetween
-                    , flexBasis (pct 100)
                     , marginBottom (rem 0.2)
                     ]
                 ]
@@ -126,7 +126,7 @@ view attrs children (Label config) =
                 , config.requirednessHint |> Html.viewMaybe requirednessHintView
                 ]
 
-        bottomInfo =
+        bottomInfo attrs_ =
             let
                 viewHintText text =
                     Text.textSmallLight
@@ -147,12 +147,12 @@ view attrs children (Label config) =
                             [ String.fromInt counter.current ++ "/" ++ String.fromInt counter.max |> Html.text ]
             in
             Html.row
-                [ css
+                (css
                     [ justifyContent spaceBetween
-                    , flexBasis (pct 100)
                     , marginTop (rem 0.2)
                     ]
-                ]
+                    :: attrs_
+                )
                 [ Html.column []
                     [ config.errorMessage |> Html.viewMaybe viewError
                     , config.hintText |> Html.viewMaybe viewHintText
@@ -166,13 +166,12 @@ view attrs children (Label config) =
             Html.label
                 (css
                     [ displayFlex
-                    , flexWrap wrap
+                    , flexDirection column
                     , stateStyles { hasError = config.errorMessage /= Nothing }
-                    , Css.Global.children [ everything [ flexBasis (pct 100) ] ]
                     ]
                     :: attrs
                 )
-                (topInfo :: children ++ [ bottomInfo ])
+                (topInfo :: children ++ [ bottomInfo [] ])
 
         GroupLabel ->
             Html.fieldset
@@ -188,23 +187,22 @@ view attrs children (Label config) =
                     :: attrs
                 )
                 ((Html.legend
-                    [ css [ width (pct 100), padding (rem 0), Css.Global.children [ everything [ flexBasis (pct 100) ] ] ] ]
+                    [ css
+                        [ padding (rem 0)
+                        , Css.Global.children [ everything [ flexBasis (pct 100) ] ]
+                        ]
+                    ]
                     [ topInfo ]
                     |> showIf (config.labelText /= "" || config.requirednessHint /= Nothing)
                  )
                     :: children
-                    ++ [ bottomInfo ]
+                    ++ [ bottomInfo [ css [ flexBasis (pct 100) ] ] ]
                 )
 
         TextLabel ->
             Html.column
-                (css
-                    [ stateStyles { hasError = config.errorMessage /= Nothing }
-                    , Css.Global.children [ everything [ flexBasis (pct 100) ] ]
-                    ]
-                    :: attrs
-                )
-                (topInfo :: children ++ [ bottomInfo ])
+                (css [ stateStyles { hasError = config.errorMessage /= Nothing } ] :: attrs)
+                (topInfo :: children ++ [ bottomInfo [] ])
 
 
 stateStyles : { hasError : Bool } -> Style
