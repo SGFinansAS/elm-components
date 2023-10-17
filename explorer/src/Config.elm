@@ -58,6 +58,7 @@ type Msg
     | ToggleHamburger
     | UpdateCoachmarkStep (Maybe Int)
     | UpdateActiveRadioButton String
+    | OnClickCollapsible
 
 
 init : Config
@@ -166,3 +167,6 @@ update msg config =
 
         UpdateActiveRadioButton s ->
             { config | activeRadioButton = s }
+
+        OnClickCollapsible ->
+            config

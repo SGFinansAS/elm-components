@@ -104,6 +104,7 @@ stories =
                                         ]
                                         [ Html.text "Emphasised Text" ]
                             , isOpen = False
+                            , onClick = OnClickCollapsible
                             }
                         )
                     ]
