@@ -29,6 +29,7 @@ import Css
         , height
         , left
         , margin2
+        , marginBottom
         , marginLeft
         , none
         , padding
@@ -41,6 +42,8 @@ import Css
 import Css.Transitions as Transitions exposing (transition)
 import Html.Styled as Html exposing (Attribute, Html)
 import Html.Styled.Attributes as Html exposing (css)
+import Html.Styled.Events exposing (onClick)
+import Maybe.Extra as Maybe
 import Nordea.Components.AccordionMenu as AccordionMenu
 import Nordea.Components.Text as Text
 import Nordea.Html as Html exposing (styleIf, viewMaybe)
@@ -54,6 +57,7 @@ type alias CardProperties msg =
     , hasShadow : Bool
     , isCollapsible : Bool
     , isOpen : Bool
+    , onClick : Maybe msg
     }
 
 
@@ -69,6 +73,7 @@ init =
         , hasShadow = False
         , isCollapsible = False
         , isOpen = False
+        , onClick = Nothing
         }
 
 
@@ -91,7 +96,7 @@ view attrs children (Card config) =
     if config.isCollapsible then
         AccordionMenu.view { isOpen = config.isOpen }
             baseStyle
-            (headerCollapsible attrs
+            (headerCollapsible (Maybe.values [ config.onClick |> Maybe.map onClick ] ++ attrs)
                 [ config.title |> viewMaybe (\title_ -> Text.bodyTextHeavy |> Text.view [ css [] ] [ Html.text title_ ])
                 , config.emphasisedText
                     |> viewMaybe
@@ -110,20 +115,8 @@ view attrs children (Card config) =
 header : List (Attribute msg) -> List (Html msg) -> Html msg
 header attrs children =
     Html.div
-        (css [] :: attrs)
-        (children
-            ++ [ Html.hr
-                    [ css
-                        [ width auto
-                        , borderStyle none
-                        , height (rem 0.0625)
-                        , backgroundColor Colors.coolGray
-                        , margin2 (rem 1) (rem -1.5)
-                        ]
-                    ]
-                    []
-               ]
-        )
+        (css [ marginBottom (rem 1.5) ] :: attrs)
+        children
 
 
 headerCollapsible : List (Attribute msg) -> List (Html msg) -> Html msg
@@ -204,7 +197,7 @@ withShadow (Card config) =
 
 
 isCollapsible :
-    Maybe { emphasisedText : Html msg, isOpen : Bool }
+    Maybe { emphasisedText : Html msg, isOpen : Bool, onClick : msg }
     -> Card msg
     -> Card msg
 isCollapsible collapsibleProps (Card config) =
@@ -218,4 +211,5 @@ isCollapsible collapsibleProps (Card config) =
                     | isCollapsible = True
                     , emphasisedText = Just props.emphasisedText
                     , isOpen = props.isOpen
+                    , onClick = Just props.onClick
                 }
