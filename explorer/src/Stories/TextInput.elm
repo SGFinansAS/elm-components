@@ -1,12 +1,13 @@
 module Stories.TextInput exposing (stories)
 
+import Config exposing (Msg(..))
 import Html.Styled.Attributes exposing (disabled)
 import Nordea.Components.TextInput as TextInput
 import UIExplorer exposing (UI)
 import UIExplorer.Styled exposing (styledStoriesOf)
 
 
-stories : UI a b {}
+stories : UI Config.Config Msg {}
 stories =
     styledStoriesOf
         "TextInput"
@@ -70,6 +71,14 @@ stories =
           , \_ ->
                 TextInput.init "Text"
                     |> TextInput.withCurrency "EUR"
+                    |> TextInput.view []
+          , {}
+          )
+        , ( "With cancel icon"
+          , \model ->
+                TextInput.init model.customModel.textInputContent
+                    |> TextInput.withClearInput
+                    |> TextInput.withOnInput TextInputContentChange
                     |> TextInput.view []
           , {}
           )
