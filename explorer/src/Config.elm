@@ -60,6 +60,7 @@ type Msg
     | UpdateCoachmarkStep (Maybe Int)
     | UpdateActiveRadioButton String
     | TextInputContentChange String
+    | OnClickCollapsible
 
 
 init : Config
@@ -172,3 +173,6 @@ update msg config =
 
         TextInputContentChange string ->
             { config | textInputContent = string }
+
+        OnClickCollapsible ->
+            config
