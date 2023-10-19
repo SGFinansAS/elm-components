@@ -53,7 +53,15 @@ import Css
         , width
         )
 import Html.Styled as Html exposing (Attribute, Html, input, styled)
-import Html.Styled.Attributes as Html exposing (css, maxlength, pattern, placeholder, tabindex, value)
+import Html.Styled.Attributes as Html
+    exposing
+        ( css
+        , maxlength
+        , pattern
+        , placeholder
+        , tabindex
+        , value
+        )
 import Html.Styled.Events exposing (keyCode, on, onBlur, onClick, onInput)
 import Json.Decode as Json
 import Maybe.Extra as Maybe
