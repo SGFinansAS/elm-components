@@ -36,14 +36,13 @@ import Css
         , opacity
         , outline
         , padding2
+        , padding4
         , paddingLeft
         , paddingRight
         , pct
         , pointer
         , pointerEvents
         , position
-        , property
-        , pseudoElement
         , relative
         , rem
         , right
@@ -53,14 +52,13 @@ import Css
         , translateY
         , width
         )
-import Css.Global exposing (withAttribute)
 import Html.Styled as Html exposing (Attribute, Html, input, styled)
-import Html.Styled.Attributes as Html exposing (css, maxlength, pattern, placeholder, value)
-import Html.Styled.Events exposing (keyCode, on, onBlur, onInput)
+import Html.Styled.Attributes as Html exposing (css, maxlength, pattern, placeholder, tabindex, value)
+import Html.Styled.Events exposing (keyCode, on, onBlur, onClick, onInput)
 import Json.Decode as Json
 import Maybe.Extra as Maybe
 import Nordea.Components.Text as Text
-import Nordea.Html as Html exposing (styleIf)
+import Nordea.Html as Html exposing (showIf, styleIf)
 import Nordea.Resources.Colors as Colors
 import Nordea.Resources.Icons as Icons
 import Nordea.Themes as Themes
@@ -203,6 +201,29 @@ view attributes (TextInput config) =
 
             else
                 Html.nothing
+
+        viewClearIcon =
+            if config.hasClearIcon then
+                Icons.roundedCross
+                    (Maybe.values
+                        [ Just
+                            (css
+                                [ width (rem 2.5)
+                                , color Colors.mediumGray
+                                , position absolute
+                                , padding4 (rem 0.35) (rem 0.25) (rem 0.25) (rem 0.25)
+                                , right (rem 0)
+                                , cursor pointer
+                                ]
+                            )
+                        , config.onInput |> Maybe.map (\onInput -> onClick (onInput ""))
+                        , Just (tabindex 0)
+                        ]
+                    )
+                    |> showIf (config.value |> String.isEmpty |> not)
+
+            else
+                Html.nothing
     in
     Html.div
         (css [ displayFlex, position relative ] :: attributes)
@@ -212,6 +233,7 @@ view attributes (TextInput config) =
             (getAttributes config ++ attributes)
             []
         , viewCurrency config
+        , viewClearIcon
         ]
 
 
@@ -238,14 +260,6 @@ viewCurrency config =
 
 getAttributes : Config msg -> List (Attribute msg)
 getAttributes config =
-    let
-        clearIconAttr =
-            if config.hasClearIcon then
-                [ Html.attribute "type" "search" ]
-
-            else
-                []
-    in
     Maybe.values
         [ config.value |> value |> Just
         , config.onInput |> Maybe.map onInput
@@ -255,7 +269,6 @@ getAttributes config =
         , config.onBlur |> Maybe.map onBlur
         , config.onEnterPress |> Maybe.map onEnterPress
         ]
-        ++ clearIconAttr
 
 
 
@@ -271,26 +284,6 @@ getStyles config =
 
             else
                 Colors.mediumGray
-
-        clearIcon =
-            if config.hasClearIcon then
-                [ withAttribute "type=\"search\""
-                    [ pseudoElement
-                        "-webkit-search-cancel-button"
-                        [ property "-webkit-appearance" "none"
-                        , height (rem 1.75)
-                        , width (rem 1.75)
-                        , cursor pointer
-                        , position absolute
-                        , right (rem 0)
-                        , property "background-image" "url('data:image/svg+xml,<svg width=\"28\" height=\"28\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M21 12C21 7.02944 16.9706 3 12 3C7.02944 3 3 7.02944 3 12C3 16.9706 7.02944 21 12 21C16.9706 21 21 16.9706 21 12ZM13.005 12L15.51 14.505C15.8008 14.7975 15.8008 15.27 15.51 15.5625C15.3692 15.7045 15.1775 15.7843 14.9775 15.7843C14.7775 15.7843 14.5858 15.7045 14.445 15.5625L11.9475 13.0575L9.4425 15.5625C9.3028 15.7011 9.11425 15.7792 8.9175 15.78C8.71815 15.7812 8.52654 15.7029 8.385 15.5625C8.09421 15.27 8.09421 14.7975 8.385 14.505L10.8825 12L8.385 9.495C8.13017 9.19743 8.1473 8.75385 8.42433 8.47683C8.70135 8.1998 9.14493 8.18267 9.4425 8.4375L11.9475 10.9425L14.445 8.4375C14.5858 8.29552 14.7775 8.21565 14.9775 8.21565C15.1775 8.21565 15.3692 8.29552 15.51 8.4375C15.8008 8.73003 15.8008 9.20247 15.51 9.495L13.005 12Z\" fill=\"%23C9C7C7\"></path></svg>')"
-                        , property "background-repeat" "no-repeat"
-                        ]
-                    ]
-                ]
-
-            else
-                []
     in
     [ fontSize (rem 1)
     , height (rem 2.5)
@@ -311,4 +304,3 @@ getStyles config =
         , Themes.borderColor Colors.nordeaBlue
         ]
     ]
-        ++ clearIcon
