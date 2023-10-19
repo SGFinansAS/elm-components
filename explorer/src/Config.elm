@@ -32,6 +32,7 @@ type alias Config =
     , hamburgerIsActive : Bool
     , showCoachMarkStep : Maybe Int
     , activeRadioButton : String
+    , textInputContent : String
     }
 
 
@@ -58,6 +59,7 @@ type Msg
     | ToggleHamburger
     | UpdateCoachmarkStep (Maybe Int)
     | UpdateActiveRadioButton String
+    | TextInputContentChange String
     | OnClickCollapsible
 
 
@@ -93,6 +95,7 @@ init =
     , hamburgerIsActive = False
     , showCoachMarkStep = Nothing
     , activeRadioButton = "second"
+    , textInputContent = "Initialized"
     }
 
 
@@ -167,6 +170,9 @@ update msg config =
 
         UpdateActiveRadioButton s ->
             { config | activeRadioButton = s }
+
+        TextInputContentChange string ->
+            { config | textInputContent = string }
 
         OnClickCollapsible ->
             config
