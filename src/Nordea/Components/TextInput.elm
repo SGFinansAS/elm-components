@@ -186,52 +186,45 @@ view : List (Attribute msg) -> TextInput msg -> Html msg
 view attributes (TextInput config) =
     let
         viewSearchIcon =
-            if config.hasSearchIcon then
-                Icons.search
-                    [ css
-                        [ width (rem 1)
-                        , height (rem 1)
-                        , opacity (num 0.5)
-                        , position absolute
-                        , color
-                            (if config.showError then
-                                Colors.darkRed
+            Icons.search
+                [ css
+                    [ width (rem 1)
+                    , height (rem 1)
+                    , opacity (num 0.5)
+                    , position absolute
+                    , color
+                        (if config.showError then
+                            Colors.darkRed
 
-                             else
-                                Colors.nordeaBlue
-                            )
-                        , left (rem 0.7)
-                        , top (pct 50)
-                        , transform (translateY (pct -50))
-                        , pointerEvents none
-                        ]
+                         else
+                            Colors.nordeaBlue
+                        )
+                    , left (rem 0.7)
+                    , top (pct 50)
+                    , transform (translateY (pct -50))
+                    , pointerEvents none
                     ]
-
-            else
-                Html.nothing
+                ]
+                |> showIf config.hasSearchIcon
 
         viewClearIcon =
-            if config.hasClearIcon then
-                Icons.roundedCross
-                    (Maybe.values
-                        [ Just
-                            (css
-                                [ width (rem 2.5)
-                                , color Colors.mediumGray
-                                , position absolute
-                                , padding4 (rem 0.35) (rem 0.25) (rem 0.25) (rem 0.25)
-                                , right (rem 0)
-                                , cursor pointer
-                                ]
-                            )
-                        , config.onInput |> Maybe.map (\onInput -> onClick (onInput ""))
-                        , Just (tabindex 0)
-                        ]
-                    )
-                    |> showIf (config.value |> String.isEmpty |> not)
-
-            else
-                Html.nothing
+            Icons.roundedCross
+                (Maybe.values
+                    [ Just
+                        (css
+                            [ width (rem 2.5)
+                            , color Colors.mediumGray
+                            , position absolute
+                            , padding4 (rem 0.35) (rem 0.25) (rem 0.25) (rem 0.25)
+                            , right (rem 0)
+                            , cursor pointer
+                            ]
+                        )
+                    , config.onInput |> Maybe.map (\onInput -> onClick (onInput ""))
+                    , Just (tabindex 0)
+                    ]
+                )
+                |> showIf ((config.value |> String.isEmpty |> not) && config.hasClearIcon)
     in
     Html.div
         (css [ displayFlex, position relative ] :: attributes)
