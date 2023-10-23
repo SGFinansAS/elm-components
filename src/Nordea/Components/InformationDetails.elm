@@ -18,6 +18,7 @@ import Css
         , lineHeight
         , marginBottom
         , marginRight
+        , marginTop
         , num
         , pct
         , rem
@@ -25,14 +26,21 @@ import Css
         )
 import Css.Global as Css exposing (children)
 import Html.Styled as Html exposing (Attribute, Html)
-import Html.Styled.Attributes exposing (css)
+import Html.Styled.Attributes as Html exposing (css)
+import Maybe.Extra as Maybe
 import Nordea.Components.Card as Card
 import Nordea.Components.Text as Text
+import Nordea.Html as Html exposing (styleIf)
 import Nordea.Resources.Colors as Colors
 
 
-card : List (Attribute msg) -> List (Html msg) -> Maybe String -> Html msg
-card attrs children title =
+card :
+    List (Attribute msg)
+    -> List (Html msg)
+    -> Maybe String
+    -> Maybe { emphasisedText : Html msg, isOpen : Bool, onClick : msg }
+    -> Html msg
+card attrs children title collapsibleProps =
     let
         withOptionalTitle =
             Maybe.map Card.withTitle title
@@ -40,6 +48,7 @@ card attrs children title =
     in
     Card.init
         |> withOptionalTitle
+        |> Card.isCollapsible collapsibleProps
         |> Card.view
             attrs
             [ Html.div
@@ -48,6 +57,7 @@ card attrs children title =
                     , flexWrap wrap
                     , marginBottom (rem -2)
                     , marginRight (rem -1)
+                    , marginTop (rem 1.5) |> styleIf (collapsibleProps |> Maybe.isJust)
                     , Css.children
                         [ Css.everything
                             [ marginBottom (rem 2)

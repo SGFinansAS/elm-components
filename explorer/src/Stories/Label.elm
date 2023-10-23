@@ -170,6 +170,7 @@ stories =
                                 |> Checkbox.view []
                             ]
                     , Label.init "State of object" Label.GroupLabel
+                        |> Label.withRequirednessHint (Just (Label.Optional .no))
                         |> Label.view []
                             (List.range 0 5
                                 |> List.map

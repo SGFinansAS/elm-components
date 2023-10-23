@@ -1,21 +1,6 @@
 module Nordea.Components.AccordionMenu exposing (header, view)
 
-import Css
-    exposing
-        ( alignItems
-        , auto
-        , center
-        , column
-        , display
-        , displayFlex
-        , flexDirection
-        , inlineBlock
-        , listStyle
-        , marginLeft
-        , none
-        , rem
-        , width
-        )
+import Css exposing (alignItems, auto, center, column, display, displayFlex, flexDirection, inlineBlock, listStyle, marginLeft, none, num, opacity, rem, width)
 import Css.Global exposing (children, class, typeSelector, withAttribute)
 import Html.Attributes.Extra exposing (empty)
 import Html.Styled as Html exposing (Attribute, Html)
@@ -45,7 +30,8 @@ view config attrs children_ =
                 [ typeSelector "summary"
                     [ listStyle none
                     , children
-                        [ class "accordion-open-icon" [ display inlineBlock ]
+                        [ class "accordion-closed-text" [ opacity (num 1) ]
+                        , class "accordion-open-icon" [ display inlineBlock ]
                         , class "accordion-closed-icon" [ display none ]
                         ]
                     ]
@@ -54,7 +40,8 @@ view config attrs children_ =
                 [ children
                     [ typeSelector "summary"
                         [ children
-                            [ class "accordion-closed-icon" [ display inlineBlock ]
+                            [ class "accordion-closed-text" [ opacity (num 0) ]
+                            , class "accordion-closed-icon" [ display inlineBlock ]
                             , class "accordion-open-icon" [ display none ]
                             ]
                         ]
