@@ -35,6 +35,7 @@ import Css
         , pseudoClass
         , rem
         , spaceBetween
+        , width
         , wrap
         )
 import Css.Global exposing (descendants, everything, selector, typeSelector)
@@ -189,6 +190,7 @@ view attrs children (Label config) =
                 ((Html.legend
                     [ css
                         [ padding (rem 0)
+                        , width (pct 100)
                         , Css.Global.children [ everything [ flexBasis (pct 100) ] ]
                         ]
                     ]
