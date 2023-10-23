@@ -1016,6 +1016,7 @@ star attrs =
             ]
         ]
 
+
 calendar : List (Attribute msg) -> Html msg
 calendar attrs =
     iconContainer attrs
@@ -1030,6 +1031,8 @@ calendar attrs =
                 []
             ]
         ]
+
+
 
 -- UTIL
 
