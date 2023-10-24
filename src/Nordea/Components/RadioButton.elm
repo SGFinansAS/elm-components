@@ -183,6 +183,18 @@ view attrs (RadioButton config) =
                             ]
                             |> styleIf (not isDisabled)
                         ]
+
+        notDisabledSpecificStyling =
+            let
+                boxShadow =
+                    Css.property "box-shadow" ("0rem 0rem 0rem 0.0625rem " ++ Themes.colorVariable Colors.mediumBlue)
+            in
+            Css.batch
+                [ pseudoClass "hover .nfe-radiomark" [ boxShadow ]
+                , pseudoClass "focus-within .nfe-radiomark" [ boxShadow ]
+                , cursor pointer
+                ]
+                |> styleIf (not isDisabled)
     in
     Html.label
         (css
@@ -191,7 +203,7 @@ view attrs (RadioButton config) =
             , alignItems center
             , boxSizing borderBox
             , position relative
-            , cursor pointer |> styleIf (not isDisabled)
+            , notDisabledSpecificStyling
             , appearanceStyle
             ]
             :: attrs
