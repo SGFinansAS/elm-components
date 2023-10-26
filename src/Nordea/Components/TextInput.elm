@@ -9,7 +9,6 @@ module Nordea.Components.TextInput exposing
     , withOnBlur
     , withOnEnterPress
     , withOnInput
-    , withPattern
     , withPlaceholder
     , withSearchIcon
     )
@@ -103,7 +102,6 @@ init value =
         , placeholder = Nothing
         , showError = False
         , maxLength = Nothing
-        , pattern = Nothing
         , hasSearchIcon = False
         , hasClearIcon = False
         , onBlur = Nothing
@@ -125,11 +123,6 @@ withPlaceholder placeholder (TextInput config) =
 withMaxLength : Int -> TextInput msg -> TextInput msg
 withMaxLength maxLength (TextInput config) =
     TextInput { config | maxLength = Just maxLength }
-
-
-withPattern : String -> TextInput msg -> TextInput msg
-withPattern pattern (TextInput config) =
-    TextInput { config | pattern = Just pattern }
 
 
 withError : Bool -> TextInput msg -> TextInput msg
@@ -266,7 +259,6 @@ getAttributes config =
         , config.onInput |> Maybe.map onInput
         , config.placeholder |> Maybe.map placeholder
         , config.maxLength |> Maybe.map maxlength
-        , config.pattern |> Maybe.map pattern
         , config.onBlur |> Maybe.map onBlur
         , config.onEnterPress |> Maybe.map onEnterPress
         ]

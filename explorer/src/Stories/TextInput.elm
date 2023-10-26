@@ -38,14 +38,6 @@ stories =
                     |> TextInput.view []
           , {}
           )
-        , ( "Pattern only digits"
-          , \_ ->
-                TextInput.init ""
-                    |> TextInput.withPlaceholder "Type something"
-                    |> TextInput.withPattern "\\d*"
-                    |> TextInput.view []
-          , {}
-          )
         , ( "Error"
           , \_ ->
                 TextInput.init "Text"
