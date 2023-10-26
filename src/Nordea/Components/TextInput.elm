@@ -56,7 +56,6 @@ import Html.Styled.Attributes as Html
     exposing
         ( css
         , maxlength
-        , pattern
         , placeholder
         , tabindex
         , value
@@ -81,7 +80,6 @@ type alias Config msg =
     , placeholder : Maybe String
     , showError : Bool
     , maxLength : Maybe Int
-    , pattern : Maybe String
     , hasSearchIcon : Bool
     , hasClearIcon : Bool
     , onBlur : Maybe msg
