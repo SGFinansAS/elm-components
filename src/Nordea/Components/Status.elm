@@ -14,7 +14,6 @@ import Css
         , height
         , hidden
         , inlineBlock
-        , int
         , left
         , overflow
         , padding
@@ -25,7 +24,6 @@ import Css
         , textOverflow
         , top
         , width
-        , zIndex
         )
 import Html.Styled as Html exposing (Attribute, Html)
 import Html.Styled.Attributes exposing (css)
