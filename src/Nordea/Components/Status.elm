@@ -25,9 +25,8 @@ import Css
         , top
         , width
         )
-import Html.Attributes.Extra exposing (role)
 import Html.Styled as Html exposing (Attribute, Html)
-import Html.Styled.Attributes as Attrs exposing (attribute, css, fromUnstyled)
+import Html.Styled.Attributes exposing (attribute, css)
 import Nordea.Components.Text as Text
 import Nordea.Resources.Colors as Color
 
