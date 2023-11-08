@@ -73,7 +73,7 @@ view text statusColor attrs =
                         ]
                    , attribute "role" "progressbar"
                    , attribute "aria-valuenow" (String.fromFloat pctDone)
-                   , attribute "aria-labelledby" "label"
+                   , attribute "aria-label" text
                    ]
 
         ordinaryLabel bgColor =
