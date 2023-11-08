@@ -25,8 +25,9 @@ import Css
         , top
         , width
         )
+import Html.Attributes.Extra exposing (role)
 import Html.Styled as Html exposing (Attribute, Html)
-import Html.Styled.Attributes exposing (css)
+import Html.Styled.Attributes as Attrs exposing (attribute, css, fromUnstyled)
 import Nordea.Components.Text as Text
 import Nordea.Resources.Colors as Color
 
@@ -70,6 +71,9 @@ view text statusColor attrs =
                             , height (pct 100)
                             ]
                         ]
+                   , attribute "role" "progressbar"
+                   , attribute "aria-valuenow" (String.fromFloat pctDone)
+                   , attribute "aria-labelledby" "label"
                    ]
 
         ordinaryLabel bgColor =
