@@ -79,7 +79,7 @@ view text statusColor attrs =
                     [ Html.text text ]
 
         twoColorsLabel colorDone colorUndone pctDone =
-            Html.div (twoColorAttrs_ colorDone colorUndone pctDone)
+            Html.progress (twoColorAttrs_ colorDone colorUndone pctDone)
                 [ Text.textTinyLight
                     |> Text.view
                         [ css
