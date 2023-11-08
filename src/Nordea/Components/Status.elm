@@ -86,7 +86,6 @@ view text statusColor attrs =
                     |> Text.view
                         [ css
                             [ position relative
-                            , zIndex (int 2)
                             ]
                         ]
                         [ Html.text text ]
