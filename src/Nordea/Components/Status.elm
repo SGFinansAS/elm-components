@@ -1,4 +1,4 @@
-module Nordea.Components.Status exposing (blue, gray, green, red, twoColors, yellow)
+module Nordea.Components.Status exposing (blue, gray, green, partiallyFilled, red, yellow)
 
 import Css
     exposing
@@ -137,6 +137,6 @@ gray text =
     view text LightGray
 
 
-twoColors : String -> Color -> Color -> Float -> List (Attribute msg) -> Html msg
-twoColors text colorDone colorUndone pctDone =
-    view text (TwoColors colorDone colorUndone pctDone)
+partiallyFilled : String -> Color -> Float -> List (Attribute msg) -> Html msg
+partiallyFilled text colorDone pctDone =
+    view text (TwoColors colorDone (colorDone |> Color.withAlpha 0.4) pctDone)

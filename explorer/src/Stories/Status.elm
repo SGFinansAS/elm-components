@@ -31,7 +31,7 @@ stories =
           , {}
           )
         , ( "Mixed"
-          , \_ -> Status.twoColors "Control prerequisites" Color.yellowStatus (Color.yellow |> Color.withAlpha 0.4) 60.0 []
+          , \_ -> Status.partiallyFilled "Control prerequisites" Color.yellowStatus 60.0 []
           , {}
           )
         ]
