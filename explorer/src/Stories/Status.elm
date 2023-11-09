@@ -1,6 +1,7 @@
 module Stories.Status exposing (..)
 
 import Nordea.Components.Status as Status
+import Nordea.Resources.Colors as Color
 import UIExplorer exposing (Config, UI)
 import UIExplorer.Styled exposing (styledStoriesOf)
 
@@ -27,6 +28,10 @@ stories =
           )
         , ( "Blue"
           , \_ -> Status.blue "Status" []
+          , {}
+          )
+        , ( "Mixed"
+          , \_ -> Status.partiallyFilled "Control prerequisites" Color.yellowStatus 60.0 []
           , {}
           )
         ]
