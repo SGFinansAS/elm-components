@@ -1,11 +1,13 @@
 module Nordea.Resources.Illustrations exposing
     ( balloon
+    , checkmark
     , confetti
     , confetti2
     , errorSvg
     , feedbackEnvelope
     , instructionalBlocks
     , instructionalStar
+    , instructionalWarning
     , nordeaLogo
     , poweredByNordea
     , rejection
