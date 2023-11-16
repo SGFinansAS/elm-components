@@ -12,6 +12,7 @@ module Nordea.Components.TextInput exposing
     , withPattern
     , withPlaceholder
     , withSearchIcon
+    , withSmallSize
     )
 
 import Css
@@ -88,7 +89,13 @@ type alias Config msg =
     , onBlur : Maybe msg
     , onEnterPress : Maybe msg
     , currency : Maybe String
+    , size : Size
     }
+
+
+type Size
+    = Small
+    | Standard
 
 
 type TextInput msg
@@ -109,6 +116,7 @@ init value =
         , onBlur = Nothing
         , onEnterPress = Nothing
         , currency = Nothing
+        , size = Standard
         }
 
 
@@ -163,6 +171,11 @@ withClearInput (TextInput config) =
         { config
             | hasClearIcon = True
         }
+
+
+withSmallSize : TextInput msg -> TextInput msg
+withSmallSize (TextInput config) =
+    TextInput { config | size = Small }
 
 
 onEnterPress : msg -> Attribute msg
@@ -285,11 +298,22 @@ getStyles config =
 
             else
                 Colors.mediumGray
+
+        sizeSpecificStyling =
+            case config.size of
+                Small ->
+                    [ fontSize (rem 0.75)
+                    , height (rem 1.5)
+                    , padding2 (rem 0.25) (rem 0.5)
+                    ]
+
+                Standard ->
+                    [ fontSize (rem 1)
+                    , height (rem 2.5)
+                    , padding2 (rem 0) (rem 0.75)
+                    ]
     in
-    [ fontSize (rem 1)
-    , height (rem 2.5)
-    , padding2 (rem 0) (rem 0.75)
-    , borderRadius (rem 0.25)
+    [ borderRadius (rem 0.25)
     , border3 (rem 0.0625) solid borderColorStyle
     , boxSizing borderBox
     , width (pct 100)
@@ -305,3 +329,4 @@ getStyles config =
         , Themes.borderColor Colors.nordeaBlue
         ]
     ]
+        ++ sizeSpecificStyling
