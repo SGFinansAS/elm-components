@@ -9,6 +9,7 @@ module Nordea.Components.NumberInput exposing
     , withOnBlur
     , withOnInput
     , withPlaceholder
+    , withSmallSize
     , withStep
     )
 
@@ -35,7 +36,13 @@ type alias Config msg =
     , showError : Bool
     , onBlur : Maybe msg
     , formatter : Maybe (Float -> String)
+    , size : Size
     }
+
+
+type Size
+    = Small
+    | Standard
 
 
 type NumberInput msg
@@ -54,6 +61,7 @@ init value =
         , showError = False
         , onBlur = Nothing
         , formatter = Nothing
+        , size = Standard
         }
 
 
@@ -95,6 +103,11 @@ withOnBlur msg (NumberInput config) =
 withFormatter : Maybe (Float -> String) -> NumberInput msg -> NumberInput msg
 withFormatter formatter (NumberInput config) =
     NumberInput { config | formatter = formatter }
+
+
+withSmallSize : NumberInput msg -> NumberInput msg
+withSmallSize (NumberInput config) =
+    NumberInput { config | size = Small }
 
 
 
@@ -152,14 +165,25 @@ getStyles config =
 
             else
                 Colors.mediumGray
+
+        sizeSpecificStyling =
+            case config.size of
+                Small ->
+                    [ fontSize (rem 0.75)
+                    , height (rem 1.5)
+                    , padding2 (rem 0.25) (rem 0.5)
+                    ]
+
+                Standard ->
+                    [ fontSize (rem 1)
+                    , height (rem 2.5)
+                    , padding2 (rem 0) (rem 0.75)
+                    ]
     in
-    [ fontSize (rem 1)
-    , height (rem 2.5)
-    , pseudoElement "-webkit-outer-spin-button" [ display none ]
+    [ pseudoElement "-webkit-outer-spin-button" [ display none ]
     , pseudoElement "-webkit-inner-spin-button" [ display none ]
     , property "-moz-appearance" "textfield"
     , textAlign right
-    , padding2 (rem 0) (rem 0.75)
     , borderRadius (rem 0.25)
     , border3 (rem 0.0625) solid borderColorStyle
     , boxSizing borderBox
@@ -170,3 +194,4 @@ getStyles config =
         , Themes.borderColor Colors.nordeaBlue
         ]
     ]
+        ++ sizeSpecificStyling

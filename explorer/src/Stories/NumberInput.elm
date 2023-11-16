@@ -46,4 +46,11 @@ stories =
                     |> NumberInput.view [ disabled True ]
           , {}
           )
+        , ( "With small size"
+          , \_ ->
+                NumberInput.init "Text"
+                    |> NumberInput.withSmallSize
+                    |> NumberInput.view []
+          , {}
+          )
         ]
