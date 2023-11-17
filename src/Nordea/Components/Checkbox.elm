@@ -122,20 +122,16 @@ view attrs (Checkbox config) =
                             , width (rem 1.25)
                             ]
 
-                appearanceSpecificCheckmarkStyling =
+                checkmarkSizeStyling =
                     if config.appearance == Small then
                         Css.batch
-                            [ top (rem -0.0625)
-                            , left (rem 0.25)
-                            , width (rem 0.25)
+                            [ width (rem 0.25)
                             , height (rem 0.75)
                             ]
 
                     else
                         Css.batch
-                            [ top (rem -0.0625)
-                            , left (rem 0.25)
-                            , width (rem 0.5)
+                            [ width (rem 0.5)
                             , height (rem 0.813)
                             ]
             in
@@ -165,7 +161,9 @@ view attrs (Checkbox config) =
                         [ Css.property "content" "''"
                         , display none
                         , position absolute
-                        , appearanceSpecificCheckmarkStyling
+                        , top (rem -0.0625)
+                        , left (rem 0.25)
+                        , checkmarkSizeStyling
                         , transforms [ rotate (deg 45) ]
                         , if isDisabled then
                             border3 (rem 0.0625) solid Colors.nordeaGray
