@@ -69,6 +69,26 @@ stories =
                     ]
           , {}
           )
+        , ( "Small"
+          , \config ->
+                Html.div [ css [ displayFlex, Css.property "gap" "1rem" ] ]
+                    [ RadioButton.init
+                        "small"
+                        (text "Click me")
+                        (UpdateActiveRadioButton "first")
+                        |> RadioButton.withIsSelected (config.customModel.activeRadioButton == "first")
+                        |> RadioButton.withAppearance RadioButton.Small
+                        |> RadioButton.view []
+                    , RadioButton.init
+                        "small"
+                        (text "Click me")
+                        (UpdateActiveRadioButton "second")
+                        |> RadioButton.withIsSelected (config.customModel.activeRadioButton == "second")
+                        |> RadioButton.withAppearance RadioButton.Small
+                        |> RadioButton.view []
+                    ]
+          , {}
+          )
         , ( "Simple"
           , \config ->
                 Html.div [ css [ displayFlex, Css.property "gap" "1rem" ] ]
