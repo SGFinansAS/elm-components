@@ -107,37 +107,38 @@ view attrs (Checkbox config) =
         isDisabled =
             List.member (Attrs.disabled True) attrs
 
-        checkboxSizeStyling =
-            if config.appearance == Small then
-                Css.batch
-                    [ height (rem 1)
-                    , width (rem 1)
-                    ]
-
-            else
-                Css.batch
-                    [ height (rem 1.25)
-                    , width (rem 1.25)
-                    ]
-
-        appearanceSpecificCheckmarkStyling =
-            if config.appearance == Small then
-                Css.batch
-                    [ top (rem -0.0625)
-                    , left (rem 0.25)
-                    , width (rem 0.25)
-                    , height (rem 0.75)
-                    ]
-
-            else
-                Css.batch
-                    [ top (rem -0.0625)
-                    , left (rem 0.25)
-                    , width (rem 0.5)
-                    , height (rem 0.813)
-                    ]
-
         checkbox =
+            let
+                checkboxSizeStyling =
+                    if config.appearance == Small then
+                        Css.batch
+                            [ height (rem 1)
+                            , width (rem 1)
+                            ]
+
+                    else
+                        Css.batch
+                            [ height (rem 1.25)
+                            , width (rem 1.25)
+                            ]
+
+                appearanceSpecificCheckmarkStyling =
+                    if config.appearance == Small then
+                        Css.batch
+                            [ top (rem -0.0625)
+                            , left (rem 0.25)
+                            , width (rem 0.25)
+                            , height (rem 0.75)
+                            ]
+
+                    else
+                        Css.batch
+                            [ top (rem -0.0625)
+                            , left (rem 0.25)
+                            , width (rem 0.5)
+                            , height (rem 0.813)
+                            ]
+            in
             Html.span
                 [ class "nfe-checkbox"
                 , css
