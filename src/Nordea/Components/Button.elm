@@ -1,19 +1,17 @@
 module Nordea.Components.Button exposing
     ( Button
+    , Size(..)
     , Variant(..)
     , buttonStyleForExport
     , card
-    , cardSmall
     , circular
     , flatLinkStyle
     , primary
-    , primarySmall
     , secondary
-    , secondarySmall
     , tertiary
-    , tertiarySmall
     , view
     , withHtmlTag
+    , withSmallSize
     , withStyles
     )
 
@@ -93,21 +91,23 @@ import Nordea.Themes as Themes
 
 type Variant
     = Primary
-    | PrimarySmall
     | Secondary
-    | SecondarySmall
     | Tertiary
-    | TertiarySmall
     | Card
-    | CardSmall
     | FlatLinkStyle
     | Circular
+
+
+type Size
+    = Standard
+    | Small
 
 
 type alias Config msg =
     { variant : Variant
     , styles : List Style
     , htmlTag : List (Attribute msg) -> List (Html msg) -> Html msg
+    , size : Size
     }
 
 
@@ -118,7 +118,7 @@ type Button msg
 init : Variant -> Button msg
 init variant =
     Button
-        { variant = variant, styles = [], htmlTag = Html.button }
+        { variant = variant, styles = [], htmlTag = Html.button, size = Standard }
 
 
 primary : Button msg
@@ -126,19 +126,9 @@ primary =
     init Primary
 
 
-primarySmall : Button msg
-primarySmall =
-    init PrimarySmall
-
-
 secondary : Button msg
 secondary =
     init Secondary
-
-
-secondarySmall : Button msg
-secondarySmall =
-    init SecondarySmall
 
 
 tertiary : Button msg
@@ -146,19 +136,9 @@ tertiary =
     init Tertiary
 
 
-tertiarySmall : Button msg
-tertiarySmall =
-    init TertiarySmall
-
-
 card : Button msg
 card =
     init Card
-
-
-cardSmall : Button msg
-cardSmall =
-    init CardSmall
 
 
 flatLinkStyle : Button msg
@@ -169,6 +149,11 @@ flatLinkStyle =
 circular : Button msg
 circular =
     init Circular
+
+
+withSmallSize : Button msg -> Button msg
+withSmallSize (Button config) =
+    Button { config | size = Small }
 
 
 
@@ -183,15 +168,12 @@ view attributes children (Button config) =
                 Card ->
                     [ Icons.arrowRight [ class "arrowicon", css [ width (rem 1) ] ] ]
 
-                CardSmall ->
-                    [ Icons.arrowRight [ class "arrowicon", css [ width (rem 1) ] ] ]
-
                 _ ->
                     []
     in
     Html.styled config.htmlTag
         [ baseStyle
-        , variantStyle config.variant
+        , variantStyle config.variant config.size
         , batch config.styles
         ]
         attributes
@@ -208,9 +190,7 @@ baseStyle =
         [ fontFamilies [ "inherit" ]
         , displayFlex
         , alignItems center
-        , fontSize (rem 1)
         , fontWeight (int 500)
-        , padding2 (rem 0) (rem 1)
         , borderRadius (rem 2)
         , cursor pointer
         , boxSizing borderBox
@@ -221,8 +201,8 @@ baseStyle =
         ]
 
 
-variantStyle : Variant -> Style
-variantStyle variant =
+variantStyle : Variant -> Size -> Style
+variantStyle variant size =
     let
         commonCardStyle =
             batch
@@ -307,69 +287,70 @@ variantStyle variant =
             , hoverTransition
             ]
 
-        normalHeight =
-            height (rem 2.5)
+        sizeSpecificStyling =
+            case size of
+                Standard ->
+                    [ fontSize (rem 1)
+                    , padding2 (rem 0) (rem 1)
+                    , height (rem 2.5)
+                    ]
 
-        smallHeight =
-            height (rem 2)
+                Small ->
+                    [ fontSize (rem 0.75)
+                    , padding2 (rem 0.5) (rem 1)
+                    , height (rem 2)
+                    ]
     in
     case variant of
         Primary ->
-            batch (normalHeight :: primaryStyling)
-
-        PrimarySmall ->
-            batch (smallHeight :: primaryStyling)
+            batch (sizeSpecificStyling ++ primaryStyling)
 
         Secondary ->
-            batch (normalHeight :: secondaryStyling)
-
-        SecondarySmall ->
-            batch (smallHeight :: secondaryStyling)
+            batch (sizeSpecificStyling ++ secondaryStyling)
 
         Tertiary ->
-            batch (normalHeight :: tertiaryStyling)
-
-        TertiarySmall ->
-            batch (smallHeight :: tertiaryStyling)
+            batch (sizeSpecificStyling ++ tertiaryStyling)
 
         Card ->
-            let
-                arrowIconMovement movementLengthRight =
-                    descendants
-                        [ everything
-                            [ withClass "arrowicon"
-                                [ transforms [ translateX movementLengthRight ]
-                                , marginTop auto
+            case size of
+                Standard ->
+                    let
+                        arrowIconMovement movementLengthRight =
+                            descendants
+                                [ everything
+                                    [ withClass "arrowicon"
+                                        [ transforms [ translateX movementLengthRight ]
+                                        , marginTop auto
+                                        ]
+                                    ]
                                 ]
-                            ]
+                    in
+                    batch
+                        [ commonCardStyle
+                        , arrowIconMovement (rem 0)
+                        , hover [ arrowIconMovement (rem 1) ]
                         ]
-            in
-            batch
-                [ commonCardStyle
-                , arrowIconMovement (rem 0)
-                , hover [ arrowIconMovement (rem 1) ]
-                ]
 
-        CardSmall ->
-            let
-                arrowIconMovement movementLengthRight =
-                    descendants
-                        [ everything
-                            [ withClass "arrowicon"
-                                [ transforms [ translateY (pct -50), translateX movementLengthRight ]
-                                , position absolute
-                                , top (pct 50)
-                                , right (rem 1.5)
+                Small ->
+                    let
+                        arrowIconMovement movementLengthRight =
+                            descendants
+                                [ everything
+                                    [ withClass "arrowicon"
+                                        [ transforms [ translateY (pct -50), translateX movementLengthRight ]
+                                        , position absolute
+                                        , top (pct 50)
+                                        , right (rem 1.5)
+                                        ]
+                                    ]
                                 ]
-                            ]
+                    in
+                    batch
+                        [ commonCardStyle
+                        , paddingRight (rem 3.5)
+                        , arrowIconMovement (rem 0)
+                        , hover [ arrowIconMovement (rem 1) ]
                         ]
-            in
-            batch
-                [ commonCardStyle
-                , paddingRight (rem 3.5)
-                , arrowIconMovement (rem 0)
-                , hover [ arrowIconMovement (rem 1) ]
-                ]
 
         FlatLinkStyle ->
             batch
@@ -399,9 +380,9 @@ variantStyle variant =
                 ]
 
 
-buttonStyleForExport : Variant -> Style
-buttonStyleForExport variant =
-    batch [ baseStyle, variantStyle variant ]
+buttonStyleForExport : Variant -> Size -> Style
+buttonStyleForExport variant size =
+    batch [ baseStyle, variantStyle variant size ]
 
 
 

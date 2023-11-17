@@ -53,14 +53,17 @@ stories =
                     ]
           , {}
           )
-        , ( "PrimarySmall"
+        , ( "Primary Small"
           , \_ ->
                 Html.div [ css [ children [ everything [ marginBottom (rem 1) ] ] ] ]
-                    [ Button.primarySmall
+                    [ Button.primary
+                        |> Button.withSmallSize
                         |> Button.view [] [ text "Click me" ]
-                    , Button.primarySmall
+                    , Button.primary
+                        |> Button.withSmallSize
                         |> Button.view [] [ text "Click me", Icons.rightIcon (Icons.info []) ]
-                    , Button.primarySmall
+                    , Button.primary
+                        |> Button.withSmallSize
                         |> Button.view [] [ Icons.leftIcon (Icons.info []), text "Click me" ]
                     ]
           , {}
@@ -77,14 +80,17 @@ stories =
                     ]
           , {}
           )
-        , ( "SecondarySmall"
+        , ( "Secondary Small"
           , \_ ->
                 Html.div [ css [ children [ everything [ marginBottom (rem 1) ] ] ] ]
-                    [ Button.secondarySmall
+                    [ Button.secondary
+                        |> Button.withSmallSize
                         |> Button.view [] [ text "Click me" ]
-                    , Button.secondarySmall
+                    , Button.secondary
+                        |> Button.withSmallSize
                         |> Button.view [] [ text "Click me", Icons.rightIcon (Icons.info []) ]
-                    , Button.secondarySmall
+                    , Button.secondary
+                        |> Button.withSmallSize
                         |> Button.view [] [ Icons.leftIcon (Icons.info []), text "Click me" ]
                     ]
           , {}
@@ -101,14 +107,17 @@ stories =
                     ]
           , {}
           )
-        , ( "TertiarySmall"
+        , ( "Tertiary Small"
           , \_ ->
                 Html.div [ css [ children [ everything [ marginBottom (rem 1) ] ] ] ]
-                    [ Button.tertiarySmall
+                    [ Button.tertiary
+                        |> Button.withSmallSize
                         |> Button.view [] [ text "Click me" ]
-                    , Button.tertiarySmall
+                    , Button.tertiary
+                        |> Button.withSmallSize
                         |> Button.view [] [ text "Click me", Icons.rightIcon (Icons.info []) ]
-                    , Button.tertiarySmall
+                    , Button.tertiary
+                        |> Button.withSmallSize
                         |> Button.view [] [ Icons.leftIcon (Icons.info []), text "Click me" ]
                     ]
           , {}
@@ -148,10 +157,11 @@ stories =
                     ]
           , {}
           )
-        , ( "CardSmall (clickable)"
+        , ( "Card Small (clickable)"
           , \_ ->
                 Html.div [ css [ children [ everything [ marginBottom (rem 1) ] ] ] ]
-                    [ Button.cardSmall
+                    [ Button.card
+                        |> Button.withSmallSize
                         |> Button.view [ css [ width (rem 20) ] ]
                             [ Text.textHeavy |> Text.view [ css [ displayFlex, marginBottom (rem 0.25), color Colors.eclipse ] ] [ Html.text "Some text goes here" ]
                             , Text.textTiny |> Text.view [ css [ color Colors.eclipse ] ] [ Html.text "Some info text" ]
