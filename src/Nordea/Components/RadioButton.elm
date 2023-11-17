@@ -75,6 +75,7 @@ type RadioButton msg
 
 type Appearance
     = Standard
+    | Small
     | Simple
 
 
@@ -140,16 +141,11 @@ view attrs (RadioButton config) =
                 []
 
         appearanceStyle =
-            case config.appearance of
-                Simple ->
-                    Css.batch []
-
-                Standard ->
+            let
+                commonNonSimpleStyling =
                     Css.batch
-                        [ padding2 (rem 0.5) (rem 0.75)
-                        , border3 (rem 0.0625) solid transparent
+                        [ border3 (rem 0.0625) solid transparent
                         , borderRadius (rem 0.25)
-                        , minHeight (rem 2.5)
                         , justifyContent center
                         , Themes.backgroundColor Colors.cloudBlue
                             |> styleIf config.isSelected
@@ -173,6 +169,33 @@ view attrs (RadioButton config) =
                             , Themes.color Colors.nordeaBlue
                             ]
                             |> styleIf (not config.isSelected && not isDisabled)
+                        ]
+            in
+            case config.appearance of
+                Simple ->
+                    Css.batch []
+
+                Small ->
+                    Css.batch
+                        [ commonNonSimpleStyling
+                        , minHeight (rem 1.5)
+                        , padding2 (rem 0.25) (rem 0.5)
+                        , pseudoClass "focus-within"
+                            [ Themes.backgroundColor Colors.cloudBlue
+                            , Themes.color Colors.nordeaBlue
+                            , borderWidth (rem 0.125)
+
+                            -- we must adjust the padding after increasing the border to avoid movement
+                            , padding2 (rem (0.25 - 0.0625)) (rem (0.5 - 0.0625))
+                            ]
+                            |> styleIf (not isDisabled)
+                        ]
+
+                Standard ->
+                    Css.batch
+                        [ commonNonSimpleStyling
+                        , minHeight (rem 2.5)
+                        , padding2 (rem 0.5) (rem 0.75)
                         , pseudoClass "focus-within"
                             [ Themes.backgroundColor Colors.cloudBlue
                             , Themes.color Colors.nordeaBlue
@@ -225,7 +248,7 @@ view attrs (RadioButton config) =
                 ]
             ]
             []
-        , radiomark |> showIf (config.appearance /= Standard)
+        , radiomark |> showIf (config.appearance == Simple)
         , config.label
         ]
 
