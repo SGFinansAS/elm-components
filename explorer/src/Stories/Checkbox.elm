@@ -5,6 +5,7 @@ import Css exposing (column, displayFlex, flexDirection, maxWidth, rem)
 import Html.Styled as Html exposing (text)
 import Html.Styled.Attributes exposing (css, disabled)
 import Nordea.Components.Checkbox as Checkbox
+import Nordea.Components.Text as Text
 import UIExplorer exposing (UI)
 import UIExplorer.Styled exposing (styledStoriesOf)
 
@@ -63,6 +64,46 @@ stories =
                         (\_ -> NoOp)
                         |> Checkbox.withIsChecked True
                         |> Checkbox.view [ disabled True ]
+                    ]
+          , {}
+          )
+        , ( "Small"
+          , \_ ->
+                Html.div [ css [ displayFlex, Css.property "gap" "1rem" ] ]
+                    [ Checkbox.init
+                        "small"
+                        (Text.textTinyLight |> Text.view [] [ text "Click me" ])
+                        (\_ -> NoOp)
+                        |> Checkbox.withAppearance Checkbox.Small
+                        |> Checkbox.view []
+                    , Checkbox.init
+                        "small"
+                        (Text.textTinyLight |> Text.view [] [ text "Click me" ])
+                        (\_ -> NoOp)
+                        |> Checkbox.withAppearance Checkbox.Small
+                        |> Checkbox.withIsChecked True
+                        |> Checkbox.view []
+                    ]
+          , {}
+          )
+        , ( "Small with error"
+          , \_ ->
+                Html.div [ css [ displayFlex, Css.property "gap" "1rem" ] ]
+                    [ Checkbox.init
+                        "small"
+                        (Text.textTinyLight |> Text.view [] [ text "Click me" ])
+                        (\_ -> NoOp)
+                        |> Checkbox.withAppearance Checkbox.Small
+                        |> Checkbox.withHasError True
+                        |> Checkbox.view []
+                    , Checkbox.init
+                        "small"
+                        (Text.textTinyLight |> Text.view [] [ text "Click me" ])
+                        (\_ -> NoOp)
+                        |> Checkbox.withAppearance Checkbox.Small
+                        |> Checkbox.withIsChecked True
+                        |> Checkbox.withHasError True
+                        |> Checkbox.view []
                     ]
           , {}
           )
