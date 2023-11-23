@@ -15,7 +15,68 @@ module Nordea.Components.Button exposing
     , withStyles
     )
 
-import Css exposing (Style, absolute, alignItems, auto, backgroundClip, backgroundColor, batch, border, border3, borderBox, borderColor, borderRadius, borderStyle, borderWidth, boxShadow4, boxSizing, center, column, contentBox, cursor, disabled, displayFlex, flex, flexDirection, focus, fontFamilies, fontSize, fontWeight, height, hover, int, justifyContent, left, marginTop, none, num, opacity, outline, outlineOffset, padding, padding2, paddingRight, pct, pointer, pointerEvents, position, relative, rem, right, scale2, solid, start, stretch, textAlign, textDecoration, top, transform, transforms, translateX, translateY, transparent, underline, width)
+import Css
+    exposing
+        ( Style
+        , absolute
+        , alignItems
+        , auto
+        , backgroundColor
+        , batch
+        , border
+        , border3
+        , borderBox
+        , borderRadius
+        , borderStyle
+        , boxShadow4
+        , boxSizing
+        , center
+        , column
+        , cursor
+        , disabled
+        , displayFlex
+        , flex
+        , flexDirection
+        , focus
+        , fontFamilies
+        , fontSize
+        , fontWeight
+        , height
+        , hover
+        , int
+        , justifyContent
+        , left
+        , marginTop
+        , none
+        , num
+        , opacity
+        , outline
+        , outlineOffset
+        , padding
+        , padding2
+        , paddingRight
+        , pct
+        , pointer
+        , pointerEvents
+        , position
+        , relative
+        , rem
+        , right
+        , scale2
+        , solid
+        , start
+        , stretch
+        , textAlign
+        , textDecoration
+        , top
+        , transform
+        , transforms
+        , translateX
+        , translateY
+        , transparent
+        , underline
+        , width
+        )
 import Css.Global exposing (children, descendants, everything, withClass)
 import Css.Transitions exposing (easeOut, transition)
 import Html.Styled as Html exposing (Attribute, Html)
