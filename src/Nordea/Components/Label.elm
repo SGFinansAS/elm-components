@@ -8,6 +8,7 @@ module Nordea.Components.Label exposing
     , withErrorMessage
     , withHintText
     , withRequirednessHint
+    , withSmallSize
     )
 
 import Css
@@ -74,7 +75,13 @@ type alias InputProperties =
     , errorMessage : Maybe String
     , hintText : Maybe String
     , charCounter : Maybe CharCounter
+    , size : Size
     }
+
+
+type Size
+    = Small
+    | Standard
 
 
 type Label
@@ -90,6 +97,7 @@ init labelText labelType =
         , errorMessage = Nothing
         , hintText = Nothing
         , charCounter = Nothing
+        , size = Standard
         }
 
 
@@ -99,7 +107,7 @@ view attrs children (Label config) =
         topInfo =
             let
                 requirednessHintView requirednessHint =
-                    Text.textSmallLight
+                    initText config.size
                         |> Text.view
                             [ css [ color Colors.darkGray ] ]
                             [ Html.text <|
@@ -120,7 +128,7 @@ view attrs children (Label config) =
                     , marginBottom (rem 0.2)
                     ]
                 ]
-                [ Text.textSmallLight
+                [ initText config.size
                     |> Text.view
                         [ class "input-focus-color" ]
                         [ Html.text config.labelText ]
@@ -130,11 +138,11 @@ view attrs children (Label config) =
         bottomInfo attrs_ =
             let
                 viewHintText text =
-                    Text.textSmallLight
+                    initText config.size
                         |> Text.view [ css [ color Colors.darkGray ] ] [ Html.text text ]
 
                 viewError errorText =
-                    Text.textSmallLight
+                    initText config.size
                         |> Text.view
                             [ class "input-focus-color", css [ displayFlex ] ]
                             [ Icons.error [ css [ marginRight (rem 0.5), flex none ] ]
@@ -142,7 +150,7 @@ view attrs children (Label config) =
                             ]
 
                 viewCharCounter counter =
-                    Text.textSmallLight
+                    initText config.size
                         |> Text.view
                             [ css [ color Colors.darkGray ] ]
                             [ String.fromInt counter.current ++ "/" ++ String.fromInt counter.max |> Html.text ]
@@ -240,6 +248,16 @@ stateStyles { hasError } =
         ]
 
 
+initText : Size -> Text.Headline msg
+initText size =
+    case size of
+        Standard ->
+            Text.textSmallLight
+
+        Small ->
+            Text.textTinyLight
+
+
 withRequirednessHint : Maybe RequirednessHint -> Label -> Label
 withRequirednessHint requirednessHint (Label config) =
     Label { config | requirednessHint = requirednessHint }
@@ -258,6 +276,11 @@ withHintText hintText (Label config) =
 withCharCounter : Maybe CharCounter -> Label -> Label
 withCharCounter charCounter (Label config) =
     Label { config | charCounter = charCounter }
+
+
+withSmallSize : Label -> Label
+withSmallSize (Label config) =
+    Label { config | size = Small }
 
 
 strings =
