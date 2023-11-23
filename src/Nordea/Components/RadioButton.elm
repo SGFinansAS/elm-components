@@ -178,7 +178,7 @@ view attrs (RadioButton config) =
                 Small ->
                     Css.batch
                         [ commonNonSimpleStyling
-                        , minHeight (rem 1.5)
+                        , height (rem 1.5)
                         , padding2 (rem 0.25) (rem 0.5)
                         , pseudoClass "focus-within"
                             [ Themes.backgroundColor Colors.cloudBlue
