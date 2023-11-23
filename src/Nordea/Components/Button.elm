@@ -15,67 +15,7 @@ module Nordea.Components.Button exposing
     , withStyles
     )
 
-import Css
-    exposing
-        ( Style
-        , absolute
-        , alignItems
-        , auto
-        , backgroundColor
-        , batch
-        , border
-        , border3
-        , borderBox
-        , borderRadius
-        , borderStyle
-        , boxShadow4
-        , boxSizing
-        , center
-        , column
-        , cursor
-        , disabled
-        , displayFlex
-        , flex
-        , flexDirection
-        , focus
-        , fontFamilies
-        , fontSize
-        , fontWeight
-        , height
-        , hover
-        , int
-        , justifyContent
-        , left
-        , marginTop
-        , none
-        , num
-        , opacity
-        , outline
-        , padding
-        , padding2
-        , paddingRight
-        , pct
-        , pointer
-        , pointerEvents
-        , position
-        , relative
-        , rem
-        , right
-        , scale2
-        , solid
-        , start
-        , stretch
-        , textAlign
-        , textDecoration
-        , top
-        , transform
-        , transforms
-        , translateX
-        , translateY
-        , transparent
-        , underline
-        , width
-        )
+import Css exposing (Style, absolute, alignItems, auto, backgroundClip, backgroundColor, batch, border, border3, borderBox, borderColor, borderRadius, borderStyle, borderWidth, boxShadow4, boxSizing, center, column, contentBox, cursor, disabled, displayFlex, flex, flexDirection, focus, fontFamilies, fontSize, fontWeight, height, hover, int, justifyContent, left, marginTop, none, num, opacity, outline, outlineOffset, padding, padding2, paddingRight, pct, pointer, pointerEvents, position, relative, rem, right, scale2, solid, start, stretch, textAlign, textDecoration, top, transform, transforms, translateX, translateY, transparent, underline, width)
 import Css.Global exposing (children, descendants, everything, withClass)
 import Css.Transitions exposing (easeOut, transition)
 import Html.Styled as Html exposing (Attribute, Html)
@@ -356,12 +296,14 @@ variantStyle variant size =
             batch
                 [ textDecoration underline
                 , fontSize (rem 0.875)
-                , padding (rem 0)
                 , Themes.color Colors.deepBlue
                 , border (rem 0)
                 , backgroundColor transparent
                 , hover [ Themes.color Colors.nordeaBlue ]
-                , focus [ outline none ]
+                , focus
+                    [ outlineOffset (rem 0.5)
+                    , Css.property "outline" ("0.25rem solid " ++ Themes.colorVariable Colors.mediumBlue)
+                    ]
                 ]
 
         Circular ->
