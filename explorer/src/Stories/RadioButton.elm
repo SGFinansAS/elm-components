@@ -5,7 +5,6 @@ import Css exposing (displayFlex)
 import Html.Styled as Html exposing (text)
 import Html.Styled.Attributes exposing (css, disabled)
 import Nordea.Components.RadioButton as RadioButton
-import Nordea.Components.Text as Text
 import UIExplorer exposing (UI)
 import UIExplorer.Styled exposing (styledStoriesOf)
 
@@ -75,14 +74,14 @@ stories =
                 Html.div [ css [ displayFlex, Css.property "gap" "1rem" ] ]
                     [ RadioButton.init
                         "small"
-                        (Text.textTinyLight |> Text.view [] [ text "Click me" ])
+                        (text "Click me")
                         (UpdateActiveRadioButton "first")
                         |> RadioButton.withIsSelected (config.customModel.activeRadioButton == "first")
                         |> RadioButton.withAppearance RadioButton.Small
                         |> RadioButton.view []
                     , RadioButton.init
                         "small"
-                        (Text.textTinyLight |> Text.view [] [ text "Click me" ])
+                        (text "Click me")
                         (UpdateActiveRadioButton "second")
                         |> RadioButton.withIsSelected (config.customModel.activeRadioButton == "second")
                         |> RadioButton.withAppearance RadioButton.Small
