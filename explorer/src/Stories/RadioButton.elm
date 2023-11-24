@@ -5,7 +5,6 @@ import Css exposing (displayFlex)
 import Html.Styled as Html exposing (text)
 import Html.Styled.Attributes exposing (css, disabled)
 import Nordea.Components.RadioButton as RadioButton
-import Nordea.Components.Text as Text
 import UIExplorer exposing (UI)
 import UIExplorer.Styled exposing (styledStoriesOf)
 
