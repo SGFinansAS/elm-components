@@ -66,7 +66,6 @@ import Nordea.Components.Button as Button
 import Nordea.Components.Text as Text
 import Nordea.Components.Tooltip as Tooltip
 import Nordea.Html as Html
-import Nordea.Html.Attributes as Attrs
 import Nordea.Resources.Colors as Colors
 import Nordea.Resources.I18N exposing (Translation)
 import Nordea.Resources.Icons as Icons
@@ -79,6 +78,7 @@ type OptionalConfig
     | Placement Tooltip.Placement
     | ShowStep (Maybe Int)
     | ShowStepLegend Bool
+    | ArrowPlacement Tooltip.ArrowPlacement
 
 
 type alias RequiredProps msg =
@@ -101,7 +101,7 @@ type alias Step msg =
 view : RequiredProps msg -> List OptionalConfig -> List (Attribute msg) -> List (Step msg) -> Html msg
 view { onChangeStep, translate, ariaLabel } optionalConfig attrs children_ =
     let
-        { classesToHighlight, placement, showStep, showStepLegend } =
+        { classesToHighlight, placement, showStep, showStepLegend, arrowPlacement } =
             optionalConfig
                 |> List.foldl
                     (\e acc ->
@@ -117,11 +117,15 @@ view { onChangeStep, translate, ariaLabel } optionalConfig attrs children_ =
 
                             ShowStepLegend showStepLegend_ ->
                                 { acc | showStepLegend = showStepLegend_ }
+
+                            ArrowPlacement arrowPlacement_ ->
+                                { acc | arrowPlacement = arrowPlacement_ }
                     )
                     { classesToHighlight = Set.empty
                     , placement = Tooltip.Top
                     , showStep = Nothing
                     , showStepLegend = True
+                    , arrowPlacement = Tooltip.Center
                     }
 
         absoluteCenter scale_ =
@@ -196,6 +200,7 @@ view { onChangeStep, translate, ariaLabel } optionalConfig attrs children_ =
                 Tooltip.Show
             )
         |> Tooltip.withPlacement placement
+        |> Tooltip.withArrowPlacement arrowPlacement
         |> Tooltip.withContent
             (\arrow ->
                 Html.column
