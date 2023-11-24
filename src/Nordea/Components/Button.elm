@@ -360,11 +360,9 @@ variantStyle variant size =
                 , Themes.color Colors.deepBlue
                 , border (rem 0)
                 , backgroundColor transparent
+                , padding (rem 0.5)
                 , hover [ Themes.color Colors.nordeaBlue ]
-                , focus
-                    [ outlineOffset (rem 0.5)
-                    , Css.property "outline" ("0.25rem solid " ++ Themes.colorVariable Colors.mediumBlue)
-                    ]
+                , focus [ Css.property "outline" ("0.25rem solid " ++ Themes.colorVariable Colors.mediumBlue) ]
                 ]
 
         Circular ->
