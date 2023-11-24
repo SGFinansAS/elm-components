@@ -51,7 +51,6 @@ import Css
         , num
         , opacity
         , outline
-        , outlineOffset
         , padding
         , padding2
         , paddingRight
