@@ -1,10 +1,12 @@
 module Nordea.Components.Tooltip exposing
-    ( Placement(..)
+    ( ArrowPlacement(..)
+    , Placement(..)
     , Tooltip
     , Visibility(..)
     , infoTooltip
     , init
     , view
+    , withArrowPlacement
     , withContent
     , withPlacement
     , withVisibility
@@ -75,6 +77,12 @@ type Placement
     | Right
 
 
+type ArrowPlacement
+    = Center
+    | NearCorner
+    | NearOtherCorner
+
+
 type Visibility
     = OnHoverFocus
     | FadeOutMs Float
@@ -84,6 +92,7 @@ type Visibility
 
 type alias Config msg =
     { placement : Placement
+    , arrowDistanceFromCornerInPct : Float
     , content : (List (Attribute msg) -> Html msg) -> Html msg
     , visibility : Visibility
     }
@@ -97,6 +106,7 @@ init : Tooltip msg
 init =
     Tooltip
         { placement = Top
+        , arrowDistanceFromCornerInPct = 50
         , content = \_ -> Html.text ""
         , visibility = OnHoverFocus
         }
@@ -105,6 +115,19 @@ init =
 withPlacement : Placement -> Tooltip msg -> Tooltip msg
 withPlacement placement (Tooltip config) =
     Tooltip { config | placement = placement }
+
+
+withArrowPlacement : ArrowPlacement -> Tooltip msg -> Tooltip msg
+withArrowPlacement arrowPlacement (Tooltip config) =
+    case arrowPlacement of
+        NearCorner ->
+            Tooltip { config | arrowDistanceFromCornerInPct = 15 }
+
+        Center ->
+            Tooltip { config | arrowDistanceFromCornerInPct = 50 }
+
+        NearOtherCorner ->
+            Tooltip { config | arrowDistanceFromCornerInPct = 85 }
 
 
 withContent :
@@ -130,29 +153,29 @@ view attrs children (Tooltip config) =
                         Top ->
                             Css.batch
                                 [ bottom (rem -0.66)
-                                , left (pct 50)
-                                , transforms [ translateX (pct -50), rotate (deg 180) ]
+                                , left (pct config.arrowDistanceFromCornerInPct)
+                                , transforms [ translateX (pct -config.arrowDistanceFromCornerInPct), rotate (deg 180) ]
                                 ]
 
                         Bottom ->
                             Css.batch
                                 [ top (rem -0.66)
-                                , left (pct 50)
-                                , transforms [ translateX (pct -50) ]
+                                , left (pct config.arrowDistanceFromCornerInPct)
+                                , transforms [ translateX (pct -config.arrowDistanceFromCornerInPct) ]
                                 ]
 
                         Left ->
                             Css.batch
                                 [ right (rem -0.66)
-                                , top (pct 50)
-                                , transforms [ translateY (pct -50), rotate (deg 90) ]
+                                , top (pct config.arrowDistanceFromCornerInPct)
+                                , transforms [ translateY (pct -config.arrowDistanceFromCornerInPct), rotate (deg 90) ]
                                 ]
 
                         Right ->
                             Css.batch
                                 [ left (rem -0.66)
-                                , top (pct 50)
-                                , transforms [ translateY (pct -50), rotate (deg -90) ]
+                                , top (pct config.arrowDistanceFromCornerInPct)
+                                , transforms [ translateY (pct -config.arrowDistanceFromCornerInPct), rotate (deg -90) ]
                                 ]
             in
             Html.div
@@ -176,29 +199,29 @@ view attrs children (Tooltip config) =
                         Top ->
                             Css.batch
                                 [ top (rem 0)
-                                , left (pct 50)
-                                , transform (translate2 (pct -50) (pct -100))
+                                , left (pct config.arrowDistanceFromCornerInPct)
+                                , transform (translate2 (pct -config.arrowDistanceFromCornerInPct) (pct -100))
                                 ]
 
                         Bottom ->
                             Css.batch
                                 [ bottom (rem 0)
-                                , left (pct 50)
-                                , transform (translate2 (pct -50) (pct 100))
+                                , left (pct config.arrowDistanceFromCornerInPct)
+                                , transform (translate2 (pct -config.arrowDistanceFromCornerInPct) (pct 100))
                                 ]
 
                         Left ->
                             Css.batch
                                 [ left (rem 0)
-                                , top (pct 50)
-                                , transform (translate2 (pct -100) (pct -50))
+                                , top (pct config.arrowDistanceFromCornerInPct)
+                                , transform (translate2 (pct -100) (pct -config.arrowDistanceFromCornerInPct))
                                 ]
 
                         Right ->
                             Css.batch
                                 [ right (rem 0)
-                                , top (pct 50)
-                                , transform (translate2 (pct 100) (pct -50))
+                                , top (pct config.arrowDistanceFromCornerInPct)
+                                , transform (translate2 (pct 100) (pct -config.arrowDistanceFromCornerInPct))
                                 ]
             in
             Html.div

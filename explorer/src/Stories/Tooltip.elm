@@ -16,10 +16,10 @@ import Css
         , scroll
         , width
         )
-import Html.Styled exposing (div, text)
+import Html.Styled exposing (div, li, text, ul)
 import Html.Styled.Attributes exposing (css)
 import Nordea.Components.Card as Card
-import Nordea.Components.Tooltip as Tooltip exposing (Placement(..), Visibility(..))
+import Nordea.Components.Tooltip as Tooltip exposing (ArrowPlacement(..), Placement(..), Visibility(..))
 import Nordea.Resources.Icons as Icons
 import UIExplorer exposing (UI)
 import UIExplorer.Styled exposing (styledStoriesOf)
@@ -35,6 +35,30 @@ stories =
                     [ text "There is a tooltip "
                     , Tooltip.init
                         |> Tooltip.withPlacement Top
+                        |> Tooltip.withContent (Tooltip.infoTooltip [] [ text "This is a tooltip" ])
+                        |> Tooltip.view [] [ text "here" ]
+                    ]
+          , {}
+          )
+        , ( "Top with arrow placed near corner"
+          , \_ ->
+                div []
+                    [ text "There is a tooltip "
+                    , Tooltip.init
+                        |> Tooltip.withPlacement Top
+                        |> Tooltip.withArrowPlacement NearCorner
+                        |> Tooltip.withContent (Tooltip.infoTooltip [] [ text "This is a tooltip" ])
+                        |> Tooltip.view [] [ text "here" ]
+                    ]
+          , {}
+          )
+        , ( "Top with arrow placed near other corner"
+          , \_ ->
+                div []
+                    [ text "There is a tooltip "
+                    , Tooltip.init
+                        |> Tooltip.withPlacement Top
+                        |> Tooltip.withArrowPlacement NearOtherCorner
                         |> Tooltip.withContent (Tooltip.infoTooltip [] [ text "This is a tooltip" ])
                         |> Tooltip.view [] [ text "here" ]
                     ]
@@ -69,6 +93,23 @@ stories =
                     , Tooltip.init
                         |> Tooltip.withPlacement Right
                         |> Tooltip.withContent (Tooltip.infoTooltip [] [ text "This is a tooltip" ])
+                        |> Tooltip.view [] [ text "here" ]
+                    ]
+          , {}
+          )
+        , ( "Right with arrow placed near corner"
+          , \_ ->
+                div []
+                    [ text "There is a tooltip "
+                    , Tooltip.init
+                        |> Tooltip.withPlacement Right
+                        |> Tooltip.withArrowPlacement NearCorner
+                        |> Tooltip.withContent
+                            (Tooltip.infoTooltip []
+                                [ ul []
+                                    [ li [] [ text "First" ], li [] [ text "Second" ], li [] [ text "Third" ], li [] [ text "Fourth" ] ]
+                                ]
+                            )
                         |> Tooltip.view [] [ text "here" ]
                     ]
           , {}
