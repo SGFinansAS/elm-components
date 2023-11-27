@@ -53,6 +53,7 @@ import Css.Transitions exposing (transition)
 import Html.Styled as Html exposing (Attribute, Html)
 import Html.Styled.Attributes as Attrs exposing (css, disabled, name, type_)
 import Html.Styled.Events as Events
+import Nordea.Components.Text as Text
 import Nordea.Html exposing (showIf, styleIf)
 import Nordea.Resources.Colors as Colors
 import Nordea.Themes as Themes
@@ -178,7 +179,7 @@ view attrs (RadioButton config) =
                 Small ->
                     Css.batch
                         [ commonNonSimpleStyling
-                        , minHeight (rem 1.5)
+                        , height (rem 1.5)
                         , padding2 (rem 0.25) (rem 0.5)
                         , pseudoClass "focus-within"
                             [ Themes.backgroundColor Colors.cloudBlue
@@ -218,6 +219,13 @@ view attrs (RadioButton config) =
                 , cursor pointer
                 ]
                 |> styleIf (not isDisabled)
+
+        label =
+            if config.appearance == Small then
+                Text.textTinyLight |> Text.view [] [ config.label ]
+
+            else
+                config.label
     in
     Html.label
         (css
@@ -249,7 +257,7 @@ view attrs (RadioButton config) =
             ]
             []
         , radiomark |> showIf (config.appearance == Simple)
-        , config.label
+        , label
         ]
 
 

@@ -206,5 +206,5 @@ buttonStyle : Button.Variant -> List Style
 buttonStyle buttonVariant =
     [ maxWidth fitContent
     , textDecoration none
-    , Button.buttonStyleForExport buttonVariant
+    , Button.buttonStyleForExport buttonVariant Button.Standard
     ]

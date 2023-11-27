@@ -43,6 +43,7 @@ import Css
         , num
         , opacity
         , padding2
+        , padding4
         , pct
         , pointer
         , position
@@ -60,6 +61,7 @@ import Css.Transitions exposing (transition)
 import Html.Styled as Html exposing (Attribute, Html)
 import Html.Styled.Attributes as Attrs exposing (class, css, disabled, name, type_)
 import Html.Styled.Events exposing (onCheck)
+import Nordea.Components.Text as Text
 import Nordea.Html exposing (styleIf)
 import Nordea.Resources.Colors as Colors
 import Nordea.Themes as Themes
@@ -82,6 +84,7 @@ type Checkbox msg
 
 type Appearance
     = Standard
+    | Small
     | Simple
     | ListStyle
 
@@ -106,13 +109,39 @@ view attrs (Checkbox config) =
             List.member (Attrs.disabled True) attrs
 
         checkbox =
+            let
+                checkboxSizeStyling =
+                    if config.appearance == Small then
+                        Css.batch
+                            [ height (rem 1)
+                            , width (rem 1)
+                            ]
+
+                    else
+                        Css.batch
+                            [ height (rem 1.25)
+                            , width (rem 1.25)
+                            ]
+
+                checkmarkSizeStyling =
+                    if config.appearance == Small then
+                        Css.batch
+                            [ width (rem 0.25)
+                            , height (rem 0.75)
+                            ]
+
+                    else
+                        Css.batch
+                            [ width (rem 0.5)
+                            , height (rem 0.813)
+                            ]
+            in
             Html.span
                 [ class "nfe-checkbox"
                 , css
                     [ displayFlex
                     , flex none
-                    , height (rem 1.25)
-                    , width (rem 1.25)
+                    , checkboxSizeStyling
                     , backgroundColor Colors.white
                     , border3 (rem 0.125) solid Css.transparent
                     , if isDisabled then
@@ -124,7 +153,7 @@ view attrs (Checkbox config) =
                     , borderColor Colors.darkRed
                         |> styleIf (config.hasError && config.appearance == Simple)
                     , borderColor Colors.mediumGray
-                        |> styleIf (config.hasError && List.member config.appearance [ Standard, ListStyle ])
+                        |> styleIf (config.hasError && List.member config.appearance [ Standard, Small, ListStyle ])
                     , position relative
                     , boxSizing borderBox
 
@@ -135,15 +164,18 @@ view attrs (Checkbox config) =
                         , position absolute
                         , top (rem -0.0625)
                         , left (rem 0.25)
-                        , width (rem 0.5)
-                        , height (rem 0.813)
+                        , checkmarkSizeStyling
                         , transforms [ rotate (deg 45) ]
                         , if isDisabled then
                             border3 (rem 0.0625) solid Colors.nordeaGray
 
                           else
                             border3 (rem 0.0625) solid Colors.white
-                        , borderWidth4 (rem 0) (rem 0.125) (rem 0.125) (rem 0)
+                        , if config.appearance == Small then
+                            borderWidth4 (rem 0) (rem 0.0625) (rem 0.0625) (rem 0)
+
+                          else
+                            borderWidth4 (rem 0) (rem 0.125) (rem 0.125) (rem 0)
                         , boxSizing borderBox
                         ]
                     ]
@@ -154,16 +186,29 @@ view attrs (Checkbox config) =
             let
                 commonNonSimpleStyles =
                     Css.batch
-                        [ padding2 (rem 0.5) (rem 1)
-                        , border3 (rem 0.0625) solid transparent
+                        [ border3 (rem 0.0625) solid transparent
                         , Themes.backgroundColor Colors.cloudBlue |> styleIf config.isChecked
                         , transition [ Css.Transitions.borderColor 100, Css.Transitions.boxShadow 100 ]
+                        ]
+
+                commonStandardStyles =
+                    Css.batch
+                        [ borderRadius (rem 0.25)
+                        , borderColor Colors.mediumGray |> styleIf (not config.isChecked)
+                        , borderColor Colors.darkRed |> styleIf config.hasError
+                        , hover
+                            [ Themes.borderColor Colors.nordeaBlue |> styleIf (not config.hasError)
+                            , Themes.backgroundColor Colors.cloudBlue
+                            ]
+                            |> styleIf (not isDisabled)
                         ]
             in
             case config.appearance of
                 ListStyle ->
                     Css.batch
-                        [ commonNonSimpleStyles
+                        [ Css.property "gap" "0.5rem"
+                        , commonNonSimpleStyles
+                        , padding2 (rem 0.5) (rem 1)
                         , flexBasis (pct 100)
                         , borderColor Colors.mediumGray
                         , borderColor Colors.darkRed |> styleIf config.hasError
@@ -175,20 +220,26 @@ view attrs (Checkbox config) =
                         ]
 
                 Simple ->
-                    Css.batch []
-
-                _ ->
                     Css.batch
-                        [ commonNonSimpleStyles
-                        , borderRadius (rem 0.25)
+                        [ Css.property "gap" "0.5rem"
+                        ]
+
+                Small ->
+                    Css.batch
+                        [ Css.property "gap" "0.25rem"
+                        , padding4 (rem 0.25) (rem 0.5) (rem 0.25) (rem 0.25)
+                        , height (rem 1.5)
+                        , commonNonSimpleStyles
+                        , commonStandardStyles
+                        ]
+
+                Standard ->
+                    Css.batch
+                        [ Css.property "gap" "0.5rem"
+                        , padding2 (rem 0.5) (rem 1)
                         , minHeight (rem 2.5)
-                        , borderColor Colors.mediumGray |> styleIf (not config.isChecked)
-                        , borderColor Colors.darkRed |> styleIf config.hasError
-                        , hover
-                            [ Themes.borderColor Colors.nordeaBlue |> styleIf (not config.hasError)
-                            , Themes.backgroundColor Colors.cloudBlue
-                            ]
-                            |> styleIf (not isDisabled)
+                        , commonNonSimpleStyles
+                        , commonStandardStyles
                         ]
 
         notDisabledSpecificStyling =
@@ -202,11 +253,17 @@ view attrs (Checkbox config) =
                 , cursor pointer
                 ]
                 |> styleIf (not isDisabled)
+
+        label =
+            if config.appearance == Small then
+                Text.textTinyLight |> Text.view [] [ config.label ]
+
+            else
+                config.label
     in
     Html.label
         (css
             [ display inlineFlex
-            , Css.property "gap" "0.5rem"
             , alignItems center
             , boxSizing borderBox
             , position relative
@@ -240,7 +297,7 @@ view attrs (Checkbox config) =
             ]
             []
         , checkbox
-        , config.label
+        , label
         ]
 
 
