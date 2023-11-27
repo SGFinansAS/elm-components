@@ -204,7 +204,7 @@ view attrs (Dropdown config) =
                         ]
 
                 ( Standard, SmallSize ) ->
-                    Icon.chevronDownFilled
+                    Icon.chevronDownFilledSmall
                         [ css
                             [ position absolute
                             , top (pct 50)
@@ -212,8 +212,6 @@ view attrs (Dropdown config) =
                             , right (rem 0.3125)
                             , pointerEvents none
                             , color Colors.coolGray
-                            , width (rem 1)
-                            , height (rem 1)
                             ]
                         ]
 
