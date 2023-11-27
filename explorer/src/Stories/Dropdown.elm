@@ -90,7 +90,7 @@ stories =
                     |> Dropdown.view []
           , {}
           )
-          , ( "Simple Small"
+        , ( "Simple Small"
           , \_ ->
                 Dropdown.simple
                     [ { value = Leasing, text = financingVariantToString Leasing }
