@@ -53,6 +53,7 @@ import Css.Transitions exposing (transition)
 import Html.Styled as Html exposing (Attribute, Html)
 import Html.Styled.Attributes as Attrs exposing (css, disabled, name, type_)
 import Html.Styled.Events as Events
+import Nordea.Components.Text as Text
 import Nordea.Html exposing (showIf, styleIf)
 import Nordea.Resources.Colors as Colors
 import Nordea.Themes as Themes
@@ -75,6 +76,7 @@ type RadioButton msg
 
 type Appearance
     = Standard
+    | Small
     | Simple
 
 
@@ -140,16 +142,11 @@ view attrs (RadioButton config) =
                 []
 
         appearanceStyle =
-            case config.appearance of
-                Simple ->
-                    Css.batch []
-
-                Standard ->
+            let
+                commonNonSimpleStyling =
                     Css.batch
-                        [ padding2 (rem 0.5) (rem 0.75)
-                        , border3 (rem 0.0625) solid transparent
+                        [ border3 (rem 0.0625) solid transparent
                         , borderRadius (rem 0.25)
-                        , minHeight (rem 2.5)
                         , justifyContent center
                         , Themes.backgroundColor Colors.cloudBlue
                             |> styleIf config.isSelected
@@ -173,6 +170,33 @@ view attrs (RadioButton config) =
                             , Themes.color Colors.nordeaBlue
                             ]
                             |> styleIf (not config.isSelected && not isDisabled)
+                        ]
+            in
+            case config.appearance of
+                Simple ->
+                    Css.batch []
+
+                Small ->
+                    Css.batch
+                        [ commonNonSimpleStyling
+                        , height (rem 1.5)
+                        , padding2 (rem 0.25) (rem 0.5)
+                        , pseudoClass "focus-within"
+                            [ Themes.backgroundColor Colors.cloudBlue
+                            , Themes.color Colors.nordeaBlue
+                            , borderWidth (rem 0.125)
+
+                            -- we must adjust the padding after increasing the border to avoid movement
+                            , padding2 (rem (0.25 - 0.0625)) (rem (0.5 - 0.0625))
+                            ]
+                            |> styleIf (not isDisabled)
+                        ]
+
+                Standard ->
+                    Css.batch
+                        [ commonNonSimpleStyling
+                        , minHeight (rem 2.5)
+                        , padding2 (rem 0.5) (rem 0.75)
                         , pseudoClass "focus-within"
                             [ Themes.backgroundColor Colors.cloudBlue
                             , Themes.color Colors.nordeaBlue
@@ -183,6 +207,25 @@ view attrs (RadioButton config) =
                             ]
                             |> styleIf (not isDisabled)
                         ]
+
+        notDisabledSpecificStyling =
+            let
+                boxShadow =
+                    Css.property "box-shadow" ("0rem 0rem 0rem 0.0625rem " ++ Themes.colorVariable Colors.mediumBlue)
+            in
+            Css.batch
+                [ pseudoClass "hover .nfe-radiomark" [ boxShadow ]
+                , pseudoClass "focus-within .nfe-radiomark" [ boxShadow ]
+                , cursor pointer
+                ]
+                |> styleIf (not isDisabled)
+
+        label =
+            if config.appearance == Small then
+                Text.textTinyLight |> Text.view [] [ config.label ]
+
+            else
+                config.label
     in
     Html.label
         (css
@@ -191,7 +234,7 @@ view attrs (RadioButton config) =
             , alignItems center
             , boxSizing borderBox
             , position relative
-            , cursor pointer |> styleIf (not isDisabled)
+            , notDisabledSpecificStyling
             , appearanceStyle
             ]
             :: attrs
@@ -213,8 +256,8 @@ view attrs (RadioButton config) =
                 ]
             ]
             []
-        , radiomark |> showIf (config.appearance /= Standard)
-        , config.label
+        , radiomark |> showIf (config.appearance == Simple)
+        , label
         ]
 
 

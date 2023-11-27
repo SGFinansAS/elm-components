@@ -8,6 +8,7 @@ module Nordea.Components.Label exposing
     , withErrorMessage
     , withHintText
     , withRequirednessHint
+    , withSmallSize
     )
 
 import Css
@@ -16,9 +17,11 @@ import Css
         , border
         , borderColor
         , color
+        , column
         , displayFlex
         , flex
         , flexBasis
+        , flexDirection
         , flexWrap
         , justifyContent
         , marginBottom
@@ -72,7 +75,13 @@ type alias InputProperties =
     , errorMessage : Maybe String
     , hintText : Maybe String
     , charCounter : Maybe CharCounter
+    , size : Size
     }
+
+
+type Size
+    = Small
+    | Standard
 
 
 type Label
@@ -88,6 +97,7 @@ init labelText labelType =
         , errorMessage = Nothing
         , hintText = Nothing
         , charCounter = Nothing
+        , size = Standard
         }
 
 
@@ -97,7 +107,7 @@ view attrs children (Label config) =
         topInfo =
             let
                 requirednessHintView requirednessHint =
-                    Text.textSmallLight
+                    initText config.size
                         |> Text.view
                             [ css [ color Colors.darkGray ] ]
                             [ Html.text <|
@@ -115,25 +125,24 @@ view attrs children (Label config) =
             Html.row
                 [ css
                     [ justifyContent spaceBetween
-                    , flexBasis (pct 100)
                     , marginBottom (rem 0.2)
                     ]
                 ]
-                [ Text.textSmallLight
+                [ initText config.size
                     |> Text.view
                         [ class "input-focus-color" ]
                         [ Html.text config.labelText ]
                 , config.requirednessHint |> Html.viewMaybe requirednessHintView
                 ]
 
-        bottomInfo =
+        bottomInfo attrs_ =
             let
                 viewHintText text =
-                    Text.textSmallLight
+                    initText config.size
                         |> Text.view [ css [ color Colors.darkGray ] ] [ Html.text text ]
 
                 viewError errorText =
-                    Text.textSmallLight
+                    initText config.size
                         |> Text.view
                             [ class "input-focus-color", css [ displayFlex ] ]
                             [ Icons.error [ css [ marginRight (rem 0.5), flex none ] ]
@@ -141,18 +150,18 @@ view attrs children (Label config) =
                             ]
 
                 viewCharCounter counter =
-                    Text.textSmallLight
+                    initText config.size
                         |> Text.view
                             [ css [ color Colors.darkGray ] ]
                             [ String.fromInt counter.current ++ "/" ++ String.fromInt counter.max |> Html.text ]
             in
             Html.row
-                [ css
+                (css
                     [ justifyContent spaceBetween
-                    , flexBasis (pct 100)
                     , marginTop (rem 0.2)
                     ]
-                ]
+                    :: attrs_
+                )
                 [ Html.column []
                     [ config.errorMessage |> Html.viewMaybe viewError
                     , config.hintText |> Html.viewMaybe viewHintText
@@ -166,13 +175,12 @@ view attrs children (Label config) =
             Html.label
                 (css
                     [ displayFlex
-                    , flexWrap wrap
+                    , flexDirection column
                     , stateStyles { hasError = config.errorMessage /= Nothing }
-                    , Css.Global.children [ everything [ flexBasis (pct 100) ] ]
                     ]
                     :: attrs
                 )
-                (topInfo :: children ++ [ bottomInfo ])
+                (topInfo :: children ++ [ bottomInfo [] ])
 
         GroupLabel ->
             Html.fieldset
@@ -188,23 +196,23 @@ view attrs children (Label config) =
                     :: attrs
                 )
                 ((Html.legend
-                    [ css [ width (pct 100), padding (rem 0), Css.Global.children [ everything [ flexBasis (pct 100) ] ] ] ]
+                    [ css
+                        [ padding (rem 0)
+                        , width (pct 100)
+                        , Css.Global.children [ everything [ flexBasis (pct 100) ] ]
+                        ]
+                    ]
                     [ topInfo ]
                     |> showIf (config.labelText /= "" || config.requirednessHint /= Nothing)
                  )
                     :: children
-                    ++ [ bottomInfo ]
+                    ++ [ bottomInfo [ css [ flexBasis (pct 100) ] ] ]
                 )
 
         TextLabel ->
             Html.column
-                (css
-                    [ stateStyles { hasError = config.errorMessage /= Nothing }
-                    , Css.Global.children [ everything [ flexBasis (pct 100) ] ]
-                    ]
-                    :: attrs
-                )
-                (topInfo :: children ++ [ bottomInfo ])
+                (css [ stateStyles { hasError = config.errorMessage /= Nothing } ] :: attrs)
+                (topInfo :: children ++ [ bottomInfo [] ])
 
 
 stateStyles : { hasError : Bool } -> Style
@@ -240,6 +248,16 @@ stateStyles { hasError } =
         ]
 
 
+initText : Size -> Text.Headline msg
+initText size =
+    case size of
+        Standard ->
+            Text.textSmallLight
+
+        Small ->
+            Text.textTinyLight
+
+
 withRequirednessHint : Maybe RequirednessHint -> Label -> Label
 withRequirednessHint requirednessHint (Label config) =
     Label { config | requirednessHint = requirednessHint }
@@ -258,6 +276,11 @@ withHintText hintText (Label config) =
 withCharCounter : Maybe CharCounter -> Label -> Label
 withCharCounter charCounter (Label config) =
     Label { config | charCounter = charCounter }
+
+
+withSmallSize : Label -> Label
+withSmallSize (Label config) =
+    Label { config | size = Small }
 
 
 strings =

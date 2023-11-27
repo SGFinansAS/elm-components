@@ -12,6 +12,7 @@ module Nordea.Components.TextInput exposing
     , withPattern
     , withPlaceholder
     , withSearchIcon
+    , withSmallSize
     )
 
 import Css
@@ -53,7 +54,7 @@ import Css
         , width
         )
 import Html.Styled as Html exposing (Attribute, Html, input, styled)
-import Html.Styled.Attributes
+import Html.Styled.Attributes as Html
     exposing
         ( css
         , maxlength
@@ -84,11 +85,17 @@ type alias Config msg =
     , maxLength : Maybe Int
     , pattern : Maybe String
     , hasSearchIcon : Bool
-    , onClearInput : Maybe msg
+    , hasClearIcon : Bool
     , onBlur : Maybe msg
     , onEnterPress : Maybe msg
     , currency : Maybe String
+    , size : Size
     }
+
+
+type Size
+    = Small
+    | Standard
 
 
 type TextInput msg
@@ -105,10 +112,11 @@ init value =
         , maxLength = Nothing
         , pattern = Nothing
         , hasSearchIcon = False
-        , onClearInput = Nothing
+        , hasClearIcon = False
         , onBlur = Nothing
         , onEnterPress = Nothing
         , currency = Nothing
+        , size = Standard
         }
 
 
@@ -157,12 +165,17 @@ withCurrency currency (TextInput config) =
     TextInput { config | currency = Just currency }
 
 
-withClearInput : msg -> TextInput msg -> TextInput msg
-withClearInput onRemoveInput (TextInput config) =
+withClearInput : TextInput msg -> TextInput msg
+withClearInput (TextInput config) =
     TextInput
         { config
-            | onClearInput = Just onRemoveInput
+            | hasClearIcon = True
         }
+
+
+withSmallSize : TextInput msg -> TextInput msg
+withSmallSize (TextInput config) =
+    TextInput { config | size = Small }
 
 
 onEnterPress : msg -> Attribute msg
@@ -184,12 +197,31 @@ onEnterPress msg =
 
 view : List (Attribute msg) -> TextInput msg -> Html msg
 view attributes (TextInput config) =
-    if Maybe.isJust config.onClearInput then
-        Html.div
-            (css [ displayFlex, position relative ]
-                :: attributes
-            )
-            [ Icons.roundedCross
+    let
+        viewSearchIcon =
+            Icons.search
+                [ css
+                    [ width (rem 1)
+                    , height (rem 1)
+                    , opacity (num 0.5)
+                    , position absolute
+                    , color
+                        (if config.showError then
+                            Colors.darkRed
+
+                         else
+                            Colors.nordeaBlue
+                        )
+                    , left (rem 0.7)
+                    , top (pct 50)
+                    , transform (translateY (pct -50))
+                    , pointerEvents none
+                    ]
+                ]
+                |> showIf config.hasSearchIcon
+
+        viewClearIcon =
+            Icons.roundedCross
                 (Maybe.values
                     [ Just
                         (css
@@ -201,60 +233,22 @@ view attributes (TextInput config) =
                             , cursor pointer
                             ]
                         )
-                    , config.onClearInput |> Maybe.map onClick
+                    , config.onInput |> Maybe.map (\onInput -> onClick (onInput ""))
                     , Just (tabindex 0)
                     ]
                 )
-                |> showIf (config.value |> String.isEmpty |> not)
-            , styled input
-                (getStyles config)
-                (getAttributes config)
-                []
-            , viewCurrency config
-            ]
-
-    else if config.hasSearchIcon then
-        let
-            iconColor =
-                if config.showError then
-                    Colors.darkRed
-
-                else
-                    Colors.nordeaBlue
-        in
-        Html.div
-            (css [ displayFlex, position relative ]
-                :: attributes
-            )
-            [ Icons.search
-                [ css
-                    [ width (rem 1)
-                    , height (rem 1)
-                    , opacity (num 0.5)
-                    , position absolute
-                    , color iconColor
-                    , left (rem 0.7)
-                    , top (pct 50)
-                    , transform (translateY (pct -50))
-                    , pointerEvents none
-                    ]
-                ]
-            , styled input
-                (getStyles config)
-                (getAttributes config)
-                []
-            , viewCurrency config
-            ]
-
-    else
-        Html.div
-            (css [ displayFlex, position relative ] :: attributes)
-            [ styled input
-                (getStyles config)
-                (getAttributes config ++ attributes)
-                []
-            , viewCurrency config
-            ]
+                |> showIf ((config.value |> String.isEmpty |> not) && config.hasClearIcon)
+    in
+    Html.div
+        (css [ displayFlex, position relative ] :: attributes)
+        [ viewSearchIcon
+        , styled input
+            (getStyles config)
+            (getAttributes config ++ attributes)
+            []
+        , viewCurrency config
+        , viewClearIcon
+        ]
 
 
 viewCurrency : Config msg -> Html msg
@@ -304,11 +298,22 @@ getStyles config =
 
             else
                 Colors.mediumGray
+
+        sizeSpecificStyling =
+            case config.size of
+                Small ->
+                    [ fontSize (rem 0.75)
+                    , height (rem 1.5)
+                    , padding2 (rem 0.25) (rem 0.5)
+                    ]
+
+                Standard ->
+                    [ fontSize (rem 1)
+                    , height (rem 2.5)
+                    , padding2 (rem 0) (rem 0.75)
+                    ]
     in
-    [ fontSize (rem 1)
-    , height (rem 2.5)
-    , padding2 (rem 0) (rem 0.75)
-    , borderRadius (rem 0.25)
+    [ borderRadius (rem 0.25)
     , border3 (rem 0.0625) solid borderColorStyle
     , boxSizing borderBox
     , width (pct 100)
@@ -317,10 +322,11 @@ getStyles config =
     , paddingRight (rem 3)
         |> styleIf
             ((config.value |> String.isEmpty |> not)
-                && Maybe.isJust config.onClearInput
+                && config.hasClearIcon
             )
     , focus
         [ outline none
         , Themes.borderColor Colors.nordeaBlue
         ]
     ]
+        ++ sizeSpecificStyling

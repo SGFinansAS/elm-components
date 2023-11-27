@@ -1,11 +1,13 @@
 module Nordea.Resources.Illustrations exposing
     ( balloon
+    , checkmark
     , confetti
     , confetti2
     , errorSvg
     , feedbackEnvelope
     , instructionalBlocks
     , instructionalStar
+    , instructionalWarning
     , nordeaLogo
     , poweredByNordea
     , rejection
@@ -15,26 +17,7 @@ import Css exposing (alignItems, center, display, flex, flexShrink, inlineFlex, 
 import Css.Global exposing (children, everything)
 import Html.Styled exposing (Attribute, Html, div, styled)
 import Svg.Styled as Svg exposing (Svg, ellipse)
-import Svg.Styled.Attributes
-    exposing
-        ( clipRule
-        , cx
-        , cy
-        , d
-        , fill
-        , fillRule
-        , height
-        , opacity
-        , rx
-        , ry
-        , stroke
-        , strokeLinecap
-        , strokeLinejoin
-        , strokeWidth
-        , transform
-        , viewBox
-        , width
-        )
+import Svg.Styled.Attributes as SvgAttr exposing (clipRule, cx, cy, d, fill, fillRule, height, opacity, rx, ry, stroke, strokeLinecap, strokeLinejoin, strokeWidth, transform, viewBox, width)
 
 
 feedbackEnvelope : List (Attribute msg) -> Html msg
@@ -578,6 +561,347 @@ poweredByNordea accessibilityAltText attrs =
             , Svg.path
                 [ d "M13.8 9.36H11.76V15H12.488V12.824H13.8C14.856 12.824 15.712 12.24 15.712 11.096C15.712 9.936 14.856 9.36 13.8 9.36ZM13.68 12.208H12.488V9.968H13.68C14.496 9.968 14.984 10.328 14.984 11.096C14.984 11.856 14.496 12.208 13.68 12.208ZM18.1699 15.096C19.2339 15.096 20.0739 14.416 20.0739 12.912C20.0739 11.408 19.2339 10.728 18.1699 10.728C17.0979 10.728 16.2659 11.408 16.2659 12.912C16.2659 14.416 17.0979 15.096 18.1699 15.096ZM18.1699 14.512C17.4419 14.512 16.9699 14 16.9699 12.912C16.9699 11.824 17.4419 11.312 18.1699 11.312C18.8979 11.312 19.3699 11.824 19.3699 12.912C19.3699 14 18.8979 14.512 18.1699 14.512ZM26.0479 10.816L25.5759 12.368C25.3919 12.976 25.1919 13.656 25.0239 14.28C24.8559 13.656 24.6559 12.984 24.4639 12.368L23.9999 10.816H23.3119L22.8479 12.368C22.6559 12.984 22.4559 13.664 22.2879 14.296C22.1199 13.664 21.9119 12.992 21.7279 12.368L21.2559 10.816H20.5439L21.8719 15H22.6319L23.1039 13.472C23.2879 12.864 23.4719 12.232 23.6399 11.648C23.8079 12.232 23.9919 12.864 24.1839 13.472L24.6559 15H25.4079L26.7359 10.816H26.0479ZM30.7634 13.056C30.7874 12.92 30.7954 12.752 30.7954 12.592C30.7954 11.408 30.0994 10.728 29.0674 10.728C28.0514 10.728 27.2034 11.408 27.2034 12.912C27.2034 14.416 28.0674 15.096 29.1874 15.096C29.7794 15.096 30.3394 14.912 30.7074 14.488L30.3554 14.048C30.0354 14.368 29.6594 14.504 29.2354 14.504C28.4594 14.504 27.9314 14.048 27.8834 13.056H30.7634ZM29.0514 11.296C29.7314 11.296 30.1074 11.688 30.1474 12.544H27.8994C27.9954 11.696 28.4434 11.296 29.0514 11.296ZM33.6123 10.768C32.9003 10.768 32.5643 11.264 32.4443 11.672V10.816H31.7883V15H32.4763V12.92C32.4763 12.04 32.8283 11.472 33.5323 11.472C33.6683 11.472 33.7963 11.488 33.8843 11.512L34.0523 10.84C33.9803 10.808 33.8203 10.768 33.6123 10.768ZM37.9196 13.056C37.9436 12.92 37.9516 12.752 37.9516 12.592C37.9516 11.408 37.2556 10.728 36.2236 10.728C35.2076 10.728 34.3596 11.408 34.3596 12.912C34.3596 14.416 35.2236 15.096 36.3436 15.096C36.9356 15.096 37.4956 14.912 37.8636 14.488L37.5116 14.048C37.1916 14.368 36.8156 14.504 36.3916 14.504C35.6156 14.504 35.0876 14.048 35.0396 13.056H37.9196ZM36.2076 11.296C36.8876 11.296 37.2636 11.688 37.3036 12.544H35.0556C35.1516 11.696 35.5996 11.296 36.2076 11.296ZM41.7285 9.12V11.456C41.4325 10.952 40.9525 10.728 40.3925 10.728C39.4165 10.728 38.6565 11.424 38.6565 12.912C38.6565 14.4 39.4165 15.096 40.3925 15.096C40.9765 15.096 41.4645 14.856 41.7605 14.312V15H42.4165V9.12H41.7285ZM40.5365 14.512C39.8165 14.512 39.3605 14 39.3605 12.912C39.3605 11.824 39.8165 11.312 40.5365 11.312C41.2405 11.312 41.7285 11.824 41.7285 12.912C41.7285 14 41.2405 14.512 40.5365 14.512ZM47.6716 10.728C47.1116 10.728 46.6316 10.952 46.3356 11.456V9.12H45.6476V15H46.3036V14.312C46.5996 14.856 47.0956 15.096 47.6716 15.096C48.6556 15.096 49.4076 14.4 49.4076 12.912C49.4076 11.424 48.6556 10.728 47.6716 10.728ZM47.5356 14.512C46.8236 14.512 46.3356 14 46.3356 12.912C46.3356 11.824 46.8236 11.312 47.5356 11.312C48.2556 11.312 48.7036 11.824 48.7036 12.912C48.7036 14 48.2556 14.512 47.5356 14.512ZM52.9031 10.816L51.7351 14.2C51.5591 13.632 51.3191 12.944 51.1191 12.36L50.5911 10.816H49.8791L51.4071 15.096C51.1831 15.576 50.9111 15.824 50.3271 15.784V16.368C51.2231 16.464 51.7031 16.088 52.0871 15.016L53.5991 10.816H52.9031Z"
                 , fill "currentColor"
+                ]
+                []
+            ]
+        ]
+
+
+checkmark : List (Attribute msg) -> Html msg
+checkmark attrs =
+    illustrationsContainer attrs
+        [ Svg.svg
+            [ width "100"
+            , height "100"
+            , viewBox "0 0 100 100"
+            , fill "none"
+            ]
+            [ Svg.path
+                [ d "M62 14.85C54.33 10.43 46.83 9.96 40.93 12.85L33.87 16.24C39.79 13.44 47.27 13.85 54.94 18.24C70.25 27.07 80.48 48.42 77.78 65.9C76.42 74.64 72.1 80.75 66.21 83.57L73.21 80.19C79.21 77.42 83.44 71.25 84.79 62.52C87.54 45 77.3 23.7 62 14.85Z"
+                , fill "#0000FF"
+                ]
+                []
+            , Svg.mask
+                [ SvgAttr.id "mask0_412_15381"
+                , SvgAttr.style "mask-type:alpha"
+                , SvgAttr.maskUnits "userSpaceOnUse"
+                , SvgAttr.x "33"
+                , SvgAttr.y "11"
+                , SvgAttr.width "53"
+                , SvgAttr.height "73"
+                ]
+                [ Svg.path
+                    [ SvgAttr.fillRule "evenodd"
+                    , SvgAttr.clipRule "evenodd"
+                    , SvgAttr.d "M62 14.85C54.33 10.43 46.83 9.96 40.93 12.85L33.87 16.24C39.79 13.44 47.27 13.85 54.94 18.24C70.25 27.07 80.48 48.42 77.78 65.9C76.42 74.64 72.1 80.75 66.21 83.57L73.21 80.19C79.21 77.42 83.44 71.25 84.79 62.52C87.54 45 77.3 23.7 62 14.85Z"
+                    , SvgAttr.fill "white"
+                    ]
+                    []
+                ]
+            , Svg.g
+                [ SvgAttr.mask "url(#mask0_412_15381)"
+                ]
+                [ Svg.path
+                    [ SvgAttr.d "M90.78 5.5H28.33V89.09H90.78V5.5Z"
+                    , SvgAttr.fill "#0000FF"
+                    ]
+                    []
+                ]
+            , Svg.mask
+                [ SvgAttr.id "mask1_412_15381"
+                , SvgAttr.style "mask-type:alpha"
+                , SvgAttr.maskUnits "userSpaceOnUse"
+                , SvgAttr.x "21"
+                , SvgAttr.y "14"
+                , SvgAttr.width "58"
+                , SvgAttr.height "72"
+                ]
+                [ Svg.path
+                    [ SvgAttr.d "M66.2241 83.5891C78.9643 77.4713 82.048 57.4255 73.1116 38.8155C64.1752 20.2055 46.6028 10.0785 33.8625 16.1963C21.1223 22.3141 18.0387 42.3599 26.9751 60.9699C35.9115 79.5799 53.4839 89.7068 66.2241 83.5891Z"
+                    , SvgAttr.fill "white"
+                    ]
+                    []
+                ]
+            , Svg.g
+                [ SvgAttr.mask "url(#mask1_412_15381)"
+                ]
+                [ Svg.path
+                    [ SvgAttr.d "M59.5084 -2.24199L3.42883 24.687L40.565 102.023L96.6445 75.0938L59.5084 -2.24199Z"
+                    , SvgAttr.fill "#87BAF8"
+                    ]
+                    []
+                , Svg.g
+                    [ SvgAttr.opacity "0.3"
+                    ]
+                    [ Svg.mask
+                        [ SvgAttr.id "mask2_412_15381"
+                        , SvgAttr.style "mask-type:alpha"
+                        , SvgAttr.maskUnits "userSpaceOnUse"
+                        , SvgAttr.x "20"
+                        , SvgAttr.y "17"
+                        , SvgAttr.width "52"
+                        , SvgAttr.height "45"
+                        ]
+                        [ Svg.g
+                            [ SvgAttr.opacity "0.3"
+                            ]
+                            [ Svg.path
+                                [ SvgAttr.opacity "0.3"
+                                , SvgAttr.d "M71.48 17.8101H20.7V61.9701H71.48V17.8101Z"
+                                , SvgAttr.fill "white"
+                                ]
+                                []
+                            ]
+                        ]
+                    , Svg.g
+                        [ SvgAttr.mask "url(#mask2_412_15381)"
+                        ]
+                        [ Svg.g
+                            [ SvgAttr.opacity "0.3"
+                            ]
+                            [ Svg.mask
+                                [ SvgAttr.id "mask3_412_15381"
+                                , SvgAttr.style "mask-type:alpha"
+                                , SvgAttr.maskUnits "userSpaceOnUse"
+                                , SvgAttr.x "21"
+                                , SvgAttr.y "18"
+                                , SvgAttr.width "43"
+                                , SvgAttr.height "33"
+                                ]
+                                [ Svg.g
+                                    [ SvgAttr.opacity "0.3"
+                                    ]
+                                    [ Svg.path
+                                        [ SvgAttr.opacity "0.3"
+                                        , SvgAttr.fillRule "evenodd"
+                                        , SvgAttr.clipRule "evenodd"
+                                        , SvgAttr.d "M54.5399 19.0001C53.9699 18.6801 53.4399 18.3701 52.8299 18.1001L22.0999 35.8601C21.5995 40.6627 21.9207 45.5154 23.0499 50.2101L63.9199 26.6401C61.1907 23.641 58.0292 21.066 54.5399 19.0001Z"
+                                        , SvgAttr.fill "white"
+                                        ]
+                                        []
+                                    ]
+                                ]
+                            , Svg.g
+                                [ SvgAttr.mask "url(#mask3_412_15381)"
+                                ]
+                                [ Svg.g
+                                    [ SvgAttr.opacity "0.3"
+                                    ]
+                                    [ Svg.mask
+                                        [ SvgAttr.id "mask4_412_15381"
+                                        , SvgAttr.style "mask-type:alpha"
+                                        , SvgAttr.maskUnits "userSpaceOnUse"
+                                        , SvgAttr.x "21"
+                                        , SvgAttr.y "14"
+                                        , SvgAttr.width "51"
+                                        , SvgAttr.height "48"
+                                        ]
+                                        [ Svg.g
+                                            [ SvgAttr.opacity "0.3"
+                                            ]
+                                            [ Svg.path
+                                                [ SvgAttr.opacity "0.3"
+                                                , SvgAttr.d "M71.4699 14.5001H21.7999V61.9701H71.4699V14.5001Z"
+                                                , SvgAttr.fill "white"
+                                                ]
+                                                []
+                                            ]
+                                        ]
+                                    , Svg.g
+                                        [ SvgAttr.mask "url(#mask4_412_15381)"
+                                        ]
+                                        [ Svg.g
+                                            [ SvgAttr.opacity "0.3"
+                                            ]
+                                            [ Svg.path
+                                                [ SvgAttr.opacity "0.3"
+                                                , SvgAttr.d "M69.44 12.6001H16.35V55.7301H69.44V12.6001Z"
+                                                , SvgAttr.fill "white"
+                                                ]
+                                                []
+                                            ]
+                                        ]
+                                    ]
+                                ]
+                            , Svg.mask
+                                [ SvgAttr.id "mask5_412_15381"
+                                , SvgAttr.style "mask-type:alpha"
+                                , SvgAttr.maskUnits "userSpaceOnUse"
+                                , SvgAttr.x "24"
+                                , SvgAttr.y "31"
+                                , SvgAttr.width "47"
+                                , SvgAttr.height "31"
+                                ]
+                                [ Svg.g
+                                    [ SvgAttr.opacity "0.3"
+                                    ]
+                                    [ Svg.path
+                                        [ SvgAttr.opacity "0.3"
+                                        , SvgAttr.fillRule "evenodd"
+                                        , SvgAttr.clipRule "evenodd"
+                                        , SvgAttr.d "M67.5999 31.1301L24.6899 55.9101C25.3883 57.8513 26.1894 59.754 27.0899 61.6101L70.9099 36.3101C69.9116 34.5185 68.8063 32.7887 67.5999 31.1301Z"
+                                        , SvgAttr.fill "white"
+                                        ]
+                                        []
+                                    ]
+                                ]
+                            , Svg.g
+                                [ SvgAttr.mask "url(#mask5_412_15381)"
+                                ]
+                                [ Svg.g
+                                    [ SvgAttr.opacity "0.3"
+                                    ]
+                                    [ Svg.mask
+                                        [ SvgAttr.id "mask6_412_15381"
+                                        , SvgAttr.style "mask-type:alpha"
+                                        , SvgAttr.maskUnits "userSpaceOnUse"
+                                        , SvgAttr.x "21"
+                                        , SvgAttr.y "14"
+                                        , SvgAttr.width "51"
+                                        , SvgAttr.height "48"
+                                        ]
+                                        [ Svg.g
+                                            [ SvgAttr.opacity "0.3"
+                                            ]
+                                            [ Svg.path
+                                                [ SvgAttr.opacity "0.3"
+                                                , SvgAttr.d "M71.4699 14.5001H21.7999V61.9701H71.4699V14.5001Z"
+                                                , SvgAttr.fill "white"
+                                                ]
+                                                []
+                                            ]
+                                        ]
+                                    , Svg.g
+                                        [ SvgAttr.mask "url(#mask6_412_15381)"
+                                        ]
+                                        [ Svg.g
+                                            [ SvgAttr.opacity "0.3"
+                                            ]
+                                            [ Svg.path
+                                                [ SvgAttr.opacity "0.3"
+                                                , SvgAttr.d "M76.4299 25.6101H19.1699V67.1301H76.4299V25.6101Z"
+                                                , SvgAttr.fill "white"
+                                                ]
+                                                []
+                                            ]
+                                        ]
+                                    ]
+                                ]
+                            ]
+                        ]
+                    ]
+                , Svg.path
+                    [ SvgAttr.fillRule "evenodd"
+                    , SvgAttr.clipRule "evenodd"
+                    , SvgAttr.d "M41.4664 58.3306L41.4552 58.3371L44.8409 64.2012L69 50.253L65.6143 44.3888L46.485 55.4331L41.2054 46.2885L36.1868 49.186L41.4664 58.3306Z"
+                    , SvgAttr.fill "#0000FF"
+                    , SvgAttr.fillOpacity "0.2"
+                    ]
+                    []
+                , Svg.path
+                    [ SvgAttr.d "M39.7281 57.4735L60.3648 43.5252H63.8872L67.273 49.3894L43.1138 63.3377L39.7281 57.4735Z"
+                    , SvgAttr.fill "#E4A28D"
+                    ]
+                    []
+                , Svg.path
+                    [ SvgAttr.d "M39.6408 63.3858L36.1868 45.4249H39.4784L48.1395 60.4263L43.0949 63.3858H39.6408Z"
+                    , SvgAttr.fill "#E4A28D"
+                    ]
+                    []
+                , Svg.path
+                    [ SvgAttr.d "M60.4332 43.5253L36.2742 57.4735L39.6599 63.3377L63.8189 49.3894L60.4332 43.5253Z"
+                    , SvgAttr.fill "#FFEBE3"
+                    ]
+                    []
+                , Svg.path
+                    [ SvgAttr.d "M31.0058 48.3225L39.6669 63.3239L44.6855 60.4264L36.0245 45.425L31.0058 48.3225Z"
+                    , SvgAttr.fill "#FFEBE3"
+                    ]
+                    []
+                ]
+            ]
+        ]
+
+
+instructionalWarning : List (Attribute msg) -> Html msg
+instructionalWarning attrs =
+    illustrationsContainer attrs
+        [ Svg.svg
+            [ SvgAttr.width "100"
+            , SvgAttr.height "100"
+            , SvgAttr.viewBox "0 0 100 100"
+            , SvgAttr.fill "none"
+            ]
+            [ Svg.path
+                [ SvgAttr.d "M84.2254 85.6506L77.5775 89.5154C79.6057 88.3887 80.2817 85.0084 78.6254 80.7718L85.3522 76.907C86.9409 81.0985 86.2648 84.4788 84.2254 85.6506Z"
+                , SvgAttr.fill "#0000FF"
+                ]
+                []
+            , Svg.path
+                [ SvgAttr.d "M45.4197 15.3972L52.0676 11.5324C53.3634 10.7774 55.0873 11.0253 56.8113 12.0169L50.1521 15.8929C48.7776 14.8912 46.972 14.7021 45.4197 15.3972Z"
+                , SvgAttr.fill "#0000FF"
+                ]
+                []
+            , Svg.path
+                [ SvgAttr.d "M55.9211 23.0141L62.569 19.1493L85.2958 76.907L78.6366 80.7718L55.9211 23.0141Z"
+                , SvgAttr.fill "#0000FF"
+                ]
+                []
+            , Svg.path
+                [ SvgAttr.d "M50.1521 15.8929C52.8016 17.5725 54.8279 20.0738 55.9212 23.014L78.5916 80.7718C81.2057 87.4197 77.9719 92.0394 72.7888 89.031L27.1324 62.6535C21.9493 59.6563 18.7493 51.3859 21.3972 47.7239L44.3831 16.3549C45.6789 14.5633 47.9212 14.5971 50.1521 15.8929Z"
+                , SvgAttr.fill "#99CCFF"
+                ]
+                []
+            , Svg.path
+                [ SvgAttr.d "M50.1522 15.8929L56.8113 12.0168C59.4579 13.7018 61.4801 16.2068 62.5691 19.1492L55.9212 23.014C54.8279 20.0737 52.8016 17.5725 50.1522 15.8929Z"
+                , SvgAttr.fill "#0000FF"
+                ]
+                []
+            , Svg.path
+                [ SvgAttr.fillRule "evenodd"
+                , SvgAttr.clipRule "evenodd"
+                , SvgAttr.d "M55.9212 23.014L78.5916 80.7718C81.2507 87.4197 78.0169 92.0281 72.8338 89.0873L50.7831 76.3549C51.0578 75.7945 51.1931 75.176 51.1775 74.5521C51.0223 71.6165 49.4729 68.9322 47.0085 67.3295C44.6648 65.9774 42.8057 67.0929 42.8057 69.7183C42.8139 70.4849 42.9432 71.2455 43.1888 71.9718L27.1437 62.6535C21.9493 59.6563 18.7493 51.3295 21.3972 47.7239L44.3831 16.3549C45.6451 14.5633 47.8986 14.5971 50.1522 15.8929C52.8016 17.5725 54.8279 20.0738 55.9212 23.014ZM43.0648 61.8309L49.2958 65.4253L50.4226 37.3239L41.9381 32.3887L43.0648 61.8309Z"
+                , SvgAttr.fill "#99CCFF"
+                ]
+                []
+            , Svg.path
+                [ SvgAttr.d "M43.0648 61.8535L49.2507 65.4253L50.4676 37.3239L41.9606 32.4113L43.0648 61.8535Z"
+                , SvgAttr.fill "#3399FF"
+                ]
+                []
+            , Svg.path
+                [ SvgAttr.d "M47.0423 67.2732C44.6986 65.9211 42.8507 67.0365 42.8395 69.6619C42.8477 70.4286 42.977 71.1891 43.2226 71.9154L50.8169 76.2985C51.0916 75.7381 51.2269 75.1196 51.2113 74.4957C51.0561 71.5602 49.5067 68.8758 47.0423 67.2732Z"
+                , SvgAttr.fill "#3399FF"
+                ]
+                []
+            , Svg.path
+                [ SvgAttr.d "M32.462 72.7493L40.0225 68.3549C40.9974 67.9043 42.1398 68.0164 43.0085 68.6479L35.4479 73.0986C34.5899 72.4485 33.4468 72.3147 32.462 72.7493Z"
+                , SvgAttr.fill "#0000FF"
+                ]
+                []
+            , Svg.path
+                [ SvgAttr.d "M35.4479 73.0986C37.9053 74.7063 39.4494 77.3887 39.6057 80.3211C39.6057 83.0028 37.7465 84.1183 35.4141 82.7662C32.927 81.1356 31.3821 78.4028 31.2676 75.431C31.2676 72.8056 33.1043 71.6901 35.4479 73.0986Z"
+                , SvgAttr.fill "#FBD9CA"
+                ]
+                []
+            , Svg.path
+                [ SvgAttr.d "M45.9155 78.6084L38.355 83.0028C39.2247 82.3756 39.693 81.3315 39.5831 80.2648C39.4146 77.3568 37.8813 74.6997 35.4479 73.0986L43.0085 68.7042C45.4684 70.3058 47.017 72.9845 47.1775 75.9155C47.261 76.9728 46.7815 77.996 45.9155 78.6084Z"
+                , SvgAttr.fill "#0000FF"
+                ]
+                []
+            , Svg.path
+                [ SvgAttr.d "M38.2761 71.3183L32.4395 67.9493L31.3916 40.1409L39.4254 44.7719L38.2761 71.3183Z"
+                , SvgAttr.fill "#FBD9CA"
+                ]
+                []
+            , Svg.path
+                [ SvgAttr.d "M31.3916 40.1409L38.9634 35.7352L46.986 40.3775L39.4254 44.7718L31.3916 40.1409Z"
+                , SvgAttr.fill "#DCEDFF"
+                ]
+                []
+            , Svg.path
+                [ SvgAttr.d "M39.4254 44.7718L46.986 40.3774L45.8367 66.9239L38.2761 71.3183L39.4254 44.7718Z"
+                , SvgAttr.fill "#0000FF"
                 ]
                 []
             ]

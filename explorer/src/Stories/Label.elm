@@ -170,6 +170,7 @@ stories =
                                 |> Checkbox.view []
                             ]
                     , Label.init "State of object" Label.GroupLabel
+                        |> Label.withRequirednessHint (Just (Label.Optional .no))
                         |> Label.view []
                             (List.range 0 5
                                 |> List.map
@@ -198,6 +199,120 @@ stories =
                                             |> Checkbox.view []
                                     )
                             )
+                    ]
+          , {}
+          )
+        , ( "Small with text input"
+          , \_ ->
+                Html.div [ css [ displayFlex, flexDirection column, maxWidth (rem 20), Css.property "gap" "2rem" ] ]
+                    [ Label.init "Customer name" Label.InputLabel
+                        |> Label.withSmallSize
+                        |> Label.view []
+                            [ TextInput.init "Text"
+                                |> TextInput.withSmallSize
+                                |> TextInput.view []
+                            ]
+                    , Label.init "Customer name (with error)" Label.InputLabel
+                        |> Label.withSmallSize
+                        |> Label.withErrorMessage (Just "The input is invalid")
+                        |> Label.view []
+                            [ TextInput.init "Text"
+                                |> TextInput.withSmallSize
+                                |> TextInput.withError True
+                                |> TextInput.view []
+                            ]
+                    , Label.init "Customer name (with hint)" Label.InputLabel
+                        |> Label.withSmallSize
+                        |> Label.withHintText (Just "This is some extra hint")
+                        |> Label.view []
+                            [ TextInput.init "Text"
+                                |> TextInput.withSmallSize
+                                |> TextInput.view []
+                            ]
+                    ]
+          , {}
+          )
+        , ( "Small with radio buttons"
+          , \_ ->
+                Html.div [ css [ displayFlex, flexDirection column, maxWidth (rem 30), Css.property "gap" "2rem" ] ]
+                    [ Label.init "State of object" Label.GroupLabel
+                        |> Label.withSmallSize
+                        |> Label.view []
+                            [ RadioButton.init
+                                "small"
+                                (text "New")
+                                NoOp
+                                |> RadioButton.withAppearance RadioButton.Small
+                                |> RadioButton.view [ css [ marginRight (rem 1) ] ]
+                            , RadioButton.init
+                                "simple"
+                                (text "Used")
+                                NoOp
+                                |> RadioButton.withAppearance RadioButton.Small
+                                |> RadioButton.withIsSelected True
+                                |> RadioButton.view []
+                            ]
+                    , Label.init "State of object (with error)" Label.GroupLabel
+                        |> Label.withSmallSize
+                        |> Label.withErrorMessage (Just "State of object is required")
+                        |> Label.view []
+                            [ RadioButton.init
+                                "simple"
+                                (text "Click me")
+                                NoOp
+                                |> RadioButton.withAppearance RadioButton.Small
+                                |> RadioButton.withHasError True
+                                |> RadioButton.view [ css [ marginRight (rem 1) ] ]
+                            , RadioButton.init
+                                "simple"
+                                (text "Click me")
+                                NoOp
+                                |> RadioButton.withAppearance RadioButton.Small
+                                |> RadioButton.withHasError True
+                                |> RadioButton.view []
+                            ]
+                    ]
+          , {}
+          )
+        , ( "Small with checkboxes"
+          , \_ ->
+                Html.div [ css [ displayFlex, flexDirection column, maxWidth (rem 30), Css.property "gap" "2rem" ] ]
+                    [ Label.init "State of object" Label.GroupLabel
+                        |> Label.withSmallSize
+                        |> Label.view []
+                            [ Checkbox.init
+                                "simple"
+                                (text "New")
+                                (\_ -> NoOp)
+                                |> Checkbox.withAppearance Checkbox.Small
+                                |> Checkbox.view [ css [ marginRight (rem 1) ] ]
+                            , Checkbox.init
+                                "simple"
+                                (text "Used")
+                                (\_ -> NoOp)
+                                |> Checkbox.withAppearance Checkbox.Small
+                                |> Checkbox.withIsChecked True
+                                |> Checkbox.view []
+                            ]
+                    , Label.init "State of object" Label.GroupLabel
+                        |> Label.withSmallSize
+                        |> Label.withErrorMessage (Just "State of object is required")
+                        |> Label.view []
+                            [ Checkbox.init
+                                "simple"
+                                (text "Click me")
+                                (\_ -> NoOp)
+                                |> Checkbox.withAppearance Checkbox.Small
+                                |> Checkbox.withHasError True
+                                |> Checkbox.view [ css [ marginRight (rem 1) ] ]
+                            , Checkbox.init
+                                "simple"
+                                (text "Click me")
+                                (\_ -> NoOp)
+                                |> Checkbox.withAppearance Checkbox.Small
+                                |> Checkbox.withHasError True
+                                |> Checkbox.view []
+                            ]
                     ]
           , {}
           )
