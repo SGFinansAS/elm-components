@@ -363,8 +363,6 @@ view attrs children (Tooltip config) =
                     , flexDirection column
                     , zIndex (int 100)
                     , minWidth (pct 100)
-
-                    --, Css.property "translate" "35%"
                     , tooltipPosition
                     , case config.visibility of
                         FadeOutMs duration ->
@@ -416,8 +414,7 @@ view attrs children (Tooltip config) =
                 |> styleIf (config.visibility == OnHoverFocus)
             , descendants
                 [ class "tooltip-content-default-margin"
-                    [ --left (pct 35)
-                      case config.placement of
+                    [ case config.placement of
                         Top ->
                             marginBottom (rem 1)
 
