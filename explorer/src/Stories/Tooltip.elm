@@ -1,6 +1,25 @@
 module Stories.Tooltip exposing (stories)
 
-import Css exposing (alignItems, center, displayFlex, height, listStyleType, margin, marginBottom, marginLeft, marginTop, none, overflowY, padding, position, relative, rem, scroll, width)
+import Css
+    exposing
+        ( alignItems
+        , center
+        , displayFlex
+        , height
+        , listStyleType
+        , margin
+        , marginBottom
+        , marginLeft
+        , marginTop
+        , none
+        , overflowY
+        , padding
+        , position
+        , relative
+        , rem
+        , scroll
+        , width
+        )
 import Html.Styled exposing (div, li, text, ul)
 import Html.Styled.Attributes exposing (css)
 import Nordea.Components.Card as Card
