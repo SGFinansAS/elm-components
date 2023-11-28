@@ -26,7 +26,7 @@ import Css
         , transparent
         )
 import Html.Styled as Html exposing (Attribute, Html)
-import Html.Styled.Attributes exposing (css)
+import Html.Styled.Attributes exposing (css, tabindex)
 import Nordea.Html as Html exposing (styleIf)
 import Nordea.Resources.Colors as Color
 import Nordea.Themes as Themes
@@ -55,6 +55,7 @@ view attrs tab (Tab config) =
     config.htmlTag
         (css
             [ commonTabStyle config.isActive ]
+            :: tabindex 0
             :: attrs
         )
         tab
