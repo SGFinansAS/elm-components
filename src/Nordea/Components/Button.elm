@@ -361,7 +361,7 @@ variantStyle variant size =
                 , backgroundColor transparent
                 , padding (rem 0.5)
                 , hover [ Themes.color Colors.nordeaBlue ]
-                , focus [ Css.property "outline" ("0.25rem solid " ++ Themes.colorVariable Colors.mediumBlue) ]
+                , focus [ outline none, Css.property "box-shadow" ("0rem 0rem 0rem 0.25rem " ++ Themes.colorVariable Colors.mediumBlue) ]
                 ]
 
         Circular ->
