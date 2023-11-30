@@ -1,6 +1,7 @@
 module Nordea.Components.Modal exposing
     ( default
     , newsModal
+    , small
     , view
     , withSubtitle
     , withTitle
@@ -23,6 +24,7 @@ import Nordea.Themes as Themes
 
 type Variant
     = DefaultModal
+    | SmallModal
     | NewsModal
 
 
@@ -58,6 +60,11 @@ newsModal msg =
     init msg NewsModal
 
 
+small : msg -> Modal msg
+small msg =
+    init msg SmallModal
+
+
 view : List (Attribute msg) -> List (Html msg) -> Modal msg -> Html msg
 view attrs children (Modal config) =
     let
@@ -73,7 +80,7 @@ view attrs children (Modal config) =
                         , margin auto
                         , Media.withMedia
                             [ Media.only Media.screen [ Media.minWidth (rem 47) ] ]
-                            [ borderRadius (rem 0.5) ]
+                            [ borderRadius (rem 0.5), overflow hidden ]
                         ]
                     :: attrs
                 )
@@ -110,12 +117,18 @@ header : Variant -> Maybe String -> msg -> Html msg
 header variant title onClickMsg =
     let
         cross onClick =
-            NordeaButton.tertiary
-                |> NordeaButton.view
-                    [ Events.onClick onClick, css [ alignItems center, marginLeft auto ] ]
-                    [ Icons.cross
-                        [ css [ Themes.color Colors.deepBlue, Css.width (rem 1.385) ] ]
-                    ]
+            if variant == SmallModal then
+                NordeaButton.tertiary
+                    |> NordeaButton.withSmallSize
+                    |> NordeaButton.view
+                        [ Events.onClick onClick, css [ alignItems center, marginLeft auto, marginRight (rem -0.5) ] ]
+                        [ Icons.cross [ css [ Themes.color Colors.white, width (rem 1) ] ] ]
+
+            else
+                NordeaButton.tertiary
+                    |> NordeaButton.view
+                        [ Events.onClick onClick, css [ alignItems center, marginLeft auto ] ]
+                        [ Icons.cross [ css [ Themes.color Colors.deepBlue, width (rem 1.385) ] ] ]
     in
     case variant of
         DefaultModal ->
@@ -147,6 +160,25 @@ header variant title onClickMsg =
                 [ cross onClickMsg
                 ]
 
+        SmallModal ->
+            Html.div
+                [ css
+                    [ padding (rem 1)
+                    , alignItems center
+                    , backgroundColor Colors.deepBlue
+                    , color Colors.white
+                    , displayFlex
+                    ]
+                ]
+                [ title
+                    |> viewMaybe
+                        (\text ->
+                            Text.textHeavy
+                                |> Text.view [] [ Html.text text ]
+                        )
+                , cross onClickMsg
+                ]
+
 
 contentContainer : Variant -> Maybe String -> Maybe String -> List (Attribute msg) -> List (Html msg) -> Html msg
 contentContainer variant title subTitle attrs children =
@@ -168,14 +200,28 @@ contentContainer variant title subTitle attrs children =
                 ]
     in
     case variant of
-        DefaultModal ->
-            Html.div (css [ padding (rem 2.5), displayFlex, flexDirection column ] :: attrs) children
-
         NewsModal ->
             Html.div (css [ padding4 (rem 0) (rem 2.5) (rem 3.5) (rem 2.5), displayFlex, flexDirection column, textAlign center ] :: attrs)
                 (newsTitle
                     :: children
                 )
+
+        DefaultModal ->
+            Html.div (css [ padding (rem 2.5), displayFlex, flexDirection column ] :: attrs) children
+
+        SmallModal ->
+            Html.div
+                (css
+                    [ padding (rem 1.5)
+                    , displayFlex
+                    , flexDirection column
+                    , border3 (rem 0.188) solid Colors.deepBlue
+                    , borderRadius4 (rem 0) (rem 0) (rem 0.5) (rem 0.5)
+                    , borderTopStyle none
+                    ]
+                    :: attrs
+                )
+                children
 
 
 disableScrollOnBody : Html msg
