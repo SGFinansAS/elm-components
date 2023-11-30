@@ -1,8 +1,8 @@
 module Nordea.Components.Modal exposing
     ( default
     , newsModal
-    , small
     , view
+    , withSmallSize
     , withSubtitle
     , withTitle
     )
@@ -58,11 +58,6 @@ default msg =
 newsModal : msg -> Modal msg
 newsModal msg =
     init msg NewsModal
-
-
-small : msg -> Modal msg
-small msg =
-    init msg SmallModal
 
 
 view : List (Attribute msg) -> List (Html msg) -> Modal msg -> Html msg
@@ -250,3 +245,8 @@ withTitle title (Modal config) =
 withSubtitle : String -> Modal msg -> Modal msg
 withSubtitle subtitle (Modal config) =
     Modal { config | subtitle = Just subtitle }
+
+
+withSmallSize : Modal msg -> Modal msg
+withSmallSize (Modal config) =
+    Modal { config | variant = SmallModal }
