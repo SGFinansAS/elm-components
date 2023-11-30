@@ -67,4 +67,22 @@ stories =
                     ]
           , {}
           )
+        , ( "Small"
+          , \model ->
+                Html.div []
+                    [ Button.primary
+                        |> Button.view [ onClick ToggleModal ] [ Html.text "Show modal" ]
+                    , if model.customModel.isModalOpen then
+                        Modal.default ToggleModal
+                            |> Modal.withTitle "Title"
+                            |> Modal.withSmallSize
+                            |> Modal.view
+                                [ css [ width (rem 35) ] ]
+                                [ Html.text "Suggested width is 560px (35rem)" ]
+
+                      else
+                        Html.text ""
+                    ]
+          , {}
+          )
         ]
