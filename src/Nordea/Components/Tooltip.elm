@@ -80,8 +80,8 @@ type Placement
     | BottomLeft
     | BottomRight
     | Left
-    | LeftBottom
     | LeftTop
+    | LeftBottom
     | Right
     | RightBottom
     | RightTop
@@ -209,14 +209,14 @@ view attrs children (Tooltip config) =
                                 , transforms [ translateY (pct -50), rotate (deg 90) ]
                                 ]
 
-                        LeftBottom ->
+                        LeftTop ->
                             Css.batch
                                 [ right (rem -arrowHorizontalMarginInRem)
                                 , top (calc (pct 100) minus (rem (arrowHeightInRem + arrowDistanceFromCornerInRem)))
                                 , transforms [ translateY (pct -50), rotate (deg 90) ]
                                 ]
 
-                        LeftTop ->
+                        LeftBottom ->
                             Css.batch
                                 [ right (rem -arrowHorizontalMarginInRem)
                                 , top (calc (rem arrowDistanceFromCornerInRem) plus (rem arrowHeightInRem))
@@ -315,7 +315,7 @@ view attrs children (Tooltip config) =
                                 , transform (translate2 (pct -100) (pct -50))
                                 ]
 
-                        LeftBottom ->
+                        LeftTop ->
                             Css.batch
                                 [ left (rem 0)
                                 , top (pct 50)
@@ -323,7 +323,7 @@ view attrs children (Tooltip config) =
                                     (translateString "-100%" (calcString -100 "%" "+" (arrowHeightInRem + arrowDistanceFromCornerInRem) "rem"))
                                 ]
 
-                        LeftTop ->
+                        LeftBottom ->
                             Css.batch
                                 [ left (rem 0)
                                 , top (pct 50)
@@ -434,10 +434,10 @@ view attrs children (Tooltip config) =
                         Left ->
                             marginRight (rem 1)
 
-                        LeftBottom ->
+                        LeftTop ->
                             marginRight (rem 1)
 
-                        LeftTop ->
+                        LeftBottom ->
                             marginRight (rem 1)
 
                         Right ->
