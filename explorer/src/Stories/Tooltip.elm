@@ -41,7 +41,7 @@ stories =
                         |> Tooltip.withPlacement Top
                         |> Tooltip.withVisibility Tooltip.Show
                         |> Tooltip.withContent (Tooltip.infoTooltip [] [ text "This is a tooltip" ])
-                        |> Tooltip.view [] [ text "here" ]
+                        |> Tooltip.view [] [ text "here here here here here here here here here" ]
                     ]
           , {}
           )
@@ -53,7 +53,7 @@ stories =
                         |> Tooltip.withPlacement TopRight
                         |> Tooltip.withVisibility Tooltip.Show
                         |> Tooltip.withContent (Tooltip.infoTooltip [] [ text "This is a tooltip" ])
-                        |> Tooltip.view [] [ text "here" ]
+                        |> Tooltip.view [] [ text "here here here here here here here here here" ]
                     ]
           , {}
           )
@@ -65,7 +65,7 @@ stories =
                         |> Tooltip.withPlacement TopLeft
                         |> Tooltip.withVisibility Tooltip.Show
                         |> Tooltip.withContent (Tooltip.infoTooltip [] [ text "This is a tooltip" ])
-                        |> Tooltip.view [] [ text "here" ]
+                        |> Tooltip.view [] [ text "here here here here here here here here here" ]
                     ]
           , {}
           )

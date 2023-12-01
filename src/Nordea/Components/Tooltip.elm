@@ -41,7 +41,6 @@ import Css
         , marginRight
         , marginTop
         , maxWidth
-        , minWidth
         , minus
         , ms
         , none
@@ -136,8 +135,8 @@ withVisibility visibility (Tooltip config) =
 view : List (Attribute msg) -> List (Html msg) -> Tooltip msg -> Html msg
 view attrs children (Tooltip config) =
     let
-        arrowDistanceFromCornerInPct =
-            15
+        arrowDistanceFromCornerInRem =
+            0.25
 
         arrowWidthInRem =
             1
@@ -171,14 +170,14 @@ view attrs children (Tooltip config) =
                         TopRight ->
                             Css.batch
                                 [ bottom (rem -arrowVerticalMarginInRem)
-                                , left (calc (pct arrowDistanceFromCornerInPct) plus (rem arrowWidthInRem))
+                                , left (calc (rem arrowDistanceFromCornerInRem) plus (rem arrowWidthInRem))
                                 , transforms [ translateX (pct -50), rotate (deg 180) ]
                                 ]
 
                         TopLeft ->
                             Css.batch
                                 [ bottom (rem -arrowVerticalMarginInRem)
-                                , left (calc (pct (100 - arrowDistanceFromCornerInPct)) minus (rem arrowWidthInRem))
+                                , left (calc (pct 100) minus (rem (arrowWidthInRem + arrowDistanceFromCornerInRem)))
                                 , transforms [ translateX (pct -50), rotate (deg 180) ]
                                 ]
 
@@ -192,14 +191,14 @@ view attrs children (Tooltip config) =
                         BottomLeft ->
                             Css.batch
                                 [ top (rem -arrowVerticalMarginInRem)
-                                , left (calc (pct (100 - arrowDistanceFromCornerInPct)) minus (rem arrowWidthInRem))
+                                , left (calc (pct 100) minus (rem (arrowWidthInRem + arrowDistanceFromCornerInRem)))
                                 , transforms [ translateX (pct -50) ]
                                 ]
 
                         BottomRight ->
                             Css.batch
                                 [ top (rem -arrowVerticalMarginInRem)
-                                , left (calc (pct arrowDistanceFromCornerInPct) plus (rem arrowWidthInRem))
+                                , left (calc (rem arrowDistanceFromCornerInRem) plus (rem arrowWidthInRem))
                                 , transforms [ translateX (pct -50) ]
                                 ]
 
@@ -213,14 +212,14 @@ view attrs children (Tooltip config) =
                         LeftBottom ->
                             Css.batch
                                 [ right (rem -arrowHorizontalMarginInRem)
-                                , top (calc (pct (100 - arrowDistanceFromCornerInPct)) minus (rem arrowHeightInRem))
+                                , top (calc (pct 100) minus (rem (arrowHeightInRem + arrowDistanceFromCornerInRem)))
                                 , transforms [ translateY (pct -50), rotate (deg 90) ]
                                 ]
 
                         LeftTop ->
                             Css.batch
                                 [ right (rem -arrowHorizontalMarginInRem)
-                                , top (calc (pct arrowDistanceFromCornerInPct) plus (rem arrowHeightInRem))
+                                , top (calc (rem arrowDistanceFromCornerInRem) plus (rem arrowHeightInRem))
                                 , transforms [ translateY (pct -50), rotate (deg 90) ]
                                 ]
 
@@ -234,14 +233,14 @@ view attrs children (Tooltip config) =
                         RightTop ->
                             Css.batch
                                 [ left (rem -arrowHorizontalMarginInRem)
-                                , top (calc (pct (100 - arrowDistanceFromCornerInPct)) minus (rem arrowHeightInRem))
+                                , top (calc (pct 100) minus (rem (arrowHeightInRem + arrowDistanceFromCornerInRem)))
                                 , transforms [ translateY (pct -50), rotate (deg -90) ]
                                 ]
 
                         RightBottom ->
                             Css.batch
                                 [ left (rem -arrowHorizontalMarginInRem)
-                                , top (calc (pct arrowDistanceFromCornerInPct) plus (rem arrowHeightInRem))
+                                , top (calc (rem arrowDistanceFromCornerInRem) plus (rem arrowHeightInRem))
                                 , transforms [ translateY (pct -50), rotate (deg -90) ]
                                 ]
             in
@@ -275,7 +274,7 @@ view attrs children (Tooltip config) =
                                 [ top (rem 0)
                                 , left (pct 50)
                                 , Css.property "transform"
-                                    (translateString (calcString -arrowDistanceFromCornerInPct "%" "-" arrowWidthInRem "rem") "-100%")
+                                    (translateString (calcString -arrowDistanceFromCornerInRem "rem" "-" arrowWidthInRem "rem") "-100%")
                                 ]
 
                         TopLeft ->
@@ -283,7 +282,7 @@ view attrs children (Tooltip config) =
                                 [ top (rem 0)
                                 , left (pct 50)
                                 , Css.property "transform"
-                                    (translateString (calcString -(100 - arrowDistanceFromCornerInPct) "%" "+" arrowWidthInRem "rem") "-100%")
+                                    (translateString (calcString -100 "%" "+" (arrowWidthInRem + arrowDistanceFromCornerInRem) "rem") "-100%")
                                 ]
 
                         Bottom ->
@@ -298,7 +297,7 @@ view attrs children (Tooltip config) =
                                 [ bottom (rem 0)
                                 , left (pct 50)
                                 , Css.property "transform"
-                                    (translateString (calcString -(100 - arrowDistanceFromCornerInPct) "%" "+" arrowWidthInRem "rem") "100%")
+                                    (translateString (calcString -100 "%" "+" (arrowWidthInRem + arrowDistanceFromCornerInRem) "rem") "100%")
                                 ]
 
                         BottomRight ->
@@ -306,7 +305,7 @@ view attrs children (Tooltip config) =
                                 [ bottom (rem 0)
                                 , left (pct 50)
                                 , Css.property "transform"
-                                    (translateString (calcString -arrowDistanceFromCornerInPct "%" "-" arrowWidthInRem "rem") "100%")
+                                    (translateString (calcString -arrowDistanceFromCornerInRem "rem" "-" arrowWidthInRem "rem") "100%")
                                 ]
 
                         Left ->
@@ -321,7 +320,7 @@ view attrs children (Tooltip config) =
                                 [ left (rem 0)
                                 , top (pct 50)
                                 , Css.property "transform"
-                                    (translateString "-100%" (calcString -(100 - arrowDistanceFromCornerInPct) "%" "+" arrowHeightInRem "rem"))
+                                    (translateString "-100%" (calcString -100 "%" "+" (arrowHeightInRem + arrowDistanceFromCornerInRem) "rem"))
                                 ]
 
                         LeftTop ->
@@ -329,7 +328,7 @@ view attrs children (Tooltip config) =
                                 [ left (rem 0)
                                 , top (pct 50)
                                 , Css.property "transform"
-                                    (translateString "-100%" (calcString -arrowDistanceFromCornerInPct "%" "-" arrowHeightInRem "rem"))
+                                    (translateString "-100%" (calcString -arrowDistanceFromCornerInRem "rem" "-" arrowHeightInRem "rem"))
                                 ]
 
                         Right ->
@@ -344,7 +343,7 @@ view attrs children (Tooltip config) =
                                 [ right (rem 0)
                                 , top (pct 50)
                                 , Css.property "transform"
-                                    (translateString "100%" (calcString -(100 - arrowDistanceFromCornerInPct) "%" "+" arrowHeightInRem "rem"))
+                                    (translateString "100%" (calcString -100 "%" "+" (arrowHeightInRem + arrowDistanceFromCornerInRem) "rem"))
                                 ]
 
                         RightBottom ->
@@ -352,7 +351,7 @@ view attrs children (Tooltip config) =
                                 [ right (rem 0)
                                 , top (pct 50)
                                 , Css.property "transform"
-                                    (translateString "100%" (calcString -arrowDistanceFromCornerInPct "%" "-" arrowHeightInRem "rem"))
+                                    (translateString "100%" (calcString -arrowDistanceFromCornerInRem "rem" "-" arrowHeightInRem "rem"))
                                 ]
             in
             Html.div
@@ -362,7 +361,6 @@ view attrs children (Tooltip config) =
                     , display none
                     , flexDirection column
                     , zIndex (int 100)
-                    , minWidth (pct 100)
                     , tooltipPosition
                     , case config.visibility of
                         FadeOutMs duration ->
