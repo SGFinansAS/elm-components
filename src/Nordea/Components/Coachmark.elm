@@ -66,7 +66,6 @@ import Nordea.Components.Button as Button
 import Nordea.Components.Text as Text
 import Nordea.Components.Tooltip as Tooltip
 import Nordea.Html as Html
-import Nordea.Html.Attributes as Attrs
 import Nordea.Resources.Colors as Colors
 import Nordea.Resources.I18N exposing (Translation)
 import Nordea.Resources.Icons as Icons

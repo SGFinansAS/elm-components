@@ -6,17 +6,21 @@ import Css
         , center
         , displayFlex
         , height
+        , listStyleType
+        , margin
         , marginBottom
         , marginLeft
         , marginTop
+        , none
         , overflowY
+        , padding
         , position
         , relative
         , rem
         , scroll
         , width
         )
-import Html.Styled exposing (div, text)
+import Html.Styled exposing (div, li, text, ul)
 import Html.Styled.Attributes exposing (css)
 import Nordea.Components.Card as Card
 import Nordea.Components.Tooltip as Tooltip exposing (Placement(..), Visibility(..))
@@ -35,8 +39,33 @@ stories =
                     [ text "There is a tooltip "
                     , Tooltip.init
                         |> Tooltip.withPlacement Top
+                        |> Tooltip.withVisibility Tooltip.Show
                         |> Tooltip.withContent (Tooltip.infoTooltip [] [ text "This is a tooltip" ])
-                        |> Tooltip.view [] [ text "here" ]
+                        |> Tooltip.view [] [ text "here here here here here here here here here" ]
+                    ]
+          , {}
+          )
+        , ( "TopRight"
+          , \_ ->
+                div []
+                    [ text "There is a tooltip "
+                    , Tooltip.init
+                        |> Tooltip.withPlacement TopRight
+                        |> Tooltip.withVisibility Tooltip.Show
+                        |> Tooltip.withContent (Tooltip.infoTooltip [] [ text "This is a tooltip" ])
+                        |> Tooltip.view [] [ text "here here here here here here here here here" ]
+                    ]
+          , {}
+          )
+        , ( "TopLeft"
+          , \_ ->
+                div []
+                    [ text "There is a tooltip "
+                    , Tooltip.init
+                        |> Tooltip.withPlacement TopLeft
+                        |> Tooltip.withVisibility Tooltip.Show
+                        |> Tooltip.withContent (Tooltip.infoTooltip [] [ text "This is a tooltip" ])
+                        |> Tooltip.view [] [ text "here here here here here here here here here" ]
                     ]
           , {}
           )
@@ -46,6 +75,31 @@ stories =
                     [ text "There is a tooltip "
                     , Tooltip.init
                         |> Tooltip.withPlacement Bottom
+                        |> Tooltip.withVisibility Tooltip.Show
+                        |> Tooltip.withContent (Tooltip.infoTooltip [] [ text "This is a tooltip" ])
+                        |> Tooltip.view [] [ text "here" ]
+                    ]
+          , {}
+          )
+        , ( "BottomLeft"
+          , \_ ->
+                div []
+                    [ text "There is a tooltip "
+                    , Tooltip.init
+                        |> Tooltip.withPlacement BottomLeft
+                        |> Tooltip.withVisibility Tooltip.Show
+                        |> Tooltip.withContent (Tooltip.infoTooltip [] [ text "This is a tooltip" ])
+                        |> Tooltip.view [] [ text "here" ]
+                    ]
+          , {}
+          )
+        , ( "BottomRight"
+          , \_ ->
+                div []
+                    [ text "There is a tooltip "
+                    , Tooltip.init
+                        |> Tooltip.withPlacement BottomRight
+                        |> Tooltip.withVisibility Tooltip.Show
                         |> Tooltip.withContent (Tooltip.infoTooltip [] [ text "This is a tooltip" ])
                         |> Tooltip.view [] [ text "here" ]
                     ]
@@ -57,8 +111,33 @@ stories =
                     [ text "There is a tooltip "
                     , Tooltip.init
                         |> Tooltip.withPlacement Left
+                        |> Tooltip.withVisibility Tooltip.Show
                         |> Tooltip.withContent (Tooltip.infoTooltip [] [ text "This is a tooltip" ])
-                        |> Tooltip.view [] [ text "here" ]
+                        |> Tooltip.view [] [ listOfSeveralItems ]
+                    ]
+          , {}
+          )
+        , ( "Left Top"
+          , \_ ->
+                div []
+                    [ text "There is a tooltip "
+                    , Tooltip.init
+                        |> Tooltip.withPlacement LeftTop
+                        |> Tooltip.withVisibility Tooltip.Show
+                        |> Tooltip.withContent (Tooltip.infoTooltip [] [ text "This is a tooltip" ])
+                        |> Tooltip.view [] [ listOfSeveralItems ]
+                    ]
+          , {}
+          )
+        , ( "Left Bottom"
+          , \_ ->
+                div []
+                    [ text "There is a tooltip "
+                    , Tooltip.init
+                        |> Tooltip.withPlacement LeftBottom
+                        |> Tooltip.withVisibility Tooltip.Show
+                        |> Tooltip.withContent (Tooltip.infoTooltip [] [ text "This is a tooltip" ])
+                        |> Tooltip.view [] [ listOfSeveralItems ]
                     ]
           , {}
           )
@@ -68,8 +147,33 @@ stories =
                     [ text "There is a tooltip "
                     , Tooltip.init
                         |> Tooltip.withPlacement Right
-                        |> Tooltip.withContent (Tooltip.infoTooltip [] [ text "This is a tooltip" ])
-                        |> Tooltip.view [] [ text "here" ]
+                        |> Tooltip.withVisibility Show
+                        |> Tooltip.withContent (Tooltip.infoTooltip [] [ text (lorem |> String.slice 0 100) ])
+                        |> Tooltip.view [] [ listOfSeveralItems ]
+                    ]
+          , {}
+          )
+        , ( "RightBottom"
+          , \_ ->
+                div []
+                    [ text "There is a tooltip "
+                    , Tooltip.init
+                        |> Tooltip.withPlacement RightBottom
+                        |> Tooltip.withVisibility Tooltip.Show
+                        |> Tooltip.withContent (Tooltip.infoTooltip [] [ text (lorem |> String.slice 0 100) ])
+                        |> Tooltip.view [] [ listOfSeveralItems ]
+                    ]
+          , {}
+          )
+        , ( "Right Top"
+          , \_ ->
+                div []
+                    [ text "There is a tooltip "
+                    , Tooltip.init
+                        |> Tooltip.withPlacement RightTop
+                        |> Tooltip.withVisibility Show
+                        |> Tooltip.withContent (Tooltip.infoTooltip [] [ text (lorem |> String.slice 0 100) ])
+                        |> Tooltip.view [] [ listOfSeveralItems ]
                     ]
           , {}
           )
@@ -163,3 +267,13 @@ stories =
 
 lorem =
     "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."
+
+
+listOfSeveralItems =
+    ul [ css [ margin (rem 0), padding (rem 0), listStyleType none ] ]
+        [ li [] [ text "in" ]
+        , li [] [ text "any" ]
+        , li [] [ text "line" ]
+        , li [] [ text "of this" ]
+        , li [] [ text "multiline text" ]
+        ]
