@@ -82,9 +82,17 @@ stories =
                     |> TextInput.view []
           , {}
           )
-        , ( "With small size"
+        , ( "Small"
           , \_ ->
                 TextInput.init "Text"
+                    |> TextInput.withSmallSize
+                    |> TextInput.view []
+          , {}
+          )
+        , ( "Small with search icon"
+          , \_ ->
+                TextInput.init "Text"
+                    |> TextInput.withSearchIcon True
                     |> TextInput.withSmallSize
                     |> TextInput.view []
           , {}
