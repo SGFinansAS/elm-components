@@ -221,17 +221,25 @@ view attributes (TextInput config) =
                 |> showIf config.hasSearchIcon
 
         viewClearIcon =
+            let
+                sizeSpecificStyling =
+                    if config.size == Small then
+                        [ width (rem 1.5), padding4 (rem 0.2) (rem 0.125) (rem 0.125) (rem 0.125) ]
+
+                    else
+                        [ width (rem 2.5), padding4 (rem 0.35) (rem 0.25) (rem 0.25) (rem 0.25) ]
+            in
             Icons.roundedCross
                 (Maybe.values
                     [ Just
                         (css
-                            [ width (rem 2.5)
-                            , color Colors.mediumGray
-                            , position absolute
-                            , padding4 (rem 0.35) (rem 0.25) (rem 0.25) (rem 0.25)
-                            , right (rem 0)
-                            , cursor pointer
-                            ]
+                            (sizeSpecificStyling
+                                ++ [ color Colors.mediumGray
+                                   , position absolute
+                                   , right (rem 0)
+                                   , cursor pointer
+                                   ]
+                            )
                         )
                     , config.onInput |> Maybe.map (\onInput -> onClick (onInput ""))
                     , Just (tabindex 0)
@@ -253,15 +261,28 @@ view attributes (TextInput config) =
 
 viewCurrency : Config msg -> Html msg
 viewCurrency config =
+    let
+        initText =
+            case config.size of
+                Standard ->
+                    Text.textHeavy
+
+                Small ->
+                    Text.textTinyHeavy
+    in
     config.currency
         |> Html.viewMaybe
             (\currency ->
-                Text.textHeavy
+                initText
                     |> Text.view
                         [ css
                             [ position absolute
                             , right (rem 0.7)
-                            , top (pct 30)
+                            , if config.size == Small then
+                                top (pct 20)
+
+                              else
+                                top (pct 30)
                             ]
                         ]
                         [ currency
@@ -305,28 +326,33 @@ getStyles config =
                     [ fontSize (rem 0.75)
                     , height (rem 1.5)
                     , padding2 (rem 0.25) (rem 0.5)
+                    , paddingRight (rem 1.5)
+                        |> styleIf
+                            ((config.value |> String.isEmpty |> not)
+                                && config.hasClearIcon
+                            )
                     ]
 
                 Standard ->
                     [ fontSize (rem 1)
                     , height (rem 2.5)
                     , padding2 (rem 0) (rem 0.75)
+                    , paddingRight (rem 3)
+                        |> styleIf
+                            ((config.value |> String.isEmpty |> not)
+                                && config.hasClearIcon
+                            )
                     ]
     in
-    [ borderRadius (rem 0.25)
-    , border3 (rem 0.0625) solid borderColorStyle
-    , boxSizing borderBox
-    , width (pct 100)
-    , disabled [ backgroundColor Colors.grayWarm ]
-    , paddingLeft (rem 2) |> styleIf config.hasSearchIcon
-    , paddingRight (rem 3)
-        |> styleIf
-            ((config.value |> String.isEmpty |> not)
-                && config.hasClearIcon
-            )
-    , focus
-        [ outline none
-        , Themes.borderColor Colors.nordeaBlue
-        ]
-    ]
-        ++ sizeSpecificStyling
+    sizeSpecificStyling
+        ++ [ borderRadius (rem 0.25)
+           , border3 (rem 0.0625) solid borderColorStyle
+           , boxSizing borderBox
+           , width (pct 100)
+           , disabled [ backgroundColor Colors.grayWarm ]
+           , paddingLeft (rem 2) |> styleIf config.hasSearchIcon
+           , focus
+                [ outline none
+                , Themes.borderColor Colors.nordeaBlue
+                ]
+           ]

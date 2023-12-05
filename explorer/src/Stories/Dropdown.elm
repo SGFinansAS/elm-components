@@ -48,6 +48,21 @@ stories =
                     |> Dropdown.view []
           , {}
           )
+        , ( "Standard Small"
+          , \_ ->
+                Dropdown.init
+                    [ { value = Leasing, text = financingVariantToString Leasing }
+                    , { value = Rent, text = financingVariantToString Rent }
+                    , { value = Loan, text = financingVariantToString Loan }
+                    , { value = HirePurchase, text = financingVariantToString HirePurchase }
+                    ]
+                    financingVariantToString
+                    (\_ -> NoOp)
+                    |> Dropdown.withPlaceholder "Choose financing variant"
+                    |> Dropdown.withSmallSize
+                    |> Dropdown.view []
+          , {}
+          )
         , ( "Standard with error"
           , \_ ->
                 Dropdown.init
@@ -72,6 +87,20 @@ stories =
                     ]
                     financingVariantToString
                     (\_ -> NoOp)
+                    |> Dropdown.view []
+          , {}
+          )
+        , ( "Simple Small"
+          , \_ ->
+                Dropdown.simple
+                    [ { value = Leasing, text = financingVariantToString Leasing }
+                    , { value = Rent, text = financingVariantToString Rent }
+                    , { value = Loan, text = financingVariantToString Loan }
+                    , { value = HirePurchase, text = financingVariantToString HirePurchase }
+                    ]
+                    financingVariantToString
+                    (\_ -> NoOp)
+                    |> Dropdown.withSmallSize
                     |> Dropdown.view []
           , {}
           )

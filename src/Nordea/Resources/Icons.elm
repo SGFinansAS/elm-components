@@ -12,6 +12,7 @@ module Nordea.Resources.Icons exposing
     , chevronDown
     , chevronDownBolded
     , chevronDownFilled
+    , chevronDownFilledSmall
     , chevronLeft
     , chevronRight
     , chevronUp
@@ -85,23 +86,7 @@ import Html.Styled as Html exposing (Attribute, Html, div, styled)
 import Html.Styled.Attributes exposing (css)
 import Nordea.Resources.Colors as Colors
 import Svg.Styled as Svg exposing (Svg, ellipse, svg)
-import Svg.Styled.Attributes as SvgAttrs
-    exposing
-        ( clipRule
-        , cx
-        , cy
-        , d
-        , fill
-        , fillRule
-        , height
-        , r
-        , rx
-        , ry
-        , stroke
-        , strokeWidth
-        , viewBox
-        , width
-        )
+import Svg.Styled.Attributes as SvgAttrs exposing (clipRule, cx, cy, d, fill, fillRule, height, r, rx, ry, stroke, strokeWidth, transform, viewBox, width)
 
 
 
@@ -219,6 +204,34 @@ chevronDownFilled attrs =
                 [ fillRule "evenodd"
                 , clipRule "evenodd"
                 , d "M9.46967 16.4697L15 10.9393L20.5303 16.4697L19.4697 17.5303L15 13.061L10.5303 17.5303L9.46967 16.4697Z"
+                , fill (Colors.toString Colors.darkestGray)
+                ]
+                []
+            ]
+        ]
+
+
+chevronDownFilledSmall : List (Attribute msg) -> Html msg
+chevronDownFilledSmall attrs =
+    iconContainer (css [ Css.width (rem 1) ] :: attrs)
+        [ svg
+            [ width "16"
+            , height "16"
+            , viewBox "0 0 16 16"
+            , fill "none"
+            ]
+            [ Svg.rect
+                [ width "16"
+                , height "16"
+                , rx "2"
+                , fill (Colors.toString Colors.coolGray)
+                ]
+                []
+            , Svg.path
+                [ fillRule "evenodd"
+                , clipRule "evenodd"
+                , transform "translate(2, 2)"
+                , d "M11.5303 4.53039L5.99994 10.0607L0.469613 4.53039L1.53027 3.46973L5.99994 7.93906L10.4696 3.46973L11.5303 4.53039Z"
                 , fill (Colors.toString Colors.darkestGray)
                 ]
                 []

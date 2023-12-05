@@ -356,12 +356,12 @@ variantStyle variant size =
             batch
                 [ textDecoration underline
                 , fontSize (rem 0.875)
-                , padding (rem 0)
                 , Themes.color Colors.deepBlue
                 , border (rem 0)
                 , backgroundColor transparent
+                , padding (rem 0.5)
                 , hover [ Themes.color Colors.nordeaBlue ]
-                , focus [ outline none ]
+                , focus [ outline none, Css.property "box-shadow" ("0rem 0rem 0rem 0.25rem " ++ Themes.colorVariable Colors.mediumBlue) ]
                 ]
 
         Circular ->

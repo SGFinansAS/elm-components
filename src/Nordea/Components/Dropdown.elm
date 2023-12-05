@@ -10,6 +10,7 @@ module Nordea.Components.Dropdown exposing
     , withHasError
     , withPlaceholder
     , withSelectedValue
+    , withSmallSize
     )
 
 import Css
@@ -64,6 +65,11 @@ type Variant
     | Simple
 
 
+type Size
+    = StandardSize
+    | SmallSize
+
+
 type alias Option a =
     { value : a
     , text : String
@@ -92,6 +98,7 @@ type alias DropdownProperties a msg =
     , selectedValue : Maybe a
     , hasError : Bool
     , variant : Variant
+    , size : Size
     }
 
 
@@ -132,6 +139,7 @@ initWithOptionProperties options optionToString onInput =
         , selectedValue = Nothing
         , hasError = False
         , variant = Standard
+        , size = StandardSize
         }
 
 
@@ -182,8 +190,8 @@ view attrs (Dropdown config) =
             List.member (Attrs.disabled True) attrs
 
         iconChevron =
-            case config.variant of
-                Standard ->
+            case ( config.variant, config.size ) of
+                ( Standard, StandardSize ) ->
                     Icon.chevronDownFilled
                         [ css
                             [ position absolute
@@ -195,7 +203,19 @@ view attrs (Dropdown config) =
                             ]
                         ]
 
-                Simple ->
+                ( Standard, SmallSize ) ->
+                    Icon.chevronDownFilledSmall
+                        [ css
+                            [ position absolute
+                            , top (pct 50)
+                            , transform (translateY (pct -50))
+                            , right (rem 0.3125)
+                            , pointerEvents none
+                            , color Colors.coolGray
+                            ]
+                        ]
+
+                ( Simple, _ ) ->
                     Icon.chevronDownBolded
                         [ css
                             [ position absolute
@@ -208,6 +228,14 @@ view attrs (Dropdown config) =
                             , color inherit
                             ]
                         ]
+
+        sizeSpecificStyling =
+            case config.size of
+                StandardSize ->
+                    [ height (rem 2.5), fontSize (rem 1), padding4 (rem 0.25) (rem 2.5) (rem 0.25) (rem 0.75), lineHeight (rem 1.4) ]
+
+                SmallSize ->
+                    [ height (rem 1.6), fontSize (rem 0.75), padding4 (rem 0.25) (rem 0.25) (rem 0.25) (rem 0.5), lineHeight (rem 1) ]
     in
     div
         (css [ position relative ] :: attrs)
@@ -215,35 +243,38 @@ view attrs (Dropdown config) =
             [ Events.on "change" decoder
             , Attrs.disabled isDisabled
             , css
-                [ height (rem 2.5)
-                , width (pct 100)
-                , property "appearance" "none"
-                , property "-moz-appearance" "none"
-                , property "-webkit-appearance" "none"
-                , backgroundColor transparent
-                , padding4 (rem 0.25) (rem 2.5) (rem 0.25) (rem 0.75)
-                , if config.variant /= Simple || config.hasError then
+                ([ width (pct 100)
+                 , property "appearance" "none"
+                 , property "-moz-appearance" "none"
+                 , property "-webkit-appearance" "none"
+                 , backgroundColor transparent
+                 , if config.variant /= Simple || config.hasError then
                     border3 (rem 0.0625) solid Colors.mediumGray
 
-                  else
+                   else
                     borderStyle none
-                , borderColor Colors.darkRed |> styleIf config.hasError
-                , borderRadius (rem 0.25)
-                , focus
+                 , borderColor Colors.darkRed |> styleIf config.hasError
+                 , borderRadius (rem 0.25)
+                 , focus
                     [ Css.property "box-shadow" ("0rem 0rem 0rem 0.0625rem " ++ Themes.colorVariable Colors.nordeaBlue)
                     , outline none
                     ]
-                , fontSize (rem 1.0)
-                , lineHeight (rem 1.4)
-                , color inherit
-                , withAttribute "disabled" [ color Colors.nordeaGray, backgroundColor Colors.coolGray ]
-                , cursor pointer
-                , textOverflow ellipsis |> styleIf (config.variant == Simple)
-                ]
+                 , color inherit
+                 , withAttribute "disabled" [ color Colors.nordeaGray, backgroundColor Colors.coolGray ]
+                 , cursor pointer
+                 , textOverflow ellipsis |> styleIf (config.variant == Simple)
+                 ]
+                    ++ sizeSpecificStyling
+                )
             ]
             (placeholder :: options)
         , iconChevron
         ]
+
+
+withSmallSize : Dropdown a msg -> Dropdown a msg
+withSmallSize (Dropdown config) =
+    Dropdown { config | size = SmallSize }
 
 
 withSelectedValue : Maybe a -> Dropdown a msg -> Dropdown a msg
