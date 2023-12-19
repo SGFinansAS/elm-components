@@ -10,9 +10,9 @@ From project root run `(cd explorer/; yarn start)`. This will start the applicat
 
 ## Themes
 
-Themeing is supported through CSS variables: https://developer.mozilla.org/en-US/docs/Web/CSS/Using_CSS_custom_properties
+Theming is supported through CSS variables: https://developer.mozilla.org/en-US/docs/Web/CSS/Using_CSS_custom_properties
 
-We currently have three css variables for themeing: `PrimaryColor`, `PrimaryColorLight`, and `SecondaryColor`. The mapping from Nordea colors to these variables are as follows:
+We currently have three css variables for theming: `PrimaryColor`, `PrimaryColorLight`, and `SecondaryColor`. The mapping from Nordea colors to these variables are as follows:
 
 * blueDeep -> PrimaryColor
 * blueNordea -> PrimaryColorLight
