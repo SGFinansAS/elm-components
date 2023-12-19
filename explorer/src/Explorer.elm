@@ -46,6 +46,7 @@ import Stories.TextArea as TextArea
 import Stories.TextInput as TextInput
 import Stories.Toggle as Toggle
 import Stories.Tooltip as Tooltip
+import Stories.SortableTable as SortableTable
 import UIExplorer exposing (UIExplorerProgram)
 
 
@@ -117,6 +118,7 @@ main =
                 , Range.stories
                 , SkeletonLoader.stories
                 , Slider.stories
+                , SortableTable.stories
                 , Spinner.stories
                 , Status.stories
                 , StepIndicator.stories
