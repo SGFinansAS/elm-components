@@ -36,6 +36,7 @@ import Stories.RadioButton as RadioButton
 import Stories.Range as Range
 import Stories.SkeletonLoader as SkeletonLoader
 import Stories.Slider as Slider
+import Stories.SortableTable as SortableTable
 import Stories.Spinner as Spinner
 import Stories.Status as Status
 import Stories.StepIndicator as StepIndicator
@@ -46,7 +47,6 @@ import Stories.TextArea as TextArea
 import Stories.TextInput as TextInput
 import Stories.Toggle as Toggle
 import Stories.Tooltip as Tooltip
-import Stories.SortableTable as SortableTable
 import UIExplorer exposing (UIExplorerProgram)
 
 
