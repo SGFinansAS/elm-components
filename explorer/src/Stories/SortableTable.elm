@@ -2,7 +2,9 @@ module Stories.SortableTable exposing (stories)
 
 import Css exposing (..)
 import Html.Styled exposing (Html)
+import Html.Styled.Attributes exposing (css)
 import Nordea.Components.SortableTable as Table
+import Nordea.Resources.Colors
 import UIExplorer exposing (UI)
 import UIExplorer.Styled exposing (styledStoriesOf)
 
@@ -70,7 +72,7 @@ basicTable =
         tableRows =
             invoices |> List.map invoiceToRow
     in
-    Table.view []
+    Table.view [ css [ backgroundColor Nordea.Resources.Colors.lightGray, width (rem 16) ] ]
         [ Table.thead [] [ headerRow ]
         , Table.tbody [] tableRows
         ]
