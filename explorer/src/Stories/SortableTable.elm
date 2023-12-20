@@ -1,7 +1,7 @@
 module Stories.SortableTable exposing (stories)
 
 import Css exposing (..)
-import Html.Styled as Html exposing (Html)
+import Html.Styled exposing (Html)
 import Nordea.Components.SortableTable as Table
 import UIExplorer exposing (UI)
 import UIExplorer.Styled exposing (styledStoriesOf)
