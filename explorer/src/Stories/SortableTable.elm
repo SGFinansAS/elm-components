@@ -49,7 +49,7 @@ columnWidthBounds c =
             [ minWidth (rem 4), maxWidth (rem 4) ]
 
         Amount ->
-            [ minWidth (rem 4), maxWidth (rem 4) ]
+            [ minWidth (rem 6), maxWidth (rem 6) ]
 
         CurrencyCode ->
             [ minWidth (rem 4), maxWidth (rem 4) ]
@@ -59,20 +59,24 @@ basicTable : Html msg
 basicTable =
     let
         headerRow =
-            [ Id, Amount, CurrencyCode ] |> List.map (\c -> Table.textHeader { css = columnWidthBounds c, label = c |> columnName }) |> Table.headerRow []
+            [ Table.textHeader { css = columnWidthBounds Id, label = Id |> columnName }
+            , Table.textHeaderStyled { css = columnWidthBounds Amount, textCss = [ textAlign right, display block ], label = Amount |> columnName }
+            , Table.textHeader { css = columnWidthBounds CurrencyCode, label = CurrencyCode |> columnName }
+            ]
+                |> Table.headerRow []
 
         invoiceToRow : Invoice -> Html msg
         invoiceToRow i =
             Table.dataRow []
                 [ Table.textElement { css = columnWidthBounds Id, label = i.id }
-                , Table.textElement { css = columnWidthBounds Amount, label = String.fromFloat i.amount }
+                , Table.textElement { css = [ textAlign right, display block ] ++ columnWidthBounds Amount, label = String.fromFloat i.amount }
                 , Table.textElement { css = columnWidthBounds CurrencyCode, label = i.currentcy }
                 ]
 
         tableRows =
             invoices |> List.map invoiceToRow
     in
-    Table.view [ css [ backgroundColor Nordea.Resources.Colors.lightGray, width (rem 16) ] ]
+    Table.view [ css [ backgroundColor Nordea.Resources.Colors.lightGray, width (rem 18) ] ]
         [ Table.thead [] [ headerRow ]
         , Table.tbody [] tableRows
         ]

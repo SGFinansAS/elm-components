@@ -13,6 +13,7 @@ module Nordea.Components.SortableTable exposing
     , tbody
     , textElement
     , textHeader
+    , textHeaderStyled
     , thead
     , view
     )
@@ -122,8 +123,8 @@ sortableTextHeader config =
         ]
 
 
-textHeader : { css : List Css.Style, label : String } -> Html msg
-textHeader config =
+textHeaderStyled : { css : List Css.Style, textCss : List Css.Style, label : String } -> Html msg
+textHeaderStyled config =
     headerElement
         [ Attrs.title config.label
         , css (flex (num 1) :: config.css)
@@ -131,15 +132,22 @@ textHeader config =
         [ Text.textTinyLight
             |> Text.view
                 [ css
-                    [ displayFlex
-                    , textOverflow ellipsis
-                    , overflow hidden
-                    , whiteSpace noWrap
-                    , color Color.eclipse
-                    ]
+                    ([ displayFlex
+                     , textOverflow ellipsis
+                     , overflow hidden
+                     , whiteSpace noWrap
+                     , color Color.eclipse
+                     ]
+                        ++ config.textCss
+                    )
                 ]
                 [ Html.text config.label ]
         ]
+
+
+textHeader : { css : List Css.Style, label : String } -> Html msg
+textHeader config =
+    textHeaderStyled { css = config.css, textCss = [], label = config.label }
 
 
 tbody : List (Attribute msg) -> List (Html msg) -> Html msg
