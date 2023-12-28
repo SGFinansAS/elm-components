@@ -8,6 +8,7 @@ module Nordea.Components.SortableTable exposing
     , mobileElementFull
     , mobileTextElement
     , sortableTextHeader
+    , sortableTextHeaderStyled
     , sortingAsDict
     , sortingToString
     , tbody
@@ -72,11 +73,22 @@ headerElement attrs =
         (css [ flex (num 1), pseudoClass "not(:first-child)" [ marginLeft (rem 1) ] ] :: attrs)
 
 
-sortableTextHeader : { css : List Css.Style, sorting : Maybe Sorting, onClick : msg, label : String } -> Html msg
-sortableTextHeader config =
+sortableTextHeaderStyled : { css : List Css.Style, textCss : List Css.Style, chevronAlignRight : Bool, sorting : Maybe Sorting, onClick : msg, label : String } -> Html msg
+sortableTextHeaderStyled config =
     let
         chevronStyle =
-            [ css [ flexShrink (int 0), width (rem 0.5), marginLeft (rem 1) ] ]
+            [ css
+                [ flexShrink (int 0)
+                , width (rem 0.5)
+                , (if config.chevronAlignRight then
+                    marginRight
+
+                   else
+                    marginLeft
+                  )
+                    (rem 1)
+                ]
+            ]
 
         scrollDirectionChevron =
             case config.sorting of
@@ -97,6 +109,11 @@ sortableTextHeader config =
 
                 _ ->
                     [ textDecoration underline ]
+
+        content =
+            [ Html.text config.label
+            , scrollDirectionChevron
+            ]
     in
     headerElement
         [ Events.onClick config.onClick
@@ -111,16 +128,26 @@ sortableTextHeader config =
         [ Text.textTinyLight
             |> Text.view
                 [ css
-                    [ displayFlex
-                    , textOverflow ellipsis
-                    , overflow hidden
-                    , color Color.eclipse
-                    ]
+                    ([ displayFlex
+                     , textOverflow ellipsis
+                     , overflow hidden
+                     , color Color.eclipse
+                     ]
+                        ++ config.textCss
+                    )
                 ]
-                [ Html.text config.label
-                , scrollDirectionChevron
-                ]
+                (if config.chevronAlignRight then
+                    List.reverse content
+
+                 else
+                    content
+                )
         ]
+
+
+sortableTextHeader : { css : List Css.Style, sorting : Maybe Sorting, onClick : msg, label : String } -> Html msg
+sortableTextHeader config =
+    sortableTextHeaderStyled { css = config.css, textCss = [], chevronAlignRight = False, sorting = config.sorting, onClick = config.onClick, label = config.label }
 
 
 textHeaderStyled : { css : List Css.Style, textCss : List Css.Style, label : String } -> Html msg
