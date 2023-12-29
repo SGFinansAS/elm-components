@@ -9,8 +9,52 @@ module Nordea.Components.DropdownFilter exposing
     , withSearchIcon
     )
 
-import Css exposing (absolute, alignItems, backgroundColor, borderBottom3, borderBottomLeftRadius, borderBottomRightRadius, borderBox, borderLeft3, borderRight3, boxSizing, center, color, column, cursor, deg, displayFlex, flexDirection, height, hover, justifyContent, listStyle, margin2, marginTop, maxHeight, minWidth, none, overflowY, padding, padding3, paddingRight, pct, pointer, pointerEvents, position, rem, right, rotate, scroll, solid, top, transforms, translateY, width)
-import Css.Global exposing (children, class, descendants, typeSelector)
+import Css
+    exposing
+        ( absolute
+        , alignItems
+        , backgroundColor
+        , borderBottom3
+        , borderBottomLeftRadius
+        , borderBottomRightRadius
+        , borderBox
+        , borderLeft3
+        , borderRight3
+        , boxSizing
+        , center
+        , color
+        , column
+        , cursor
+        , deg
+        , displayFlex
+        , flexDirection
+        , height
+        , hover
+        , justifyContent
+        , listStyle
+        , margin2
+        , marginTop
+        , maxHeight
+        , none
+        , overflowY
+        , padding
+        , padding3
+        , paddingRight
+        , pct
+        , pointer
+        , pointerEvents
+        , position
+        , rem
+        , right
+        , rotate
+        , scroll
+        , solid
+        , top
+        , transforms
+        , translateY
+        , width
+        )
+import Css.Global exposing (class, descendants, typeSelector)
 import Html.Events.Extra as Events
 import Html.Styled as Html exposing (Html)
 import Html.Styled.Attributes as Attrs exposing (css, tabindex, value)
