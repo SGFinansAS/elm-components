@@ -233,7 +233,7 @@ view attrs (DropdownFilter config) =
                 Tooltip.Show
 
              else
-                Tooltip.Show
+                Tooltip.Hidden
             )
         |> Tooltip.withContent
             (\_ ->
