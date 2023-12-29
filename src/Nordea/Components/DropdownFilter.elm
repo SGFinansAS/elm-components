@@ -9,52 +9,8 @@ module Nordea.Components.DropdownFilter exposing
     , withSearchIcon
     )
 
-import Css
-    exposing
-        ( absolute
-        , alignItems
-        , backgroundColor
-        , borderBottom3
-        , borderBottomLeftRadius
-        , borderBottomRightRadius
-        , borderBox
-        , borderLeft3
-        , borderRight3
-        , boxSizing
-        , center
-        , color
-        , column
-        , cursor
-        , deg
-        , displayFlex
-        , flexDirection
-        , height
-        , hover
-        , justifyContent
-        , listStyle
-        , margin2
-        , marginTop
-        , maxHeight
-        , none
-        , overflowY
-        , padding
-        , padding3
-        , paddingRight
-        , pct
-        , pointer
-        , pointerEvents
-        , position
-        , rem
-        , right
-        , rotate
-        , scroll
-        , solid
-        , top
-        , transforms
-        , translateY
-        , width
-        )
-import Css.Global exposing (descendants, typeSelector)
+import Css exposing (absolute, alignItems, backgroundColor, borderBottom3, borderBottomLeftRadius, borderBottomRightRadius, borderBox, borderLeft3, borderRight3, boxSizing, center, color, column, cursor, deg, displayFlex, flexDirection, height, hover, justifyContent, listStyle, margin2, marginTop, maxHeight, minWidth, none, overflowY, padding, padding3, paddingRight, pct, pointer, pointerEvents, position, rem, right, rotate, scroll, solid, top, transforms, translateY, width)
+import Css.Global exposing (children, class, descendants, typeSelector)
 import Html.Events.Extra as Events
 import Html.Styled as Html exposing (Html)
 import Html.Styled.Attributes as Attrs exposing (css, tabindex, value)
@@ -233,7 +189,7 @@ view attrs (DropdownFilter config) =
                 Tooltip.Show
 
              else
-                Tooltip.Hidden
+                Tooltip.Show
             )
         |> Tooltip.withContent
             (\_ ->
@@ -268,6 +224,7 @@ view attrs (DropdownFilter config) =
                     (\onFocus ->
                         [ Events.on "focusout" (Decode.succeed (onFocus False))
                         , Events.on "focusin" (Decode.succeed (onFocus True))
+                        , css [ descendants [ class "tooltip" [ width (pct 100) ] ] ]
                         ]
                     )
                 |> Maybe.withDefault []
