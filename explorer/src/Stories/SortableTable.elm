@@ -56,7 +56,7 @@ basicTable =
     let
         headerRow =
             [ Table.textHeader { css = columnWidthBounds Id, label = Id |> columnName }
-            , Table.textHeaderStyled { css = columnWidthBounds Amount, textCss = [ textAlign right, display block ], label = Amount |> columnName }
+            , Table.numericHeader { css = columnWidthBounds Amount, label = Amount |> columnName }
             , Table.textHeader { css = columnWidthBounds CurrencyCode, label = CurrencyCode |> columnName }
             ]
                 |> Table.headerRow []
@@ -65,7 +65,7 @@ basicTable =
         invoiceToRow i =
             Table.dataRow []
                 [ Table.textElement { css = columnWidthBounds Id, label = i.id }
-                , Table.textElement { css = [ textAlign right, display block ] ++ columnWidthBounds Amount, label = String.fromFloat i.amount }
+                , Table.numericElement { css = columnWidthBounds Amount, label = String.fromFloat i.amount }
                 , Table.textElement { css = columnWidthBounds CurrencyCode, label = i.currentcy }
                 ]
 
@@ -114,10 +114,8 @@ sortableTable model =
                 maybeOrderAmount =
                     maybeOrder Amount
             in
-            Table.sortableTextHeaderStyled
+            Table.sortableNumericHeader
                 { css = columnWidthBounds Amount
-                , textCss = [ textAlign right, display block ]
-                , chevronAlignRight = True
                 , sorting = maybeOrderAmount |> Maybe.map orderToSorting
                 , onClick = Config.SortableTableMsg (HeaderClick Amount maybeOrderAmount)
                 , label = Amount |> columnName
@@ -134,7 +132,7 @@ sortableTable model =
         invoiceToRow i =
             Table.dataRow []
                 [ Table.textElement { css = columnWidthBounds Id, label = i.id }
-                , Table.textElement { css = [ textAlign right, display block ] ++ columnWidthBounds Amount, label = String.fromFloat i.amount }
+                , Table.numericElement { css = columnWidthBounds Amount, label = String.fromFloat i.amount }
                 , Table.textElement { css = columnWidthBounds CurrencyCode, label = i.currentcy }
                 ]
 

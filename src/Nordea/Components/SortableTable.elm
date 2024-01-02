@@ -7,14 +7,15 @@ module Nordea.Components.SortableTable exposing
     , mobileElement
     , mobileElementFull
     , mobileTextElement
+    , numericElement
+    , numericHeader
+    , sortableNumericHeader
     , sortableTextHeader
-    , sortableTextHeaderStyled
     , sortingAsDict
     , sortingToString
     , tbody
     , textElement
     , textHeader
-    , textHeaderStyled
     , thead
     , view
     )
@@ -150,6 +151,11 @@ sortableTextHeader config =
     sortableTextHeaderStyled { css = config.css, textCss = [], chevronAlignRight = False, sorting = config.sorting, onClick = config.onClick, label = config.label }
 
 
+sortableNumericHeader : { css : List Css.Style, sorting : Maybe Sorting, onClick : msg, label : String } -> Html msg
+sortableNumericHeader config =
+    sortableTextHeaderStyled { css = config.css, textCss = [ textAlign right, display block ], chevronAlignRight = True, sorting = config.sorting, onClick = config.onClick, label = config.label }
+
+
 textHeaderStyled : { css : List Css.Style, textCss : List Css.Style, label : String } -> Html msg
 textHeaderStyled config =
     headerElement
@@ -175,6 +181,11 @@ textHeaderStyled config =
 textHeader : { css : List Css.Style, label : String } -> Html msg
 textHeader config =
     textHeaderStyled { css = config.css, textCss = [], label = config.label }
+
+
+numericHeader : { css : List Css.Style, label : String } -> Html msg
+numericHeader config =
+    textHeaderStyled { css = config.css, textCss = [ textAlign right, display block ], label = config.label }
 
 
 tbody : List (Attribute msg) -> List (Html msg) -> Html msg
@@ -225,6 +236,11 @@ textElement config =
                 ]
                 [ Html.text config.label ]
         ]
+
+
+numericElement : { css : List Css.Style, label : String } -> Html msg
+numericElement config =
+    textElement { css = [ textAlign right, display block ] ++ config.css, label = config.label }
 
 
 mobileDataRow : List (Attribute msg) -> List (Html msg) -> Html msg
