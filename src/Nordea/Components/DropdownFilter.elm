@@ -54,7 +54,7 @@ import Css
         , translateY
         , width
         )
-import Css.Global exposing (descendants, typeSelector)
+import Css.Global exposing (class, descendants, typeSelector)
 import Html.Events.Extra as Events
 import Html.Styled as Html exposing (Html)
 import Html.Styled.Attributes as Attrs exposing (css, tabindex, value)
@@ -268,6 +268,7 @@ view attrs (DropdownFilter config) =
                     (\onFocus ->
                         [ Events.on "focusout" (Decode.succeed (onFocus False))
                         , Events.on "focusin" (Decode.succeed (onFocus True))
+                        , css [ descendants [ class "tooltip" [ width (pct 100) ] ] ]
                         ]
                     )
                 |> Maybe.withDefault []

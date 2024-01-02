@@ -41,7 +41,6 @@ import Css
         , marginRight
         , marginTop
         , maxWidth
-        , minWidth
         , minus
         , ms
         , none
@@ -362,7 +361,6 @@ view attrs children (Tooltip config) =
                     , display none
                     , flexDirection column
                     , zIndex (int 100)
-                    , minWidth (pct 100)
                     , tooltipPosition
                     , case config.visibility of
                         FadeOutMs duration ->
