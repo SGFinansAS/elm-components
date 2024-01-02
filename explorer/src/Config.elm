@@ -4,6 +4,7 @@ import File exposing (File)
 import Html.Styled as Html
 import Nordea.Components.Accordion as Accordion exposing (Accordion)
 import Nordea.Components.DropdownFilter exposing (Item)
+import Stories.SortableTableSharedTypes
 
 
 type FinancingVariant
@@ -33,6 +34,7 @@ type alias Config =
     , showCoachMarkStep : Maybe Int
     , activeRadioButton : String
     , textInputContent : String
+    , sortableTable : Stories.SortableTableSharedTypes.Model
     }
 
 
@@ -61,6 +63,7 @@ type Msg
     | UpdateActiveRadioButton String
     | TextInputContentChange String
     | OnClickCollapsible
+    | SortableTableMsg Stories.SortableTableSharedTypes.Msg
 
 
 init : Config
@@ -96,6 +99,7 @@ init =
     , showCoachMarkStep = Nothing
     , activeRadioButton = "second"
     , textInputContent = "Initialized"
+    , sortableTable = Stories.SortableTableSharedTypes.initModel
     }
 
 
@@ -176,3 +180,20 @@ update msg config =
 
         OnClickCollapsible ->
             config
+
+        SortableTableMsg tableMsg ->
+            case tableMsg of
+                Stories.SortableTableSharedTypes.HeaderClick column maybeOrder ->
+                    let
+                        updatedModel =
+                            case maybeOrder of
+                                Just Stories.SortableTableSharedTypes.Asc ->
+                                    Stories.SortableTableSharedTypes.initModel
+
+                                Just Stories.SortableTableSharedTypes.Desc ->
+                                    { column = column, order = Stories.SortableTableSharedTypes.Asc }
+
+                                Nothing ->
+                                    { column = column, order = Stories.SortableTableSharedTypes.Desc }
+                    in
+                    { config | sortableTable = updatedModel }
