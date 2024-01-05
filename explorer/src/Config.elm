@@ -201,4 +201,3 @@ update msg config =
 
         SnackbarMsg ->
             config
-
