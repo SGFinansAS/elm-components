@@ -64,6 +64,7 @@ type Msg
     | TextInputContentChange String
     | OnClickCollapsible
     | SortableTableMsg Stories.SortableTableSharedTypes.Msg
+    | SnackbarMsg
 
 
 init : Config
@@ -197,3 +198,7 @@ update msg config =
                                     { column = column, order = Stories.SortableTableSharedTypes.Desc }
                     in
                     { config | sortableTable = updatedModel }
+
+        SnackbarMsg ->
+            config
+

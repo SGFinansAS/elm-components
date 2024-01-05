@@ -1,4 +1,4 @@
-module Components.Snackbar exposing
+module Nordea.Components.Snackbar exposing
     ( Variant(..)
     , info
     , init
