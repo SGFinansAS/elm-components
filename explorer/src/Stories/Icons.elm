@@ -62,6 +62,8 @@ stories =
                         , Icons.settings [ css [ width (rem 1.5) ] ]
                         , Icons.bell [ css [ width (rem 1.5) ] ]
                         , Icons.star [ css [ width (rem 1.5) ] ]
+                        , Icons.visible [ css [ width (rem 1.5) ] ]
+                        , Icons.invisible [ css [ width (rem 1.5) ] ]
                         ]
                     , iconCategoryHeader "Add, remove, accept and cancel"
                     , iconsRow
