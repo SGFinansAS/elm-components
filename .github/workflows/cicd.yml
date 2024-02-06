@@ -26,26 +26,26 @@ jobs:
       - name: Setup node
         uses: actions/setup-node@v4
         with:
-          node-version: 14.18.0
-          cache: yarn
+          node-version: 18.12.1
+          cache: npm
 
       # component library
       - name: Install dependencies
-        run: yarn install --immutable --immutable-cache
+        run: npm ci
       - name: Validate Elm code formatting
-        run: yarn run elm-format src/ --validate
+        run: npx elm-format src/ --validate
       - name: Elm review
-        run: yarn run verify-lint
+        run: npm run verify-lint
 
       # Explorer project
       - name: Install dependencies (explorer)
-        run: cd explorer && yarn install --immutable --immutable-cache
+        run: cd explorer && npm ci
       - name: Validate Elm code formatting (explorer)
-        run: cd explorer && yarn run elm-format src/ --validate
+        run: cd explorer && npx elm-format src/ --validate
       - name: Elm review (explorer)
-        run: cd explorer && yarn run verify-lint
+        run: cd explorer && npm run verify-lint
       - name: Build (explorer)
-        run: cd explorer && yarn run build
+        run: cd explorer && npm run build
 
       - name: Upload explorer project artifacts
         if: github.ref == 'refs/heads/master'
