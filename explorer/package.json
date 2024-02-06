@@ -4,8 +4,8 @@
     "start": "elm-live src/Explorer.elm --open --dir=public --start-page=index.html -- --output=public/explorer.js --debug",
     "build": "elm make src/Explorer.elm --output=public/explorer.js && shx cp -r ../static/fonts ./public",
     "link-fonts": "ln -s ../../static/fonts ./public/fonts",
-    "lint": "yarn run elm-review --fix",
-    "verify-lint": "yarn run elm-review"
+    "lint": "elm-review --fix",
+    "verify-lint": "elm-review"
   },
   "devDependencies": {
     "elm": "^0.19.1-6",

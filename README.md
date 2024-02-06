@@ -1,7 +1,7 @@
 # elm-components
 
 ## Running locally
-From project root run `(cd explorer/; yarn start)`. This will start the application at `localhost:8000`
+From project root run `(cd explorer/; npm start)`. This will start the application at `localhost:8000`
 
 ## Integration
 
