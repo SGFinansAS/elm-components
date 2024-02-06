@@ -36,6 +36,8 @@ import Stories.RadioButton as RadioButton
 import Stories.Range as Range
 import Stories.SkeletonLoader as SkeletonLoader
 import Stories.Slider as Slider
+import Stories.Snackbar as Snackbar
+import Stories.SortableTable as SortableTable
 import Stories.Spinner as Spinner
 import Stories.Status as Status
 import Stories.StepIndicator as StepIndicator
@@ -117,6 +119,8 @@ main =
                 , Range.stories
                 , SkeletonLoader.stories
                 , Slider.stories
+                , Snackbar.stories
+                , SortableTable.stories
                 , Spinner.stories
                 , Status.stories
                 , StepIndicator.stories

@@ -33,6 +33,7 @@ import Css
         , justifyContent
         , listStyle
         , margin2
+        , marginTop
         , maxHeight
         , none
         , overflowY
@@ -53,7 +54,7 @@ import Css
         , translateY
         , width
         )
-import Css.Global exposing (descendants, typeSelector)
+import Css.Global exposing (class, descendants, typeSelector)
 import Html.Events.Extra as Events
 import Html.Styled as Html exposing (Html)
 import Html.Styled.Attributes as Attrs exposing (css, tabindex, value)
@@ -175,6 +176,7 @@ view attrs (DropdownFilter config) =
                 , borderBottomRightRadius (rem 0.25)
                 , boxSizing borderBox
                 , padding3 (rem 0.5) (rem 0) (rem 0.0)
+                , marginTop (rem 0)
                 ]
 
         textInput =
@@ -264,8 +266,9 @@ view attrs (DropdownFilter config) =
             ((config.onFocus
                 |> Maybe.map
                     (\onFocus ->
-                        [ Events.on "focusout" (Decode.succeed (onFocus True))
+                        [ Events.on "focusout" (Decode.succeed (onFocus False))
                         , Events.on "focusin" (Decode.succeed (onFocus True))
+                        , css [ descendants [ class "tooltip" [ width (pct 100) ] ] ]
                         ]
                     )
                 |> Maybe.withDefault []

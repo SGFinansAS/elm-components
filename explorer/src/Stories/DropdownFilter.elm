@@ -58,6 +58,8 @@ stories =
                         , onSelect = SearchComponentSelected
                         , items = searchResult
                         }
+                        |> DropdownFilter.withHasFocus model.customModel.searchHasFocus
+                        |> DropdownFilter.withOnFocus SearchComponentFocus
                         |> DropdownFilter.view []
                     ]
           , {}
@@ -75,6 +77,8 @@ stories =
                         , onSelect = SearchComponentSelected
                         , items = removedGroups
                         }
+                        |> DropdownFilter.withHasFocus model.customModel.searchHasFocus
+                        |> DropdownFilter.withOnFocus SearchComponentFocus
                         |> DropdownFilter.view []
                     ]
           , {}
@@ -103,6 +107,8 @@ stories =
                         , onSelect = SearchComponentSelected
                         , items = searchResult
                         }
+                        |> DropdownFilter.withHasFocus model.customModel.searchHasFocus
+                        |> DropdownFilter.withOnFocus SearchComponentFocus
                         |> DropdownFilter.withIsLoading True
                         |> DropdownFilter.view []
                     ]
