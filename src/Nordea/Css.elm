@@ -1,17 +1,21 @@
 module Nordea.Css exposing
     ( colorToString
     , colorVariable
+    , gap
     , propertyWithColorVariable
     , propertyWithVariable
     , smallInputHeight
     , standardInputHeight
     , variable
-    , gap)
+    )
 
 import Css exposing (LengthOrNoneOrMinMaxDimension)
 
+
 gap : LengthOrNoneOrMinMaxDimension compatible -> Css.Style
-gap length = Css.property "gap" length.value
+gap length =
+    Css.property "gap" length.value
+
 
 variable : String -> String -> String
 variable variableName fallback =
