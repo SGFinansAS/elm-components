@@ -1,10 +1,11 @@
 module Stories.RadioButton exposing (stories)
 
 import Config exposing (Config, Msg(..))
-import Css exposing (displayFlex)
+import Css exposing (displayFlex, rem)
 import Html.Styled as Html exposing (text)
 import Html.Styled.Attributes exposing (css, disabled)
 import Nordea.Components.RadioButton as RadioButton
+import Nordea.Css exposing (gap)
 import UIExplorer exposing (UI)
 import UIExplorer.Styled exposing (styledStoriesOf)
 
@@ -15,7 +16,7 @@ stories =
         "RadioButton"
         [ ( "Standard"
           , \config ->
-                Html.div [ css [ displayFlex, Css.property "gap" "1rem" ] ]
+                Html.div [ css [ displayFlex, gap (rem 1) ] ]
                     [ RadioButton.init
                         "simple"
                         (text "Click me")
@@ -33,7 +34,7 @@ stories =
           )
         , ( "Standard with error"
           , \config ->
-                Html.div [ css [ displayFlex, Css.property "gap" "1rem" ] ]
+                Html.div [ css [ displayFlex, gap (rem 1) ] ]
                     [ RadioButton.init
                         "simple"
                         (text "Click me")
@@ -53,7 +54,7 @@ stories =
           )
         , ( "Standard disabled"
           , \config ->
-                Html.div [ css [ displayFlex, Css.property "gap" "1rem" ] ]
+                Html.div [ css [ displayFlex, gap (rem 1) ] ]
                     [ RadioButton.init
                         "simple"
                         (text "Click me")
@@ -71,7 +72,7 @@ stories =
           )
         , ( "Small"
           , \config ->
-                Html.div [ css [ displayFlex, Css.property "gap" "1rem" ] ]
+                Html.div [ css [ displayFlex, gap (rem 1) ] ]
                     [ RadioButton.init
                         "small"
                         (text "Click me")
@@ -91,7 +92,7 @@ stories =
           )
         , ( "Simple"
           , \config ->
-                Html.div [ css [ displayFlex, Css.property "gap" "1rem" ] ]
+                Html.div [ css [ displayFlex, gap (rem 1) ] ]
                     [ RadioButton.init
                         "simple"
                         (text "Click me")
@@ -111,7 +112,7 @@ stories =
           )
         , ( "Simple with error"
           , \config ->
-                Html.div [ css [ displayFlex, Css.property "gap" "1rem" ] ]
+                Html.div [ css [ displayFlex, gap (rem 1) ] ]
                     [ RadioButton.init
                         "simple"
                         (text "Click me")
@@ -133,7 +134,7 @@ stories =
           )
         , ( "Simple disabled"
           , \config ->
-                Html.div [ css [ displayFlex, Css.property "gap" "1rem" ] ]
+                Html.div [ css [ displayFlex, gap (rem 1) ] ]
                     [ RadioButton.init
                         "simple"
                         (text "Click me")

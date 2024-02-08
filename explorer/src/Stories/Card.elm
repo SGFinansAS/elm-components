@@ -4,6 +4,7 @@ import Css exposing (alignItems, center, rem, width)
 import Html.Styled as Html
 import Html.Styled.Attributes exposing (css)
 import Nordea.Components.Card as Card
+import Nordea.Css exposing (gap)
 import Nordea.Html as Html
 import Nordea.Resources.Icons as Icons
 import UIExplorer exposing (UI)
@@ -65,12 +66,12 @@ stories =
                     |> Card.withTitle "Card title"
                     |> Card.withShadow
                     |> Card.view []
-                        [ Card.infoBox [ css [ Css.property "gap" "1rem" ] ]
-                            [ Html.row [ css [ alignItems center, Css.property "gap" "0.5rem" ] ]
+                        [ Card.infoBox [ css [ gap (rem 1) ] ]
+                            [ Html.row [ css [ alignItems center, gap (rem 0.5) ] ]
                                 [ Icons.filledCheckmark [ css [ width (rem 1.5) ] ]
                                 , Html.text "Some completed task"
                                 ]
-                            , Html.row [ css [ alignItems center, Css.property "gap" "0.5rem" ] ]
+                            , Html.row [ css [ alignItems center, gap (rem 0.5) ] ]
                                 [ Icons.unfilledMark [ css [ width (rem 1.5) ] ]
                                 , Html.text "Some not completed task"
                                 ]

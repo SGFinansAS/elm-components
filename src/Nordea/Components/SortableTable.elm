@@ -27,6 +27,7 @@ import Html.Styled as Html exposing (Attribute, Html, styled)
 import Html.Styled.Attributes as Attrs exposing (css)
 import Html.Styled.Events as Events
 import Nordea.Components.Text as Text
+import Nordea.Css exposing (gap)
 import Nordea.Html
 import Nordea.Resources.Colors as Color
 import Nordea.Resources.Icons
@@ -253,7 +254,7 @@ mobileDataRow =
         , padding (rem 1.5)
         , borderRadius (rem 1)
         , backgroundColor Color.white
-        , Css.property "gap" "1rem"
+        , gap (rem 1)
         ]
 
 

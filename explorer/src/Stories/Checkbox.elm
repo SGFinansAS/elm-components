@@ -6,6 +6,7 @@ import Html.Styled as Html exposing (text)
 import Html.Styled.Attributes exposing (css, disabled)
 import Nordea.Components.Checkbox as Checkbox
 import Nordea.Components.Text as Text
+import Nordea.Css exposing (gap)
 import UIExplorer exposing (UI)
 import UIExplorer.Styled exposing (styledStoriesOf)
 
@@ -16,7 +17,7 @@ stories =
         "Checkbox"
         [ ( "Standard"
           , \_ ->
-                Html.div [ css [ displayFlex, Css.property "gap" "1rem" ] ]
+                Html.div [ css [ displayFlex, gap (rem 1) ] ]
                     [ Checkbox.init
                         "simple"
                         (text "Click me")
@@ -33,7 +34,7 @@ stories =
           )
         , ( "Standard with error"
           , \_ ->
-                Html.div [ css [ displayFlex, Css.property "gap" "1rem" ] ]
+                Html.div [ css [ displayFlex, gap (rem 1) ] ]
                     [ Checkbox.init
                         "simple"
                         (text "Click me")
@@ -52,7 +53,7 @@ stories =
           )
         , ( "Standard disabled"
           , \_ ->
-                Html.div [ css [ displayFlex, Css.property "gap" "1rem" ] ]
+                Html.div [ css [ displayFlex, gap (rem 1) ] ]
                     [ Checkbox.init
                         "standard"
                         (text "Click me")
@@ -69,7 +70,7 @@ stories =
           )
         , ( "Small"
           , \_ ->
-                Html.div [ css [ displayFlex, Css.property "gap" "1rem" ] ]
+                Html.div [ css [ displayFlex, gap (rem 1) ] ]
                     [ Checkbox.init
                         "small"
                         (Text.textTinyLight |> Text.view [] [ text "Click me" ])
@@ -88,7 +89,7 @@ stories =
           )
         , ( "Small with error"
           , \_ ->
-                Html.div [ css [ displayFlex, Css.property "gap" "1rem" ] ]
+                Html.div [ css [ displayFlex, gap (rem 1) ] ]
                     [ Checkbox.init
                         "small"
                         (Text.textTinyLight |> Text.view [] [ text "Click me" ])
@@ -109,7 +110,7 @@ stories =
           )
         , ( "Simple"
           , \_ ->
-                Html.div [ css [ displayFlex, Css.property "gap" "1rem" ] ]
+                Html.div [ css [ displayFlex, gap (rem 1) ] ]
                     [ Checkbox.init
                         "simple"
                         (text "Click me")
@@ -128,7 +129,7 @@ stories =
           )
         , ( "Simple with error"
           , \_ ->
-                Html.div [ css [ displayFlex, Css.property "gap" "1rem" ] ]
+                Html.div [ css [ displayFlex, gap (rem 1) ] ]
                     [ Checkbox.init
                         "simple"
                         (text "Click me")
@@ -149,7 +150,7 @@ stories =
           )
         , ( "Simple disabled"
           , \_ ->
-                Html.div [ css [ displayFlex, Css.property "gap" "1rem" ] ]
+                Html.div [ css [ displayFlex, gap (rem 1) ] ]
                     [ Checkbox.init
                         "simple"
                         (text "Click me")

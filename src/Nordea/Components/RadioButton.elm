@@ -54,6 +54,7 @@ import Html.Styled as Html exposing (Attribute, Html)
 import Html.Styled.Attributes as Attrs exposing (css, disabled, name, type_)
 import Html.Styled.Events as Events
 import Nordea.Components.Text as Text
+import Nordea.Css exposing (gap)
 import Nordea.Html exposing (showIf, styleIf)
 import Nordea.Resources.Colors as Colors
 import Nordea.Themes as Themes
@@ -230,7 +231,7 @@ view attrs (RadioButton config) =
     Html.label
         (css
             [ display inlineFlex
-            , Css.property "gap" "0.5rem"
+            , gap (rem 0.5)
             , alignItems center
             , boxSizing borderBox
             , position relative

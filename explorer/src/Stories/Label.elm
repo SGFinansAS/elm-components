@@ -9,6 +9,7 @@ import Nordea.Components.Dropdown as Dropdown
 import Nordea.Components.Label as Label
 import Nordea.Components.RadioButton as RadioButton
 import Nordea.Components.TextInput as TextInput
+import Nordea.Css exposing (gap)
 import UIExplorer exposing (UI)
 import UIExplorer.Styled exposing (styledStoriesOf)
 
@@ -19,7 +20,7 @@ stories =
         "Label"
         [ ( "With text input"
           , \_ ->
-                Html.div [ css [ displayFlex, flexDirection column, maxWidth (rem 20), Css.property "gap" "2rem" ] ]
+                Html.div [ css [ displayFlex, flexDirection column, maxWidth (rem 20), gap (rem 2) ] ]
                     [ Label.init "Customer name" Label.InputLabel
                         |> Label.view []
                             [ TextInput.init "Text"
@@ -70,7 +71,7 @@ stories =
           )
         , ( "With dropdown"
           , \_ ->
-                Html.div [ css [ displayFlex, flexDirection column, maxWidth (rem 20), Css.property "gap" "2rem" ] ]
+                Html.div [ css [ displayFlex, flexDirection column, maxWidth (rem 20), gap (rem 2) ] ]
                     [ Label.init "Choose financingVariant" Label.InputLabel
                         |> Label.view []
                             [ Dropdown.init
@@ -102,7 +103,7 @@ stories =
           )
         , ( "With radio buttons"
           , \_ ->
-                Html.div [ css [ displayFlex, flexDirection column, maxWidth (rem 30), Css.property "gap" "2rem" ] ]
+                Html.div [ css [ displayFlex, flexDirection column, maxWidth (rem 30), gap (rem 2) ] ]
                     [ Label.init "State of object" Label.GroupLabel
                         |> Label.view []
                             [ RadioButton.init
@@ -138,7 +139,7 @@ stories =
           )
         , ( "With checkboxes"
           , \_ ->
-                Html.div [ css [ displayFlex, flexDirection column, maxWidth (rem 30), Css.property "gap" "2rem" ] ]
+                Html.div [ css [ displayFlex, flexDirection column, maxWidth (rem 30), gap (rem 2) ] ]
                     [ Label.init "State of object" Label.GroupLabel
                         |> Label.view []
                             [ Checkbox.init
@@ -204,7 +205,7 @@ stories =
           )
         , ( "Small with text input"
           , \_ ->
-                Html.div [ css [ displayFlex, flexDirection column, maxWidth (rem 20), Css.property "gap" "2rem" ] ]
+                Html.div [ css [ displayFlex, flexDirection column, maxWidth (rem 20), gap (rem 2) ] ]
                     [ Label.init "Customer name" Label.InputLabel
                         |> Label.withSmallSize
                         |> Label.view []
@@ -234,7 +235,7 @@ stories =
           )
         , ( "Small with radio buttons"
           , \_ ->
-                Html.div [ css [ displayFlex, flexDirection column, maxWidth (rem 30), Css.property "gap" "2rem" ] ]
+                Html.div [ css [ displayFlex, flexDirection column, maxWidth (rem 30), gap (rem 2) ] ]
                     [ Label.init "State of object" Label.GroupLabel
                         |> Label.withSmallSize
                         |> Label.view []
@@ -276,7 +277,7 @@ stories =
           )
         , ( "Small with checkboxes"
           , \_ ->
-                Html.div [ css [ displayFlex, flexDirection column, maxWidth (rem 30), Css.property "gap" "2rem" ] ]
+                Html.div [ css [ displayFlex, flexDirection column, maxWidth (rem 30), gap (rem 2) ] ]
                     [ Label.init "State of object" Label.GroupLabel
                         |> Label.withSmallSize
                         |> Label.view []

@@ -62,6 +62,7 @@ import Html.Styled as Html exposing (Attribute, Html)
 import Html.Styled.Attributes as Attrs exposing (class, css, disabled, name, type_)
 import Html.Styled.Events exposing (onCheck)
 import Nordea.Components.Text as Text
+import Nordea.Css exposing (gap)
 import Nordea.Html exposing (styleIf)
 import Nordea.Resources.Colors as Colors
 import Nordea.Themes as Themes
@@ -206,7 +207,7 @@ view attrs (Checkbox config) =
             case config.appearance of
                 ListStyle ->
                     Css.batch
-                        [ Css.property "gap" "0.5rem"
+                        [ gap (rem 0.5)
                         , commonNonSimpleStyles
                         , padding2 (rem 0.5) (rem 1)
                         , flexBasis (pct 100)
@@ -221,12 +222,12 @@ view attrs (Checkbox config) =
 
                 Simple ->
                     Css.batch
-                        [ Css.property "gap" "0.5rem"
+                        [ gap (rem 0.5)
                         ]
 
                 Small ->
                     Css.batch
-                        [ Css.property "gap" "0.25rem"
+                        [ gap (rem 0.25)
                         , padding4 (rem 0.25) (rem 0.5) (rem 0.25) (rem 0.25)
                         , height (rem 1.5)
                         , commonNonSimpleStyles
@@ -235,7 +236,7 @@ view attrs (Checkbox config) =
 
                 Standard ->
                     Css.batch
-                        [ Css.property "gap" "0.5rem"
+                        [ gap (rem 0.5)
                         , padding2 (rem 0.5) (rem 1)
                         , minHeight (rem 2.5)
                         , commonNonSimpleStyles

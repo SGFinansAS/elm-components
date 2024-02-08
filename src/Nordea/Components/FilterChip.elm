@@ -29,6 +29,7 @@ import Css
 import Html.Styled as Html exposing (Attribute, Html)
 import Html.Styled.Attributes exposing (css)
 import Nordea.Components.Text as Text
+import Nordea.Css exposing (gap)
 import Nordea.Resources.Colors as Color
 import Nordea.Resources.Icons as Icon
 import Nordea.Themes as Themes
@@ -56,7 +57,7 @@ view attrs (FilterChip { label }) =
             , Themes.backgroundColor Color.cloudBlue
             , Themes.color Color.deepBlue
             , maxWidth fitContent
-            , Css.property "gap" "1rem"
+            , gap (rem 1)
             , Css.property "height" "fit-content"
             , whiteSpace noWrap
             , alignItems center
