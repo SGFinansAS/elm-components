@@ -2,6 +2,7 @@ module Nordea.Css exposing
     ( colorToString
     , colorVariable
     , gap
+    , gap2
     , propertyWithColorVariable
     , propertyWithVariable
     , smallInputHeight
@@ -13,8 +14,13 @@ import Css exposing (LengthOrNoneOrMinMaxDimension)
 
 
 gap : LengthOrNoneOrMinMaxDimension compatible -> Css.Style
-gap length =
-    Css.property "gap" length.value
+gap argA =
+    Css.property "gap" argA.value
+
+
+gap2 : LengthOrNoneOrMinMaxDimension compatible -> LengthOrNoneOrMinMaxDimension compatible2 -> Css.Style
+gap2 argA argB =
+    Css.property "gap" (argA.value ++ " " ++ argB.value)
 
 
 variable : String -> String -> String
