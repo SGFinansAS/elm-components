@@ -59,6 +59,7 @@ import Html.Styled.Events as Events
 import Json.Decode as Decode
 import Nordea.Components.Checkbox as Checkbox
 import Nordea.Components.Label as Label exposing (RequirednessHint(..))
+import Nordea.Css exposing (gap)
 import Nordea.Html as Html
 import Nordea.Resources.Colors as Colors
 import Nordea.Resources.Icons as Icon
@@ -118,7 +119,7 @@ view attrs dropdown =
                             , flexDirection row
                             , padding (rem 0.5)
                             , alignItems center
-                            , Css.property "gap" "0.5rem"
+                            , gap (rem 0.5)
                             ]
                         ]
                         [ Checkbox.init option.name (Html.text option.label) option.onCheck

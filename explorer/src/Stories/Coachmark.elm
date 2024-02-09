@@ -1,12 +1,13 @@
 module Stories.Coachmark exposing (stories)
 
 import Config exposing (Config, Msg(..))
-import Css exposing (displayFlex)
+import Css exposing (displayFlex, rem)
 import Html.Styled as Html
 import Html.Styled.Attributes exposing (class, css)
 import Nordea.Components.Button as Button
 import Nordea.Components.Coachmark as Coachmark
 import Nordea.Components.Tooltip as Tooltip
+import Nordea.Css exposing (gap)
 import UIExplorer exposing (UI)
 import UIExplorer.Styled exposing (styledStoriesOf)
 
@@ -17,7 +18,7 @@ stories =
         "Coachmark"
         [ ( "Standard"
           , \config ->
-                Html.div [ css [ displayFlex, Css.property "gap" "1rem" ] ]
+                Html.div [ css [ displayFlex, gap (rem 1) ] ]
                     [ Button.secondary
                         |> Button.view [ class "new-button" ] [ Html.text "Some new feature button" ]
                     , Coachmark.view

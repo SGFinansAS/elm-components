@@ -21,6 +21,7 @@ import Css
 import Html.Styled as Html
 import Html.Styled.Attributes exposing (css)
 import Nordea.Components.Text as Text
+import Nordea.Css exposing (gap)
 import Nordea.Resources.Colors as Colors
 import UIExplorer exposing (UI)
 import UIExplorer.Styled exposing (styledStoriesOf)
@@ -56,7 +57,7 @@ stories =
                 ]
 
         colorsRow colors =
-            Html.div [ css [ displayFlex, flexDirection row, Css.property "gap" "2rem", marginBottom (rem 1.125) ] ]
+            Html.div [ css [ displayFlex, flexDirection row, gap (rem 2), marginBottom (rem 1.125) ] ]
                 (colors |> List.map colorElement)
     in
     styledStoriesOf

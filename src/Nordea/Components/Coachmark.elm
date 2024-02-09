@@ -65,6 +65,7 @@ import Maybe.Extra as Maybe
 import Nordea.Components.Button as Button
 import Nordea.Components.Text as Text
 import Nordea.Components.Tooltip as Tooltip
+import Nordea.Css exposing (gap)
 import Nordea.Html as Html
 import Nordea.Resources.Colors as Colors
 import Nordea.Resources.I18N exposing (Translation)
@@ -308,14 +309,14 @@ step attrs children_ { translate, showStepLegend, onChangeStep, currentStep, tot
     in
     Html.column
         (css
-            [ Css.property "gap" "1rem"
+            [ gap (rem 1)
             , justifyContent spaceBetween
             ]
             :: attrs
         )
         [ Text.textSmallLight
             |> Text.withHtmlTag Html.row
-            |> Text.view [ css [ Css.property "gap" "1rem", alignItems flexStart ] ]
+            |> Text.view [ css [ gap (rem 1), alignItems flexStart ] ]
                 (children_
                     ++ [ Html.button
                             [ Attrs.attribute "aria-label" (translate strings.close)

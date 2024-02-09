@@ -12,6 +12,7 @@ import Css
 import Html.Styled as Html
 import Html.Styled.Attributes exposing (css)
 import Nordea.Components.Text as Text
+import Nordea.Css exposing (gap)
 import Nordea.Resources.Icons as Icons
 import UIExplorer exposing (UI)
 import UIExplorer.Styled exposing (styledStoriesOf)
@@ -24,14 +25,14 @@ stories =
             Text.bodyTextHeavy |> Text.view [] [ Html.text headerText ]
 
         iconsRow icons =
-            Html.div [ css [ displayFlex, flexDirection row, Css.property "gap" "2rem" ] ]
+            Html.div [ css [ displayFlex, flexDirection row, gap (rem 2) ] ]
                 icons
     in
     styledStoriesOf
         "Icons"
         [ ( "Icons"
           , \_ ->
-                Html.div [ css [ displayFlex, flexDirection column, Css.property "gap" "1rem" ] ]
+                Html.div [ css [ displayFlex, flexDirection column, gap (rem 1) ] ]
                     [ iconCategoryHeader "Arrows and directions"
                     , iconsRow
                         [ Icons.arrowBack [ css [ width (rem 1.5) ] ]
