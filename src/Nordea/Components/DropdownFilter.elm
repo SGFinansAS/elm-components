@@ -188,7 +188,7 @@ view attrs ((DropdownFilter config) as dropdown) =
         textInput =
             let
                 selectedStyle =
-                    if isSelected dropdown then
+                    if hasSelectedValue dropdown then
                         [ Themes.backgroundColor Colors.cloudBlue
                         , outline none
                         , Themes.borderColor Colors.nordeaBlue
@@ -202,11 +202,11 @@ view attrs ((DropdownFilter config) as dropdown) =
                 |> TextInput.withOnInput config.onInput
                 |> TextInput.withSearchIcon config.hasSearchIcon
                 |> TextInput.view
-                    [ readonly (isSelected dropdown)
+                    [ readonly (hasSelectedValue dropdown)
                     , css
                         [ width (pct 100)
-                        , borderBottomLeftRadius (pct 0) |> Css.important |> styleIf (config.hasFocus && not (isSelected dropdown))
-                        , borderBottomRightRadius (pct 0) |> Css.important |> styleIf (config.hasFocus && not (isSelected dropdown))
+                        , borderBottomLeftRadius (pct 0) |> Css.important |> styleIf (config.hasFocus && not (hasSelectedValue dropdown))
+                        , borderBottomRightRadius (pct 0) |> Css.important |> styleIf (config.hasFocus && not (hasSelectedValue dropdown))
                         , descendants
                             [ typeSelector "input"
                                 [ withAttribute "readonly"
@@ -259,7 +259,10 @@ view attrs ((DropdownFilter config) as dropdown) =
             )
         |> Tooltip.withContent
             (\_ ->
-                if config.isLoading then
+                if hasSelectedValue dropdown then
+                    Html.nothing
+
+                else if config.isLoading then
                     Html.div
                         [ css
                             [ height (rem 8)
@@ -282,7 +285,7 @@ view attrs ((DropdownFilter config) as dropdown) =
                             ]
                         ]
                         searchMatches
-                        |> showIf (not (List.isEmpty searchMatches) && not (isSelected dropdown))
+                        |> showIf (not (List.isEmpty searchMatches))
             )
         |> Tooltip.view
             ((config.onFocus
@@ -322,6 +325,6 @@ withSearchIcon hasSearchIcon (DropdownFilter config) =
     DropdownFilter { config | hasSearchIcon = hasSearchIcon }
 
 
-isSelected : DropdownFilter a msg -> Bool
-isSelected (DropdownFilter config) =
+hasSelectedValue : DropdownFilter a msg -> Bool
+hasSelectedValue (DropdownFilter config) =
     Maybe.isJust config.selectedValue
