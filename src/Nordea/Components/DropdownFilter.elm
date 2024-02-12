@@ -209,11 +209,10 @@ view attrs ((DropdownFilter config) as dropdown) =
                         , borderBottomRightRadius (pct 0) |> Css.important |> styleIf config.hasFocus
                         , descendants
                             [ typeSelector "input"
-                                ([ withAttribute "readonly"
+                                [ withAttribute "readonly"
                                     selectedStyle
-                                 ]
-                                    ++ [ paddingRight (rem 2.5) ]
-                                )
+                                , paddingRight (rem 2.5)
+                                ]
                             ]
                         ]
                     ]
