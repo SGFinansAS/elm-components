@@ -36,7 +36,6 @@ import Css
         , marginTop
         , maxHeight
         , none
-        , outline
         , overflowY
         , padding
         , padding3
