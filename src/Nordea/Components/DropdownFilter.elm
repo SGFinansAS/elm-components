@@ -106,11 +106,11 @@ init :
     { onInput : String -> msg
     , input : String
     , onSelect : Maybe (Item a) -> msg
-    , select : Maybe a
+    , selectedValue : Maybe a
     , items : List (ItemGroup a)
     }
     -> DropdownFilter a msg
-init { onInput, input, onSelect, items, select } =
+init { onInput, input, onSelect, items, selectedValue } =
     DropdownFilter
         { items = items
         , onInput = onInput
@@ -121,7 +121,7 @@ init { onInput, input, onSelect, items, select } =
         , hasError = False
         , isLoading = False
         , hasSearchIcon = False
-        , selectedValue = select
+        , selectedValue = selectedValue
         }
 
 
