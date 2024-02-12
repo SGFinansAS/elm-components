@@ -296,7 +296,7 @@ view attrs ((DropdownFilter config) as dropdown) =
                         , css [ descendants [ class "tooltip" [ width (pct 100) ] ] ]
                         ]
                     )
-                |> Maybe.withDefault []
+                |> Maybe.withDefault [ css [ descendants [ class "tooltip" [ width (pct 100) ] ] ] ]
              )
                 ++ attrs
             )

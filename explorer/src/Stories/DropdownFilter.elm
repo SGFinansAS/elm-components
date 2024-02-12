@@ -93,7 +93,7 @@ stories =
                         , input = model.customModel.searchComponentInput
                         , onSelect = SearchComponentSelected
                         , items = searchResult
-                        , selectedValue = Nothing
+                        , selectedValue = model.customModel.selectedSearchComponent
                         }
                         |> DropdownFilter.withHasFocus model.customModel.searchHasFocus
                         |> DropdownFilter.withOnFocus SearchComponentFocus
