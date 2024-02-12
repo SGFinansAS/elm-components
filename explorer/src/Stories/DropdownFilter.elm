@@ -57,6 +57,7 @@ stories =
                         , input = model.customModel.searchComponentInput
                         , onSelect = SearchComponentSelected
                         , items = searchResult
+                        , select = model.customModel.selectedSearchComponent
                         }
                         |> DropdownFilter.withHasFocus model.customModel.searchHasFocus
                         |> DropdownFilter.withOnFocus SearchComponentFocus
@@ -76,6 +77,7 @@ stories =
                         , input = model.customModel.searchComponentInput
                         , onSelect = SearchComponentSelected
                         , items = removedGroups
+                        , select = model.customModel.selectedSearchComponent
                         }
                         |> DropdownFilter.withHasFocus model.customModel.searchHasFocus
                         |> DropdownFilter.withOnFocus SearchComponentFocus
@@ -91,6 +93,7 @@ stories =
                         , input = model.customModel.searchComponentInput
                         , onSelect = SearchComponentSelected
                         , items = searchResult
+                        , select = Nothing
                         }
                         |> DropdownFilter.withHasFocus model.customModel.searchHasFocus
                         |> DropdownFilter.withOnFocus SearchComponentFocus
@@ -106,6 +109,7 @@ stories =
                         , input = model.customModel.searchComponentInput
                         , onSelect = SearchComponentSelected
                         , items = searchResult
+                        , select = model.customModel.selectedSearchComponent
                         }
                         |> DropdownFilter.withHasFocus model.customModel.searchHasFocus
                         |> DropdownFilter.withOnFocus SearchComponentFocus
@@ -123,6 +127,7 @@ stories =
                             , input = model.customModel.searchComponentInput
                             , onSelect = SearchComponentSelected
                             , items = searchResult
+                            , select = model.customModel.selectedSearchComponent
                             }
                             |> DropdownFilter.withHasFocus model.customModel.searchHasFocus
                             |> DropdownFilter.withOnFocus SearchComponentFocus
