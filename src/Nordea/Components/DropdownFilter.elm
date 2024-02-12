@@ -190,7 +190,6 @@ view attrs ((DropdownFilter config) as dropdown) =
                 selectedStyle =
                     if hasSelectedValue dropdown then
                         [ Themes.backgroundColor Colors.cloudBlue
-                        , outline none
                         , Themes.borderColor Colors.nordeaBlue
                         ]
 
