@@ -205,8 +205,8 @@ view attrs ((DropdownFilter config) as dropdown) =
                     [ readonly (isSelected dropdown)
                     , css
                         [ width (pct 100)
-                        , borderBottomLeftRadius (pct 0) |> Css.important |> styleIf config.hasFocus
-                        , borderBottomRightRadius (pct 0) |> Css.important |> styleIf config.hasFocus
+                        , borderBottomLeftRadius (pct 0) |> Css.important |> styleIf (config.hasFocus && not (isSelected dropdown))
+                        , borderBottomRightRadius (pct 0) |> Css.important |> styleIf (config.hasFocus && not (isSelected dropdown))
                         , descendants
                             [ typeSelector "input"
                                 [ withAttribute "readonly"
