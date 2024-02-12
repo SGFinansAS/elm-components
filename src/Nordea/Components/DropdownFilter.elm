@@ -9,51 +9,7 @@ module Nordea.Components.DropdownFilter exposing
     , withSearchIcon
     )
 
-import Css
-    exposing
-        ( absolute
-        , alignItems
-        , backgroundColor
-        , borderBottom3
-        , borderBottomLeftRadius
-        , borderBottomRightRadius
-        , borderBox
-        , borderLeft3
-        , borderRight3
-        , boxSizing
-        , center
-        , color
-        , column
-        , cursor
-        , deg
-        , displayFlex
-        , flexDirection
-        , height
-        , hover
-        , justifyContent
-        , listStyle
-        , margin2
-        , marginTop
-        , maxHeight
-        , none
-        , overflowY
-        , padding
-        , padding3
-        , paddingRight
-        , pct
-        , pointer
-        , pointerEvents
-        , position
-        , rem
-        , right
-        , rotate
-        , scroll
-        , solid
-        , top
-        , transforms
-        , translateY
-        , width
-        )
+import Css exposing (absolute, alignItems, backgroundColor, border, borderBottom3, borderBottomLeftRadius, borderBottomRightRadius, borderBox, borderLeft3, borderRight3, boxSizing, center, color, column, cursor, deg, displayFlex, flexDirection, height, hover, justifyContent, listStyle, margin2, marginTop, maxHeight, none, overflowY, padding, padding3, paddingRight, pct, pointer, pointerEvents, position, rem, right, rotate, scroll, solid, top, transforms, translateY, width)
 import Css.Global exposing (class, descendants, typeSelector, withAttribute)
 import Html.Events.Extra as Events
 import Html.Styled as Html exposing (Html)
@@ -189,7 +145,8 @@ view attrs ((DropdownFilter config) as dropdown) =
                 selectedStyle =
                     if hasSelectedValue dropdown then
                         [ Themes.backgroundColor Colors.cloudBlue
-                        , Themes.borderColor Colors.nordeaBlue
+                        , border (rem 0)
+                        , Css.property "box-shadow" ("0rem 0rem 0rem 0.0625rem " ++ Themes.colorVariable Colors.nordeaBlue) |> Css.important
                         ]
 
                     else
