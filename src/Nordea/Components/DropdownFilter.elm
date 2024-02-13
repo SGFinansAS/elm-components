@@ -293,12 +293,11 @@ view attrs ((DropdownFilter config) as dropdown) =
                     (\onFocus ->
                         [ Events.on "focusout" (Decode.succeed (onFocus False))
                         , Events.on "focusin" (Decode.succeed (onFocus True))
-                        , css [ descendants [ class "tooltip" [ width (pct 100) ] ] ]
                         ]
                     )
-                |> Maybe.withDefault [ css [ descendants [ class "tooltip" [ width (pct 100) ] ] ] ]
+                |> Maybe.withDefault []
              )
-                ++ attrs
+                ++ (css [ descendants [ class "tooltip" [ width (pct 100) ] ] ] :: attrs)
             )
             [ textInput
             , iconRight
