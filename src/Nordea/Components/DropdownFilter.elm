@@ -14,6 +14,7 @@ import Css
         ( absolute
         , alignItems
         , backgroundColor
+        , border
         , borderBottom3
         , borderBottomLeftRadius
         , borderBottomRightRadius
@@ -54,12 +55,13 @@ import Css
         , translateY
         , width
         )
-import Css.Global exposing (class, descendants, typeSelector)
+import Css.Global exposing (class, descendants, typeSelector, withAttribute)
 import Html.Events.Extra as Events
 import Html.Styled as Html exposing (Html)
-import Html.Styled.Attributes as Attrs exposing (css, tabindex, value)
+import Html.Styled.Attributes as Attrs exposing (css, readonly, tabindex, value)
 import Html.Styled.Events as Events
 import Json.Decode as Decode
+import Maybe.Extra as Maybe
 import Nordea.Components.Spinner as Spinner
 import Nordea.Components.Text as Text
 import Nordea.Components.TextInput as TextInput
@@ -67,6 +69,7 @@ import Nordea.Components.Tooltip as Tooltip
 import Nordea.Html as Html exposing (hideIf, showIf, styleIf)
 import Nordea.Resources.Colors as Colors
 import Nordea.Resources.Icons as Icon
+import Nordea.Themes as Themes
 
 
 type alias Item a =
@@ -84,13 +87,14 @@ type alias ItemGroup a =
 type alias DropdownFilterProperties a msg =
     { items : List (ItemGroup a)
     , onInput : String -> msg
-    , onSelect : Item a -> msg
+    , onSelect : Maybe (Item a) -> msg
     , input : String
     , onFocus : Maybe (Bool -> msg)
     , hasFocus : Bool
     , hasError : Bool
     , isLoading : Bool
     , hasSearchIcon : Bool
+    , selectedValue : Maybe a
     }
 
 
@@ -101,11 +105,12 @@ type DropdownFilter a msg
 init :
     { onInput : String -> msg
     , input : String
-    , onSelect : Item a -> msg
+    , onSelect : Maybe (Item a) -> msg
+    , selectedValue : Maybe a
     , items : List (ItemGroup a)
     }
     -> DropdownFilter a msg
-init { onInput, input, onSelect, items } =
+init { onInput, input, onSelect, items, selectedValue } =
     DropdownFilter
         { items = items
         , onInput = onInput
@@ -116,11 +121,12 @@ init { onInput, input, onSelect, items } =
         , hasError = False
         , isLoading = False
         , hasSearchIcon = False
+        , selectedValue = selectedValue
         }
 
 
 view : List (Html.Attribute msg) -> DropdownFilter a msg -> Html msg
-view attrs (DropdownFilter config) =
+view attrs ((DropdownFilter config) as dropdown) =
     let
         filterValues value =
             value
@@ -136,8 +142,8 @@ view attrs (DropdownFilter config) =
 
                 viewItem onSelectValue item =
                     Html.li
-                        [ Events.onClick (onSelectValue item)
-                        , Attrs.fromUnstyled (Events.onEnter (onSelectValue item))
+                        [ Events.onClick (onSelectValue (Just item))
+                        , Attrs.fromUnstyled (Events.onEnter (onSelectValue (Just item)))
                         , tabindex 0
                         , css
                             [ padding (rem 0.75)
@@ -180,17 +186,33 @@ view attrs (DropdownFilter config) =
                 ]
 
         textInput =
+            let
+                selectedStyle =
+                    if hasSelectedValue dropdown then
+                        [ Themes.backgroundColor Colors.cloudBlue
+                        , border (rem 0)
+                        , Css.property "box-shadow" ("0rem 0rem 0rem 0.0625rem " ++ Themes.colorVariable Colors.nordeaBlue) |> Css.important
+                        ]
+
+                    else
+                        []
+            in
             TextInput.init config.input
                 |> TextInput.withError (config.hasError || showHasNoMatch)
                 |> TextInput.withOnInput config.onInput
                 |> TextInput.withSearchIcon config.hasSearchIcon
                 |> TextInput.view
-                    [ css
+                    [ readonly (hasSelectedValue dropdown)
+                    , css
                         [ width (pct 100)
-                        , borderBottomLeftRadius (pct 0) |> Css.important |> styleIf config.hasFocus
-                        , borderBottomRightRadius (pct 0) |> Css.important |> styleIf config.hasFocus
+                        , borderBottomLeftRadius (pct 0) |> Css.important |> styleIf (config.hasFocus && not (hasSelectedValue dropdown))
+                        , borderBottomRightRadius (pct 0) |> Css.important |> styleIf (config.hasFocus && not (hasSelectedValue dropdown))
                         , descendants
-                            [ typeSelector "input" [ paddingRight (rem 2.5) ]
+                            [ typeSelector "input"
+                                [ withAttribute "readonly"
+                                    selectedStyle
+                                , paddingRight (rem 2.5)
+                                ]
                             ]
                         ]
                     ]
@@ -198,7 +220,7 @@ view attrs (DropdownFilter config) =
         iconRight =
             if String.length config.input > 0 then
                 Icon.cross
-                    [ Events.onClick (config.onInput "")
+                    [ Events.onClick (config.onSelect Nothing)
                     , css
                         [ position absolute
                         , top (pct 50)
@@ -237,7 +259,10 @@ view attrs (DropdownFilter config) =
             )
         |> Tooltip.withContent
             (\_ ->
-                if config.isLoading then
+                if hasSelectedValue dropdown then
+                    Html.nothing
+
+                else if config.isLoading then
                     Html.div
                         [ css
                             [ height (rem 8)
@@ -268,12 +293,11 @@ view attrs (DropdownFilter config) =
                     (\onFocus ->
                         [ Events.on "focusout" (Decode.succeed (onFocus False))
                         , Events.on "focusin" (Decode.succeed (onFocus True))
-                        , css [ descendants [ class "tooltip" [ width (pct 100) ] ] ]
                         ]
                     )
                 |> Maybe.withDefault []
              )
-                ++ attrs
+                ++ (css [ descendants [ class "tooltip" [ width (pct 100) ] ] ] :: attrs)
             )
             [ textInput
             , iconRight
@@ -298,3 +322,8 @@ withIsLoading isLoading (DropdownFilter config) =
 withSearchIcon : Bool -> DropdownFilter a msg -> DropdownFilter a msg
 withSearchIcon hasSearchIcon (DropdownFilter config) =
     DropdownFilter { config | hasSearchIcon = hasSearchIcon }
+
+
+hasSelectedValue : DropdownFilter a msg -> Bool
+hasSelectedValue (DropdownFilter config) =
+    Maybe.isJust config.selectedValue

@@ -35,13 +35,14 @@ type alias Config =
     , activeRadioButton : String
     , textInputContent : String
     , sortableTable : Stories.SortableTableSharedTypes.Model
+    , selectedSearchComponent : Maybe FinancingVariant
     }
 
 
 type Msg
     = AccordionMsg Accordion.Msg
     | SearchComponentInput String
-    | SearchComponentSelected (Item FinancingVariant)
+    | SearchComponentSelected (Maybe (Item FinancingVariant))
     | SearchComponentFocus Bool
     | NoOp
     | FocusMultiSelectDropdown Bool
@@ -83,6 +84,7 @@ init =
                 , open = False
                 }
     , searchComponentInput = ""
+    , selectedSearchComponent = Nothing
     , hasMultiSelectDropdownFocus = False
     , isChoice1 = False
     , isChoice2 = False
@@ -127,7 +129,8 @@ update msg config =
 
         SearchComponentSelected item ->
             { config
-                | searchComponentInput = item.text
+                | searchComponentInput = item |> Maybe.map .text |> Maybe.withDefault ""
+                , selectedSearchComponent = item |> Maybe.map .value
                 , searchHasFocus = False
             }
 
