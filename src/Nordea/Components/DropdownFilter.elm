@@ -7,54 +7,10 @@ module Nordea.Components.DropdownFilter exposing
     , withIsLoading
     , withOnFocus
     , withSearchIcon
+    , withSmallSize
     )
 
-import Css
-    exposing
-        ( absolute
-        , alignItems
-        , backgroundColor
-        , border
-        , borderBottom3
-        , borderBottomLeftRadius
-        , borderBottomRightRadius
-        , borderBox
-        , borderLeft3
-        , borderRight3
-        , boxSizing
-        , center
-        , color
-        , column
-        , cursor
-        , deg
-        , displayFlex
-        , flexDirection
-        , height
-        , hover
-        , justifyContent
-        , listStyle
-        , margin2
-        , marginTop
-        , maxHeight
-        , none
-        , overflowY
-        , padding
-        , padding3
-        , paddingRight
-        , pct
-        , pointer
-        , pointerEvents
-        , position
-        , rem
-        , right
-        , rotate
-        , scroll
-        , solid
-        , top
-        , transforms
-        , translateY
-        , width
-        )
+import Css exposing (absolute, alignItems, backgroundColor, border, borderBottom3, borderBottomLeftRadius, borderBottomRightRadius, borderBox, borderLeft3, borderRight3, boxSizing, center, color, column, cursor, deg, displayFlex, flexDirection, fontSize, height, hover, justifyContent, lineHeight, listStyle, margin2, marginTop, maxHeight, none, overflowY, padding, padding3, padding4, paddingRight, pct, pointer, pointerEvents, position, rem, right, rotate, scroll, solid, top, transforms, translateY, width)
 import Css.Global exposing (class, descendants, typeSelector, withAttribute)
 import Html.Events.Extra as Events
 import Html.Styled as Html exposing (Html)
@@ -95,7 +51,13 @@ type alias DropdownFilterProperties a msg =
     , isLoading : Bool
     , hasSearchIcon : Bool
     , selectedValue : Maybe a
+    , size : Size
     }
+
+
+type Size
+    = StandardSize
+    | SmallSize
 
 
 type DropdownFilter a msg
@@ -122,6 +84,7 @@ init { onInput, input, onSelect, items, selectedValue } =
         , isLoading = False
         , hasSearchIcon = False
         , selectedValue = selectedValue
+        , size = StandardSize
         }
 
 
@@ -140,16 +103,26 @@ view attrs ((DropdownFilter config) as dropdown) =
                         [ css [ color Colors.gray, margin2 (rem 0) (rem 0.625) ] ]
                         [ Text.textTinyLight |> Text.view [] [ Html.text text ] ]
 
+                sizeSpecificStyling =
+                    case config.size of
+                        StandardSize ->
+                            [ height (rem 2.5), fontSize (rem 1), padding4 (rem 0.25) (rem 2.5) (rem 0.25) (rem 0.75), lineHeight (rem 1.4) ]
+
+                        SmallSize ->
+                            [ height (rem 1.6), fontSize (rem 0.75), padding4 (rem 0.25) (rem 0.25) (rem 0.25) (rem 0.5), lineHeight (rem 1) ]
+
                 viewItem onSelectValue item =
                     Html.li
                         [ Events.onClick (onSelectValue (Just item))
                         , Attrs.fromUnstyled (Events.onEnter (onSelectValue (Just item)))
                         , tabindex 0
                         , css
-                            [ padding (rem 0.75)
-                            , hover [ backgroundColor Colors.coolGray ]
-                            , cursor pointer
-                            ]
+                            ([ padding (rem 0.75)
+                             , hover [ backgroundColor Colors.coolGray ]
+                             , cursor pointer
+                             ]
+                                ++ sizeSpecificStyling
+                            )
                         ]
                         [ Html.text item.text ]
             in
@@ -196,11 +169,21 @@ view attrs ((DropdownFilter config) as dropdown) =
 
                     else
                         []
+
+                componentBase =
+                    TextInput.init config.input
+                        |> TextInput.withError (config.hasError || showHasNoMatch)
+                        |> TextInput.withOnInput config.onInput
+                        |> TextInput.withSearchIcon config.hasSearchIcon
+
+                componentWithSize =
+                    if config.size == SmallSize then
+                        componentBase |> TextInput.withSmallSize
+
+                    else
+                        componentBase
             in
-            TextInput.init config.input
-                |> TextInput.withError (config.hasError || showHasNoMatch)
-                |> TextInput.withOnInput config.onInput
-                |> TextInput.withSearchIcon config.hasSearchIcon
+            componentWithSize
                 |> TextInput.view
                     [ readonly (hasSelectedValue dropdown)
                     , css
@@ -232,7 +215,15 @@ view attrs ((DropdownFilter config) as dropdown) =
                     ]
 
             else
-                Icon.chevronDownFilled
+                (case
+                    config.size
+                 of
+                    StandardSize ->
+                        Icon.chevronDownFilled
+
+                    SmallSize ->
+                        Icon.chevronDownFilledSmall
+                )
                     [ css
                         [ position absolute
                         , top (pct 50)
@@ -322,6 +313,11 @@ withIsLoading isLoading (DropdownFilter config) =
 withSearchIcon : Bool -> DropdownFilter a msg -> DropdownFilter a msg
 withSearchIcon hasSearchIcon (DropdownFilter config) =
     DropdownFilter { config | hasSearchIcon = hasSearchIcon }
+
+
+withSmallSize : DropdownFilter a msg -> DropdownFilter a msg
+withSmallSize (DropdownFilter config) =
+    DropdownFilter { config | size = SmallSize }
 
 
 hasSelectedValue : DropdownFilter a msg -> Bool
