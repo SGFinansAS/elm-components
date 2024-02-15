@@ -165,8 +165,7 @@ view attrs ((DropdownFilter config) as dropdown) =
                         , Attrs.fromUnstyled (Events.onEnter (onSelectValue (Just item)))
                         , tabindex 0
                         , css
-                            ([ padding (rem 0.75)
-                             , hover [ backgroundColor Colors.coolGray ]
+                            ([ hover [ backgroundColor Colors.coolGray ]
                              , cursor pointer
                              ]
                                 ++ sizeSpecificStyling
