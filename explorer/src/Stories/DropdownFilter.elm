@@ -137,4 +137,57 @@ stories =
                     [ DropdownFilter.view [] defaultOptions ]
           , {}
           )
+        , ( "Small"
+          , \model ->
+                Html.div [ css [ displayFlex, flexDirection column ] ]
+                    [ DropdownFilter.init
+                        { onInput = SearchComponentInput
+                        , input = model.customModel.searchComponentInput
+                        , onSelect = SearchComponentSelected
+                        , items = searchResult
+                        , selectedValue = model.customModel.selectedSearchComponent
+                        }
+                        |> DropdownFilter.withHasFocus model.customModel.searchHasFocus
+                        |> DropdownFilter.withOnFocus SearchComponentFocus
+                        |> DropdownFilter.withSmallSize
+                        |> DropdownFilter.view []
+                    ]
+          , {}
+          )
+        , ( "Small with search icon"
+          , \model ->
+                Html.div [ css [ displayFlex, flexDirection column ] ]
+                    [ DropdownFilter.init
+                        { onInput = SearchComponentInput
+                        , input = model.customModel.searchComponentInput
+                        , onSelect = SearchComponentSelected
+                        , items = searchResult
+                        , selectedValue = model.customModel.selectedSearchComponent
+                        }
+                        |> DropdownFilter.withHasFocus model.customModel.searchHasFocus
+                        |> DropdownFilter.withOnFocus SearchComponentFocus
+                        |> DropdownFilter.withSmallSize
+                        |> DropdownFilter.withSearchIcon True
+                        |> DropdownFilter.view []
+                    ]
+          , {}
+          )
+        , ( "Small with loading"
+          , \model ->
+                Html.div [ css [ displayFlex, flexDirection column ] ]
+                    [ DropdownFilter.init
+                        { onInput = SearchComponentInput
+                        , input = model.customModel.searchComponentInput
+                        , onSelect = SearchComponentSelected
+                        , items = searchResult
+                        , selectedValue = model.customModel.selectedSearchComponent
+                        }
+                        |> DropdownFilter.withHasFocus model.customModel.searchHasFocus
+                        |> DropdownFilter.withOnFocus SearchComponentFocus
+                        |> DropdownFilter.withSmallSize
+                        |> DropdownFilter.withIsLoading True
+                        |> DropdownFilter.view []
+                    ]
+          , {}
+          )
         ]
