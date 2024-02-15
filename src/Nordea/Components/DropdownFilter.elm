@@ -41,7 +41,6 @@ import Css
         , maxHeight
         , none
         , overflowY
-        , padding
         , padding3
         , padding4
         , paddingRight
