@@ -156,8 +156,8 @@ gridTemplateColumns columns =
 {-| Sets [`grid-template-rows`](https://developer.mozilla.org/en-US/docs/Web/CSS/grid-template-rows).
 -}
 gridTemplateRows : String -> Css.Style
-gridTemplateRows columns =
-    Css.property "grid-template-rows" columns
+gridTemplateRows rows =
+    Css.property "grid-template-rows" rows
 
 
 {-| Sets [`gap`](https://developer.mozilla.org/en-US/docs/Web/CSS/gap).
