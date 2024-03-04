@@ -68,7 +68,7 @@ import Css.Animations as Animations exposing (keyframes)
 import Css.Global exposing (class, descendants)
 import Html.Styled as Html exposing (Attribute, Html)
 import Html.Styled.Attributes as Attr exposing (css)
-import Nordea.Html exposing (styleIf)
+import Nordea.Html exposing (showIf, styleIf)
 import Nordea.Resources.Colors as Colors
 
 
@@ -258,7 +258,7 @@ view attrs children (Tooltip config) =
                 )
                 []
 
-        tooltipContainer =
+        tooltipContainer content =
             let
                 tooltipPosition =
                     case config.placement of
@@ -395,6 +395,8 @@ view attrs children (Tooltip config) =
                             Css.batch []
                     ]
                 ]
+                [ content ]
+                |> showIf (config.visibility /= Hidden)
 
         showTooltipOnHover =
             class "tooltip" [ displayFlex ]
@@ -453,7 +455,7 @@ view attrs children (Tooltip config) =
             ]
             :: attrs
         )
-        (children ++ [ tooltipContainer [ config.content arrow ] ])
+        (children ++ [ tooltipContainer (config.content arrow) ])
 
 
 infoTooltip : List (Attribute msg) -> List (Html msg) -> (List (Attribute msg) -> Html msg) -> Html msg
