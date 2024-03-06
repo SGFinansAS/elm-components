@@ -51,13 +51,13 @@ init onClickClose variant =
 
 
 default : msg -> Modal msg
-default msg =
-    init msg DefaultModal
+default onClickClose =
+    init onClickClose DefaultModal
 
 
 newsModal : msg -> Modal msg
-newsModal msg =
-    init msg NewsModal
+newsModal onClickClose =
+    init onClickClose NewsModal
 
 
 view : List (Attribute msg) -> List (Html msg) -> Modal msg -> Html msg
