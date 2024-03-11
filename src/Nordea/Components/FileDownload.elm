@@ -37,7 +37,6 @@ import Css
 import Css.Global as Css exposing (children, everything)
 import Html.Styled as Html exposing (Attribute, Html)
 import Html.Styled.Attributes exposing (css)
-import Html.Styled.Events exposing (onClick)
 import Nordea.Components.Spinner as Spinner
 import Nordea.Components.Text as Text
 import Nordea.Html as Layout
