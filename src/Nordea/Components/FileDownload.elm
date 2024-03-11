@@ -54,13 +54,12 @@ type alias Translate =
     Translation -> String
 
 
-type FileDownload msg
-    = FileDownload (Config msg)
+type FileDownload
+    = FileDownload Config
 
 
-type alias Config msg =
-    { onDownload : msg
-    , label : String
+type alias Config =
+    { label : String
     , subtitle : String
     , translate : Translate
     , downloadStatus : Status
@@ -73,18 +72,17 @@ type Status
     | Success
 
 
-init : Translate -> msg -> String -> String -> FileDownload msg
-init translate onDownload label subtitle =
+init : Translate -> String -> String -> FileDownload
+init translate label subtitle =
     FileDownload
-        { onDownload = onDownload
-        , label = label
+        { label = label
         , subtitle = subtitle
         , translate = translate
         , downloadStatus = NotAsked
         }
 
 
-view : List (Attribute msg) -> FileDownload msg -> Html msg
+view : List (Attribute msg) -> FileDownload -> Html msg
 view attrs (FileDownload config) =
     let
         downloadIconStatus =
@@ -97,14 +95,6 @@ view attrs (FileDownload config) =
 
                 NotAsked ->
                     Icon.download [ css [ flexShrink (num 0), width (rem 0.875), marginLeft (rem 0.5) ] ]
-
-        downloadOnClick =
-            case config.downloadStatus of
-                Loading ->
-                    []
-
-                _ ->
-                    [ onClick config.onDownload ]
     in
     Html.a
         (css
@@ -117,8 +107,7 @@ view attrs (FileDownload config) =
             , flexBasis (pct 100)
             , cursor pointer
             ]
-            :: downloadOnClick
-            ++ attrs
+            :: attrs
         )
         [ Layout.column []
             [ Text.textLight
@@ -140,7 +129,7 @@ view attrs (FileDownload config) =
         ]
 
 
-withDownloadStatus : Status -> FileDownload msg -> FileDownload msg
+withDownloadStatus : Status -> FileDownload -> FileDownload
 withDownloadStatus downloadStatus (FileDownload config) =
     FileDownload { config | downloadStatus = downloadStatus }
 
