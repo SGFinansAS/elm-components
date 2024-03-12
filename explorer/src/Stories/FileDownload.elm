@@ -12,7 +12,7 @@ stories =
         "FileDownload"
         [ ( "Default"
           , \_ ->
-                FileDownload.init .no  "Leverandørdokumenter" ""
+                FileDownload.init .no "Leverandørdokumenter" ""
                     |> FileDownload.view []
           , {}
           )
