@@ -3,12 +3,14 @@ module Nordea.Components.DropdownFilter exposing
     , ItemGroup
     , init
     , view
+    , withHasError
     , withHasFocus
     , withIsLoading
     , withOnFocus
+    , withPlaceholder
     , withSearchIcon
     , withSmallSize
-    , withHasError, withPlaceholder)
+    )
 
 import Css
     exposing
@@ -227,7 +229,7 @@ view attrs ((DropdownFilter config) as dropdown) =
                     TextInput.init config.input
                         |> TextInput.withError (config.hasError || showHasNoMatch)
                         |> TextInput.withOnInput config.onInput
-                        |> TextInput.withSearchIcon (config.hasSearchIcon)
+                        |> TextInput.withSearchIcon config.hasSearchIcon
                         |> addPlaceholder
 
                 componentWithSize =
