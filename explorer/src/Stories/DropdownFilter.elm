@@ -65,6 +65,23 @@ stories =
                     ]
           , {}
           )
+        , ( "With placeholder"
+          , \model ->
+                Html.div [ css [ displayFlex, flexDirection column ] ]
+                    [ DropdownFilter.init
+                        { onInput = SearchComponentInput
+                        , input = model.customModel.searchComponentInput
+                        , onSelect = SearchComponentSelected
+                        , items = searchResult
+                        , selectedValue = model.customModel.selectedSearchComponent
+                        }
+                        |> DropdownFilter.withHasFocus model.customModel.searchHasFocus
+                        |> DropdownFilter.withOnFocus SearchComponentFocus
+                        |> DropdownFilter.withPlaceholder (Just "Placeholder")
+                        |> DropdownFilter.view []
+                    ]
+          , {}
+          )
         , ( "focused without group"
           , \model ->
                 let
@@ -114,6 +131,24 @@ stories =
                         |> DropdownFilter.withHasFocus model.customModel.searchHasFocus
                         |> DropdownFilter.withOnFocus SearchComponentFocus
                         |> DropdownFilter.withIsLoading True
+                        |> DropdownFilter.view []
+                    ]
+          , {}
+          )
+        , ( "With hasError"
+          , \model ->
+                Html.div [ css [ displayFlex, flexDirection column ] ]
+                    [ DropdownFilter.init
+                        { onInput = SearchComponentInput
+                        , input = model.customModel.searchComponentInput
+                        , onSelect = SearchComponentSelected
+                        , items = searchResult
+                        , selectedValue = Nothing
+                        }
+                        |> DropdownFilter.withHasFocus model.customModel.searchHasFocus
+                        |> DropdownFilter.withOnFocus SearchComponentFocus
+                        |> DropdownFilter.withIsLoading True
+                        |> DropdownFilter.withHasError True
                         |> DropdownFilter.view []
                     ]
           , {}
