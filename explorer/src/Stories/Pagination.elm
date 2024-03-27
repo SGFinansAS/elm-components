@@ -1,7 +1,7 @@
 module Stories.Pagination exposing (stories)
 
 import Config exposing (Config, Msg(..))
-import Nordea.Components.Pagination as Pagination exposing (OptionalConfig(..))
+import Nordea.Components.Pagination as Pagination exposing (NavigationButtonType(..), OptionalConfig(..))
 import UIExplorer exposing (UI)
 import UIExplorer.Styled exposing (styledStoriesOf)
 
@@ -29,7 +29,7 @@ stories =
                     , windowSize = 5
                     , pageOnClickMsg = PaginationClickedAt
                     }
-                    |> Pagination.view [ NextButton "Next", PrevButton "Prev" ] []
+                    |> Pagination.view [ NavigationButton NextButton "Next", NavigationButton PrevButton "Prev" ] []
           , {}
           )
         , ( "Standard use case with even window"

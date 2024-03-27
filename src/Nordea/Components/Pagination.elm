@@ -1,4 +1,4 @@
-module Nordea.Components.Pagination exposing (OptionalConfig(..), Pagination, init, view)
+module Nordea.Components.Pagination exposing (NavigationButtonType(..), OptionalConfig(..), Pagination, init, view)
 
 import Css exposing (backgroundColor, boxShadow, color, displayFlex, flexDirection, focus, hidden, listStyleType, none, pseudoClass, textDecoration, visibility, visible)
 import Html.Attributes.Extra as Attrs
@@ -17,9 +17,13 @@ type Pagination msg
     = Pagination (Properties msg)
 
 
+type NavigationButtonType
+    = PrevButton
+    | NextButton
+
+
 type OptionalConfig
-    = PrevButton String
-    | NextButton String
+    = NavigationButton NavigationButtonType String
 
 
 type alias Properties msg =
@@ -43,11 +47,13 @@ view optionals attr (Pagination properties) =
                 |> List.foldl
                     (\o acc ->
                         case o of
-                            PrevButton s ->
-                                { acc | prevButton = Just s }
+                            NavigationButton t s ->
+                                case t of
+                                    PrevButton ->
+                                        { acc | prevButton = Just s }
 
-                            NextButton s ->
-                                { acc | nextButton = Just s }
+                                    NextButton ->
+                                        { acc | nextButton = Just s }
                     )
                     { prevButton = Nothing, nextButton = Nothing }
 
@@ -79,38 +85,35 @@ view optionals attr (Pagination properties) =
                         [ Text.init TextTinyHeavy |> Text.view [] [ Html.text textShownForPage ] ]
                 ]
 
+        navigationElement ofType textOnButton =
+            let
+                ( hiddenOnPage, offset ) =
+                    case ofType of
+                        PrevButton ->
+                            ( 1, -1 )
+
+                        NextButton ->
+                            ( properties.totalPages, 1 )
+            in
+            paginationElement
+                [ css
+                    [ if properties.currentPage == hiddenOnPage then
+                        visibility hidden
+
+                      else
+                        visibility visible
+                    ]
+                ]
+                ( properties.currentPage + offset, textOnButton )
+
         prevButton =
             optionalConfig.prevButton
-                |> Maybe.map
-                    (\s ->
-                        paginationElement
-                            [ css
-                                [ if properties.currentPage == 1 then
-                                    visibility hidden
-
-                                  else
-                                    visibility visible
-                                ]
-                            ]
-                            ( properties.currentPage - 1, s )
-                    )
+                |> Maybe.map (navigationElement PrevButton)
                 |> Maybe.withDefault Html.nothing
 
         nextButton =
             optionalConfig.nextButton
-                |> Maybe.map
-                    (\s ->
-                        paginationElement
-                            [ css
-                                [ if properties.currentPage == properties.totalPages then
-                                    visibility hidden
-
-                                  else
-                                    visibility visible
-                                ]
-                            ]
-                            ( properties.currentPage + 1, s )
-                    )
+                |> Maybe.map (navigationElement NextButton)
                 |> Maybe.withDefault Html.nothing
 
         fixUnderflowingNumbers l =
@@ -166,17 +169,20 @@ view optionals attr (Pagination properties) =
                 a :: b :: c ->
                     let
                         ( aVal, bVal ) =
-                            ( min (Tuple.first a) (Tuple.first b), max (Tuple.first a) (Tuple.first b) )
+                            ( Tuple.first a, Tuple.first b )
+
+                        distanceToCurrentPage p =
+                            abs (properties.currentPage - p)
 
                         closestPageToCurrentPage =
-                            if abs (properties.currentPage - aVal) < abs (properties.currentPage - bVal) then
+                            if distanceToCurrentPage aVal < distanceToCurrentPage bVal then
                                 aVal
 
                             else
                                 bVal
 
                         dotValue =
-                            if b > a then
+                            if bVal > aVal then
                                 closestPageToCurrentPage - 1
 
                             else
