@@ -1,6 +1,6 @@
 module Nordea.Components.Pagination exposing (NavigationButtonType(..), OptionalConfig(..), Pagination, init, view)
 
-import Css exposing (backgroundColor, boxShadow, color, displayFlex, flexDirection, focus, hidden, listStyleType, none, pseudoClass, textDecoration, visibility, visible)
+import Css exposing (backgroundColor, borderRadius, boxShadow, color, displayFlex, flexDirection, focus, hidden, listStyleType, none, padding, paddingBottom, paddingTop, pseudoClass, rem, textDecoration, visibility, visible)
 import Html.Attributes.Extra as Attrs
 import Html.Styled as Html exposing (Attribute, Html)
 import Html.Styled.Attributes as Attrs exposing (css, fromUnstyled)
@@ -70,12 +70,15 @@ view optionals attr (Pagination properties) =
                             ((if numPage == properties.currentPage then
                                 [ backgroundColor Colors.deepBlue |> Css.important
                                 , color white |> Css.important
+                                , borderRadius (rem 0.2)
                                 ]
 
                               else
                                 []
                              )
-                                ++ [ textDecoration none
+                                ++ [ paddingTop (rem 0.25)
+                                   , paddingBottom (rem 0.25)
+                                   , textDecoration none
                                    , focus [ boxShadow none ]
                                    , pseudoClass "focus-visible" [ Css.property "box-shadow" ("0rem 0rem 0rem 0.25rem " ++ Themes.colorVariable Colors.haasBlue) ]
                                    ]
