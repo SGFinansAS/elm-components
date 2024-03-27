@@ -37,9 +37,7 @@ type alias Properties msg =
     , showFirstPageAlways : Bool
     , showLastPageAlways : Bool
     , showPrevButton : Bool
-    , hidePrevButtonIfFirstPage : Maybe Bool
     , showNextButton : Bool
-    , hideNextButtonIfLastPage : Maybe Bool
     , pageOnClickMsg : Int -> msg
     }
 
@@ -77,16 +75,10 @@ view attr (Pagination properties) =
                         [ Text.init TextTinyHeavy |> Text.view [] [ Html.text textShownForPage ] ]
                 ]
 
-        hidePrevButtonIfFirstPage =
-            properties.hidePrevButtonIfFirstPage |> Maybe.withDefault False
-
-        hideNextButtonIfLastPage =
-            properties.hideNextButtonIfLastPage |> Maybe.withDefault False
-
         prev =
             paginationElement
                 [ css
-                    [ if hidePrevButtonIfFirstPage && properties.currentPage == 1 then
+                    [ if properties.currentPage == 1 then
                         visibility hidden
 
                       else
@@ -99,7 +91,7 @@ view attr (Pagination properties) =
         next =
             paginationElement
                 [ css
-                    [ if hideNextButtonIfLastPage && properties.currentPage == properties.totalPages then
+                    [ if properties.currentPage == properties.totalPages then
                         visibility hidden
 
                       else

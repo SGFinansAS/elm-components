@@ -18,10 +18,8 @@ stories =
                     , windowSize = 5
                     , showFirstPageAlways = True
                     , showLastPageAlways = True
-                    , showPrevButton = False
-                    , showNextButton = False
-                    , hideNextButtonIfLastPage = Nothing
-                    , hidePrevButtonIfFirstPage = Nothing
+                    , showPrevButton = True
+                    , showNextButton = True
                     , pageOnClickMsg = PaginationClickedAt
                     }
                     |> Pagination.view []
@@ -37,8 +35,6 @@ stories =
                     , showLastPageAlways = False
                     , showPrevButton = False
                     , showNextButton = False
-                    , hideNextButtonIfLastPage = Nothing
-                    , hidePrevButtonIfFirstPage = Nothing
                     , pageOnClickMsg = PaginationClickedAt
                     }
                     |> Pagination.view []
@@ -54,8 +50,6 @@ stories =
                     , showLastPageAlways = True
                     , showPrevButton = False
                     , showNextButton = False
-                    , hideNextButtonIfLastPage = Nothing
-                    , hidePrevButtonIfFirstPage = Nothing
                     , pageOnClickMsg = PaginationClickedAt
                     }
                     |> Pagination.view []
@@ -71,8 +65,6 @@ stories =
                     , showLastPageAlways = False
                     , showPrevButton = False
                     , showNextButton = False
-                    , hideNextButtonIfLastPage = Nothing
-                    , hidePrevButtonIfFirstPage = Nothing
                     , pageOnClickMsg = PaginationClickedAt
                     }
                     |> Pagination.view []
@@ -88,8 +80,6 @@ stories =
                     , showLastPageAlways = True
                     , showPrevButton = False
                     , showNextButton = False
-                    , hideNextButtonIfLastPage = Nothing
-                    , hidePrevButtonIfFirstPage = Nothing
                     , pageOnClickMsg = PaginationClickedAt
                     }
                     |> Pagination.view []
@@ -105,8 +95,6 @@ stories =
                     , showLastPageAlways = True
                     , showPrevButton = False
                     , showNextButton = False
-                    , hideNextButtonIfLastPage = Nothing
-                    , hidePrevButtonIfFirstPage = Nothing
                     , pageOnClickMsg = PaginationClickedAt
                     }
                     |> Pagination.view []
@@ -122,8 +110,6 @@ stories =
                     , showLastPageAlways = False
                     , showPrevButton = False
                     , showNextButton = False
-                    , hideNextButtonIfLastPage = Nothing
-                    , hidePrevButtonIfFirstPage = Nothing
                     , pageOnClickMsg = PaginationClickedAt
                     }
                     |> Pagination.view []
@@ -139,8 +125,6 @@ stories =
                     , showLastPageAlways = False
                     , showPrevButton = True
                     , showNextButton = True
-                    , hideNextButtonIfLastPage = Nothing
-                    , hidePrevButtonIfFirstPage = Nothing
                     , pageOnClickMsg = PaginationClickedAt
                     }
                     |> Pagination.view []
