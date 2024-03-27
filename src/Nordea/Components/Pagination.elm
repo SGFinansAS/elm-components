@@ -1,6 +1,6 @@
 module Nordea.Components.Pagination exposing (NavigationButtonType(..), OptionalConfig(..), Pagination, init, view)
 
-import Css exposing (backgroundColor, borderRadius, boxShadow, color, displayFlex, flexDirection, focus, hidden, listStyleType, none, padding, paddingBottom, paddingTop, pseudoClass, rem, textDecoration, visibility, visible)
+import Css exposing (backgroundColor, borderRadius, boxShadow, color, displayFlex, flexDirection, focus, hidden, listStyleType, none, paddingBottom, paddingTop, pseudoClass, rem, textDecoration, visibility, visible)
 import Html.Attributes.Extra as Attrs
 import Html.Styled as Html exposing (Attribute, Html)
 import Html.Styled.Attributes as Attrs exposing (css, fromUnstyled)
