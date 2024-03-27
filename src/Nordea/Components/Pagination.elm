@@ -79,7 +79,7 @@ view optionals attr (Pagination properties) =
                         [ Text.init TextTinyHeavy |> Text.view [] [ Html.text textShownForPage ] ]
                 ]
 
-        prev =
+        prevButton =
             optionalConfig.prevButton
                 |> Maybe.map
                     (\s ->
@@ -96,7 +96,7 @@ view optionals attr (Pagination properties) =
                     )
                 |> Maybe.withDefault Html.nothing
 
-        next =
+        nextButton =
             optionalConfig.nextButton
                 |> Maybe.map
                     (\s ->
@@ -131,8 +131,7 @@ view optionals attr (Pagination properties) =
             in
             (List.range 1 numOverflowing
                 |> List.map (\n -> -n + 1 + properties.currentPage - (1 + properties.windowSize // 2))
-                |> List.reverse
-                |> List.takeWhileRight (\n -> n >= 1)
+                |> List.takeWhile (\n -> n >= 1)
             )
                 ++ (l |> List.dropWhileRight (\n -> n > properties.totalPages))
 
@@ -202,4 +201,4 @@ view optionals attr (Pagination properties) =
                 |> List.map (paginationElement [])
     in
     Html.ul (css [ listStyleType none, displayFlex, flexDirection Css.row ] :: attr)
-        (prev :: res ++ [ next ])
+        (prevButton :: res ++ [ nextButton ])
