@@ -91,7 +91,6 @@ main =
                 ]
             |> UIExplorer.category "Components"
                 [ Accordion.stories
-                , Pagination.stories
                 , AccordionMenu.stories
                 , Badge.stories
                 , Button.stories
@@ -115,6 +114,7 @@ main =
                 , LottiePlayer.stories
                 , Modal.stories
                 , NumberInput.stories
+                , Pagination.stories
                 , ProgressBar.stories
                 , ProgressBarStepper.stories
                 , RadioButton.stories
