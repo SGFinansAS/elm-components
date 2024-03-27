@@ -1,0 +1,211 @@
+module Nordea.Components.Pagination exposing (Pagination, init, view)
+
+import Css
+    exposing
+        ( backgroundColor
+        , boxShadow
+        , color
+        , displayFlex
+        , flexDirection
+        , focus
+        , hidden
+        , listStyleType
+        , none
+        , textDecoration
+        , visibility
+        , visible
+        )
+import Html.Attributes.Extra as Attrs
+import Html.Styled as Html exposing (Attribute, Html)
+import Html.Styled.Attributes as Attrs exposing (css, fromUnstyled)
+import Html.Styled.Events exposing (onClick)
+import List.Extra as List
+import Nordea.Components.Button as Button
+import Nordea.Components.Text as Text exposing (Variant(..))
+import Nordea.Html exposing (showIf)
+import Nordea.Resources.Colors as Colors exposing (white)
+
+
+type Pagination msg
+    = Pagination (Properties msg)
+
+
+type alias Properties msg =
+    { totalPages : Int
+    , currentPage : Int
+    , windowSize : Int
+    , showFirstPageAlways : Bool
+    , showLastPageAlways : Bool
+    , showPrevButton : Bool
+    , hidePrevButtonIfFirstPage : Maybe Bool
+    , showNextButton : Bool
+    , hideNextButtonIfLastPage : Maybe Bool
+    , pageOnClickMsg : Int -> msg
+    }
+
+
+init : Properties msg -> Pagination msg
+init properties =
+    Pagination properties
+
+
+view : List (Attribute msg) -> Pagination msg -> Html msg
+view attr (Pagination properties) =
+    let
+        paginationElement attrs ( numPage, textShownForPage ) =
+            Html.li attrs
+                [ Button.flatLinkStyle
+                    |> Button.view
+                        [ if numPage >= 1 && numPage <= properties.totalPages then
+                            onClick (properties.pageOnClickMsg numPage)
+
+                          else
+                            Attrs.empty |> fromUnstyled
+                        , css
+                            ((if numPage == properties.currentPage then
+                                [ backgroundColor Colors.deepBlue |> Css.important
+                                , color white |> Css.important
+                                ]
+
+                              else
+                                []
+                             )
+                                ++ [ textDecoration none, focus [ boxShadow none ] ]
+                             --override the focus and underline from the main component
+                            )
+                        ]
+                        [ Text.init TextTinyHeavy |> Text.view [] [ Html.text textShownForPage ] ]
+                ]
+
+        hidePrevButtonIfFirstPage =
+            properties.hidePrevButtonIfFirstPage |> Maybe.withDefault False
+
+        hideNextButtonIfLastPage =
+            properties.hideNextButtonIfLastPage |> Maybe.withDefault False
+
+        prev =
+            paginationElement
+                [ css
+                    [ if hidePrevButtonIfFirstPage && properties.currentPage == 1 then
+                        visibility hidden
+
+                      else
+                        visibility visible
+                    ]
+                ]
+                ( properties.currentPage - 1, "Previous" )
+                |> showIf properties.showPrevButton
+
+        next =
+            paginationElement
+                [ css
+                    [ if hideNextButtonIfLastPage && properties.currentPage == properties.totalPages then
+                        visibility hidden
+
+                      else
+                        visibility visible
+                    ]
+                ]
+                ( properties.currentPage + 1, "Next" )
+                |> showIf properties.showNextButton
+
+        fixUnderflowingNumbers l =
+            let
+                numUnderFlowing =
+                    l |> List.takeWhile (\n -> n < 1) |> List.length
+            in
+            (l |> List.drop numUnderFlowing)
+                ++ (List.range 1 numUnderFlowing
+                        |> List.map (\n -> n + properties.windowSize + properties.currentPage - (1 + properties.windowSize // 2))
+                        |> List.takeWhile (\n -> n <= properties.totalPages)
+                   )
+
+        fixOverflowingNumbers l =
+            let
+                numOverflowing =
+                    l |> List.takeWhileRight (\n -> n > properties.totalPages) |> List.length
+            in
+            (List.range 1 numOverflowing
+                |> List.map (\n -> -n + 1 + properties.currentPage - (1 + properties.windowSize // 2))
+                |> List.reverse
+                |> List.takeWhileRight (\n -> n >= 1)
+            )
+                ++ (l |> List.dropWhileRight (\n -> n > properties.totalPages))
+
+        adjustOffset l =
+            if properties.showFirstPageAlways && List.member 1 l then
+                l |> List.map (\n -> n + 1)
+
+            else
+                l
+
+        adjustTailOffset l =
+            if properties.showLastPageAlways && List.member properties.totalPages l then
+                l |> List.map (\n -> n - 1)
+
+            else
+                l
+
+        numbers =
+            (if properties.showFirstPageAlways then
+                [ 1 ]
+
+             else
+                []
+            )
+                ++ (List.range 1 (min properties.totalPages properties.windowSize)
+                        |> List.map (\n -> n + properties.currentPage - (2 + properties.windowSize) // 2)
+                        |> fixUnderflowingNumbers
+                        |> fixOverflowingNumbers
+                        |> adjustOffset
+                        |> adjustTailOffset
+                   )
+                ++ (if properties.showLastPageAlways then
+                        [ properties.totalPages ]
+
+                    else
+                        []
+                   )
+                |> List.unique
+
+        addDots ns =
+            case ns of
+                a :: b :: c ->
+                    let
+                        ( aVal, bVal ) =
+                            ( min (Tuple.first a) (Tuple.first b), max (Tuple.first a) (Tuple.first b) )
+
+                        closestPageToCurrentPage =
+                            if abs (properties.currentPage - aVal) < abs (properties.currentPage - bVal) then
+                                aVal
+
+                            else
+                                bVal
+
+                        dotValue =
+                            if b > a then
+                                closestPageToCurrentPage - 1
+
+                            else
+                                closestPageToCurrentPage + 1
+                    in
+                    if abs (bVal - aVal) >= 2 then
+                        a :: ( dotValue, "..." ) :: b :: c
+
+                    else
+                        ns
+
+                _ ->
+                    ns
+
+        res =
+            numbers
+                |> List.map (\n -> ( n, String.fromInt n ))
+                |> addDots
+                |> List.reverse
+                |> addDots
+                |> List.reverse
+                |> List.map (paginationElement [])
+    in
+    Html.ul ([ css [ listStyleType none, displayFlex, flexDirection Css.row ] ] ++ attr)
+        (prev :: res ++ [ next ])

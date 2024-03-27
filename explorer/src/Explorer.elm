@@ -30,6 +30,7 @@ import Stories.LottiePlayer as LottiePlayer
 import Stories.Modal as Modal
 import Stories.MultiSelectDropdown as MultiSelectDropdown
 import Stories.NumberInput as NumberInput
+import Stories.Pagination as Pagination
 import Stories.ProgressBar as ProgressBar
 import Stories.ProgressBarStepper as ProgressBarStepper
 import Stories.RadioButton as RadioButton
@@ -90,6 +91,7 @@ main =
                 ]
             |> UIExplorer.category "Components"
                 [ Accordion.stories
+                , Pagination.stories
                 , AccordionMenu.stories
                 , Badge.stories
                 , Button.stories
