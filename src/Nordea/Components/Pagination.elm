@@ -34,8 +34,6 @@ type alias Properties msg =
     { totalPages : Int
     , currentPage : Int
     , windowSize : Int
-    , showFirstPageAlways : Bool
-    , showLastPageAlways : Bool
     , showPrevButton : Bool
     , showNextButton : Bool
     , pageOnClickMsg : Int -> msg
@@ -125,26 +123,21 @@ view attr (Pagination properties) =
                 ++ (l |> List.dropWhileRight (\n -> n > properties.totalPages))
 
         adjustOffset l =
-            if properties.showFirstPageAlways && List.member 1 l then
+            if List.member 1 l then
                 l |> List.map (\n -> n + 1)
 
             else
                 l
 
         adjustTailOffset l =
-            if properties.showLastPageAlways && List.member properties.totalPages l then
+            if List.member properties.totalPages l then
                 l |> List.map (\n -> n - 1)
 
             else
                 l
 
         numbers =
-            (if properties.showFirstPageAlways then
-                [ 1 ]
-
-             else
-                []
-            )
+            [ 1 ]
                 ++ (List.range 1 (min properties.totalPages properties.windowSize)
                         |> List.map (\n -> n + properties.currentPage - (2 + properties.windowSize) // 2)
                         |> fixUnderflowingNumbers
@@ -152,12 +145,7 @@ view attr (Pagination properties) =
                         |> adjustOffset
                         |> adjustTailOffset
                    )
-                ++ (if properties.showLastPageAlways then
-                        [ properties.totalPages ]
-
-                    else
-                        []
-                   )
+                ++ [ properties.totalPages ]
                 |> List.unique
 
         addDots ns =

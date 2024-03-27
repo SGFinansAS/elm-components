@@ -16,25 +16,21 @@ stories =
                     { totalPages = 50
                     , currentPage = model.customModel.paginationCurrentPage
                     , windowSize = 5
-                    , showFirstPageAlways = True
-                    , showLastPageAlways = True
-                    , showPrevButton = True
-                    , showNextButton = True
+                    , showPrevButton = False
+                    , showNextButton = False
                     , pageOnClickMsg = PaginationClickedAt
                     }
                     |> Pagination.view []
           , {}
           )
-        , ( "Standard use case with odd window and without first and last"
+        , ( "Standard use case with odd window and with next and prev"
           , \model ->
                 Pagination.init
                     { totalPages = 50
                     , currentPage = model.customModel.paginationCurrentPage
                     , windowSize = 5
-                    , showFirstPageAlways = False
-                    , showLastPageAlways = False
-                    , showPrevButton = False
-                    , showNextButton = False
+                    , showPrevButton = True
+                    , showNextButton = True
                     , pageOnClickMsg = PaginationClickedAt
                     }
                     |> Pagination.view []
@@ -46,23 +42,6 @@ stories =
                     { totalPages = 50
                     , currentPage = model.customModel.paginationCurrentPage
                     , windowSize = 4
-                    , showFirstPageAlways = True
-                    , showLastPageAlways = True
-                    , showPrevButton = False
-                    , showNextButton = False
-                    , pageOnClickMsg = PaginationClickedAt
-                    }
-                    |> Pagination.view []
-          , {}
-          )
-        , ( "Standard use case with even window and without first and last"
-          , \model ->
-                Pagination.init
-                    { totalPages = 50
-                    , currentPage = model.customModel.paginationCurrentPage
-                    , windowSize = 4
-                    , showFirstPageAlways = False
-                    , showLastPageAlways = False
                     , showPrevButton = False
                     , showNextButton = False
                     , pageOnClickMsg = PaginationClickedAt
@@ -76,8 +55,6 @@ stories =
                     { totalPages = 50
                     , currentPage = model.customModel.paginationCurrentPage
                     , windowSize = 2
-                    , showFirstPageAlways = True
-                    , showLastPageAlways = True
                     , showPrevButton = False
                     , showNextButton = False
                     , pageOnClickMsg = PaginationClickedAt
@@ -85,46 +62,14 @@ stories =
                     |> Pagination.view []
           , {}
           )
-        , ( "Edge case: window size 1, show first and last always"
+        , ( "Edge case: window size 1"
           , \model ->
                 Pagination.init
                     { totalPages = 10
                     , currentPage = model.customModel.paginationCurrentPage
                     , windowSize = 1
-                    , showFirstPageAlways = True
-                    , showLastPageAlways = True
                     , showPrevButton = False
                     , showNextButton = False
-                    , pageOnClickMsg = PaginationClickedAt
-                    }
-                    |> Pagination.view []
-          , {}
-          )
-        , ( "Edge case: window size 1, do not show first and last (useless)"
-          , \model ->
-                Pagination.init
-                    { totalPages = 10
-                    , currentPage = model.customModel.paginationCurrentPage
-                    , windowSize = 1
-                    , showFirstPageAlways = False
-                    , showLastPageAlways = False
-                    , showPrevButton = False
-                    , showNextButton = False
-                    , pageOnClickMsg = PaginationClickedAt
-                    }
-                    |> Pagination.view []
-          , {}
-          )
-        , ( "Edge case: window size 1, show next and prev (more useful)"
-          , \model ->
-                Pagination.init
-                    { totalPages = 10
-                    , currentPage = model.customModel.paginationCurrentPage
-                    , windowSize = 1
-                    , showFirstPageAlways = False
-                    , showLastPageAlways = False
-                    , showPrevButton = True
-                    , showNextButton = True
                     , pageOnClickMsg = PaginationClickedAt
                     }
                     |> Pagination.view []
