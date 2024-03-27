@@ -70,17 +70,17 @@ view optionals attr (Pagination properties) =
                             ((if numPage == properties.currentPage then
                                 [ backgroundColor Colors.deepBlue |> Css.important
                                 , color white |> Css.important
-                                , borderRadius (rem 0.2)
+                                , borderRadius (rem 0.2) |> Css.important
                                 ]
 
                               else
                                 []
                              )
-                                ++ [ paddingTop (rem 0.25)
-                                   , paddingBottom (rem 0.25)
-                                   , textDecoration none
-                                   , focus [ boxShadow none ]
-                                   , pseudoClass "focus-visible" [ Css.property "box-shadow" ("0rem 0rem 0rem 0.25rem " ++ Themes.colorVariable Colors.haasBlue) ]
+                                ++ [ paddingTop (rem 0.25) |> Css.important
+                                   , paddingBottom (rem 0.25) |> Css.important
+                                   , textDecoration none |> Css.important
+                                   , focus [ boxShadow none |> Css.important ]
+                                   , pseudoClass "focus-visible" [ Css.property "box-shadow" ("0rem 0rem 0rem 0.25rem " ++ Themes.colorVariable Colors.haasBlue) |> Css.important ]
                                    ]
                              --override the focus and underline from the main component
                             )
