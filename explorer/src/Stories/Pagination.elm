@@ -65,4 +65,15 @@ stories =
                     |> Pagination.view [] []
           , {}
           )
+        , ( "Total pages < window"
+          , \model ->
+                Pagination.init
+                    { totalPages = 3
+                    , currentPage = model.customModel.paginationCurrentPage
+                    , windowSize = 5
+                    , pageOnClickMsg = PaginationClickedAt
+                    }
+                    |> Pagination.view [] []
+          , {}
+          )
         ]
