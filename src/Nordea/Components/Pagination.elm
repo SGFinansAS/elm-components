@@ -207,5 +207,5 @@ view attr (Pagination properties) =
                 |> List.reverse
                 |> List.map (paginationElement [])
     in
-    Html.ul ([ css [ listStyleType none, displayFlex, flexDirection Css.row ] ] ++ attr)
+    Html.ul (css [ listStyleType none, displayFlex, flexDirection Css.row ] :: attr)
         (prev :: res ++ [ next ])
