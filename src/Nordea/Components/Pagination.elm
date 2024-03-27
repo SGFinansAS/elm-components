@@ -1,4 +1,4 @@
-module Nordea.Components.Pagination exposing (NavigationButtonType(..), OptionalConfig(..), Pagination, init, view)
+module Nordea.Components.Pagination exposing (NavigationButtonType(..), OptionalConfig(..), Pagination, init, updateCurrentPage, view)
 
 import Css exposing (backgroundColor, borderRadius, boxShadow, color, displayFlex, flexDirection, focus, hidden, listStyleType, none, paddingBottom, paddingTop, pseudoClass, rem, textDecoration, visibility, visible)
 import Html.Attributes.Extra as Attrs
@@ -37,6 +37,11 @@ type alias Properties msg =
 init : Properties msg -> Pagination msg
 init properties =
     Pagination properties
+
+
+updateCurrentPage : Int -> Pagination msg -> Pagination msg
+updateCurrentPage currentPage (Pagination properties) =
+    Pagination { properties | currentPage = currentPage }
 
 
 view : List OptionalConfig -> List (Attribute msg) -> Pagination msg -> Html msg
