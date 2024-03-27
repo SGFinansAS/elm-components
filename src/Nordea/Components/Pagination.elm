@@ -1,4 +1,4 @@
-module Nordea.Components.Pagination exposing (Pagination, init, view)
+module Nordea.Components.Pagination exposing (OptionalConfig(..), Pagination, init, view)
 
 import Css exposing (backgroundColor, boxShadow, color, displayFlex, flexDirection, focus, hidden, listStyleType, none, pseudoClass, textDecoration, visibility, visible)
 import Html.Attributes.Extra as Attrs
@@ -8,7 +8,7 @@ import Html.Styled.Events exposing (onClick)
 import List.Extra as List
 import Nordea.Components.Button as Button
 import Nordea.Components.Text as Text exposing (Variant(..))
-import Nordea.Html exposing (showIf)
+import Nordea.Html as Html
 import Nordea.Resources.Colors as Colors exposing (white)
 import Nordea.Themes as Themes
 
@@ -17,12 +17,15 @@ type Pagination msg
     = Pagination (Properties msg)
 
 
+type OptionalConfig
+    = PrevButton String
+    | NextButton String
+
+
 type alias Properties msg =
     { totalPages : Int
     , currentPage : Int
     , windowSize : Int
-    , showPrevButton : Bool
-    , showNextButton : Bool
     , pageOnClickMsg : Int -> msg
     }
 
@@ -32,9 +35,22 @@ init properties =
     Pagination properties
 
 
-view : List (Attribute msg) -> Pagination msg -> Html msg
-view attr (Pagination properties) =
+view : List OptionalConfig -> List (Attribute msg) -> Pagination msg -> Html msg
+view optionals attr (Pagination properties) =
     let
+        optionalConfig =
+            optionals
+                |> List.foldl
+                    (\o acc ->
+                        case o of
+                            PrevButton s ->
+                                { acc | prevButton = Just s }
+
+                            NextButton s ->
+                                { acc | nextButton = Just s }
+                    )
+                    { prevButton = Nothing, nextButton = Nothing }
+
         paginationElement attrs ( numPage, textShownForPage ) =
             Html.li attrs
                 [ Button.flatLinkStyle
@@ -64,30 +80,38 @@ view attr (Pagination properties) =
                 ]
 
         prev =
-            paginationElement
-                [ css
-                    [ if properties.currentPage == 1 then
-                        visibility hidden
+            optionalConfig.prevButton
+                |> Maybe.map
+                    (\s ->
+                        paginationElement
+                            [ css
+                                [ if properties.currentPage == 1 then
+                                    visibility hidden
 
-                      else
-                        visibility visible
-                    ]
-                ]
-                ( properties.currentPage - 1, "Previous" )
-                |> showIf properties.showPrevButton
+                                  else
+                                    visibility visible
+                                ]
+                            ]
+                            ( properties.currentPage - 1, s )
+                    )
+                |> Maybe.withDefault Html.nothing
 
         next =
-            paginationElement
-                [ css
-                    [ if properties.currentPage == properties.totalPages then
-                        visibility hidden
+            optionalConfig.nextButton
+                |> Maybe.map
+                    (\s ->
+                        paginationElement
+                            [ css
+                                [ if properties.currentPage == properties.totalPages then
+                                    visibility hidden
 
-                      else
-                        visibility visible
-                    ]
-                ]
-                ( properties.currentPage + 1, "Next" )
-                |> showIf properties.showNextButton
+                                  else
+                                    visibility visible
+                                ]
+                            ]
+                            ( properties.currentPage + 1, s )
+                    )
+                |> Maybe.withDefault Html.nothing
 
         fixUnderflowingNumbers l =
             let
