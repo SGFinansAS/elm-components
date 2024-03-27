@@ -116,53 +116,43 @@ view optionals attr (Pagination properties) =
                 |> Maybe.map (navigationElement NextButton)
                 |> Maybe.withDefault Html.nothing
 
-        fixUnderflowingNumbers l =
+        adjustOffset computedWindow =
             let
-                numUnderFlowing =
-                    l |> List.takeWhile (\n -> n < 1) |> List.length
+                positiveOffset =
+                    if List.member 1 computedWindow then
+                        1
+
+                    else
+                        0
+
+                negativeOffset =
+                    if List.member properties.totalPages computedWindow then
+                        -1
+
+                    else
+                        0
             in
-            (l |> List.drop numUnderFlowing)
-                ++ (List.range 1 numUnderFlowing
-                        |> List.map (\n -> n + properties.windowSize + properties.currentPage - (1 + properties.windowSize // 2))
-                        |> List.takeWhile (\n -> n <= properties.totalPages)
-                   )
+            computedWindow |> List.map (\n -> n + positiveOffset + negativeOffset)
 
-        fixOverflowingNumbers l =
-            let
-                numOverflowing =
-                    l |> List.takeWhileRight (\n -> n > properties.totalPages) |> List.length
-            in
-            (List.range 1 numOverflowing
-                |> List.map (\n -> -n + 1 + properties.currentPage - (1 + properties.windowSize // 2))
-                |> List.takeWhile (\n -> n >= 1)
-            )
-                ++ (l |> List.dropWhileRight (\n -> n > properties.totalPages))
+        numExpectedOverflowingRightNumbers =
+            max 0 (properties.currentPage + (properties.windowSize - 1) // 2 - properties.totalPages)
 
-        adjustOffset l =
-            if List.member 1 l then
-                l |> List.map (\n -> n + 1)
+        leftNumbers =
+            -- [, curPage)
+            List.range
+                (max 1 (properties.currentPage - properties.windowSize // 2 - numExpectedOverflowingRightNumbers))
+                (properties.currentPage - 1)
 
-            else
-                l
-
-        adjustTailOffset l =
-            if List.member properties.totalPages l then
-                l |> List.map (\n -> n - 1)
-
-            else
-                l
+        rightNumbers =
+            -- [curPage, ]
+            List.range properties.currentPage
+                ((properties.currentPage + ((properties.windowSize - 1) // 2))
+                    |> max (properties.currentPage + (properties.windowSize - List.length leftNumbers) - 1)
+                    |> min properties.totalPages
+                )
 
         numbers =
-            1
-                :: (List.range 1 (min properties.totalPages properties.windowSize)
-                        |> List.map (\n -> n + properties.currentPage - (2 + properties.windowSize) // 2)
-                        |> fixUnderflowingNumbers
-                        |> fixOverflowingNumbers
-                        |> adjustOffset
-                        |> adjustTailOffset
-                   )
-                ++ [ properties.totalPages ]
-                |> List.unique
+            List.concat [ [ 1 ], (leftNumbers ++ rightNumbers) |> adjustOffset, [ properties.totalPages ] ] |> List.unique
 
         addDots ns =
             case ns of
