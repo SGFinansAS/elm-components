@@ -53,7 +53,10 @@ view attr (Pagination properties) =
                               else
                                 []
                              )
-                                ++ [ textDecoration none, focus [ boxShadow none ], pseudoClass "focus-visible" [ Css.property "box-shadow" ("0rem 0rem 0rem 0.25rem " ++ Themes.colorVariable Colors.haasBlue) ] ]
+                                ++ [ textDecoration none
+                                   , focus [ boxShadow none ]
+                                   , pseudoClass "focus-visible" [ Css.property "box-shadow" ("0rem 0rem 0rem 0.25rem " ++ Themes.colorVariable Colors.haasBlue) ]
+                                   ]
                              --override the focus and underline from the main component
                             )
                         ]
@@ -124,8 +127,8 @@ view attr (Pagination properties) =
                 l
 
         numbers =
-            [ 1 ]
-                ++ (List.range 1 (min properties.totalPages properties.windowSize)
+            1
+                :: (List.range 1 (min properties.totalPages properties.windowSize)
                         |> List.map (\n -> n + properties.currentPage - (2 + properties.windowSize) // 2)
                         |> fixUnderflowingNumbers
                         |> fixOverflowingNumbers
