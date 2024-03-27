@@ -1,20 +1,6 @@
 module Nordea.Components.Pagination exposing (Pagination, init, view)
 
-import Css
-    exposing
-        ( backgroundColor
-        , boxShadow
-        , color
-        , displayFlex
-        , flexDirection
-        , focus
-        , hidden
-        , listStyleType
-        , none
-        , textDecoration
-        , visibility
-        , visible
-        )
+import Css exposing (backgroundColor, boxShadow, color, displayFlex, flexDirection, focus, hidden, listStyleType, none, pseudoClass, textDecoration, visibility, visible)
 import Html.Attributes.Extra as Attrs
 import Html.Styled as Html exposing (Attribute, Html)
 import Html.Styled.Attributes as Attrs exposing (css, fromUnstyled)
@@ -24,6 +10,7 @@ import Nordea.Components.Button as Button
 import Nordea.Components.Text as Text exposing (Variant(..))
 import Nordea.Html exposing (showIf)
 import Nordea.Resources.Colors as Colors exposing (white)
+import Nordea.Themes as Themes
 
 
 type Pagination msg
@@ -66,7 +53,7 @@ view attr (Pagination properties) =
                               else
                                 []
                              )
-                                ++ [ textDecoration none, focus [ boxShadow none ] ]
+                                ++ [ textDecoration none, focus [ boxShadow none ], pseudoClass "focus-visible" [ Css.property "box-shadow" ("0rem 0rem 0rem 0.25rem " ++ Themes.colorVariable Colors.haasBlue) ] ]
                              --override the focus and underline from the main component
                             )
                         ]
