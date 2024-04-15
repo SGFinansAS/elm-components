@@ -36,6 +36,7 @@ type alias Config =
     , textInputContent : String
     , sortableTable : Stories.SortableTableSharedTypes.Model
     , selectedSearchComponent : Maybe FinancingVariant
+    , paginationCurrentPage : Int
     }
 
 
@@ -66,6 +67,7 @@ type Msg
     | OnClickCollapsible
     | SortableTableMsg Stories.SortableTableSharedTypes.Msg
     | SnackbarMsg
+    | PaginationClickedAt Int
 
 
 init : Config
@@ -103,6 +105,7 @@ init =
     , activeRadioButton = "second"
     , textInputContent = "Initialized"
     , sortableTable = Stories.SortableTableSharedTypes.initModel
+    , paginationCurrentPage = 1
     }
 
 
@@ -204,3 +207,6 @@ update msg config =
 
         SnackbarMsg ->
             config
+
+        PaginationClickedAt i ->
+            { config | paginationCurrentPage = i }
