@@ -41,8 +41,9 @@ view { isActive } =
                     }
 
                     parent.outsideClickListeners[id] = event => {
-                        if (frameEl.dataset.isActive && !frameEl.parentElement.contains(event.target)) {
-                            parent.dispatchEvent(new CustomEvent("build"))
+                        if (frameEl.dataset.isActive === "true" && !frameEl.parentElement.contains(event.target)) {
+                            frameEl.parentElement.focus();
+                            frameEl.parentElement.blur();
                         }
                     }
                 </script>

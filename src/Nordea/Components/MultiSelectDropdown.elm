@@ -147,7 +147,7 @@ view attrs dropdown =
         |> Label.withRequirednessHint dropdown.requirednessHint
         |> Label.withHintText dropdown.hint
         |> Label.view
-            ([ Events.on "build" (Decode.succeed (dropdown.onFocus False))
+            ([ Events.onBlur (dropdown.onFocus False)
              , Events.onClick (dropdown.onFocus (not dropdown.hasFocus))
              , tabindex 0
              ]
