@@ -32,7 +32,6 @@ view { isActive } =
                             Object.entries(parent.outsideClickListeners).forEach(([key, listener]) => {
                                 if (!parent.document.getElementById(key)) {
                                     delete parent.outsideClickListeners[key];
-                                    alert("Deleted listener");
                                 } else {
                                     listener(e);
                                 }
@@ -42,8 +41,7 @@ view { isActive } =
 
                     parent.outsideClickListeners[id] = event => {
                         if (frameEl.dataset.isActive === "true" && !frameEl.parentElement.contains(event.target)) {
-                            frameEl.parentElement.focus();
-                            frameEl.parentElement.blur();
+                            frameEl.parentElement.dispatchEvent(new CustomEvent('outsideclick'));
                         }
                     }
                 </script>

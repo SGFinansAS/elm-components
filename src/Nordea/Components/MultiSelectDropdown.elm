@@ -52,6 +52,7 @@ import Css
 import Html.Styled as Html exposing (Attribute, Html)
 import Html.Styled.Attributes exposing (css, tabindex)
 import Html.Styled.Events as Events
+import Json.Decode as Decode
 import Nordea.Components.Checkbox as Checkbox
 import Nordea.Components.Label as Label exposing (RequirednessHint(..))
 import Nordea.Components.OnClickOutsideSupport as OnClickOutsideSupport
@@ -146,9 +147,9 @@ view attrs dropdown =
         |> Label.withRequirednessHint dropdown.requirednessHint
         |> Label.withHintText dropdown.hint
         |> Label.view
-            ([ Events.onBlur (dropdown.onFocus False)
-             , Events.onClick (dropdown.onFocus (not dropdown.hasFocus))
+            ([ Events.on "outsideclick" (Decode.succeed (dropdown.onFocus False))
              , css [ position relative ]
+             , tabindex -1
              ]
                 ++ attrs
             )
