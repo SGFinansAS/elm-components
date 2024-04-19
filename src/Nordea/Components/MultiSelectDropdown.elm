@@ -149,7 +149,7 @@ view attrs dropdown =
         |> Label.view
             ([ Events.on "outsideclick" (Decode.succeed (dropdown.onFocus False))
              , css [ position relative ]
-             , tabindex -1
+             , tabindex 0
              ]
                 ++ attrs
             )
