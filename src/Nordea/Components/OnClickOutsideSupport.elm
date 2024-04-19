@@ -20,30 +20,20 @@ view { isActive } =
         , srcdoc
             """
                 <script>
+                    const doc = window.parent.document;
                     const id = "click-outside-" + Math.random();
-                    const parent = window.parent;
                     const frameEl = window.frameElement;
                     frameEl.setAttribute("id", id);
 
-                    if (!parent.outsideClickListeners) {
-                        parent.outsideClickListeners = {};
-
-                        parent.document.addEventListener("click", e => {
-                            Object.entries(parent.outsideClickListeners).forEach(([key, listener]) => {
-                                if (!parent.document.getElementById(key)) {
-                                    delete parent.outsideClickListeners[key];
-                                } else {
-                                    listener(e);
-                                }
-                            });
-                        })
-                    }
-
-                    parent.outsideClickListeners[id] = event => {
-                        if (frameEl.dataset.isActive === "true" && !frameEl.parentElement.contains(event.target)) {
+                    const listener = event => {
+                        if (!doc.getElementById(id)) {
+                            doc.removeEventListener("click", listener);
+                        } else if (frameEl.dataset.isActive === "true" && !frameEl.parentElement.contains(event.target)) {
                             frameEl.parentElement.dispatchEvent(new CustomEvent('outsideclick'));
                         }
-                    }
+                    };
+
+                    doc.addEventListener("click", listener);
                 </script>
             """
         ]
