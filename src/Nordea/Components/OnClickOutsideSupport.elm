@@ -42,7 +42,7 @@ view { isActive } =
 
                     parent.outsideClickListeners[id] = event => {
                         if (frameEl.dataset.isActive && !frameEl.parentElement.contains(event.target)) {
-                            parent.dispatchEven(new CustomEvent("build"))
+                            parent.dispatchEvent(new CustomEvent("build"))
                         }
                     }
                 </script>
