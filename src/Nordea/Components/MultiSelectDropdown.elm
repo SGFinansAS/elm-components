@@ -23,7 +23,6 @@ import Css
         , boxSizing
         , center
         , column
-        , cursor
         , display
         , displayFlex
         , flexDirection
@@ -34,18 +33,15 @@ import Css
         , listStyle
         , margin
         , maxHeight
-        , maxWidth
         , none
         , overflowY
         , padding
         , padding4
         , pct
-        , pointer
         , position
         , relative
         , rem
         , right
-        , row
         , scroll
         , solid
         , spaceBetween
@@ -54,12 +50,12 @@ import Css
         , zIndex
         )
 import Html.Styled as Html exposing (Attribute, Html)
-import Html.Styled.Attributes exposing (css, name, tabindex)
+import Html.Styled.Attributes exposing (css, tabindex)
 import Html.Styled.Events as Events
 import Json.Decode as Decode
 import Nordea.Components.Checkbox as Checkbox
 import Nordea.Components.Label as Label exposing (RequirednessHint(..))
-import Nordea.Css exposing (gap)
+import Nordea.Components.OnClickOutsideSupport as OnClickOutsideSupport
 import Nordea.Html as Html
 import Nordea.Resources.Colors as Colors
 import Nordea.Resources.Icons as Icon
@@ -104,28 +100,17 @@ view attrs dropdown =
             let
                 viewOption option =
                     Html.li
-                        [ Events.custom "click"
-                            (Decode.succeed
-                                { message = option.onCheck (not option.isChecked)
-                                , stopPropagation = True
-                                , preventDefault = True
-                                }
-                            )
-                        , css
-                            [ maxWidth (pct 100)
-                            , cursor pointer
-                            , hover [ backgroundColor Colors.coolGray ]
-                            , displayFlex
-                            , flexDirection row
-                            , padding (rem 0.5)
-                            , alignItems center
-                            , gap (rem 0.5)
-                            ]
-                        ]
+                        []
                         [ Checkbox.init option.name (Html.text option.label) option.onCheck
                             |> Checkbox.withIsChecked option.isChecked
                             |> Checkbox.withAppearance Checkbox.Simple
-                            |> Checkbox.view []
+                            |> Checkbox.view
+                                [ css
+                                    [ width (pct 100)
+                                    , hover [ backgroundColor Colors.coolGray ]
+                                    , padding (rem 0.5)
+                                    ]
+                                ]
                         ]
             in
             Html.ul
@@ -162,16 +147,13 @@ view attrs dropdown =
         |> Label.withRequirednessHint dropdown.requirednessHint
         |> Label.withHintText dropdown.hint
         |> Label.view
-            ([ Events.on "focusout" (Decode.succeed (dropdown.onFocus False))
+            ([ Events.on "build" (Decode.succeed (dropdown.onFocus False))
              , Events.onClick (dropdown.onFocus (not dropdown.hasFocus))
              , tabindex 0
              ]
                 ++ attrs
             )
-            [ Html.select [ css [ display none ] ]
-                (dropdown.options
-                    |> List.map (\option -> Html.option [ name option.name ] [ Html.text option.label ])
-                )
+            [ OnClickOutsideSupport.view { isActive = dropdown.hasFocus }
             , Html.div
                 [ css
                     [ width (pct 100)
@@ -190,7 +172,6 @@ view attrs dropdown =
 
                       else
                         borderRadius4 (rem 0.25) (rem 0.25) (rem 0.25) (rem 0.25)
-                    , cursor pointer
                     ]
                 ]
                 [ Html.text dropdown.placeholder
