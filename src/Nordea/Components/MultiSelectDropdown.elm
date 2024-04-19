@@ -120,8 +120,8 @@ view attrs dropdown =
                 [ css
                     [ position absolute
                     , top (pct 100)
-                    , left (rem -0.0625)
-                    , right (rem -0.0625)
+                    , left (rem 0)
+                    , right (rem 0)
                     , zIndex (int 1)
                     , overflowY scroll
                     , maxHeight (rem 16.75)
