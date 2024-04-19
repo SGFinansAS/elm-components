@@ -23,6 +23,7 @@ import Css
         , boxSizing
         , center
         , column
+        , cursor
         , display
         , displayFlex
         , flexDirection
@@ -38,6 +39,7 @@ import Css
         , padding
         , padding4
         , pct
+        , pointer
         , position
         , relative
         , rem
@@ -160,6 +162,7 @@ view attrs dropdown =
                 , css
                     [ width (pct 100)
                     , displayFlex
+                    , cursor pointer
                     , alignItems center
                     , justifyContent spaceBetween
                     , backgroundColor Colors.white
