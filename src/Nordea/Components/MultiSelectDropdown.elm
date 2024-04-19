@@ -59,6 +59,7 @@ import Nordea.Components.Checkbox as Checkbox
 import Nordea.Components.Label as Label exposing (RequirednessHint(..))
 import Nordea.Components.OnClickOutsideSupport as OnClickOutsideSupport
 import Nordea.Html as Html
+import Nordea.Html.Events as Events
 import Nordea.Resources.Colors as Colors
 import Nordea.Resources.Icons as Icon
 import Nordea.Themes as Themes
@@ -149,16 +150,15 @@ view attrs dropdown =
         |> Label.withRequirednessHint dropdown.requirednessHint
         |> Label.withHintText dropdown.hint
         |> Label.view
-            ([ Events.on "outsideclick" (Decode.succeed (dropdown.onFocus False))
-             , css [ position relative ]
-             , tabindex 0
-             ]
-                ++ attrs
+            (Events.on "outsideclick" (Decode.succeed (dropdown.onFocus False))
+                :: css [ position relative ]
+                :: attrs
             )
             [ OnClickOutsideSupport.view { isActive = dropdown.hasFocus }
             , Html.div
                 [ Events.onClick (dropdown.onFocus (not dropdown.hasFocus))
-                , tabindex -1
+                , Events.onEnterOrSpacePress (dropdown.onFocus (not dropdown.hasFocus))
+                , tabindex 0
                 , css
                     [ width (pct 100)
                     , displayFlex
