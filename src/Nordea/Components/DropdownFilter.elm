@@ -3,9 +3,11 @@ module Nordea.Components.DropdownFilter exposing
     , ItemGroup
     , init
     , view
+    , withHasError
     , withHasFocus
     , withIsLoading
     , withOnFocus
+    , withPlaceholder
     , withSearchIcon
     , withSmallSize
     )
@@ -99,6 +101,7 @@ type alias DropdownFilterProperties a msg =
     , hasSearchIcon : Bool
     , selectedValue : Maybe a
     , size : Size
+    , placeholder : Maybe String
     }
 
 
@@ -132,6 +135,7 @@ init { onInput, input, onSelect, items, selectedValue } =
         , hasSearchIcon = False
         , selectedValue = selectedValue
         , size = StandardSize
+        , placeholder = Nothing
         }
 
 
@@ -216,11 +220,17 @@ view attrs ((DropdownFilter config) as dropdown) =
                     else
                         []
 
+                addPlaceholder =
+                    config.placeholder
+                        |> Maybe.map TextInput.withPlaceholder
+                        |> Maybe.withDefault identity
+
                 componentBase =
                     TextInput.init config.input
                         |> TextInput.withError (config.hasError || showHasNoMatch)
                         |> TextInput.withOnInput config.onInput
                         |> TextInput.withSearchIcon config.hasSearchIcon
+                        |> addPlaceholder
 
                 componentWithSize =
                     if config.size == SmallSize then
@@ -354,6 +364,16 @@ withOnFocus onFocus (DropdownFilter config) =
 withIsLoading : Bool -> DropdownFilter a msg -> DropdownFilter a msg
 withIsLoading isLoading (DropdownFilter config) =
     DropdownFilter { config | isLoading = isLoading }
+
+
+withHasError : Bool -> DropdownFilter a msg -> DropdownFilter a msg
+withHasError hasError (DropdownFilter config) =
+    DropdownFilter { config | hasError = hasError }
+
+
+withPlaceholder : Maybe String -> DropdownFilter a msg -> DropdownFilter a msg
+withPlaceholder placeholder (DropdownFilter config) =
+    DropdownFilter { config | placeholder = placeholder }
 
 
 withSearchIcon : Bool -> DropdownFilter a msg -> DropdownFilter a msg

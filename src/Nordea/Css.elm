@@ -199,14 +199,14 @@ alignContent alignment =
 -}
 justifySelf : String -> Css.Style
 justifySelf alignment =
-    Css.property "justifySelf" alignment
+    Css.property "justify-self" alignment
 
 
 {-| Sets [`justify-items`](https://developer.mozilla.org/en-US/docs/Web/CSS/justify-items).
 -}
 justifyItems : String -> Css.Style
 justifyItems alignment =
-    Css.property "justifyItems" alignment
+    Css.property "justify-items" alignment
 
 
 variable : String -> String -> String
