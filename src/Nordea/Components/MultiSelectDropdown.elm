@@ -148,18 +148,19 @@ view attrs dropdown =
         |> Label.view
             ([ Events.onBlur (dropdown.onFocus False)
              , Events.onClick (dropdown.onFocus (not dropdown.hasFocus))
-             , tabindex 0
+             , css [ position relative ]
              ]
                 ++ attrs
             )
             [ OnClickOutsideSupport.view { isActive = dropdown.hasFocus }
             , Html.div
-                [ css
+                [ Events.onClick (dropdown.onFocus (not dropdown.hasFocus))
+                , tabindex -1
+                , css
                     [ width (pct 100)
                     , displayFlex
                     , alignItems center
                     , justifyContent spaceBetween
-                    , position relative
                     , backgroundColor Colors.white
                     , padding4 (rem 0.25) (rem 0.25) (rem 0.25) (rem 0.75)
                     , border3 (rem 0.0625) solid Colors.mediumGray
@@ -175,8 +176,8 @@ view attrs dropdown =
                 ]
                 [ Html.text dropdown.placeholder
                 , Icon.chevronDownFilled []
-                , viewSelectItems
                 ]
+            , viewSelectItems
             ]
 
 
