@@ -66,6 +66,7 @@ stories =
                         , Icons.calendar [ css [ width (rem 1.5) ] ]
                         , Icons.visible [ css [ width (rem 1.5) ] ]
                         , Icons.invisible [ css [ width (rem 1.5) ] ]
+                        , Icons.pdf [ css [ width (rem 1.5) ] ]
                         ]
                     , iconCategoryHeader "Add, remove, accept and cancel"
                     , iconsRow
