@@ -143,7 +143,7 @@ view (FileUpload config) =
                         Tiny ->
                             Css.batch
                                 [ flexDirection row
-                                , padding2 (rem 0.2) (rem 0.2)
+                                , padding2 (rem 0.3) (rem 0.4)
                                 , justifyContent center |> styleIf config.isHovering
                                 ]
 
