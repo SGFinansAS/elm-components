@@ -139,7 +139,6 @@ view (FileUpload config) =
                                 , justifyContent center |> styleIf config.isHovering
                                 ]
 
-                        -- TODO
                         Tiny ->
                             Css.batch
                                 [ flexDirection row
