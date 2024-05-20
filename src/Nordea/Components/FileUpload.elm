@@ -78,6 +78,7 @@ type AcceptFileType
 type Appearance
     = Large
     | Small
+    | Tiny
 
 
 type alias Translate =
@@ -138,6 +139,14 @@ view (FileUpload config) =
                                 , justifyContent center |> styleIf config.isHovering
                                 ]
 
+                        -- TODO
+                        Tiny ->
+                            Css.batch
+                                [ flexDirection row
+                                , padding2 (rem 0.2) (rem 0.2)
+                                , justifyContent center |> styleIf config.isHovering
+                                ]
+
                 styleOnHover =
                     if config.isHovering then
                         Css.batch
@@ -179,18 +188,35 @@ view (FileUpload config) =
         iconUpload =
             Icon.upload
                 [ css
-                    [ Themes.color Colors.nordeaBlue
-                    , case config.appearance of
+                    ([ Themes.color Colors.nordeaBlue
+                     , case config.appearance of
                         Large ->
                             marginBottom (rem 1)
 
                         Small ->
                             marginRight (rem 1)
-                    ]
+
+                        Tiny ->
+                            marginRight (rem 1)
+                     ]
+                        ++ (if config.appearance == Tiny then
+                                [ Css.important (Css.width (rem 0.75)) ]
+
+                            else
+                                []
+                           )
+                    )
                 ]
 
+        textType =
+            if config.appearance == Tiny then
+                Text.textTiny
+
+            else
+                Text.bodyTextSmall
+
         description =
-            Text.bodyTextSmall
+            textType
                 |> Text.view [ css [ color Colors.darkGray ] ]
                     [ Html.text (config.translate strings.uploadDescription1)
                     , Html.span
@@ -223,7 +249,7 @@ view (FileUpload config) =
         , description |> showIf (not config.isHovering)
         , viewSupportedFileTypesText
             |> showIf (not config.isHovering && config.appearance == Large)
-        , Text.bodyTextSmall
+        , textType
             |> Text.view [ css [ Themes.color Colors.nordeaBlue ] ]
                 [ Html.text (config.translate strings.dropToUploadFile) ]
             |> showIf config.isHovering
@@ -467,3 +493,4 @@ strings =
         , en = "Uploaded files:"
         }
     }
+
