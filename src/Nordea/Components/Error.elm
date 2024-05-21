@@ -1,4 +1,4 @@
-module Nordea.Components.Error exposing (internalServerError, pageNotFound, view, withCustomIllustration)
+module Nordea.Components.Error exposing (internalServerError, pageNotFound, view)
 
 import Css
     exposing
@@ -10,10 +10,8 @@ import Css
         , display
         , displayFlex
         , flexDirection
-        , fontWeight
         , height
         , inlineBlock
-        , int
         , marginBottom
         , maxWidth
         , padding
@@ -31,45 +29,39 @@ import Nordea.Components.Text as Text
 import Nordea.Resources.Colors as Colors
 import Nordea.Resources.I18N exposing (Translation)
 import Nordea.Resources.Illustrations as Illustrations
-import Svg.Styled exposing (Svg)
 
 
-type alias InternalServerErrorConfig msg =
+type alias InternalServerErrorConfig =
     { supportEmail : String
     , translate : Translation -> String
-    , customIllustration : Maybe (Svg msg)
     }
 
 
-type alias PageNotFoundErrorConfig msg =
-    { translate : Translation -> String
-    , customIllustration : Maybe (Svg msg)
-    }
+type alias PageNotFoundErrorConfig =
+    { translate : Translation -> String }
 
 
-type Error msg
-    = InternalServerError (InternalServerErrorConfig msg)
-    | PageNotFound (PageNotFoundErrorConfig msg)
+type Error
+    = InternalServerError InternalServerErrorConfig
+    | PageNotFound PageNotFoundErrorConfig
 
 
-internalServerError : (Translation -> String) -> String -> Error msg
+internalServerError : (Translation -> String) -> String -> Error
 internalServerError translate supportEmail =
     InternalServerError
         { supportEmail = supportEmail
         , translate = translate
-        , customIllustration = Nothing
         }
 
 
-pageNotFound : (Translation -> String) -> Error msg
+pageNotFound : (Translation -> String) -> Error
 pageNotFound translate =
     PageNotFound
         { translate = translate
-        , customIllustration = Nothing
         }
 
 
-view : List (Attribute msg) -> List (Html msg) -> Error msg -> Html msg
+view : List (Attribute msg) -> List (Html msg) -> Error -> Html msg
 view attributes children error =
     case error of
         InternalServerError config ->
@@ -79,11 +71,11 @@ view attributes children error =
             viewPageNotFoundError attributes children config
 
 
-viewInternalServerError : List (Attribute msg) -> List (Html msg) -> InternalServerErrorConfig msg -> Html msg
+viewInternalServerError : List (Attribute msg) -> List (Html msg) -> InternalServerErrorConfig -> Html msg
 viewInternalServerError attributes children config =
     Html.div
         (css [ errorContainerStyle ] :: attributes)
-        ([ config.customIllustration |> Maybe.withDefault (Illustrations.errorSvg [ css [ width (rem 12), marginBottom (rem 0.75) ] ])
+        ([ Illustrations.errorSvg [ css [ width (rem 12), marginBottom (rem 2.5) ] ]
          , viewHeading (texts.heading |> config.translate)
          , viewDescription (texts.internalServerError.description |> config.translate)
          , viewActionForInternalServerError config
@@ -92,11 +84,11 @@ viewInternalServerError attributes children config =
         )
 
 
-viewPageNotFoundError : List (Attribute msg) -> List (Html msg) -> PageNotFoundErrorConfig msg -> Html msg
+viewPageNotFoundError : List (Attribute msg) -> List (Html msg) -> PageNotFoundErrorConfig -> Html msg
 viewPageNotFoundError attributes children config =
     Html.div
         (css [ errorContainerStyle ] :: attributes)
-        ([ config.customIllustration |> Maybe.withDefault (Illustrations.errorSvg [ css [ width (rem 12), marginBottom (rem 0.75) ] ])
+        ([ Illustrations.errorSvg [ css [ width (rem 12), marginBottom (rem 2.5) ] ]
          , viewHeading (texts.heading |> config.translate)
          , viewDescription (texts.pageNotFound.description |> config.translate)
          ]
@@ -119,62 +111,48 @@ errorContainerStyle =
 
 viewHeading : String -> Html msg
 viewHeading heading =
-    Text.bodyTextHeavy
+    Text.headlineTwo
         |> Text.withHtmlTag Html.h1
         |> Text.view
-            [ css [ textAlign center, marginBottom (rem 0.5), fontWeight (int 600) ] ]
+            [ css [ textAlign center, marginBottom (rem 1) ] ]
             [ Html.text heading ]
 
 
 viewDescription : String -> Html msg
 viewDescription description =
-    Text.textLight
+    Text.bodyTextLight
         |> Text.view
             [ css
-                [ marginBottom (rem 1.25)
-                , maxWidth (rem 50)
+                [ marginBottom (rem 1)
+                , maxWidth (rem 30)
                 , textAlign center
                 ]
             ]
             [ Html.text description ]
 
 
-viewActionForInternalServerError : InternalServerErrorConfig msg -> Html msg
+viewActionForInternalServerError : InternalServerErrorConfig -> Html msg
 viewActionForInternalServerError config =
     let
         errorActionText =
             texts.internalServerError.action |> config.translate
     in
-    Html.div
-        [ css
-            [ maxWidth (rem 30)
-            , paddingRight (rem 0.25)
-            , textAlign center
+    Text.bodyTextLight
+        |> Text.view
+            [ css
+                [ maxWidth (rem 30)
+                , paddingRight (rem 0.25)
+                , textAlign center
+                ]
             ]
-        ]
-        [ Text.textLight
-            |> Text.view [ css [ marginBottom (rem 1) ] ]
-                [ Html.text errorActionText ]
-        , FlatLink.default
-            |> FlatLink.view
-                [ href ("mailto:" ++ config.supportEmail)
-                , css [ display inlineBlock ]
-                ]
-                [ Text.textHeavy
-                    |> Text.view [ css [ fontWeight (int 600) ] ]
-                        [ Html.text config.supportEmail ]
-                ]
-        ]
-
-
-withCustomIllustration : Svg msg -> Error msg -> Error msg
-withCustomIllustration illustration error =
-    case error of
-        InternalServerError config ->
-            InternalServerError { config | customIllustration = Just illustration }
-
-        PageNotFound config ->
-            PageNotFound { config | customIllustration = Just illustration }
+            [ Html.text errorActionText
+            , FlatLink.default
+                |> FlatLink.view
+                    [ href ("mailto:" ++ config.supportEmail)
+                    , css [ display inlineBlock ]
+                    ]
+                    [ Html.text config.supportEmail ]
+            ]
 
 
 texts : { heading : Translation, internalServerError : { description : Translation, action : Translation }, pageNotFound : { description : Translation } }
