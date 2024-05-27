@@ -124,4 +124,42 @@ stories =
                     ]
           , {}
           )
+        , ( "Tiny"
+          , \model ->
+                Html.div [ css [ displayFlex, flexDirection column, maxWidth (rem 30) ] ]
+                    [ Label.init "Some file document" Label.InputLabel
+                        |> Label.withRequirednessHint (Just (Label.Optional .no))
+                        |> Label.withHintText (FileUpload.supportedFileTypesText .no supportedFileTypes)
+                        |> Label.view []
+                            [ FileUpload.init .no OnFilesSelected OnDragEnterFileUpload OnDragLeaveFileUpload
+                                |> FileUpload.withIsHovering model.customModel.isHoveringFileUpload
+                                |> FileUpload.withAcceptedFileTypes supportedFileTypes
+                                |> FileUpload.withAllowMultipleFiles True
+                                |> FileUpload.withAppearance FileUpload.Tiny
+                                |> FileUpload.view
+                            ]
+                    , FileUpload.uploadedFilesView model.customModel.selectedFiles RemoveFile .no [ css [ marginTop (rem 1) ] ]
+                        |> showIf (not (List.isEmpty model.customModel.selectedFiles))
+                    ]
+          , {}
+          )
+        , ( "Tiny with error"
+          , \model ->
+                Html.div [ css [ displayFlex, flexDirection column, maxWidth (rem 30) ] ]
+                    [ Label.init "Some file document" Label.InputLabel
+                        |> Label.withRequirednessHint (Just (Label.Optional .no))
+                        |> Label.withErrorMessage (FileUpload.supportedFileTypesText .no supportedFileTypes)
+                        |> Label.view []
+                            [ FileUpload.init .no OnFilesSelected OnDragEnterFileUpload OnDragLeaveFileUpload
+                                |> FileUpload.withIsHovering model.customModel.isHoveringFileUpload
+                                |> FileUpload.withAcceptedFileTypes supportedFileTypes
+                                |> FileUpload.withAllowMultipleFiles True
+                                |> FileUpload.withAppearance FileUpload.Tiny
+                                |> FileUpload.view
+                            ]
+                    , FileUpload.uploadedFilesView model.customModel.selectedFiles RemoveFile .no [ css [ marginTop (rem 1) ] ]
+                        |> showIf (not (List.isEmpty model.customModel.selectedFiles))
+                    ]
+          , {}
+          )
         ]
