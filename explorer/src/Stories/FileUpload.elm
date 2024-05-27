@@ -129,6 +129,7 @@ stories =
                 Html.div [ css [ displayFlex, flexDirection column, maxWidth (rem 30) ] ]
                     [ Label.init "Some file document" Label.InputLabel
                         |> Label.withRequirednessHint (Just (Label.Optional .no))
+                        |> Label.withSmallSize
                         |> Label.withHintText (FileUpload.supportedFileTypesText .no supportedFileTypes)
                         |> Label.view []
                             [ FileUpload.init .no OnFilesSelected OnDragEnterFileUpload OnDragLeaveFileUpload
@@ -148,6 +149,7 @@ stories =
                 Html.div [ css [ displayFlex, flexDirection column, maxWidth (rem 30) ] ]
                     [ Label.init "Some file document" Label.InputLabel
                         |> Label.withRequirednessHint (Just (Label.Optional .no))
+                        |> Label.withSmallSize
                         |> Label.withErrorMessage (FileUpload.supportedFileTypesText .no supportedFileTypes)
                         |> Label.view []
                             [ FileUpload.init .no OnFilesSelected OnDragEnterFileUpload OnDragLeaveFileUpload
