@@ -1,5 +1,6 @@
 module Config exposing (Config, FinancingVariant(..), Msg(..), init, update)
 
+import Date exposing (Month)
 import File exposing (File)
 import Html.Styled as Html
 import Nordea.Components.Accordion as Accordion exposing (Accordion)
@@ -37,6 +38,9 @@ type alias Config =
     , sortableTable : Stories.SortableTableSharedTypes.Model
     , selectedSearchComponent : Maybe FinancingVariant
     , paginationCurrentPage : Int
+    , datePickerIsOpen : Bool
+    , dateInput : String
+    , datePickerMonth : Maybe ( Month, Int )
     }
 
 
@@ -68,6 +72,10 @@ type Msg
     | SortableTableMsg Stories.SortableTableSharedTypes.Msg
     | SnackbarMsg
     | PaginationClickedAt Int
+    | UpdateDatePickerState Bool
+    | DateInputChange String
+    | DateSelected String
+    | UpdateDatePickerMonth Month Int
 
 
 init : Config
@@ -106,6 +114,9 @@ init =
     , textInputContent = "Initialized"
     , sortableTable = Stories.SortableTableSharedTypes.initModel
     , paginationCurrentPage = 1
+    , datePickerIsOpen = False
+    , dateInput = ""
+    , datePickerMonth = Nothing
     }
 
 
@@ -210,3 +221,21 @@ update msg config =
 
         PaginationClickedAt i ->
             { config | paginationCurrentPage = i }
+
+        UpdateDatePickerState hadFocus ->
+            { config | datePickerIsOpen = hadFocus }
+
+        DateInputChange date ->
+            { config
+                | dateInput = date
+                , datePickerMonth = Nothing
+            }
+
+        DateSelected date ->
+            { config
+                | dateInput = date
+                , datePickerIsOpen = False
+            }
+
+        UpdateDatePickerMonth month year ->
+            { config | datePickerMonth = Just ( month, year ) }
