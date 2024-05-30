@@ -1,4 +1,4 @@
-module Nordea.Components.DatePicker exposing (InternalState(..), OptionalConfig(..), init, view)
+module Nordea.Components.DatePicker exposing (DatePicker, InternalState, OptionalConfig(..), init, updateInternalState, view)
 
 import Css
     exposing
@@ -63,8 +63,8 @@ import Time exposing (Month, Weekday)
 
 
 type alias Config msg =
-    { onSelect : Date -> InternalState -> msg
-    , today : Date
+    { today : Date
+    , onSelect : Date -> InternalState -> msg
     , internalState : InternalState
     , onInternalStateChange : InternalState -> msg
     , currentValue : Maybe Date
@@ -92,9 +92,33 @@ type OptionalConfig msg
     | Error Bool
 
 
-init : Config msg -> DatePicker msg
-init config =
-    DatePicker config
+init : Date -> (Date -> InternalState -> msg) -> (InternalState -> msg) -> DatePicker msg
+init today onSelect onInternalStateChange =
+    DatePicker
+        { today = today
+        , onSelect = onSelect
+        , internalState =
+            InternalState
+                { hasFocus = False
+                , input = ""
+                , selectedMonth = Nothing
+                }
+        , onInternalStateChange = onInternalStateChange
+        , currentValue = Nothing
+        }
+
+
+
+-- UPDATE
+
+
+updateInternalState : InternalState -> DatePicker msg -> DatePicker msg
+updateInternalState internalState (DatePicker config) =
+    DatePicker { config | internalState = internalState }
+
+
+
+-- VIEW
 
 
 view : List (Attribute msg) -> List (OptionalConfig msg) -> DatePicker msg -> Html msg

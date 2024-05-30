@@ -4,9 +4,10 @@ import Date exposing (Date)
 import File exposing (File)
 import Html.Styled as Html
 import Nordea.Components.Accordion as Accordion exposing (Accordion)
-import Nordea.Components.DatePicker as DatePicker
+import Nordea.Components.DatePicker as DatePicker exposing (DatePicker)
 import Nordea.Components.DropdownFilter exposing (Item)
 import Stories.SortableTableSharedTypes
+import Time exposing (Month(..))
 
 
 type FinancingVariant
@@ -39,7 +40,7 @@ type alias Config =
     , sortableTable : Stories.SortableTableSharedTypes.Model
     , selectedSearchComponent : Maybe FinancingVariant
     , paginationCurrentPage : Int
-    , datePickerInternalState : DatePicker.InternalState
+    , datePicker : DatePicker Msg
     , currentDatePickerValue : Maybe Date
     }
 
@@ -112,12 +113,7 @@ init =
     , textInputContent = "Initialized"
     , sortableTable = Stories.SortableTableSharedTypes.initModel
     , paginationCurrentPage = 1
-    , datePickerInternalState =
-        DatePicker.InternalState
-            { hasFocus = False
-            , input = ""
-            , selectedMonth = Nothing
-            }
+    , datePicker = DatePicker.init (Date.fromCalendarDate 2024 May 1) DateSelected UpdateDatePickerInternalState
     , currentDatePickerValue = Nothing
     }
 
@@ -227,8 +223,8 @@ update msg config =
         DateSelected date datePickerState ->
             { config
                 | currentDatePickerValue = Just date
-                , datePickerInternalState = datePickerState
+                , datePicker = DatePicker.updateInternalState datePickerState config.datePicker
             }
 
-        UpdateDatePickerInternalState state ->
-            { config | datePickerInternalState = state }
+        UpdateDatePickerInternalState datePickerState ->
+            { config | datePicker = DatePicker.updateInternalState datePickerState config.datePicker }
