@@ -1,6 +1,6 @@
 module Config exposing (Config, FinancingVariant(..), Msg(..), init, update)
 
-import Date exposing (Date, Month)
+import Date exposing (Date)
 import File exposing (File)
 import Html.Styled as Html
 import Nordea.Components.Accordion as Accordion exposing (Accordion)
