@@ -1,9 +1,10 @@
 module Config exposing (Config, FinancingVariant(..), Msg(..), init, update)
 
-import Date exposing (Month)
+import Date exposing (Date, Month)
 import File exposing (File)
 import Html.Styled as Html
 import Nordea.Components.Accordion as Accordion exposing (Accordion)
+import Nordea.Components.DatePicker as DatePicker
 import Nordea.Components.DropdownFilter exposing (Item)
 import Stories.SortableTableSharedTypes
 
@@ -38,9 +39,8 @@ type alias Config =
     , sortableTable : Stories.SortableTableSharedTypes.Model
     , selectedSearchComponent : Maybe FinancingVariant
     , paginationCurrentPage : Int
-    , datePickerIsOpen : Bool
-    , dateInput : String
-    , datePickerMonth : Maybe ( Month, Int )
+    , datePickerInternalState : DatePicker.InternalState
+    , currentDatePickerValue : Maybe Date
     }
 
 
@@ -72,10 +72,8 @@ type Msg
     | SortableTableMsg Stories.SortableTableSharedTypes.Msg
     | SnackbarMsg
     | PaginationClickedAt Int
-    | UpdateDatePickerState Bool
-    | DateInputChange String
-    | DateSelected String
-    | UpdateDatePickerMonth Month Int
+    | DateSelected Date DatePicker.InternalState
+    | UpdateDatePickerInternalState DatePicker.InternalState
 
 
 init : Config
@@ -114,9 +112,13 @@ init =
     , textInputContent = "Initialized"
     , sortableTable = Stories.SortableTableSharedTypes.initModel
     , paginationCurrentPage = 1
-    , datePickerIsOpen = False
-    , dateInput = ""
-    , datePickerMonth = Nothing
+    , datePickerInternalState =
+        DatePicker.InternalState
+            { hasFocus = False
+            , input = ""
+            , selectedMonth = Nothing
+            }
+    , currentDatePickerValue = Nothing
     }
 
 
@@ -222,20 +224,11 @@ update msg config =
         PaginationClickedAt i ->
             { config | paginationCurrentPage = i }
 
-        UpdateDatePickerState hadFocus ->
-            { config | datePickerIsOpen = hadFocus }
-
-        DateInputChange date ->
+        DateSelected date datePickerState ->
             { config
-                | dateInput = date
-                , datePickerMonth = Nothing
+                | currentDatePickerValue = Just date
+                , datePickerInternalState = datePickerState
             }
 
-        DateSelected date ->
-            { config
-                | dateInput = date
-                , datePickerIsOpen = False
-            }
-
-        UpdateDatePickerMonth month year ->
-            { config | datePickerMonth = Just ( month, year ) }
+        UpdateDatePickerInternalState state ->
+            { config | datePickerInternalState = state }

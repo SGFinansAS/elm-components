@@ -1,4 +1,4 @@
-module Nordea.Components.DatePicker exposing (OptionalConfig(..), view)
+module Nordea.Components.DatePicker exposing (InternalState(..), OptionalConfig(..), init, view)
 
 import Css
     exposing
@@ -63,15 +63,24 @@ import Time exposing (Month, Weekday)
 
 
 type alias Config msg =
-    { hasFocus : Bool
-    , onFocus : Bool -> msg
-    , input : String
-    , onInput : String -> msg
+    { onSelect : Date -> InternalState -> msg
     , today : Date
-    , onSelect : String -> msg
-    , onMonthChange : Month -> Int -> msg
-    , selectedMonth : Maybe ( Month, Int )
+    , internalState : InternalState
+    , onInternalStateChange : InternalState -> msg
+    , currentValue : Maybe Date
     }
+
+
+type DatePicker msg
+    = DatePicker (Config msg)
+
+
+type InternalState
+    = InternalState
+        { hasFocus : Bool
+        , input : String
+        , selectedMonth : Maybe ( Month, Int )
+        }
 
 
 type OptionalConfig msg
@@ -83,9 +92,17 @@ type OptionalConfig msg
     | Error Bool
 
 
-view : List (Attribute msg) -> Config msg -> List (OptionalConfig msg) -> Html msg
-view attrs config optional =
+init : Config msg -> DatePicker msg
+init config =
+    DatePicker config
+
+
+view : List (Attribute msg) -> List (OptionalConfig msg) -> DatePicker msg -> Html msg
+view attrs optional (DatePicker config) =
     let
+        internalState =
+            getInternalState config.internalState
+
         { placeholder, parser, formatter, firstDayOfWeek, onBlur, error } =
             optional
                 |> List.foldl
@@ -118,16 +135,16 @@ view attrs config optional =
                     }
 
         chosenDate =
-            parser config.input
+            parser internalState.input
                 |> Result.withDefault config.today
     in
     Html.column
-        (Events.on "outsideclick" (Decode.succeed (config.onFocus False))
+        (Events.on "outsideclick" (Decode.succeed (config.onInternalStateChange (InternalState { internalState | hasFocus = False })))
             :: css [ position relative ]
             :: attrs
         )
-        [ OnClickOutsideSupport.view { isActive = config.hasFocus }
-        , dateInput config placeholder onBlur error
+        [ OnClickOutsideSupport.view { isActive = internalState.hasFocus }
+        , dateInput config parser placeholder onBlur error
         , Html.div
             [ css
                 [ border3 (rem 0.0625) solid Colors.mediumGray
@@ -139,7 +156,7 @@ view attrs config optional =
                 , backgroundColor Colors.white
                 , alignSelf flexEnd
                 , cursor pointer
-                , if config.hasFocus then
+                , if internalState.hasFocus then
                     displayFlex
 
                   else
@@ -153,9 +170,12 @@ view attrs config optional =
         ]
 
 
-dateInput : Config msg -> String -> Maybe msg -> Bool -> Html msg
-dateInput config datePlaceholder onBlurMsg error =
+dateInput : Config msg -> (String -> Result String Date) -> String -> Maybe msg -> Bool -> Html msg
+dateInput config parser datePlaceholder onBlurMsg error =
     let
+        internalState =
+            getInternalState config.internalState
+
         ( borderColor, calendarIconColor ) =
             if error then
                 ( Colors.darkRed, Themes.color Colors.darkRed )
@@ -164,18 +184,23 @@ dateInput config datePlaceholder onBlurMsg error =
                 ( Colors.mediumGray, Themes.color Colors.deepBlue )
 
         borderRadiusStyle =
-            if config.hasFocus then
+            if internalState.hasFocus then
                 borderRadius4 (rem 0.25) (rem 0.25) (rem 0) (rem 0.25)
 
             else
                 borderRadius (rem 0.25)
 
         getAttributes =
-            [ config.input |> value
-            , config.onInput |> onInput
+            [ internalState.input |> value
+            , (\input ->
+                parser input
+                    |> Result.map (\date -> config.onSelect date (InternalState { internalState | input = input }))
+                    |> Result.withDefault (config.onInternalStateChange (InternalState { internalState | input = input, selectedMonth = Nothing }))
+              )
+                |> onInput
             , datePlaceholder |> placeholder
-            , config.onFocus (not config.hasFocus) |> onClick
-            , config.onFocus (not config.hasFocus) |> Events.onEnterOrSpacePress
+            , config.onInternalStateChange (InternalState { internalState | hasFocus = not internalState.hasFocus }) |> onClick
+            , config.onInternalStateChange (InternalState { internalState | hasFocus = not internalState.hasFocus }) |> Events.onEnterOrSpacePress
             ]
                 ++ (onBlurMsg |> Maybe.map onBlur |> toList)
     in
@@ -213,8 +238,11 @@ dateInput config datePlaceholder onBlurMsg error =
 pickerHeader : Config msg -> Date -> Html msg
 pickerHeader config chosenDate =
     let
+        internalState =
+            getInternalState config.internalState
+
         date =
-            config.selectedMonth
+            internalState.selectedMonth
                 |> Maybe.map (\( month, year ) -> Date.fromCalendarDate year month 1)
                 |> Maybe.withDefault chosenDate
 
@@ -228,14 +256,14 @@ pickerHeader config chosenDate =
         [ Button.flatLinkStyle
             |> Button.view
                 [ css [ Themes.color Colors.mediumGray ]
-                , onClick (config.onMonthChange (Date.month prevMonthDate) (Date.year prevMonthDate))
+                , config.onInternalStateChange (InternalState { internalState | selectedMonth = Just ( Date.month prevMonthDate, Date.year prevMonthDate ) }) |> onClick
                 ]
                 [ Icons.chevronLeft [ css [ width (rem 1) ] ] ]
         , Text.textHeavy |> Text.view [ css [ alignSelf center ] ] [ Html.text (Date.format "MMMM YYYY" date) ]
         , Button.flatLinkStyle
             |> Button.view
                 [ css [ Themes.color Colors.mediumGray ]
-                , onClick (config.onMonthChange (Date.month nextMonthDate) (Date.year nextMonthDate))
+                , config.onInternalStateChange (InternalState { internalState | selectedMonth = Just ( Date.month nextMonthDate, Date.year nextMonthDate ) }) |> onClick
                 ]
                 [ Icons.chevronRight [ css [ width (rem 1) ] ] ]
         ]
@@ -244,8 +272,11 @@ pickerHeader config chosenDate =
 pickerBody : Config msg -> (Date -> String) -> Weekday -> Date -> Html msg
 pickerBody config formatter firstDayOfWeek chosenDate =
     let
+        internalState =
+            getInternalState config.internalState
+
         ( chosenMonth, chosenYear ) =
-            config.selectedMonth |> Maybe.withDefault ( Date.month chosenDate, Date.year chosenDate )
+            internalState.selectedMonth |> Maybe.withDefault ( Date.month chosenDate, Date.year chosenDate )
 
         headerCell day =
             Html.th
@@ -295,8 +326,8 @@ pickerBody config formatter firstDayOfWeek chosenDate =
                         ]
                     ]
                 , tabindex 0
-                , onClick (config.onSelect (formatter date))
-                , Events.onEnterOrSpacePress (config.onSelect (formatter date))
+                , onClick (config.onSelect date (InternalState { internalState | hasFocus = False, input = formatter date }))
+                , Events.onEnterOrSpacePress (config.onSelect date (InternalState { internalState | hasFocus = False, input = formatter date }))
                 ]
                 [ Text.bodyTextSmall |> Text.view [] [ Date.format "d" date |> Html.text ] ]
     in
@@ -372,3 +403,8 @@ defaultDateParser date =
         |> List.reverse
         |> String.join "-"
         |> Date.fromIsoString
+
+
+getInternalState : InternalState -> { hasFocus : Bool, input : String, selectedMonth : Maybe ( Month, Int ) }
+getInternalState (InternalState state) =
+    state

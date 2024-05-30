@@ -14,17 +14,14 @@ stories =
         "DatePicker"
         [ ( "Standard"
           , \model ->
-                DatePicker.view []
-                    { hasFocus = model.customModel.datePickerIsOpen
-                    , onFocus = UpdateDatePickerState
-                    , input = model.customModel.dateInput
-                    , onInput = DateInputChange
-                    , today = Date.fromCalendarDate 2024 May 1
+                DatePicker.init
+                    { today = Date.fromCalendarDate 2024 May 1
+                    , internalState = model.customModel.datePickerInternalState
+                    , onInternalStateChange = UpdateDatePickerInternalState
                     , onSelect = DateSelected
-                    , onMonthChange = UpdateDatePickerMonth
-                    , selectedMonth = model.customModel.datePickerMonth
+                    , currentValue = model.customModel.currentDatePickerValue
                     }
-                    []
+                    |> DatePicker.view [] []
           , {}
           )
         ]
