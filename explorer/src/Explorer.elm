@@ -12,6 +12,7 @@ import Stories.Card as Card
 import Stories.Checkbox as Checkbox
 import Stories.Coachmark as Coachmark
 import Stories.Colors as Colors
+import Stories.DatePicker as DatePicker
 import Stories.Dropdown as Dropdown
 import Stories.DropdownFilter as Search
 import Stories.Error as Error
@@ -97,6 +98,7 @@ main =
                 , Card.stories
                 , Checkbox.stories
                 , Coachmark.stories
+                , DatePicker.stories
                 , Dropdown.stories
                 , MultiSelectDropdown.stories
                 , Search.stories
