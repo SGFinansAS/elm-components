@@ -41,7 +41,7 @@ type alias Config =
     , selectedSearchComponent : Maybe FinancingVariant
     , paginationCurrentPage : Int
     , datePicker : DatePicker Msg
-    , currentDatePickerValue : Maybe Date
+    , currentDatePickerValue : Maybe DatePicker.DateResult
     }
 
 
@@ -73,7 +73,7 @@ type Msg
     | SortableTableMsg Stories.SortableTableSharedTypes.Msg
     | SnackbarMsg
     | PaginationClickedAt Int
-    | DateSelected Date DatePicker.InternalState
+    | DateSelected DatePicker.DateResult DatePicker.InternalState
     | UpdateDatePickerInternalState DatePicker.InternalState
 
 
@@ -113,7 +113,7 @@ init =
     , textInputContent = "Initialized"
     , sortableTable = Stories.SortableTableSharedTypes.initModel
     , paginationCurrentPage = 1
-    , datePicker = DatePicker.init (Date.fromCalendarDate 2024 May 1) DateSelected UpdateDatePickerInternalState
+    , datePicker = DatePicker.init (Date.fromCalendarDate 2024 May 1) "" DateSelected UpdateDatePickerInternalState
     , currentDatePickerValue = Nothing
     }
 
@@ -220,9 +220,9 @@ update msg config =
         PaginationClickedAt i ->
             { config | paginationCurrentPage = i }
 
-        DateSelected date datePickerState ->
+        DateSelected result datePickerState ->
             { config
-                | currentDatePickerValue = Just date
+                | currentDatePickerValue = Just result
                 , datePicker = DatePicker.updateInternalState datePickerState config.datePicker
             }
 

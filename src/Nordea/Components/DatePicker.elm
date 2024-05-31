@@ -1,4 +1,4 @@
-module Nordea.Components.DatePicker exposing (DatePicker, InternalState, OptionalConfig(..), init, updateInternalState, view)
+module Nordea.Components.DatePicker exposing (DatePicker, DateResult(..), InternalState, OptionalConfig(..), init, updateInternalState, view)
 
 import Css
     exposing
@@ -63,16 +63,10 @@ import Time exposing (Month, Weekday)
 
 
 type alias Config msg =
-    { today : Date
-    , onSelect : Date -> InternalState -> msg
-    , internalState : InternalState
+    { onSelect : DateResult -> InternalState -> msg
     , onInternalStateChange : InternalState -> msg
-    , currentValue : Maybe Date
+    , internalState : InternalState
     }
-
-
-type DatePicker msg
-    = DatePicker (Config msg)
 
 
 type InternalState
@@ -80,7 +74,12 @@ type InternalState
         { hasFocus : Bool
         , input : String
         , selectedMonth : Maybe ( Month, Int )
+        , today : Date
         }
+
+
+type DatePicker msg
+    = DatePicker (Config msg)
 
 
 type OptionalConfig msg
@@ -92,19 +91,23 @@ type OptionalConfig msg
     | Error Bool
 
 
-init : Date -> (Date -> InternalState -> msg) -> (InternalState -> msg) -> DatePicker msg
-init today onSelect onInternalStateChange =
+type DateResult
+    = Picked Date
+    | Invalid String
+
+
+init : Date -> String -> (DateResult -> InternalState -> msg) -> (InternalState -> msg) -> DatePicker msg
+init today input onSelect onInternalStateChange =
     DatePicker
-        { today = today
-        , onSelect = onSelect
+        { onSelect = onSelect
+        , onInternalStateChange = onInternalStateChange
         , internalState =
             InternalState
                 { hasFocus = False
-                , input = ""
+                , input = input
                 , selectedMonth = Nothing
+                , today = today
                 }
-        , onInternalStateChange = onInternalStateChange
-        , currentValue = Nothing
         }
 
 
@@ -125,7 +128,7 @@ view : List (Attribute msg) -> List (OptionalConfig msg) -> DatePicker msg -> Ht
 view attrs optional (DatePicker config) =
     let
         internalState =
-            getInternalState config.internalState
+            internalStateValues config.internalState
 
         { placeholder, parser, formatter, firstDayOfWeek, onBlur, error } =
             optional
@@ -160,7 +163,7 @@ view attrs optional (DatePicker config) =
 
         chosenDate =
             parser internalState.input
-                |> Result.withDefault config.today
+                |> Result.withDefault internalState.today
     in
     Html.column
         (Events.on "outsideclick" (Decode.succeed (config.onInternalStateChange (InternalState { internalState | hasFocus = False })))
@@ -168,7 +171,7 @@ view attrs optional (DatePicker config) =
             :: attrs
         )
         [ OnClickOutsideSupport.view { isActive = internalState.hasFocus }
-        , dateInput config parser placeholder onBlur error
+        , dateInput config (InternalState internalState) parser placeholder onBlur error
         , Html.div
             [ css
                 [ border3 (rem 0.0625) solid Colors.mediumGray
@@ -188,18 +191,15 @@ view attrs optional (DatePicker config) =
                 , flexDirection column
                 ]
             ]
-            [ pickerHeader config chosenDate
-            , pickerBody config formatter firstDayOfWeek chosenDate
+            [ pickerHeader config (InternalState internalState) chosenDate
+            , pickerBody config (InternalState internalState) formatter firstDayOfWeek chosenDate
             ]
         ]
 
 
-dateInput : Config msg -> (String -> Result String Date) -> String -> Maybe msg -> Bool -> Html msg
-dateInput config parser datePlaceholder onBlurMsg error =
+dateInput : Config msg -> InternalState -> (String -> Result String Date) -> String -> Maybe msg -> Bool -> Html msg
+dateInput config (InternalState internalState) parser datePlaceholder onBlurMsg error =
     let
-        internalState =
-            getInternalState config.internalState
-
         ( borderColor, calendarIconColor ) =
             if error then
                 ( Colors.darkRed, Themes.color Colors.darkRed )
@@ -218,8 +218,8 @@ dateInput config parser datePlaceholder onBlurMsg error =
             [ internalState.input |> value
             , (\input ->
                 parser input
-                    |> Result.map (\date -> config.onSelect date (InternalState { internalState | input = input }))
-                    |> Result.withDefault (config.onInternalStateChange (InternalState { internalState | input = input, selectedMonth = Nothing }))
+                    |> Result.map (\date -> config.onSelect (Picked date) (InternalState { internalState | input = input }))
+                    |> Result.withDefault (config.onSelect (Invalid input) (InternalState { internalState | input = input, selectedMonth = Nothing }))
               )
                 |> onInput
             , datePlaceholder |> placeholder
@@ -259,12 +259,9 @@ dateInput config parser datePlaceholder onBlurMsg error =
         ]
 
 
-pickerHeader : Config msg -> Date -> Html msg
-pickerHeader config chosenDate =
+pickerHeader : Config msg -> InternalState -> Date -> Html msg
+pickerHeader config (InternalState internalState) chosenDate =
     let
-        internalState =
-            getInternalState config.internalState
-
         date =
             internalState.selectedMonth
                 |> Maybe.map (\( month, year ) -> Date.fromCalendarDate year month 1)
@@ -293,12 +290,9 @@ pickerHeader config chosenDate =
         ]
 
 
-pickerBody : Config msg -> (Date -> String) -> Weekday -> Date -> Html msg
-pickerBody config formatter firstDayOfWeek chosenDate =
+pickerBody : Config msg -> InternalState -> (Date -> String) -> Weekday -> Date -> Html msg
+pickerBody config (InternalState internalState) formatter firstDayOfWeek chosenDate =
     let
-        internalState =
-            getInternalState config.internalState
-
         ( chosenMonth, chosenYear ) =
             internalState.selectedMonth |> Maybe.withDefault ( Date.month chosenDate, Date.year chosenDate )
 
@@ -320,7 +314,7 @@ pickerBody config formatter firstDayOfWeek chosenDate =
                     if date == chosenDate then
                         ( Themes.color Colors.white, Themes.backgroundColor Colors.deepBlue )
 
-                    else if date == config.today then
+                    else if date == internalState.today then
                         ( Themes.color Colors.black, Themes.backgroundColor Colors.lightGray )
 
                     else if Date.month date == chosenMonth && Date.year date == chosenYear then
@@ -328,6 +322,9 @@ pickerBody config formatter firstDayOfWeek chosenDate =
 
                     else
                         ( Themes.color Colors.lightGray, Themes.backgroundColor Colors.white )
+
+                preventDefaultOn event msg =
+                    Events.preventDefaultOn event (Decode.succeed ( msg, True ))
             in
             Html.td
                 [ css
@@ -350,8 +347,8 @@ pickerBody config formatter firstDayOfWeek chosenDate =
                         ]
                     ]
                 , tabindex 0
-                , onClick (config.onSelect date (InternalState { internalState | hasFocus = False, input = formatter date }))
-                , Events.onEnterOrSpacePress (config.onSelect date (InternalState { internalState | hasFocus = False, input = formatter date }))
+                , preventDefaultOn "click" (config.onSelect (Picked date) (InternalState { internalState | hasFocus = False, input = formatter date }))
+                , Events.onEnterOrSpacePress (config.onSelect (Picked date) (InternalState { internalState | hasFocus = False, input = formatter date }))
                 ]
                 [ Text.bodyTextSmall |> Text.view [] [ Date.format "d" date |> Html.text ] ]
     in
@@ -429,6 +426,6 @@ defaultDateParser date =
         |> Date.fromIsoString
 
 
-getInternalState : InternalState -> { hasFocus : Bool, input : String, selectedMonth : Maybe ( Month, Int ) }
-getInternalState (InternalState state) =
+internalStateValues : InternalState -> { hasFocus : Bool, input : String, selectedMonth : Maybe ( Month, Int ), today : Date }
+internalStateValues (InternalState state) =
     state
