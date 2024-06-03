@@ -85,12 +85,11 @@ import Css
         )
 import Css.Animations as Animations exposing (keyframes)
 import Css.Global exposing (children, everything)
-import Css.Transitions exposing (maskSize)
 import Html.Styled as Html exposing (Attribute, Html, div, styled)
 import Html.Styled.Attributes exposing (css)
 import Nordea.Resources.Colors as Colors
 import Svg.Styled as Svg exposing (Svg, ellipse, svg)
-import Svg.Styled.Attributes as SvgAttrs exposing (clipRule, cx, cy, d, fill, fillRule, height, id, mask, maskUnits, r, rx, ry, stroke, strokeWidth, transform, viewBox, width, x, y)
+import Svg.Styled.Attributes as SvgAttrs exposing (clipRule, cx, cy, d, fill, fillRule, height, r, rx, ry, stroke, strokeWidth, transform, viewBox, width)
 
 
 
