@@ -90,7 +90,7 @@ import Html.Styled as Html exposing (Attribute, Html, div, styled)
 import Html.Styled.Attributes exposing (css)
 import Nordea.Resources.Colors as Colors
 import Svg.Styled as Svg exposing (Svg, ellipse, svg)
-import Svg.Styled.Attributes as SvgAttrs exposing (clipRule, cx, cy, d, fill, fillRule, height, id, mask, maskUnits, order, r, rx, ry, stroke, strokeLinejoin, strokeWidth, transform, viewBox, width, x, y)
+import Svg.Styled.Attributes as SvgAttrs exposing (clipRule, cx, cy, d, fill, fillRule, height, id, mask, maskUnits, r, rx, ry, stroke, strokeWidth, transform, viewBox, width, x, y)
 
 
 
