@@ -14,7 +14,9 @@ module Nordea.Resources.Icons exposing
     , chevronDownFilled
     , chevronDownFilledSmall
     , chevronLeft
+    , chevronLeftBordered
     , chevronRight
+    , chevronRightBordered
     , chevronUp
     , close
     , cog
@@ -88,7 +90,7 @@ import Html.Styled as Html exposing (Attribute, Html, div, styled)
 import Html.Styled.Attributes exposing (css)
 import Nordea.Resources.Colors as Colors
 import Svg.Styled as Svg exposing (Svg, ellipse, svg)
-import Svg.Styled.Attributes as SvgAttrs exposing (clipRule, cx, cy, d, fill, fillRule, height, r, rx, ry, stroke, strokeWidth, transform, viewBox, width)
+import Svg.Styled.Attributes as SvgAttrs exposing (clipRule, cx, cy, d, fill, fillRule, height, id, mask, maskUnits, order, r, rx, ry, stroke, strokeLinejoin, strokeWidth, transform, viewBox, width, x, y)
 
 
 
@@ -531,6 +533,57 @@ chevronRight attrs =
             [ Svg.path
                 [ d "M10 29C10.2431 28.9996 10.4777 28.9107 10.66 28.75L24.37 16.75C24.5853 16.5601 24.7086 16.287 24.7086 16C24.7086 15.713 24.5853 15.4398 24.37 15.25L10.66 3.24997C10.2431 2.91417 9.63568 2.96626 9.28202 3.36814C8.92837 3.77002 8.95393 4.37913 9.34001 4.74997L22.2 16L9.34001 27.25C8.92631 27.6147 8.88604 28.2456 9.25001 28.66C9.43958 28.8758 9.71279 28.9996 10 29Z"
                 , fill "currentColor"
+                ]
+                []
+            ]
+        ]
+
+
+chevronRightBordered : List (Attribute msg) -> Html msg
+chevronRightBordered attrs =
+    iconContainer attrs
+        [ Svg.svg
+            [ viewBox "0 0 16 20", fill "none" ]
+            [ Svg.path
+                [ d "M4.01224 4.12885L4.66441 3.38353L4.01224 4.12885L10.722 9.99999L4.01224 15.8711C3.38879 16.4167 3.32562 17.3643 3.87115 17.9878C4.41668 18.6112 5.36432 18.6744 5.98777 18.1289L13.9876 11.1289C14.6706 10.5312 14.6706 9.46876 13.9876 8.87114L5.98778 1.87114C5.36433 1.32561 4.41668 1.38878 3.87115 2.01223C3.32562 2.63568 3.38879 3.58332 4.01224 4.12885Z"
+                , fill "currentColor"
+                , stroke (Colors.toString Colors.mediumBlue)
+                , strokeWidth "2"
+                ]
+                []
+            ]
+        ]
+
+
+chevronLeftBordered : List (Attribute msg) -> Html msg
+chevronLeftBordered attrs =
+    iconContainer attrs
+        [ Svg.svg
+            [ viewBox "0 0 16 20", fill "none" ]
+            [ Svg.mask
+                [ id "path-1-outside-1_4333_550"
+                , maskUnits "userSpaceOnUse"
+                , x "0.5"
+                , y "0.499992"
+                , width "14"
+                , height "19"
+                , fill "black"
+                ]
+                [ Svg.rect [ x "0.5", y "0.499992", width "14", height "19", fill "white" ] []
+                , Svg.path
+                    [ d "M11.4921 3.37963L3.7683 9.99999L11.4921 16.6204C11.7017 16.8001 11.726 17.1157 11.5463 17.3254C11.3666 17.5351 11.0509 17.5593 10.8413 17.3796L2.6746 10.3796C2.4418 10.1801 2.4418 9.81992 2.6746 9.62037L10.8413 2.62037C11.0509 2.44066 11.3666 2.46494 11.5463 2.67461C11.726 2.88427 11.7017 3.19992 11.4921 3.37963Z"
+                    ]
+                    []
+                ]
+            , Svg.path
+                [ d "M11.4921 3.37963L3.7683 9.99999L11.4921 16.6204C11.7017 16.8001 11.726 17.1157 11.5463 17.3254C11.3666 17.5351 11.0509 17.5593 10.8413 17.3796L2.6746 10.3796C2.4418 10.1801 2.4418 9.81992 2.6746 9.62037L10.8413 2.62037C11.0509 2.44066 11.3666 2.46494 11.5463 2.67461C11.726 2.88427 11.7017 3.19992 11.4921 3.37963Z"
+                , fill "currentColor"
+                ]
+                []
+            , Svg.path
+                [ d "M11.4921 3.37963L12.7936 4.89814L12.7936 4.89814L11.4921 3.37963ZM3.7683 9.99999L2.46671 8.48148L0.695114 9.99999L2.46671 11.5185L3.7683 9.99999ZM11.4921 16.6204L10.1905 18.1389H10.1905L11.4921 16.6204ZM10.8413 17.3796L12.1429 15.8611L10.8413 17.3796ZM2.6746 10.3796L3.97619 8.86112L2.6746 10.3796ZM2.6746 9.62037L1.37302 8.10186L2.6746 9.62037ZM10.8413 2.62037L12.1429 4.13889L10.8413 2.62037ZM10.1905 1.86112L2.46671 8.48148L5.06988 11.5185L12.7936 4.89814L10.1905 1.86112ZM2.46671 11.5185L10.1905 18.1389L12.7936 15.1019L5.06988 8.48148L2.46671 11.5185ZM10.1905 18.1389C9.56149 17.5998 9.48865 16.6528 10.0278 16.0238L13.0648 18.627C13.9634 17.5787 13.842 16.0004 12.7936 15.1019L10.1905 18.1389ZM10.0278 16.0238C10.5669 15.3948 11.5139 15.322 12.1429 15.8611L9.53969 18.8981C10.588 19.7967 12.1663 19.6753 13.0648 18.627L10.0278 16.0238ZM12.1429 15.8611L3.97619 8.86112L1.37302 11.8981L9.53969 18.8981L12.1429 15.8611ZM3.97619 8.86112C4.6746 9.45976 4.6746 10.5402 3.97619 11.1389L1.37302 8.10186C0.208993 9.0996 0.208993 10.9004 1.37302 11.8981L3.97619 8.86112ZM3.97619 11.1389L12.1429 4.13889L9.53969 1.10186L1.37302 8.10186L3.97619 11.1389ZM12.1429 4.13889C11.5139 4.67802 10.5669 4.60518 10.0278 3.97619L13.0648 1.37302C12.1663 0.324708 10.588 0.203305 9.53969 1.10186L12.1429 4.13889ZM10.0278 3.97619C9.48865 3.3472 9.56149 2.40025 10.1905 1.86112L12.7936 4.89814C13.842 3.99959 13.9634 2.42134 13.0648 1.37302L10.0278 3.97619Z"
+                , fill (Colors.toString Colors.mediumBlue)
+                , mask "url(#path-1-outside-1_4333_550)"
                 ]
                 []
             ]
