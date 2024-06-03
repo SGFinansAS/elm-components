@@ -6,8 +6,10 @@ import Css
         , alignItems
         , alignSelf
         , backgroundColor
+        , border
         , border3
         , borderBox
+        , borderColor
         , borderRadius
         , borderRadius4
         , boxSizing
@@ -24,6 +26,7 @@ import Css
         , hover
         , int
         , justifyContent
+        , marginTop
         , none
         , outline
         , padding
@@ -40,17 +43,17 @@ import Css
         , solid
         , spaceBetween
         , top
+        , transparent
         , width
         , zIndex
         )
 import Date exposing (Date)
 import Html.Styled as Html exposing (Attribute, Html, input, styled)
-import Html.Styled.Attributes exposing (css, placeholder, tabindex, value)
+import Html.Styled.Attributes exposing (css, placeholder, value)
 import Html.Styled.Events as Events exposing (onBlur, onClick, onInput)
 import Json.Decode as Decode
 import List.Extra as List exposing (groupsOf)
 import Maybe.Extra exposing (toList)
-import Nordea.Components.Button as Button
 import Nordea.Components.OnClickOutsideSupport as OnClickOutsideSupport
 import Nordea.Components.Text as Text
 import Nordea.Css exposing (gap)
@@ -74,6 +77,8 @@ type InternalState
         { hasFocus : Bool
         , input : String
         , selectedMonth : Maybe ( Month, Int )
+        , prevMonthHasFocus : Bool
+        , nextMonthHasFocus : Bool
         , today : Date
         }
 
@@ -106,6 +111,8 @@ init today input onSelect onInternalStateChange =
                 { hasFocus = False
                 , input = input
                 , selectedMonth = Nothing
+                , prevMonthHasFocus = False
+                , nextMonthHasFocus = False
                 , today = today
                 }
         }
@@ -182,7 +189,6 @@ view attrs optional (DatePicker config) =
                 , zIndex (int 1)
                 , backgroundColor Colors.white
                 , alignSelf flexEnd
-                , cursor pointer
                 , if internalState.hasFocus then
                     displayFlex
 
@@ -272,21 +278,59 @@ pickerHeader config (InternalState internalState) chosenDate =
 
         nextMonthDate =
             Date.add Date.Months 1 date
+
+        chevronLeftIcon =
+            if internalState.prevMonthHasFocus then
+                Icons.chevronLeftBordered
+
+            else
+                Icons.chevronLeft
+
+        chevronRightIcon =
+            if internalState.nextMonthHasFocus then
+                Icons.chevronRightBordered
+
+            else
+                Icons.chevronRight
+
+        onInternalStateChange event updatedModel =
+            let
+                stopPropagationOn msg =
+                    Events.stopPropagationOn event (Decode.succeed ( msg, True ))
+            in
+            stopPropagationOn (config.onInternalStateChange (InternalState updatedModel))
+
+        navButtonView attrs children =
+            Html.styled Html.button
+                [ displayFlex
+                , backgroundColor transparent
+                , border (rem 0)
+                , cursor pointer
+                , Themes.color Colors.mediumGray
+                , padding2 (rem 0) (rem 0.25)
+                , hover [ Themes.color Colors.mediumBlue ]
+                , focus
+                    [ outline none
+                    , Themes.color Colors.deepBlue
+                    ]
+                ]
+                attrs
+                children
     in
-    Html.row [ css [ justifyContent spaceBetween, padding2 (rem 1) (rem 0.75), Themes.color Colors.deepBlue ] ]
-        [ Button.flatLinkStyle
-            |> Button.view
-                [ css [ Themes.color Colors.mediumGray ]
-                , config.onInternalStateChange (InternalState { internalState | selectedMonth = Just ( Date.month prevMonthDate, Date.year prevMonthDate ) }) |> onClick
-                ]
-                [ Icons.chevronLeft [ css [ width (rem 1) ] ] ]
-        , Text.textHeavy |> Text.view [ css [ alignSelf center ] ] [ Html.text (Date.format "MMMM YYYY" date) ]
-        , Button.flatLinkStyle
-            |> Button.view
-                [ css [ Themes.color Colors.mediumGray ]
-                , config.onInternalStateChange (InternalState { internalState | selectedMonth = Just ( Date.month nextMonthDate, Date.year nextMonthDate ) }) |> onClick
-                ]
-                [ Icons.chevronRight [ css [ width (rem 1) ] ] ]
+    Html.row [ css [ justifyContent spaceBetween, padding2 (rem 1) (rem 0.75), Themes.color Colors.deepBlue, alignItems center ] ]
+        [ navButtonView
+            [ onInternalStateChange "click" { internalState | selectedMonth = Just ( Date.month prevMonthDate, Date.year prevMonthDate ) }
+            , onInternalStateChange "focus" { internalState | prevMonthHasFocus = True }
+            , onInternalStateChange "blur" { internalState | prevMonthHasFocus = False }
+            ]
+            [ chevronLeftIcon [ css [ width (rem 1) ] ] ]
+        , Text.textHeavy |> Text.view [] [ Html.text (Date.format "MMMM YYYY" date) ]
+        , navButtonView
+            [ onInternalStateChange "click" { internalState | selectedMonth = Just ( Date.month nextMonthDate, Date.year nextMonthDate ) }
+            , onInternalStateChange "focus" { internalState | nextMonthHasFocus = True }
+            , onInternalStateChange "blur" { internalState | nextMonthHasFocus = False }
+            ]
+            [ chevronRightIcon [ css [ width (rem 1) ] ] ]
         ]
 
 
@@ -323,38 +367,42 @@ pickerBody config (InternalState internalState) formatter firstDayOfWeek chosenD
                     else
                         ( Themes.color Colors.lightGray, Themes.backgroundColor Colors.white )
 
-                preventDefaultOn event msg =
-                    Events.preventDefaultOn event (Decode.succeed ( msg, True ))
+                onSelect =
+                    config.onSelect (Picked date) (InternalState { internalState | hasFocus = False, input = formatter date })
             in
-            Html.td
-                [ css
-                    [ width (rem 2)
-                    , height (rem 2)
-                    , displayFlex
-                    , justifyContent center
-                    , alignItems center
-                    , textColor
-                    , backgroundColor
-                    , borderRadius (pct 50)
-                    , hover
-                        [ Themes.backgroundColor Colors.cloudBlue
-                        , Themes.color Colors.black
+            Html.td []
+                [ Html.button
+                    [ css
+                        [ Css.property "appearance" "none"
+                        , border (rem 0)
+                        , width (rem 2)
+                        , height (rem 2)
+                        , displayFlex
+                        , justifyContent center
+                        , alignItems center
+                        , textColor
+                        , backgroundColor
+                        , borderRadius (pct 50)
+                        , cursor pointer
+                        , hover
+                            [ Themes.backgroundColor Colors.cloudBlue
+                            , Themes.color Colors.black
+                            ]
+                        , focus
+                            [ outline none
+                            , Themes.color Colors.white
+                            , Themes.backgroundColor Colors.deepBlue
+                            ]
                         ]
-                    , focus
-                        [ outline none
-                        , Themes.color Colors.white
-                        , Themes.backgroundColor Colors.deepBlue
-                        ]
+                    , onClick onSelect
+                    , Events.onEnterOrSpacePress onSelect
                     ]
-                , tabindex 0
-                , preventDefaultOn "click" (config.onSelect (Picked date) (InternalState { internalState | hasFocus = False, input = formatter date }))
-                , Events.onEnterOrSpacePress (config.onSelect (Picked date) (InternalState { internalState | hasFocus = False, input = formatter date }))
+                    [ Text.bodyTextSmall |> Text.view [] [ Date.format "d" date |> Html.text ] ]
                 ]
-                [ Text.bodyTextSmall |> Text.view [] [ Date.format "d" date |> Html.text ] ]
     in
     Html.table [ css [ displayFlex, flexDirection column, padding2 (rem 1) (rem 0.75) ] ]
         [ Html.thead []
-            [ Html.tr [ css [ displayFlex, flexDirection row, gap (rem 0.75) ] ]
+            [ Html.tr [ css [ displayFlex, flexDirection row, justifyContent spaceBetween ] ]
                 ([ "M", "T", "W", "T", "F", "S", "S" ]
                     |> List.map headerCell
                 )
@@ -364,7 +412,7 @@ pickerBody config (InternalState internalState) formatter firstDayOfWeek chosenD
                 |> groupsOf 7
                 |> List.map
                     (\week ->
-                        Html.tr [ css [ displayFlex, flexDirection row, gap (rem 0.75) ] ]
+                        Html.tr [ css [ displayFlex, flexDirection row, gap (rem 0.75), marginTop (rem 0.5) ] ]
                             (week |> List.map bodyCell)
                     )
             )
@@ -426,6 +474,6 @@ defaultDateParser date =
         |> Date.fromIsoString
 
 
-internalStateValues : InternalState -> { hasFocus : Bool, input : String, selectedMonth : Maybe ( Month, Int ), today : Date }
+internalStateValues : InternalState -> { hasFocus : Bool, input : String, selectedMonth : Maybe ( Month, Int ), prevMonthHasFocus : Bool, nextMonthHasFocus : Bool, today : Date }
 internalStateValues (InternalState state) =
     state
