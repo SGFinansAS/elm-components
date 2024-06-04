@@ -16,6 +16,7 @@ import Css
         , center
         , column
         , cursor
+        , deg
         , display
         , displayFlex
         , flexDirection
@@ -26,6 +27,7 @@ import Css
         , hover
         , int
         , justifyContent
+        , left
         , marginTop
         , none
         , outline
@@ -39,10 +41,12 @@ import Css
         , relative
         , rem
         , right
+        , rotateZ
         , row
         , solid
         , spaceBetween
         , top
+        , transforms
         , transparent
         , width
         , zIndex
@@ -57,7 +61,7 @@ import Maybe.Extra exposing (toList)
 import Nordea.Components.OnClickOutsideSupport as OnClickOutsideSupport
 import Nordea.Components.Text as Text
 import Nordea.Css exposing (gap)
-import Nordea.Html as Html
+import Nordea.Html as Html exposing (showIf)
 import Nordea.Html.Events as Events
 import Nordea.Resources.Colors as Colors
 import Nordea.Resources.Icons as Icons
@@ -279,26 +283,8 @@ pickerHeader config (InternalState internalState) chosenDate =
         nextMonthDate =
             Date.add Date.Months 1 date
 
-        chevronLeftIcon =
-            if internalState.prevMonthHasFocus then
-                Icons.chevronLeftBordered
-
-            else
-                Icons.chevronLeft
-
-        chevronRightIcon =
-            if internalState.nextMonthHasFocus then
-                Icons.chevronRightBordered
-
-            else
-                Icons.chevronRight
-
         onInternalStateChange event updatedModel =
-            let
-                stopPropagationOn msg =
-                    Events.stopPropagationOn event (Decode.succeed ( msg, True ))
-            in
-            stopPropagationOn (config.onInternalStateChange (InternalState updatedModel))
+            stopPropagationOn event (config.onInternalStateChange (InternalState updatedModel))
 
         navButtonView attrs children =
             Html.styled Html.button
@@ -313,9 +299,18 @@ pickerHeader config (InternalState internalState) chosenDate =
                     [ outline none
                     , Themes.color Colors.deepBlue
                     ]
+                , position relative
                 ]
                 attrs
                 children
+
+        chevronCommonStyles =
+            Css.batch
+                [ width (rem 1)
+                , position absolute
+                , top (pct 0)
+                , height (pct 100)
+                ]
     in
     Html.row [ css [ justifyContent spaceBetween, padding2 (rem 1) (rem 0.75), Themes.color Colors.deepBlue, alignItems center ] ]
         [ navButtonView
@@ -323,14 +318,33 @@ pickerHeader config (InternalState internalState) chosenDate =
             , onInternalStateChange "focus" { internalState | prevMonthHasFocus = True }
             , onInternalStateChange "blur" { internalState | prevMonthHasFocus = False }
             ]
-            [ chevronLeftIcon [ css [ width (rem 1) ] ] ]
+            [ Icons.chevronLeftBolded
+                [ css
+                    [ chevronCommonStyles
+                    , Themes.color Colors.mediumBlue
+                    , left (pct 110)
+                    ]
+                ]
+                |> showIf internalState.prevMonthHasFocus
+            , Icons.chevronLeft [ css [ chevronCommonStyles, left (pct 100) ] ]
+            ]
         , Text.textHeavy |> Text.view [] [ Html.text (Date.format "MMMM YYYY" date) ]
         , navButtonView
             [ onInternalStateChange "click" { internalState | selectedMonth = Just ( Date.month nextMonthDate, Date.year nextMonthDate ) }
             , onInternalStateChange "focus" { internalState | nextMonthHasFocus = True }
             , onInternalStateChange "blur" { internalState | nextMonthHasFocus = False }
             ]
-            [ chevronRightIcon [ css [ width (rem 1) ] ] ]
+            [ Icons.chevronLeftBolded
+                [ css
+                    [ chevronCommonStyles
+                    , Themes.color Colors.mediumBlue
+                    , right (pct 110)
+                    , transforms [ rotateZ (deg 180) ]
+                    ]
+                ]
+                |> showIf internalState.nextMonthHasFocus
+            , Icons.chevronRight [ css [ chevronCommonStyles, right (pct 100) ] ]
+            ]
         ]
 
 
@@ -394,7 +408,7 @@ pickerBody config (InternalState internalState) formatter firstDayOfWeek chosenD
                             , Themes.backgroundColor Colors.deepBlue
                             ]
                         ]
-                    , onClick onSelect
+                    , stopPropagationOn "click" onSelect
                     , Events.onEnterOrSpacePress onSelect
                     ]
                     [ Text.bodyTextSmall |> Text.view [] [ Date.format "d" date |> Html.text ] ]
@@ -477,3 +491,8 @@ defaultDateParser date =
 internalStateValues : InternalState -> { hasFocus : Bool, input : String, selectedMonth : Maybe ( Month, Int ), prevMonthHasFocus : Bool, nextMonthHasFocus : Bool, today : Date }
 internalStateValues (InternalState state) =
     state
+
+
+stopPropagationOn : String -> msg -> Attribute msg
+stopPropagationOn event msg =
+    Events.stopPropagationOn event (Decode.succeed ( msg, True ))
