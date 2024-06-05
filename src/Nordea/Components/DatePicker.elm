@@ -200,6 +200,7 @@ view attrs optional (DatePicker config) =
                     display none
                 , flexDirection column
                 ]
+            , preventDefaultOn "click" (config.onInternalStateChange (InternalState internalState))
             ]
             [ pickerHeader config (InternalState internalState) chosenDate
             , pickerBody config (InternalState internalState) formatter firstDayOfWeek chosenDate
@@ -496,3 +497,8 @@ internalStateValues (InternalState state) =
 stopPropagationOn : String -> msg -> Attribute msg
 stopPropagationOn event msg =
     Events.stopPropagationOn event (Decode.succeed ( msg, True ))
+
+
+preventDefaultOn : String -> msg -> Attribute msg
+preventDefaultOn event msg =
+    Events.preventDefaultOn event (Decode.succeed ( msg, True ))
