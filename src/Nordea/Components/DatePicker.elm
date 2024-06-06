@@ -141,7 +141,7 @@ view attrs optional (DatePicker config) =
         internalState =
             internalStateValues config.internalState
 
-        { placeholder, parser, formatter, firstDayOfWeek, onBlur, error } =
+        { placeholder, parser, formatter, firstDayOfWeek, showError, error } =
             optional
                 |> List.foldl
                     (\e acc ->
@@ -159,7 +159,7 @@ view attrs optional (DatePicker config) =
                                 { acc | firstDayOfWeek = v }
 
                             ShowError v ->
-                                { acc | onBlur = Just v }
+                                { acc | showError = Just v }
 
                             Error v ->
                                 { acc | error = v }
@@ -168,7 +168,7 @@ view attrs optional (DatePicker config) =
                     , parser = defaultDateParser
                     , formatter = Date.format "dd.MM.yyyy"
                     , firstDayOfWeek = Time.Mon
-                    , onBlur = Nothing
+                    , showError = Nothing
                     , error = False
                     }
 
@@ -191,7 +191,7 @@ view attrs optional (DatePicker config) =
             :: attrs
         )
         [ OnClickOutsideSupport.view { isActive = internalState.hasFocus }
-        , dateInput config (InternalState internalState) parser placeholder onBlur error
+        , dateInput config (InternalState internalState) parser placeholder showError error
         , Html.div
             [ css
                 [ border3 (rem 0.0625) solid Colors.mediumGray
@@ -212,13 +212,13 @@ view attrs optional (DatePicker config) =
             , stopPropagationAndPreventDefaultOn "click" (config.onInternalStateChange (InternalState internalState))
             ]
             [ pickerHeader config (InternalState internalState) chosenDate
-            , pickerBody config (InternalState internalState) formatter firstDayOfWeek chosenDate onBlur
+            , pickerBody config (InternalState internalState) formatter firstDayOfWeek chosenDate showError
             ]
         ]
 
 
 dateInput : Config msg -> InternalState -> (String -> Result String Date) -> String -> Maybe msg -> Bool -> Html msg
-dateInput config (InternalState internalState) parser datePlaceholder onBlurMsg error =
+dateInput config (InternalState internalState) parser datePlaceholder showError error =
     let
         ( borderColor, calendarIconColor ) =
             if error then
@@ -246,7 +246,7 @@ dateInput config (InternalState internalState) parser datePlaceholder onBlurMsg 
             , config.onInternalStateChange (InternalState { internalState | hasFocus = not internalState.hasFocus }) |> onClick
             , config.onInternalStateChange (InternalState { internalState | hasFocus = not internalState.hasFocus }) |> Events.onEnterOrSpacePress
             ]
-                ++ (onBlurMsg |> Maybe.filter (\_ -> not internalState.hasFocus) |> Maybe.map onBlur |> toList)
+                ++ (showError |> Maybe.filter (\_ -> not internalState.hasFocus) |> Maybe.map onBlur |> toList)
     in
     Html.div
         [ css [ displayFlex, position relative ] ]
@@ -359,7 +359,7 @@ pickerHeader config (InternalState internalState) chosenDate =
 
 
 pickerBody : Config msg -> InternalState -> (Date -> String) -> Weekday -> Date -> Maybe msg -> Html msg
-pickerBody config (InternalState internalState) formatter firstDayOfWeek chosenDate onBlurMsg =
+pickerBody config (InternalState internalState) formatter firstDayOfWeek chosenDate showError =
     let
         ( chosenMonth, chosenYear ) =
             internalState.selectedMonth |> Maybe.withDefault ( Date.month chosenDate, Date.year chosenDate )
@@ -421,7 +421,7 @@ pickerBody config (InternalState internalState) formatter firstDayOfWeek chosenD
                      , stopPropagationOn "click" onSelect
                      , Events.onEnterOrSpacePress onSelect
                      ]
-                        ++ (onBlurMsg |> Maybe.map onBlur |> toList)
+                        ++ (showError |> Maybe.map onBlur |> toList)
                     )
                     [ Text.bodyTextSmall |> Text.view [] [ Date.format "d" date |> Html.text ] ]
                 ]
