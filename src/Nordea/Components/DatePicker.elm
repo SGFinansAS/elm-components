@@ -54,10 +54,10 @@ import Css
 import Date exposing (Date)
 import Html.Styled as Html exposing (Attribute, Html, input, styled)
 import Html.Styled.Attributes exposing (css, placeholder, value)
-import Html.Styled.Events as Events exposing (onBlur, onClick, onInput)
+import Html.Styled.Events as Events exposing (custom, onBlur, onClick, onInput)
 import Json.Decode as Decode
 import List.Extra as List exposing (groupsOf)
-import Maybe.Extra exposing (toList)
+import Maybe.Extra as Maybe exposing (toList)
 import Nordea.Components.OnClickOutsideSupport as OnClickOutsideSupport
 import Nordea.Components.Text as Text
 import Nordea.Css exposing (gap)
@@ -175,6 +175,15 @@ view attrs optional (DatePicker config) =
         chosenDate =
             parser internalState.input
                 |> Result.withDefault internalState.today
+
+        stopPropagationAndPreventDefaultOn event msg =
+            custom event
+                (Decode.succeed
+                    { message = msg
+                    , stopPropagation = True
+                    , preventDefault = True
+                    }
+                )
     in
     Html.column
         (Events.on "outsideclick" (Decode.succeed (config.onInternalStateChange (InternalState { internalState | hasFocus = False })))
@@ -200,10 +209,10 @@ view attrs optional (DatePicker config) =
                     display none
                 , flexDirection column
                 ]
-            , preventDefaultOn "click" (config.onInternalStateChange (InternalState internalState))
+            , stopPropagationAndPreventDefaultOn "click" (config.onInternalStateChange (InternalState internalState))
             ]
             [ pickerHeader config (InternalState internalState) chosenDate
-            , pickerBody config (InternalState internalState) formatter firstDayOfWeek chosenDate
+            , pickerBody config (InternalState internalState) formatter firstDayOfWeek chosenDate onBlur
             ]
         ]
 
@@ -237,7 +246,7 @@ dateInput config (InternalState internalState) parser datePlaceholder onBlurMsg 
             , config.onInternalStateChange (InternalState { internalState | hasFocus = not internalState.hasFocus }) |> onClick
             , config.onInternalStateChange (InternalState { internalState | hasFocus = not internalState.hasFocus }) |> Events.onEnterOrSpacePress
             ]
-                ++ (onBlurMsg |> Maybe.map onBlur |> toList)
+                ++ (onBlurMsg |> Maybe.filter (\_ -> not internalState.hasFocus) |> Maybe.map onBlur |> toList)
     in
     Html.div
         [ css [ displayFlex, position relative ] ]
@@ -349,8 +358,8 @@ pickerHeader config (InternalState internalState) chosenDate =
         ]
 
 
-pickerBody : Config msg -> InternalState -> (Date -> String) -> Weekday -> Date -> Html msg
-pickerBody config (InternalState internalState) formatter firstDayOfWeek chosenDate =
+pickerBody : Config msg -> InternalState -> (Date -> String) -> Weekday -> Date -> Maybe msg -> Html msg
+pickerBody config (InternalState internalState) formatter firstDayOfWeek chosenDate onBlurMsg =
     let
         ( chosenMonth, chosenYear ) =
             internalState.selectedMonth |> Maybe.withDefault ( Date.month chosenDate, Date.year chosenDate )
@@ -387,7 +396,7 @@ pickerBody config (InternalState internalState) formatter firstDayOfWeek chosenD
             in
             Html.td []
                 [ Html.button
-                    [ css
+                    ([ css
                         [ Css.property "appearance" "none"
                         , border (rem 0)
                         , width (rem 2)
@@ -409,9 +418,11 @@ pickerBody config (InternalState internalState) formatter firstDayOfWeek chosenD
                             , Themes.backgroundColor Colors.deepBlue
                             ]
                         ]
-                    , stopPropagationOn "click" onSelect
-                    , Events.onEnterOrSpacePress onSelect
-                    ]
+                     , stopPropagationOn "click" onSelect
+                     , Events.onEnterOrSpacePress onSelect
+                     ]
+                        ++ (onBlurMsg |> Maybe.map onBlur |> toList)
+                    )
                     [ Text.bodyTextSmall |> Text.view [] [ Date.format "d" date |> Html.text ] ]
                 ]
     in
@@ -497,8 +508,3 @@ internalStateValues (InternalState state) =
 stopPropagationOn : String -> msg -> Attribute msg
 stopPropagationOn event msg =
     Events.stopPropagationOn event (Decode.succeed ( msg, True ))
-
-
-preventDefaultOn : String -> msg -> Attribute msg
-preventDefaultOn event msg =
-    Events.preventDefaultOn event (Decode.succeed ( msg, True ))
