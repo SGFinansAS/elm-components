@@ -13,6 +13,7 @@ module Nordea.Components.TextInput exposing
     , withPlaceholder
     , withSearchIcon
     , withSmallSize
+    , withId
     )
 
 import Css
@@ -90,6 +91,7 @@ type alias Config msg =
     , onEnterPress : Maybe msg
     , currency : Maybe String
     , size : Size
+    , id: Maybe String
     }
 
 
@@ -117,6 +119,7 @@ init value =
         , onEnterPress = Nothing
         , currency = Nothing
         , size = Standard
+        , id = Nothing
         }
 
 
@@ -177,6 +180,10 @@ withSmallSize : TextInput msg -> TextInput msg
 withSmallSize (TextInput config) =
     TextInput { config | size = Small }
 
+
+withId : String -> TextInput msg -> TextInput msg
+withId id (TextInput config) =
+    TextInput { config | id = Just id }
 
 onEnterPress : msg -> Attribute msg
 onEnterPress msg =
@@ -303,6 +310,7 @@ getAttributes config =
         , config.pattern |> Maybe.map pattern
         , config.onBlur |> Maybe.map onBlur
         , config.onEnterPress |> Maybe.map onEnterPress
+        , config.id |> Maybe.map Html.id
         ]
 
 
