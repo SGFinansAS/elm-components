@@ -12,11 +12,11 @@ import Css.Global as Global
 import Css.Media as Media
 import Html.Styled as Html exposing (Attribute, Html)
 import Html.Styled.Attributes exposing (attribute, css, tabindex)
-import Html.Styled.Events as Events exposing (keyCode, on)
-import Json.Decode as Json
+import Html.Styled.Events as Events
 import Nordea.Components.Button as NordeaButton
 import Nordea.Components.Text as Text
 import Nordea.Html exposing (viewMaybe)
+import Nordea.Html.Events exposing (onEscPress)
 import Nordea.Resources.Colors as Colors
 import Nordea.Resources.Icons as Icons
 import Nordea.Themes as Themes
@@ -222,19 +222,6 @@ contentContainer variant title subTitle attrs children =
 disableScrollOnBody : Html msg
 disableScrollOnBody =
     Global.global [ Global.body [ overflow hidden ] ]
-
-
-onEscPress : msg -> Attribute msg
-onEscPress msg =
-    let
-        isEnter code =
-            if code == 27 then
-                Json.succeed msg
-
-            else
-                Json.fail "not ESC"
-    in
-    on "keydown" (Json.andThen isEnter keyCode)
 
 
 withTitle : String -> Modal msg -> Modal msg
