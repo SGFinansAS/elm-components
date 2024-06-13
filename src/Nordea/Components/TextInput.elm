@@ -5,6 +5,7 @@ module Nordea.Components.TextInput exposing
     , withClearInput
     , withCurrency
     , withError
+    , withId
     , withMaxLength
     , withOnBlur
     , withOnEnterPress
@@ -13,7 +14,6 @@ module Nordea.Components.TextInput exposing
     , withPlaceholder
     , withSearchIcon
     , withSmallSize
-    , withId
     )
 
 import Css
@@ -91,7 +91,7 @@ type alias Config msg =
     , onEnterPress : Maybe msg
     , currency : Maybe String
     , size : Size
-    , id: Maybe String
+    , id : Maybe String
     }
 
 
