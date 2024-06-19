@@ -1,4 +1,4 @@
-module Stories.MultiSelectDropdown exposing (..)
+module Stories.MultiSelectDropdown exposing (stories)
 
 import Config exposing (Msg(..))
 import Nordea.Components.Label as Label

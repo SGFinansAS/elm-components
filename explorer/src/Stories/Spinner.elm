@@ -1,4 +1,4 @@
-module Stories.Spinner exposing (..)
+module Stories.Spinner exposing (stories)
 
 import Config exposing (Config, Msg)
 import Css exposing (rem, width)

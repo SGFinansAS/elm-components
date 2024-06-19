@@ -1,4 +1,4 @@
-module Stories.InfoPanel exposing (..)
+module Stories.InfoPanel exposing (stories)
 
 import Config exposing (Config, Msg)
 import Nordea.Components.InfoPanel as InfoPanel
