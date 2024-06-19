@@ -2,7 +2,7 @@ module Stories.Status exposing (..)
 
 import Nordea.Components.Status as Status
 import Nordea.Resources.Colors as Color
-import UIExplorer exposing (Config, UI)
+import UIExplorer exposing (UI)
 import UIExplorer.Styled exposing (styledStoriesOf)
 
 

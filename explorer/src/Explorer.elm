@@ -1,6 +1,6 @@
 module Explorer exposing (main)
 
-import Config exposing (Config, Msg(..))
+import Config exposing (Config, Msg)
 import Html exposing (Html)
 import Html.Styled exposing (toUnstyled)
 import Nordea.Resources.Fonts.Fonts as Fonts

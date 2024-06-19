@@ -4,7 +4,7 @@ import Css exposing (column, displayFlex, flexDirection, marginBottom, rem)
 import Css.Global exposing (children, everything)
 import Html.Styled as Html exposing (text)
 import Html.Styled.Attributes exposing (css)
-import Nordea.Components.Text as Text exposing (Variant(..))
+import Nordea.Components.Text as Text
 import UIExplorer exposing (UI)
 import UIExplorer.Styled exposing (styledStoriesOf)
 
