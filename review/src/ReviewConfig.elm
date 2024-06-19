@@ -20,6 +20,9 @@ import NoUnused.Patterns
 import NoUnused.Variables
 import Review.Rule exposing (Rule)
 import Simplify
+import NoConfusingPrefixOperator
+import NoExposingEverything
+import NoImportingEverything
 
 
 config : List Rule
@@ -30,4 +33,7 @@ config =
     , NoUnused.Patterns.rule
     , NoUnused.Variables.rule
     , Simplify.rule Simplify.defaults
+    , NoConfusingPrefixOperator.rule
+    , NoExposingEverything.rule
+    , NoImportingEverything.rule []
     ]

@@ -1,4 +1,4 @@
-module Stories.AccordionMenu exposing (..)
+module Stories.AccordionMenu exposing (stories)
 
 import Config exposing (Config, Msg)
 import Css

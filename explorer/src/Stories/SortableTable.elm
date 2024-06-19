@@ -1,7 +1,7 @@
 module Stories.SortableTable exposing (stories)
 
 import Config exposing (Config)
-import Css exposing (..)
+import Css exposing (backgroundColor, maxWidth, minWidth, rem, width)
 import Html.Styled exposing (Html)
 import Html.Styled.Attributes exposing (css)
 import Nordea.Components.SortableTable as Table

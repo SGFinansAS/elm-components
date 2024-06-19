@@ -1,4 +1,4 @@
-module Stories.Snackbar exposing (..)
+module Stories.Snackbar exposing (stories)
 
 import Config exposing (Msg(..))
 import Html.Styled exposing (text)

@@ -1,7 +1,7 @@
-module Stories.Modal exposing (..)
+module Stories.Modal exposing (stories)
 
 import Config exposing (Msg(..))
-import Css exposing (..)
+import Css exposing (maxWidth, pct, rem, width)
 import Html.Styled as Html
 import Html.Styled.Attributes exposing (css)
 import Html.Styled.Events exposing (onClick)

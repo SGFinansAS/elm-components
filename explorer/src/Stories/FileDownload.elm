@@ -1,4 +1,4 @@
-module Stories.FileDownload exposing (..)
+module Stories.FileDownload exposing (stories)
 
 import Config exposing (Config, Msg)
 import Nordea.Components.FileDownload as FileDownload

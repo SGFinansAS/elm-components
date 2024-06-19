@@ -1,4 +1,4 @@
-module Stories.Card exposing (..)
+module Stories.Card exposing (stories)
 
 import Css exposing (alignItems, center, rem, width)
 import Html.Styled as Html
