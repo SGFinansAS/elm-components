@@ -9,7 +9,6 @@ import Css
         , border
         , border3
         , borderBox
-        , borderColor
         , borderRadius
         , borderRadius4
         , boxSizing
@@ -56,7 +55,7 @@ import Html.Styled as Html exposing (Attribute, Html, input, styled)
 import Html.Styled.Attributes exposing (css, placeholder, value)
 import Html.Styled.Events as Events exposing (custom, onBlur, onClick, onInput)
 import Json.Decode as Decode
-import List.Extra as List exposing (groupsOf)
+import List.Extra exposing (groupsOf)
 import Maybe.Extra as Maybe exposing (toList)
 import Nordea.Components.OnClickOutsideSupport as OnClickOutsideSupport
 import Nordea.Components.Text as Text

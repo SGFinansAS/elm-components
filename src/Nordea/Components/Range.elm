@@ -11,7 +11,7 @@ module Nordea.Components.Range exposing
 import Css exposing (Style, backgroundColor, borderRadius, cursor, displayFlex, flexDirection, height, justifyContent, listStyle, margin2, marginTop, none, padding, pct, pointer, property, pseudoElement, rem, row, spaceBetween, transparent, width)
 import Html.Styled as Html exposing (Attribute, Html, div, input, li, ol)
 import Html.Styled.Attributes as Attrs exposing (css, name, step, type_, value)
-import Html.Styled.Events as Events exposing (onInput, targetValue)
+import Html.Styled.Events as Events exposing (targetValue)
 import Json.Decode as Decode
 import Nordea.Html exposing (showIf)
 import Nordea.Resources.Colors as Colors

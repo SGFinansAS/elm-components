@@ -24,13 +24,13 @@ import Css
         , rem
         , wrap
         )
-import Css.Global as Css exposing (children)
+import Css.Global as Css
 import Html.Styled as Html exposing (Attribute, Html)
-import Html.Styled.Attributes as Html exposing (css)
+import Html.Styled.Attributes exposing (css)
 import Maybe.Extra as Maybe
 import Nordea.Components.Card as Card
 import Nordea.Components.Text as Text
-import Nordea.Html as Html exposing (styleIf)
+import Nordea.Html exposing (styleIf)
 import Nordea.Resources.Colors as Colors
 
 

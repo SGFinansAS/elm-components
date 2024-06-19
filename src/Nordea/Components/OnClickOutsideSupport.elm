@@ -3,7 +3,6 @@ module Nordea.Components.OnClickOutsideSupport exposing (view)
 import Css exposing (display, none)
 import Html.Styled as Html exposing (Html)
 import Html.Styled.Attributes exposing (attribute, css, srcdoc)
-import Nordea.Html as Html
 
 
 view : { isActive : Bool } -> Html msg
