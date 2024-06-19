@@ -63,7 +63,7 @@ import Css
 import Css.Global exposing (class, descendants, typeSelector, withAttribute)
 import Html.Events.Extra as Events
 import Html.Styled as Html exposing (Html)
-import Html.Styled.Attributes as Attrs exposing (css, readonly, tabindex, value)
+import Html.Styled.Attributes as Attrs exposing (css, readonly, tabindex)
 import Html.Styled.Events as Events
 import Json.Decode as Decode
 import Maybe.Extra as Maybe

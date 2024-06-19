@@ -61,7 +61,7 @@ stories =
                                 |> TextInput.view []
                             ]
                     , Label.init "Customer name (with max char counter view)" Label.InputLabel
-                        |> Label.withCharCounter (Just { current = String.length "Text", max = 100 })
+                        |> Label.withCharCounter (Just { current = 4, max = 100 })
                         |> Label.view []
                             [ TextInput.init "Text"
                                 |> TextInput.view []

@@ -1,7 +1,7 @@
 module Nordea.Html.Events exposing (onChange, onEnterOrSpacePress, onEscPress)
 
 import Html.Styled exposing (Attribute)
-import Html.Styled.Events as Events exposing (keyCode)
+import Html.Styled.Events as Events
 import Json.Decode as Decode
 
 

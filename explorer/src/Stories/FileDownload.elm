@@ -1,6 +1,6 @@
 module Stories.FileDownload exposing (..)
 
-import Config exposing (Config, Msg(..))
+import Config exposing (Config, Msg)
 import Nordea.Components.FileDownload as FileDownload
 import UIExplorer exposing (UI)
 import UIExplorer.Styled exposing (styledStoriesOf)

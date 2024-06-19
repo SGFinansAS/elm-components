@@ -1,6 +1,5 @@
 module Stories.ProgressBarStepper exposing (stories)
 
-import Config exposing (Msg(..))
 import Nordea.Components.ProgressBarStepper as ProgressBarStepper
 import UIExplorer exposing (UI)
 import UIExplorer.Styled exposing (styledStoriesOf)

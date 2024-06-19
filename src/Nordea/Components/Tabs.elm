@@ -27,7 +27,7 @@ import Css
         )
 import Html.Styled as Html exposing (Attribute, Html)
 import Html.Styled.Attributes exposing (css, tabindex)
-import Nordea.Html as Html exposing (styleIf)
+import Nordea.Html exposing (styleIf)
 import Nordea.Resources.Colors as Color
 import Nordea.Themes as Themes
 

@@ -50,7 +50,7 @@ import Css
         )
 import Css.Global exposing (withAttribute)
 import Dict
-import Html.Styled as Html exposing (Attribute, Html, div, option, text)
+import Html.Styled as Html exposing (Attribute, Html, div, option)
 import Html.Styled.Attributes as Attrs exposing (css, disabled, selected, value)
 import Html.Styled.Events as Events exposing (targetValue)
 import Json.Decode as Decode

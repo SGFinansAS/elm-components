@@ -3,7 +3,7 @@ module Nordea.Components.Pagination exposing (NavigationButtonType(..), Optional
 import Css exposing (backgroundColor, borderRadius, boxShadow, color, displayFlex, flexDirection, focus, hidden, listStyleType, none, paddingBottom, paddingTop, pseudoClass, rem, textDecoration, visibility, visible)
 import Html.Attributes.Extra as Attrs
 import Html.Styled as Html exposing (Attribute, Html)
-import Html.Styled.Attributes as Attrs exposing (css, fromUnstyled)
+import Html.Styled.Attributes exposing (css, fromUnstyled)
 import Html.Styled.Events exposing (onClick)
 import List.Extra as List
 import Nordea.Components.Button as Button

@@ -56,9 +56,8 @@ import Html.Styled.Attributes exposing (css, tabindex)
 import Html.Styled.Events as Events
 import Json.Decode as Decode
 import Nordea.Components.Checkbox as Checkbox
-import Nordea.Components.Label as Label exposing (RequirednessHint(..))
+import Nordea.Components.Label as Label exposing (RequirednessHint)
 import Nordea.Components.OnClickOutsideSupport as OnClickOutsideSupport
-import Nordea.Html as Html
 import Nordea.Html.Events as Events
 import Nordea.Resources.Colors as Colors
 import Nordea.Resources.Icons as Icon

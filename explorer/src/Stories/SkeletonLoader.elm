@@ -1,6 +1,6 @@
 module Stories.SkeletonLoader exposing (stories)
 
-import Config exposing (Config, Msg(..))
+import Config exposing (Config, Msg)
 import Css
     exposing
         ( borderRadius
