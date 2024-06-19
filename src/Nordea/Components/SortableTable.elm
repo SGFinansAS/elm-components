@@ -20,7 +20,49 @@ module Nordea.Components.SortableTable exposing
     , view
     )
 
-import Css exposing (..)
+import Css
+    exposing
+        ( alignItems
+        , backgroundColor
+        , block
+        , borderRadius
+        , center
+        , color
+        , column
+        , cursor
+        , display
+        , displayFlex
+        , ellipsis
+        , flex
+        , flexDirection
+        , flexShrink
+        , flexStart
+        , height
+        , hidden
+        , int
+        , marginBottom
+        , marginLeft
+        , marginRight
+        , noWrap
+        , num
+        , overflow
+        , padding
+        , padding2
+        , pct
+        , pointer
+        , position
+        , pseudoClass
+        , px
+        , relative
+        , rem
+        , right
+        , textAlign
+        , textDecoration
+        , textOverflow
+        , underline
+        , whiteSpace
+        , width
+        )
 import Css.Media
 import Dict exposing (Dict)
 import Html.Styled as Html exposing (Attribute, Html, styled)

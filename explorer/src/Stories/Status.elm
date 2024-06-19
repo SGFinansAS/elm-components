@@ -1,4 +1,4 @@
-module Stories.Status exposing (..)
+module Stories.Status exposing (stories)
 
 import Nordea.Components.Status as Status
 import Nordea.Resources.Colors as Color

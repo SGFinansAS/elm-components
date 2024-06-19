@@ -1,4 +1,4 @@
-module Nordea.Components.InfoPanel exposing (..)
+module Nordea.Components.InfoPanel exposing (InfoPanelContent, view, viewLabelInfoBlock)
 
 import Css exposing (int, pseudoClass, rem)
 import Html.Styled as Html exposing (Html)
