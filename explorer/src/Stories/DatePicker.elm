@@ -1,6 +1,6 @@
 module Stories.DatePicker exposing (stories)
 
-import Config exposing (Config, Msg(..))
+import Config exposing (Config, Msg)
 import Nordea.Components.DatePicker as DatePicker
 import UIExplorer exposing (UI)
 import UIExplorer.Styled exposing (styledStoriesOf)

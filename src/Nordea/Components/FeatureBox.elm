@@ -52,7 +52,7 @@ import Html.Styled.Attributes exposing (css)
 import Html.Styled.Events exposing (onClick)
 import Nordea.Components.Button as Button
 import Nordea.Components.Card as Card
-import Nordea.Components.Text as Text exposing (..)
+import Nordea.Components.Text as Text
 import Nordea.Html as Html exposing (showIf)
 import Nordea.Resources.Colors as Colors
 import Nordea.Resources.Icons as Icons

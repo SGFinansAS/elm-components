@@ -3,7 +3,7 @@ module Stories.InformationDetails exposing (stories)
 import Config exposing (Config, Msg(..))
 import Css
 import Html.Styled as Html
-import Html.Styled.Attributes as Html exposing (css)
+import Html.Styled.Attributes exposing (css)
 import Nordea.Components.InformationDetails as InformationDetails
 import Nordea.Components.Text as Text
 import Nordea.Resources.Colors as Colors

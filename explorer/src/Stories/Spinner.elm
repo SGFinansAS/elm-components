@@ -1,6 +1,6 @@
 module Stories.Spinner exposing (..)
 
-import Config exposing (Config, Msg(..))
+import Config exposing (Config, Msg)
 import Css exposing (rem, width)
 import Html.Styled.Attributes exposing (css)
 import Nordea.Components.Spinner as Spinner
