@@ -14,6 +14,7 @@ For using elm-review and adding new rules see -> <https://github.com/jfmengels/n
 -}
 
 import NoBooleanCase
+import NoUnused.Dependencies
 import NoUnused.Parameters
 import NoUnused.Patterns
 import NoUnused.Variables
@@ -24,6 +25,7 @@ import Simplify
 config : List Rule
 config =
     [ NoBooleanCase.rule
+    , NoUnused.Dependencies.rule
     , NoUnused.Parameters.rule
     , NoUnused.Patterns.rule
     , NoUnused.Variables.rule

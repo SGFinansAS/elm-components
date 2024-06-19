@@ -1,4 +1,12 @@
-module Nordea.Components.DatePicker exposing (DatePicker, DateResult(..), InternalState, OptionalConfig(..), init, updateInternalState, view)
+module Nordea.Components.DatePicker exposing
+    ( DatePicker
+    , DateResult(..)
+    , InternalState
+    , OptionalConfig(..)
+    , init
+    , updateInternalState
+    , view
+    )
 
 import Css
     exposing
