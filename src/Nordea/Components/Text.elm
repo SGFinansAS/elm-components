@@ -33,7 +33,6 @@ import Css
         , normal
         , rem
         )
-import Css.Global as Css
 import Html.Styled as Html exposing (Attribute, Html)
 import Html.Styled.Attributes as Attributes
 import Nordea.Css exposing (overridableCss)
