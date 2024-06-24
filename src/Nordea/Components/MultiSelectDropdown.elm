@@ -156,8 +156,18 @@ view attrs dropdown =
             [ OnClickOutsideSupport.view { isActive = dropdown.hasFocus }
             , Html.div
                 [ Events.onClick (dropdown.onFocus (not dropdown.hasFocus))
-                , Events.onEnterOrSpacePress (dropdown.onFocus (not dropdown.hasFocus))
-                , Events.onEscPress (dropdown.onFocus False)
+                , Events.onKeyDown
+                    (\key ->
+                        case key of
+                            Events.Enter ->
+                                dropdown.onFocus (not dropdown.hasFocus)
+
+                            Events.Space ->
+                                dropdown.onFocus (not dropdown.hasFocus)
+
+                            Events.Esc ->
+                                dropdown.onFocus False
+                    )
                 , tabindex 0
                 , css
                     [ width (pct 100)
