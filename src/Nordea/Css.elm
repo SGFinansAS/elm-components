@@ -23,6 +23,7 @@ module Nordea.Css exposing
     , gridTemplateRows
     , justifyItems
     , justifySelf
+    , overridableCss
     , propertyWithColorVariable
     , propertyWithVariable
     , rowGap
@@ -32,6 +33,8 @@ module Nordea.Css exposing
     )
 
 import Css exposing (LengthOrNoneOrMinMaxDimension)
+import Css.Global as Css
+import Html.Styled.Attributes exposing (class, css)
 
 
 {-| Sets `display` to [`grid`](https://developer.mozilla.org/en-US/docs/Web/CSS/grid).
@@ -246,3 +249,16 @@ standardInputHeight =
 
 smallInputHeight =
     Css.rem 2.5
+
+
+{-| The :where pseudo selector is a way to add styles with zero presedence
+-}
+overridableCss className styles =
+    let
+        selector =
+            ":not(*), :where(.NAME)"
+                |> String.replace "NAME" className
+    in
+    [ css [ Css.children [ Css.selector selector styles ] ]
+    , class className
+    ]

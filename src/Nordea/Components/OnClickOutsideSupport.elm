@@ -25,16 +25,16 @@ jsCode =
     """
     <script>
         const doc = window.parent.document;
-        const frameEl = window.frameElement;
+        const f = window.frameElement;
 
         const id = "co-" + Math.random();
-        frameEl.setAttribute("id", id);
+        f.setAttribute("id", id);
 
         const listener = e => {
             if (!doc.getElementById(id)) {
                 doc.removeEventListener("click", listener);
-            } else if (frameEl.dataset.isActive === "true" && !frameEl.parentElement.contains(e.target)) {
-                frameEl.parentElement.dispatchEvent(new CustomEvent('outsideclick'));
+            } else if (f.dataset.isActive === "true" && !f.parentElement.contains(e.target)) {
+                f.parentElement.dispatchEvent(new CustomEvent('outsideclick'));
             }
         };
 
