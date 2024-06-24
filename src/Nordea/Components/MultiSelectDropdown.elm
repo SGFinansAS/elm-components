@@ -157,6 +157,7 @@ view attrs dropdown =
             , Html.div
                 [ Events.onClick (dropdown.onFocus (not dropdown.hasFocus))
                 , Events.onEnterOrSpacePress (dropdown.onFocus (not dropdown.hasFocus))
+                , Events.onEscPress (dropdown.onFocus False)
                 , tabindex 0
                 , css
                     [ width (pct 100)
