@@ -113,7 +113,7 @@ view attrs children (Modal config) =
                         , flexDirection column
                         , margin auto
                         , Media.withMedia
-                            [ Media.only Media.screen [ Media.minWidth (rem 47) ] ]
+                            [ Media.all [ Media.minWidth (rem 47) ] ]
                             [ borderRadius (rem 0.5), overflow hidden ]
                         ]
                     :: attrs
@@ -140,7 +140,7 @@ view attrs children (Modal config) =
             , backgroundColor (Colors.black |> Colors.withAlpha 0.5)
             , zIndex (int 1)
             , Media.withMedia
-                [ Media.only Media.screen [ Media.minWidth (rem 47) ] ]
+                [ Media.all [ Media.minWidth (rem 47) ] ]
                 [ padding4 (rem 8) (rem 1) (rem 2) (rem 1) ]
             ]
         ]

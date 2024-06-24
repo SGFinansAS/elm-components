@@ -322,7 +322,7 @@ mobileTextElement config =
 smallerScreenOnly : List Css.Style -> Css.Style
 smallerScreenOnly styleAttrs =
     Css.Media.withMedia
-        [ Css.Media.only Css.Media.screen [ Css.Media.maxWidth (px 950) ] ]
+        [ Css.Media.all [ Css.Media.maxWidth (px 950) ] ]
         styleAttrs
 
 
