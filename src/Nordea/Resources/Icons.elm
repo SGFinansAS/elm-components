@@ -58,9 +58,9 @@ module Nordea.Resources.Icons exposing
     , trash
     , triangleDown
     , triangleUp
-    , unfilledMark
     , unfilledCheckmark
     , unfilledDismiss
+    , unfilledMark
     , upload
     , user
     , visible
@@ -178,6 +178,7 @@ filledCheckmark attrs =
                 []
             ]
         ]
+
 
 unfilledCheckmark : List (Attribute msg) -> Html msg
 unfilledCheckmark attrs =
@@ -742,6 +743,7 @@ dismiss attrs =
             ]
         ]
 
+
 unfilledDismiss : List (Attribute msg) -> Html msg
 unfilledDismiss attrs =
     iconContainer attrs
@@ -756,6 +758,7 @@ unfilledDismiss attrs =
                 []
             ]
         ]
+
 
 logout : List (Attribute msg) -> Html msg
 logout attrs =
