@@ -9,6 +9,7 @@ import Stories.AccordionMenu as AccordionMenu
 import Stories.Badge as Badge
 import Stories.Button as Button
 import Stories.Card as Card
+import Stories.Chat as Chat
 import Stories.Checkbox as Checkbox
 import Stories.Coachmark as Coachmark
 import Stories.Colors as Colors
@@ -96,6 +97,7 @@ main =
                 , Badge.stories
                 , Button.stories
                 , Card.stories
+                , Chat.stories
                 , Checkbox.stories
                 , Coachmark.stories
                 , DatePicker.stories
