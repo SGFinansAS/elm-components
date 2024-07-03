@@ -39,7 +39,7 @@ stories =
         , ( "Small"
           , \_ ->
                 Html.div [ css [ maxWidth (rem 25) ] ]
-                    [ Chat.init .no "Write message to case worker" "" NoOp
+                    [ Chat.init .no "" "Write message to case worker" NoOp
                       |> Chat.view [ Chat.Appearance Chat.Small ]
                            []
                            [ Chat.chatHistoryView []
