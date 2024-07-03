@@ -188,13 +188,13 @@ chatHistoryView attrs { sendFrom, sendAt, sender, message, isUserMessage } =
 strings =
     { title =
         { no = "Melding"
-        , se = "Message"
+        , se = "Meddelande"
         , dk = "Message"
         , en = "Message"
         }
     , send =
         { no = "Send"
-        , se = "Send"
+        , se = "Skicka"
         , dk = "Send"
         , en = "Send"
         }
