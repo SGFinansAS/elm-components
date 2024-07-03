@@ -4,7 +4,7 @@ import Config exposing (Msg(..))
 import Css exposing (maxWidth, rem)
 import Html.Styled as Html
 import Html.Styled.Attributes exposing (css)
-import Nordea.Components.Chat as Chat exposing (OptionalConfig(..))
+import Nordea.Components.Chat as Chat
 import UIExplorer exposing (UI)
 import UIExplorer.Styled exposing (styledStoriesOf)
 
