@@ -19,3 +19,7 @@ We currently have three css variables for theming: `PrimaryColor`, `PrimaryColor
 * blueMedium -> SecondaryColor
 * blueHaas -> SecondaryColor
 * cloudBlue -> SecondaryColor
+
+### Icons 
+
+Icons and general instructions for implementation can be found here https://www.figma.com/design/WR6tZiWCWXAAjSPck8bUp1/Nordea-icons?node-id=717-1338&t=9TNhGs80Dg8kyQ6s-0. 
