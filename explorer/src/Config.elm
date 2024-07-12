@@ -6,7 +6,6 @@ import Html.Styled as Html
 import Nordea.Components.Accordion as Accordion exposing (Accordion)
 import Nordea.Components.DatePicker as DatePicker exposing (DatePicker)
 import Nordea.Components.DropdownFilter exposing (Item)
-import Nordea.Components.FiveStarRating as FiveStarRating exposing (FiveStarRating)
 import Stories.SortableTableSharedTypes
 import Time exposing (Month(..))
 
@@ -43,7 +42,7 @@ type alias Config =
     , paginationCurrentPage : Int
     , datePicker : DatePicker Msg
     , currentDatePickerValue : Maybe DatePicker.DateResult
-    , fiveStarRating : FiveStarRating Msg
+    , fiveStarHoverRating : Int
     }
 
 
@@ -77,7 +76,7 @@ type Msg
     | PaginationClickedAt Int
     | DateSelected DatePicker.DateResult DatePicker.InternalState
     | UpdateDatePickerInternalState DatePicker.InternalState
-    | SetRating
+    | SetHoverRating Int
 
 
 init : Config
@@ -118,7 +117,7 @@ init =
     , paginationCurrentPage = 1
     , datePicker = DatePicker.init (Date.fromCalendarDate 2024 May 1) "" DateSelected UpdateDatePickerInternalState
     , currentDatePickerValue = Nothing
-    , fiveStarRating = FiveStarRating.init SetRating
+    , fiveStarHoverRating = 0
     }
 
 
@@ -233,5 +232,5 @@ update msg config =
         UpdateDatePickerInternalState datePickerState ->
             { config | datePicker = DatePicker.updateInternalState datePickerState config.datePicker }
 
-        SetRating ->
-            config
+        SetHoverRating value ->
+            { config | fiveStarHoverRating = value }

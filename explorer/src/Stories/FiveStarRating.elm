@@ -11,9 +11,9 @@ stories =
     styledStoriesOf
         "FiveStarRating"
         [ ( "Primary"
-          , \model ->
-                model.customModel.fiveStarRating
-                    |> FiveStarRating.view
+          , \config ->
+                FiveStarRating.init SetHoverRating
+                    |> FiveStarRating.view [] config.customModel.fiveStarHoverRating
           , {}
           )
         ]
