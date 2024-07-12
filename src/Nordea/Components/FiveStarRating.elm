@@ -26,8 +26,8 @@ init setRating =
         }
 
 
-view : List (Attribute msg) -> Int -> FiveStarRating msg -> Styled.Html msg
-view attrs currentHoverRating (FiveStarRating config) =
+view : Int -> List (Attribute msg) -> FiveStarRating msg -> Styled.Html msg
+view currentRating attrs (FiveStarRating config) =
     let
         iconStarStyle =
             [ css
@@ -38,7 +38,7 @@ view attrs currentHoverRating (FiveStarRating config) =
             ]
 
         starIcon index =
-            if index <= currentHoverRating then
+            if index <= currentRating then
                 Icons.filledStar iconStarStyle
 
             else
