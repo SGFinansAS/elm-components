@@ -14,7 +14,7 @@ stories =
         [ ( "Primary"
           , \config ->
                 FiveStarRating.init SetRating
-                    |> FiveStarRating.view config.customModel.fiveStarRating [ onClick NoOp ]
+                    |> FiveStarRating.view config.customModel.fiveStarRating []
           , {}
           )
         ]
