@@ -3,7 +3,7 @@ module Nordea.Components.FiveStarRating exposing (FiveStarRating(..), init, view
 import Css exposing (alignItems, backgroundColor, borderRadius, borderStyle, center, color, displayFlex, flexDirection, focus, height, justifyContent, none, outline, padding, rem, row, transparent, width)
 import Html.Styled as Styled exposing (Attribute)
 import Html.Styled.Attributes exposing (css)
-import Html.Styled.Events exposing (onClick, onMouseEnter)
+import Html.Styled.Events exposing (onMouseEnter)
 import Nordea.Css exposing (gap2)
 import Nordea.Resources.Colors as Colors
 import Nordea.Resources.Icons as Icons
