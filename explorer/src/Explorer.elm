@@ -21,6 +21,7 @@ import Stories.FeatureBox as FeatureBox
 import Stories.FileDownload as FileDownload
 import Stories.FileUpload as FileUpload
 import Stories.FilterChip as FilterChip
+import Stories.FiveStarRating as FiveStarRating
 import Stories.FlatLink as FlatLink
 import Stories.Hamburger as Hamburger
 import Stories.Icons as Icons
@@ -109,6 +110,7 @@ main =
                 , FileDownload.stories
                 , FileUpload.stories
                 , FilterChip.stories
+                , FiveStarRating.stories
                 , FlatLink.stories
                 , Hamburger.stories
                 , InfoBanner.stories
