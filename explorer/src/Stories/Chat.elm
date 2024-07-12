@@ -1,22 +1,22 @@
 module Stories.Chat exposing (stories)
 
-import Config exposing (Msg(..))
 import Css exposing (maxWidth, rem)
 import Html.Styled as Html
 import Html.Styled.Attributes exposing (css)
 import Nordea.Components.Chat as Chat
+import Nordea.Components.Text as Text
 import UIExplorer exposing (UI)
 import UIExplorer.Styled exposing (styledStoriesOf)
 
 
-stories : UI a Msg {}
+stories : UI a b {}
 stories =
     styledStoriesOf
         "Chat"
         [ ( "Standard"
           , \_ ->
                 Html.div [ css [ maxWidth (rem 30) ] ]
-                    [ Chat.init .no "" "Write message to case worker" NoOp
+                    [ Chat.init .no
                         |> Chat.view []
                             []
                             [ Chat.chatHistoryView []
@@ -34,13 +34,15 @@ stories =
                                 , isUserMessage = True
                                 }
                             ]
+                            [ Text.textSmallLight |> Text.view [] [ Html.text "Some chat content" ]
+                            ]
                     ]
           , {}
           )
         , ( "Small"
           , \_ ->
                 Html.div [ css [ maxWidth (rem 25) ] ]
-                    [ Chat.init .no "" "Write message to case worker" NoOp
+                    [ Chat.init .no
                         |> Chat.view [ Chat.Appearance Chat.Small ]
                             []
                             [ Chat.chatHistoryView []
@@ -57,6 +59,8 @@ stories =
                                 , message = "Har lagt ved resultatrapport og balanserepport pr. 31.11.2023. Vi har ikke fått tilbake rapportene for des. 2023 fra regnskap firma."
                                 , isUserMessage = False
                                 }
+                            ]
+                            [ Text.textTinyLight |> Text.view [] [ Html.text "Some chat content" ]
                             ]
                     ]
           , {}

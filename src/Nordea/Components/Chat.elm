@@ -3,16 +3,19 @@ module Nordea.Components.Chat exposing (Appearance(..), OptionalConfig(..), chat
 import Css
     exposing
         ( alignSelf
+        , auto
         , border3
         , borderRadius4
         , color
         , flexEnd
-        , fontSize
         , justifyContent
         , marginBottom
         , marginRight
-        , marginTop
+        , maxHeight
+        , overflow
         , padding
+        , paddingRight
+        , px
         , rem
         , solid
         , spaceBetween
@@ -20,11 +23,8 @@ import Css
         )
 import Html.Styled as Html exposing (Attribute, Html)
 import Html.Styled.Attributes exposing (css)
-import Html.Styled.Events exposing (onClick)
-import Nordea.Components.Button as Button
 import Nordea.Components.Card as Card
 import Nordea.Components.Text as Text
-import Nordea.Components.TextArea as TextArea
 import Nordea.Css exposing (gap)
 import Nordea.Html as Html
 import Nordea.Resources.Colors as Colors
@@ -33,12 +33,9 @@ import Nordea.Resources.Illustrations as Illustrations
 import Nordea.Themes as Themes
 
 
-type alias Config msg =
+type alias Config =
     { translate : Translation -> String
     , appearance : Appearance
-    , placeholder : String
-    , inputMessage : String
-    , onSend : msg
     }
 
 
@@ -60,23 +57,20 @@ type OptionalConfig
     = Appearance Appearance
 
 
-type Chat msg
-    = Chat (Config msg)
+type Chat
+    = Chat Config
 
 
-init : (Translation -> String) -> String -> String -> msg -> Chat msg
-init translate inputMessage placeholder onSend =
+init : (Translation -> String) -> Chat
+init translate =
     Chat
         { translate = translate
         , appearance = Standard
-        , placeholder = placeholder
-        , inputMessage = inputMessage
-        , onSend = onSend
         }
 
 
-view : List OptionalConfig -> List (Attribute msg) -> List (Html msg) -> Chat msg -> Html msg
-view optionals attrs content (Chat config) =
+view : List OptionalConfig -> List (Attribute msg) -> List (Html msg) -> List (Html msg) -> Chat -> Html msg
+view optionals attrs history content (Chat config) =
     let
         appearance =
             optionals
@@ -111,40 +105,26 @@ view optionals attrs content (Chat config) =
                             |> Text.view [ css [ Themes.color Colors.deepBlue, alignSelf flexEnd ] ] [ strings.title |> config.translate |> Html.text ]
                         ]
 
-        inputView =
+        messageHistoryView =
             let
-                ( fontSizeStyle, primaryButton ) =
+                gapStyle =
                     case appearance of
                         Standard ->
-                            ( fontSize (rem 0.875) |> Css.important, Button.primary )
+                            gap (rem 1)
 
                         Small ->
-                            ( fontSize (rem 0.75) |> Css.important, Button.primary |> Button.withSmallSize )
+                            gap (rem 0.5)
             in
-            Html.column []
-                [ TextArea.init config.inputMessage
-                    |> TextArea.withPlaceholder config.placeholder
-                    |> TextArea.view [ css [ fontSizeStyle ] ]
-                , primaryButton
-                    |> Button.view [ onClick config.onSend, css [ alignSelf flexEnd, marginTop (rem 0.5) ] ] [ strings.send |> config.translate |> Html.text ]
-                ]
-
-        messageHistoryView =
             Html.column
-                [ case appearance of
-                    Standard ->
-                        css [ gap (rem 1) ]
-
-                    Small ->
-                        css [ gap (rem 0.5) ]
+                [ css [ gapStyle, maxHeight (px 500), overflow auto, paddingRight (rem 0.3125) ]
                 ]
-                content
+                history
     in
     Card.init
         |> Card.view (css appearanceSpecificStyles :: attrs)
             [ headerView
             , messageHistoryView
-            , inputView
+            , Html.column [ css [ gap (rem 0.5) ] ] content
             ]
 
 
@@ -191,11 +171,5 @@ strings =
         , se = "Meddelande"
         , dk = "Message"
         , en = "Message"
-        }
-    , send =
-        { no = "Send"
-        , se = "Skicka"
-        , dk = "Send"
-        , en = "Send"
         }
     }
