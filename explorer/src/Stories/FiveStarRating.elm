@@ -12,7 +12,7 @@ stories =
         "FiveStarRating"
         [ ( "Primary"
           , \config ->
-                FiveStarRating.init SetHoverRating SetHoverRating
+                FiveStarRating.init SetHoverRating
                     |> FiveStarRating.view [] config.customModel.fiveStarHoverRating
           , {}
           )

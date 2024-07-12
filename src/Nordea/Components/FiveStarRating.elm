@@ -1,6 +1,6 @@
 module Nordea.Components.FiveStarRating exposing (FiveStarRating(..), init, view)
 
-import Css exposing (alignItems, backgroundColor, borderRadius, center, color, displayFlex, flexDirection, focus, height, justifyContent, none, outline, padding, rem, row, transparent, width)
+import Css exposing (alignItems, backgroundColor, borderRadius, borderStyle, center, color, displayFlex, flexDirection, focus, height, justifyContent, none, outline, padding, rem, row, transparent, width)
 import Html.Styled as Styled exposing (Attribute)
 import Html.Styled.Attributes exposing (css)
 import Html.Styled.Events exposing (onClick, onMouseEnter)
@@ -15,20 +15,14 @@ type FiveStarRating msg
 
 
 type alias Config msg =
-    { rating : Int
-    , currentHover : Int
-    , onHover : Int -> msg
-    , onClick : Int -> msg
+    { setRating : Int -> msg
     }
 
 
-init : (Int -> msg) -> (Int -> msg) -> FiveStarRating msg
-init onHover onClick =
+init : (Int -> msg) -> FiveStarRating msg
+init setRating =
     FiveStarRating
-        { rating = 0
-        , currentHover = 0
-        , onHover = onHover
-        , onClick = onClick
+        { setRating = setRating
         }
 
 
@@ -62,11 +56,11 @@ view attrs currentHoverRating (FiveStarRating config) =
                     , padding (rem 0.25)
                     , focus
                         [ outline none
+                        , borderStyle none
                         , Css.property "box-shadow" ("0rem 0rem 0rem 0.2rem " ++ Themes.colorVariable Colors.haasBlue)
                         ]
                     ]
-                , onMouseEnter (config.onHover value)
-                , onClick (config.onClick value)
+                , onMouseEnter (config.setRating value)
                 ]
                 [ starIcon value
                 ]
