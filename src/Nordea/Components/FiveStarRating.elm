@@ -16,13 +16,15 @@ type FiveStarRating msg
 
 type alias Config msg =
     { setRating : Int -> msg
+    , onClick : Int -> msg
     }
 
 
-init : (Int -> msg) -> FiveStarRating msg
-init setRating =
+init : (Int -> msg) -> (Int -> msg) -> FiveStarRating msg
+init setRating onClick =
     FiveStarRating
         { setRating = setRating
+        , onClick = onClick
         }
 
 
@@ -61,7 +63,7 @@ view currentRating attrs (FiveStarRating config) =
                         ]
                     ]
                 , onMouseEnter (config.setRating value)
-                , onClick (config.setRating value)
+                , onClick (config.onClick value)
                 ]
                 [ starIcon value
                 ]
