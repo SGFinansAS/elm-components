@@ -26,7 +26,7 @@ import Html.Styled.Attributes exposing (css)
 import Nordea.Components.Card as Card
 import Nordea.Components.Text as Text
 import Nordea.Css exposing (gap)
-import Nordea.Html as Html
+import Nordea.Html as Html exposing (showIf)
 import Nordea.Resources.Colors as Colors
 import Nordea.Resources.I18N exposing (Translation)
 import Nordea.Resources.Illustrations as Illustrations
@@ -119,12 +119,13 @@ view optionals attrs history content (Chat config) =
                 [ css [ gapStyle, maxHeight (px 500), overflow auto, paddingRight (rem 0.3125) ]
                 ]
                 history
+                |> showIf (not (List.isEmpty history))
     in
     Card.init
         |> Card.view (css appearanceSpecificStyles :: attrs)
             [ headerView
             , messageHistoryView
-            , Html.column [ css [ gap (rem 0.5) ] ] content
+            , Html.column [ css [ gap (rem 0.5) ] ] content |> showIf (not (List.isEmpty content))
             ]
 
 
