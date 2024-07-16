@@ -16,7 +16,69 @@ module Nordea.Components.DropdownFilter exposing
     , withoutChevron
     )
 
-import Css exposing (absolute, alignItems, auto, backgroundColor, border, border3, borderBottom3, borderBottomLeftRadius, borderBottomRightRadius, borderBox, borderLeft3, borderRadius, borderRight3, borderWidth, bottom, boxSizing, center, color, column, cursor, deg, displayFlex, flexBasis, flexDirection, fontSize, height, hidden, hover, justifyContent, left, lineHeight, listStyle, listStyleType, margin, margin2, marginRight, marginTop, maxHeight, minHeight, none, outline, overflow, overflowY, padding2, padding3, padding4, paddingRight, pct, pointer, pointerEvents, position, pseudoClass, relative, rem, right, rotate, scroll, solid, spaceBetween, top, transforms, translateY, width)
+import Css
+    exposing
+        ( absolute
+        , alignItems
+        , auto
+        , backgroundColor
+        , border
+        , border3
+        , borderBottom3
+        , borderBottomLeftRadius
+        , borderBottomRightRadius
+        , borderBox
+        , borderLeft3
+        , borderRadius
+        , borderRight3
+        , borderWidth
+        , bottom
+        , boxSizing
+        , center
+        , color
+        , column
+        , cursor
+        , deg
+        , displayFlex
+        , flexDirection
+        , fontSize
+        , height
+        , hidden
+        , hover
+        , justifyContent
+        , lineHeight
+        , listStyle
+        , listStyleType
+        , margin
+        , margin2
+        , marginRight
+        , marginTop
+        , maxHeight
+        , minHeight
+        , none
+        , outline
+        , overflow
+        , overflowY
+        , padding2
+        , padding3
+        , padding4
+        , paddingRight
+        , pct
+        , pointer
+        , pointerEvents
+        , position
+        , pseudoClass
+        , relative
+        , rem
+        , right
+        , rotate
+        , scroll
+        , solid
+        , top
+        , transforms
+        , translateY
+        , width
+        )
 import Css.Global exposing (class, descendants, typeSelector, withAttribute)
 import Html.Events.Extra as Events
 import Html.Styled as Html exposing (Html)
@@ -86,10 +148,9 @@ init :
     , onSelect : Maybe (Item a) -> msg
     , selectedValue : Maybe (Item a)
     , items : List (ItemGroup a)
-    , viewItemGroup : Maybe (ItemGroup a -> Html msg)
     }
     -> DropdownFilter a msg
-init { onInput, input, onSelect, items, selectedValue, viewItemGroup } =
+init { onInput, input, onSelect, items, selectedValue } =
     DropdownFilter
         { items = items
         , onInput = onInput

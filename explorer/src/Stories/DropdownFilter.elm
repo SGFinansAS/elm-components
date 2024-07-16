@@ -1,15 +1,20 @@
 module Stories.DropdownFilter exposing (stories)
 
 import Config exposing (Config, FinancingVariant(..), Msg(..), OrganizationInfo)
-import Css exposing (border3, borderBox, borderRadius, borderWidth, boxSizing, column, cursor, displayFlex, flexBasis, flexDirection, hover, justifyContent, left, marginTop, minHeight, none, outline, padding2, pct, pointer, pseudoClass, rem, solid, transparent)
+import Css
+    exposing
+        ( column
+        , displayFlex
+        , flexDirection
+        , padding2
+        , rem
+        )
 import Html.Styled as Html exposing (Html)
-import Html.Styled.Attributes exposing (css, tabindex)
+import Html.Styled.Attributes exposing (css)
 import Nordea.Components.DropdownFilter as DropdownFilter exposing (Item, ItemGroup, SearchResultAppearance(..))
 import Nordea.Components.Text as Text
 import Nordea.Css exposing (gap)
 import Nordea.Html as Html
-import Nordea.Resources.Colors as Colors
-import Nordea.Themes as Themes
 import UIExplorer exposing (UI)
 import UIExplorer.Styled exposing (styledStoriesOf)
 
@@ -104,7 +109,6 @@ stories =
                         , onSelect = SearchComponentSelected
                         , items = searchResult
                         , selectedValue = model.customModel.selectedSearchComponent
-                        , viewItemGroup = Nothing
                         }
                         |> DropdownFilter.withHasFocus model.customModel.searchHasFocus
                         |> DropdownFilter.withOnFocus SearchComponentFocus
@@ -121,7 +125,6 @@ stories =
                         , onSelect = SearchComponentSelectedOrgInfo
                         , items = organizationInfoSearchResult
                         , selectedValue = model.customModel.selectedSearchComponentOrgInfo
-                        , viewItemGroup = Nothing
                         }
                         |> DropdownFilter.withHasFocus model.customModel.searchHasFocus
                         |> DropdownFilter.withOnFocus SearchComponentFocus
@@ -142,7 +145,6 @@ stories =
                         , onSelect = SearchComponentSelected
                         , items = searchResult
                         , selectedValue = model.customModel.selectedSearchComponent
-                        , viewItemGroup = Nothing
                         }
                         |> DropdownFilter.withHasFocus model.customModel.searchHasFocus
                         |> DropdownFilter.withOnFocus SearchComponentFocus
@@ -164,7 +166,6 @@ stories =
                         , onSelect = SearchComponentSelected
                         , items = removedGroups
                         , selectedValue = model.customModel.selectedSearchComponent
-                        , viewItemGroup = Nothing
                         }
                         |> DropdownFilter.withHasFocus model.customModel.searchHasFocus
                         |> DropdownFilter.withOnFocus SearchComponentFocus
@@ -181,7 +182,6 @@ stories =
                         , onSelect = SearchComponentSelected
                         , items = searchResult
                         , selectedValue = model.customModel.selectedSearchComponent
-                        , viewItemGroup = Nothing
                         }
                         |> DropdownFilter.withHasFocus model.customModel.searchHasFocus
                         |> DropdownFilter.withOnFocus SearchComponentFocus
@@ -198,7 +198,6 @@ stories =
                         , onSelect = SearchComponentSelected
                         , items = searchResult
                         , selectedValue = Nothing
-                        , viewItemGroup = Nothing
                         }
                         |> DropdownFilter.withHasFocus model.customModel.searchHasFocus
                         |> DropdownFilter.withOnFocus SearchComponentFocus
@@ -216,7 +215,6 @@ stories =
                         , onSelect = SearchComponentSelected
                         , items = searchResult
                         , selectedValue = Nothing
-                        , viewItemGroup = Nothing
                         }
                         |> DropdownFilter.withHasFocus model.customModel.searchHasFocus
                         |> DropdownFilter.withOnFocus SearchComponentFocus
@@ -236,7 +234,6 @@ stories =
                             , onSelect = SearchComponentSelected
                             , items = searchResult
                             , selectedValue = model.customModel.selectedSearchComponent
-                            , viewItemGroup = Nothing
                             }
                             |> DropdownFilter.withHasFocus model.customModel.searchHasFocus
                             |> DropdownFilter.withOnFocus SearchComponentFocus
@@ -255,7 +252,6 @@ stories =
                         , onSelect = SearchComponentSelected
                         , items = searchResult
                         , selectedValue = model.customModel.selectedSearchComponent
-                        , viewItemGroup = Nothing
                         }
                         |> DropdownFilter.withHasFocus model.customModel.searchHasFocus
                         |> DropdownFilter.withOnFocus SearchComponentFocus
@@ -273,7 +269,6 @@ stories =
                         , onSelect = SearchComponentSelected
                         , items = searchResult
                         , selectedValue = model.customModel.selectedSearchComponent
-                        , viewItemGroup = Nothing
                         }
                         |> DropdownFilter.withHasFocus model.customModel.searchHasFocus
                         |> DropdownFilter.withOnFocus SearchComponentFocus
@@ -292,7 +287,6 @@ stories =
                         , onSelect = SearchComponentSelected
                         , items = searchResult
                         , selectedValue = model.customModel.selectedSearchComponent
-                        , viewItemGroup = Nothing
                         }
                         |> DropdownFilter.withHasFocus model.customModel.searchHasFocus
                         |> DropdownFilter.withOnFocus SearchComponentFocus
