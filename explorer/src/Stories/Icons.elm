@@ -63,9 +63,11 @@ stories =
                         , Icons.settings [ css [ width (rem 1.5) ] ]
                         , Icons.bell [ css [ width (rem 1.5) ] ]
                         , Icons.star [ css [ width (rem 1.5) ] ]
+                        , Icons.filledStar [ css [ width (rem 1.5) ] ]
                         , Icons.calendar [ css [ width (rem 1.5) ] ]
                         , Icons.visible [ css [ width (rem 1.5) ] ]
                         , Icons.invisible [ css [ width (rem 1.5) ] ]
+                        , Icons.pdf [ css [ width (rem 1.5) ] ]
                         ]
                     , iconCategoryHeader "Add, remove, accept and cancel"
                     , iconsRow
@@ -76,8 +78,10 @@ stories =
                         , Icons.questionMark [ css [ width (rem 1.5) ] ]
                         , Icons.close [ css [ width (rem 1.5) ] ]
                         , Icons.filledCheckmark [ css [ width (rem 1.5) ] ]
+                        , Icons.unfilledCheckmark [ css [ width (rem 1.5) ] ]
                         , Icons.unfilledMark [ css [ width (rem 1.5) ] ]
                         , Icons.dismiss [ css [ width (rem 1.5) ] ]
+                        , Icons.unfilledDismiss [ css [ width (rem 1.5) ] ]
                         , Icons.mediumPlus [ css [ width (rem 1.5) ] ]
                         , Icons.add [ css [ width (rem 1.5) ] ]
                         ]

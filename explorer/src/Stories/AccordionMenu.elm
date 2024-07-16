@@ -1,6 +1,6 @@
-module Stories.AccordionMenu exposing (..)
+module Stories.AccordionMenu exposing (stories)
 
-import Config exposing (Config, Msg(..))
+import Config exposing (Config, Msg)
 import Css
     exposing
         ( cursor
@@ -18,9 +18,9 @@ import Css
         , width
         )
 import Css.Global exposing (children, typeSelector)
-import Html.Styled exposing (div, li, span, text, ul)
+import Html.Styled exposing (div, li, text, ul)
 import Html.Styled.Attributes exposing (css)
-import Nordea.Components.AccordionMenu as AccordionMenu exposing (..)
+import Nordea.Components.AccordionMenu as AccordionMenu
 import Nordea.Resources.Icons as Icons
 import UIExplorer exposing (UI)
 import UIExplorer.Styled exposing (styledStoriesOf)

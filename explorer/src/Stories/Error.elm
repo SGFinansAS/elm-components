@@ -1,4 +1,4 @@
-module Stories.Error exposing (..)
+module Stories.Error exposing (stories)
 
 import Css exposing (rem)
 import Html.Styled as Html

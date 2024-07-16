@@ -14,18 +14,26 @@ For using elm-review and adding new rules see -> <https://github.com/jfmengels/n
 -}
 
 import NoBooleanCase
+import NoUnused.Dependencies
 import NoUnused.Parameters
 import NoUnused.Patterns
 import NoUnused.Variables
 import Review.Rule exposing (Rule)
 import Simplify
+import NoConfusingPrefixOperator
+import NoExposingEverything
+import NoImportingEverything
 
 
 config : List Rule
 config =
     [ NoBooleanCase.rule
+    , NoUnused.Dependencies.rule
     , NoUnused.Parameters.rule
     , NoUnused.Patterns.rule
     , NoUnused.Variables.rule
     , Simplify.rule Simplify.defaults
+    , NoConfusingPrefixOperator.rule
+    , NoExposingEverything.rule
+    , NoImportingEverything.rule []
     ]

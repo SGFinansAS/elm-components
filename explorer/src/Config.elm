@@ -1,10 +1,13 @@
 module Config exposing (Config, FinancingVariant(..), Msg(..), OrganizationInfo, init, update)
 
+import Date
 import File exposing (File)
 import Html.Styled as Html
 import Nordea.Components.Accordion as Accordion exposing (Accordion)
+import Nordea.Components.DatePicker as DatePicker exposing (DatePicker)
 import Nordea.Components.DropdownFilter exposing (Item)
 import Stories.SortableTableSharedTypes
+import Time exposing (Month(..))
 
 
 type FinancingVariant
@@ -46,6 +49,10 @@ type alias Config =
     , sortableTable : Stories.SortableTableSharedTypes.Model
     , selectedSearchComponent : Maybe (Item FinancingVariant)
     , selectedSearchComponentOrgInfo : Maybe (Item OrganizationInfo)
+    , paginationCurrentPage : Int
+    , datePicker : DatePicker Msg
+    , currentDatePickerValue : Maybe DatePicker.DateResult
+    , fiveStarRating : Int
     }
 
 
@@ -77,6 +84,10 @@ type Msg
     | OnClickCollapsible
     | SortableTableMsg Stories.SortableTableSharedTypes.Msg
     | SnackbarMsg
+    | PaginationClickedAt Int
+    | DateSelected DatePicker.DateResult DatePicker.InternalState
+    | UpdateDatePickerInternalState DatePicker.InternalState
+    | SetRating Int
 
 
 init : Config
@@ -115,6 +126,10 @@ init =
     , activeRadioButton = "second"
     , textInputContent = "Initialized"
     , sortableTable = Stories.SortableTableSharedTypes.initModel
+    , paginationCurrentPage = 1
+    , datePicker = DatePicker.init (Date.fromCalendarDate 2024 May 1) "" DateSelected UpdateDatePickerInternalState
+    , currentDatePickerValue = Nothing
+    , fiveStarRating = 0
     }
 
 
@@ -223,3 +238,18 @@ update msg config =
 
         SnackbarMsg ->
             config
+
+        PaginationClickedAt i ->
+            { config | paginationCurrentPage = i }
+
+        DateSelected result datePickerState ->
+            { config
+                | currentDatePickerValue = Just result
+                , datePicker = DatePicker.updateInternalState datePickerState config.datePicker
+            }
+
+        UpdateDatePickerInternalState datePickerState ->
+            { config | datePicker = DatePicker.updateInternalState datePickerState config.datePicker }
+
+        SetRating value ->
+            { config | fiveStarRating = value }

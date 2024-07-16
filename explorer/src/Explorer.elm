@@ -1,6 +1,6 @@
 module Explorer exposing (main)
 
-import Config exposing (Config, Msg(..))
+import Config exposing (Config, Msg)
 import Html exposing (Html)
 import Html.Styled exposing (toUnstyled)
 import Nordea.Resources.Fonts.Fonts as Fonts
@@ -9,9 +9,11 @@ import Stories.AccordionMenu as AccordionMenu
 import Stories.Badge as Badge
 import Stories.Button as Button
 import Stories.Card as Card
+import Stories.Chat as Chat
 import Stories.Checkbox as Checkbox
 import Stories.Coachmark as Coachmark
 import Stories.Colors as Colors
+import Stories.DatePicker as DatePicker
 import Stories.Dropdown as Dropdown
 import Stories.DropdownFilter as Search
 import Stories.Error as Error
@@ -19,6 +21,7 @@ import Stories.FeatureBox as FeatureBox
 import Stories.FileDownload as FileDownload
 import Stories.FileUpload as FileUpload
 import Stories.FilterChip as FilterChip
+import Stories.FiveStarRating as FiveStarRating
 import Stories.FlatLink as FlatLink
 import Stories.Hamburger as Hamburger
 import Stories.Icons as Icons
@@ -30,6 +33,7 @@ import Stories.LottiePlayer as LottiePlayer
 import Stories.Modal as Modal
 import Stories.MultiSelectDropdown as MultiSelectDropdown
 import Stories.NumberInput as NumberInput
+import Stories.Pagination as Pagination
 import Stories.ProgressBar as ProgressBar
 import Stories.ProgressBarStepper as ProgressBarStepper
 import Stories.RadioButton as RadioButton
@@ -94,8 +98,10 @@ main =
                 , Badge.stories
                 , Button.stories
                 , Card.stories
+                , Chat.stories
                 , Checkbox.stories
                 , Coachmark.stories
+                , DatePicker.stories
                 , Dropdown.stories
                 , MultiSelectDropdown.stories
                 , Search.stories
@@ -104,6 +110,7 @@ main =
                 , FileDownload.stories
                 , FileUpload.stories
                 , FilterChip.stories
+                , FiveStarRating.stories
                 , FlatLink.stories
                 , Hamburger.stories
                 , InfoBanner.stories
@@ -113,6 +120,7 @@ main =
                 , LottiePlayer.stories
                 , Modal.stories
                 , NumberInput.stories
+                , Pagination.stories
                 , ProgressBar.stories
                 , ProgressBarStepper.stories
                 , RadioButton.stories

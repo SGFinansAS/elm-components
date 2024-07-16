@@ -34,7 +34,7 @@ import Css
         , verticalAlign
         , width
         )
-import Css.Global as Css exposing (children, everything)
+import Css.Global exposing (children, everything)
 import Html.Styled as Html exposing (Attribute, Html)
 import Html.Styled.Attributes exposing (css)
 import Nordea.Components.Spinner as Spinner

@@ -7,16 +7,55 @@ module Nordea.Components.Modal exposing
     , withTitle
     )
 
-import Css exposing (..)
+import Css
+    exposing
+        ( alignItems
+        , auto
+        , backgroundColor
+        , border3
+        , borderBottom3
+        , borderRadius
+        , borderRadius4
+        , borderTopStyle
+        , bottom
+        , center
+        , color
+        , column
+        , displayFlex
+        , fixed
+        , flexDirection
+        , hidden
+        , int
+        , justifyContent
+        , left
+        , margin
+        , marginLeft
+        , marginRight
+        , minWidth
+        , none
+        , outline
+        , overflow
+        , padding
+        , padding3
+        , padding4
+        , pct
+        , position
+        , rem
+        , solid
+        , textAlign
+        , top
+        , width
+        , zIndex
+        )
 import Css.Global as Global
 import Css.Media as Media
 import Html.Styled as Html exposing (Attribute, Html)
 import Html.Styled.Attributes exposing (attribute, css, tabindex)
-import Html.Styled.Events as Events exposing (keyCode, on)
-import Json.Decode as Json
+import Html.Styled.Events as Events
 import Nordea.Components.Button as NordeaButton
 import Nordea.Components.Text as Text
 import Nordea.Html exposing (viewMaybe)
+import Nordea.Html.Events exposing (onEscPress)
 import Nordea.Resources.Colors as Colors
 import Nordea.Resources.Icons as Icons
 import Nordea.Themes as Themes
@@ -74,7 +113,7 @@ view attrs children (Modal config) =
                         , flexDirection column
                         , margin auto
                         , Media.withMedia
-                            [ Media.only Media.screen [ Media.minWidth (rem 47) ] ]
+                            [ Media.all [ Media.minWidth (rem 47) ] ]
                             [ borderRadius (rem 0.5), overflow hidden ]
                         ]
                     :: attrs
@@ -101,7 +140,7 @@ view attrs children (Modal config) =
             , backgroundColor (Colors.black |> Colors.withAlpha 0.5)
             , zIndex (int 1)
             , Media.withMedia
-                [ Media.only Media.screen [ Media.minWidth (rem 47) ] ]
+                [ Media.all [ Media.minWidth (rem 47) ] ]
                 [ padding4 (rem 8) (rem 1) (rem 2) (rem 1) ]
             ]
         ]
@@ -222,19 +261,6 @@ contentContainer variant title subTitle attrs children =
 disableScrollOnBody : Html msg
 disableScrollOnBody =
     Global.global [ Global.body [ overflow hidden ] ]
-
-
-onEscPress : msg -> Attribute msg
-onEscPress msg =
-    let
-        isEnter code =
-            if code == 27 then
-                Json.succeed msg
-
-            else
-                Json.fail "not ESC"
-    in
-    on "keydown" (Json.andThen isEnter keyCode)
 
 
 withTitle : String -> Modal msg -> Modal msg

@@ -6,7 +6,6 @@ import Css
         , backgroundColor
         , border3
         , borderRadius
-        , color
         , column
         , displayFlex
         , flexDirection

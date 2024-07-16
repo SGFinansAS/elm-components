@@ -1,9 +1,9 @@
-module Stories.Snackbar exposing (..)
+module Stories.Snackbar exposing (stories)
 
-import Config exposing (Config, Msg(..))
+import Config exposing (Msg(..))
 import Html.Styled exposing (text)
 import Nordea.Components.Snackbar as Snackbar
-import UIExplorer exposing (Config, UI)
+import UIExplorer exposing (UI)
 import UIExplorer.Styled exposing (styledStoriesOf)
 
 
