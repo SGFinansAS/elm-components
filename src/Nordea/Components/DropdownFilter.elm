@@ -368,12 +368,11 @@ view attrs ((DropdownFilter config) as dropdown) =
         [ Tooltip.init
             |> Tooltip.withPlacement Tooltip.Bottom
             |> Tooltip.withVisibility
-                ({- if config.hasFocus then -}
-                 Tooltip.Show
-                 {-
-                    else
-                       Tooltip.Hidden
-                 -}
+                (if config.hasFocus then
+                    Tooltip.Show
+
+                 else
+                    Tooltip.Hidden
                 )
             |> Tooltip.withContent
                 (\_ ->
