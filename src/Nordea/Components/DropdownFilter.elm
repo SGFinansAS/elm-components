@@ -158,7 +158,9 @@ view attrs ((DropdownFilter config) as dropdown) =
                       else
                         Themes.backgroundColor Colors.white
                     , Themes.color Colors.nordeaBlue |> styleIf (config.selectedValue |> Maybe.isJust)
-                    , Themes.borderColor Colors.nordeaBlue |> styleIf (config.selectedValue |> Maybe.isJust)
+
+                    --  , Themes.borderColor Colors.nordeaBlue |> styleIf (config.selectedValue |> Maybe.isJust)
+                    , border3 (rem 0.0625) solid Colors.nordeaBlue |> styleIf (config.selectedValue |> Maybe.isJust)
                     ]
 
                 Default ->
