@@ -16,7 +16,7 @@ module Nordea.Components.DropdownFilter exposing
     , withoutChevron
     )
 
-import Css exposing (absolute, alignItems, auto, backgroundColor, border, borderBottom3, borderBottomLeftRadius, borderBottomRightRadius, borderBottomWidth, borderBox, borderLeft3, borderLeftWidth, borderRight3, borderRightWidth, borderTopWidth, bottom, boxSizing, center, color, column, cursor, deg, displayFlex, flexDirection, fontSize, height, hidden, hover, justifyContent, lineHeight, listStyle, listStyleType, margin, margin2, marginRight, marginTop, maxHeight, minHeight, none, outline, overflow, overflowY, padding3, padding4, paddingBottom, paddingLeft, paddingRight, paddingTop, pct, pointer, pointerEvents, position, pseudoClass, relative, rem, right, rotate, scroll, solid, top, transforms, translateY, width)
+import Css exposing (absolute, alignItems, auto, backgroundColor, border, border3, borderBottom3, borderBottomLeftRadius, borderBottomRightRadius, borderBox, borderColor, borderLeft3, borderRight3, bottom, boxSizing, center, color, column, cursor, deg, displayFlex, flexDirection, fontSize, height, hidden, hover, justifyContent, lineHeight, listStyle, listStyleType, margin, margin2, marginRight, marginTop, maxHeight, minHeight, none, outline, overflow, overflowY, padding, padding3, padding4, paddingBottom, paddingLeft, paddingRight, paddingTop, pct, pointer, pointerEvents, position, pseudoClass, relative, rem, right, rotate, scroll, solid, top, transforms, translateY, width)
 import Css.Global exposing (class, descendants, typeSelector, withAttribute)
 import Html.Events.Extra as Events
 import Html.Styled as Html exposing (Html)
@@ -143,15 +143,10 @@ view attrs ((DropdownFilter config) as dropdown) =
                         [ -- we must adjust the padding after increasing the border to avoid movement
                           --   padding2 (rem 0) (rem 0)
                           Themes.backgroundColor Colors.cloudBlue
-                        , borderLeftWidth (rem 0.25)
-                        , borderRightWidth (rem 0.25)
-                        , borderBottomWidth (rem 0.25)
-                        , borderTopWidth (rem 0.25)
-                        , paddingLeft (rem 0)
-                        , paddingRight (rem 0)
-                        , paddingBottom (rem 0)
-                        , paddingTop (rem 0)
+                        , border3 (rem 0.25) solid Colors.mediumGray
+                        , padding (rem 0)
                         , outline none
+                        , borderColor Colors.mediumGray
                         ]
                     , borderBottom3 (rem 0.0625) solid Colors.mediumGray
 
