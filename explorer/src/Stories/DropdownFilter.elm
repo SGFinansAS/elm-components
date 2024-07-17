@@ -94,6 +94,7 @@ stories =
               , items =
                     [ { value = exampleOrgInfo, text = exampleOrgInfo.name }
                     , { value = exampleOrgInfo, text = exampleOrgInfo.name }
+                    , { value = exampleOrgInfo, text = exampleOrgInfo.name }
                     ]
               }
             ]

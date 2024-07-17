@@ -16,70 +16,8 @@ module Nordea.Components.DropdownFilter exposing
     , withoutChevron
     )
 
-import Css
-    exposing
-        ( absolute
-        , alignItems
-        , auto
-        , backgroundColor
-        , border
-        , border3
-        , borderBottom3
-        , borderBottomLeftRadius
-        , borderBottomRightRadius
-        , borderBox
-        , borderLeft3
-        , borderRadius
-        , borderRight3
-        , borderWidth
-        , bottom
-        , boxSizing
-        , center
-        , color
-        , column
-        , cursor
-        , deg
-        , displayFlex
-        , flexDirection
-        , fontSize
-        , height
-        , hidden
-        , hover
-        , justifyContent
-        , lineHeight
-        , listStyle
-        , listStyleType
-        , margin
-        , margin2
-        , marginRight
-        , marginTop
-        , maxHeight
-        , minHeight
-        , none
-        , outline
-        , overflow
-        , overflowY
-        , padding2
-        , padding3
-        , padding4
-        , paddingRight
-        , pct
-        , pointer
-        , pointerEvents
-        , position
-        , pseudoClass
-        , relative
-        , rem
-        , right
-        , rotate
-        , scroll
-        , solid
-        , top
-        , transforms
-        , translateY
-        , width
-        )
-import Css.Global exposing (children, class, descendants, everything, typeSelector, withAttribute)
+import Css exposing (absolute, alignItems, auto, backgroundColor, border, borderBottom3, borderBottomLeftRadius, borderBottomRightRadius, borderBottomWidth, borderBox, borderLeft3, borderLeftWidth, borderRight3, borderRightWidth, borderTopWidth, bottom, boxSizing, center, color, column, cursor, deg, displayFlex, flexDirection, fontSize, height, hidden, hover, justifyContent, lineHeight, listStyle, listStyleType, margin, margin2, marginRight, marginTop, maxHeight, minHeight, none, outline, overflow, overflowY, padding3, padding4, paddingBottom, paddingLeft, paddingRight, paddingTop, pct, pointer, pointerEvents, position, pseudoClass, relative, rem, right, rotate, scroll, solid, top, transforms, translateY, width)
+import Css.Global exposing (class, descendants, typeSelector, withAttribute)
 import Html.Events.Extra as Events
 import Html.Styled as Html exposing (Html)
 import Html.Styled.Attributes as Attrs exposing (css, readonly, tabindex)
@@ -193,21 +131,37 @@ view attrs ((DropdownFilter config) as dropdown) =
         variationSpecificStyling =
             case config.searchResultAppearance of
                 Card ->
-                    [ padding2 (rem (0.25 - 0.0625)) (rem (0.25 - 0.0625))
+                    [ paddingTop (rem 0.25)
+                    , paddingBottom (rem (0.25 - 0.0625))
+                    , paddingLeft (rem 0.25)
+                    , paddingRight (rem 0.25)
+                    , paddingTop (rem 0.25)
 
+                    -- , paddingBottom (rem 0.25)
                     --, justifyContent spaceBetween
                     , pseudoClass "focus-within"
                         [ -- we must adjust the padding after increasing the border to avoid movement
-                          padding2 (rem 0) (rem 0)
-                        , Themes.backgroundColor Colors.cloudBlue
-                        , borderWidth (rem 0.25)
+                          --   padding2 (rem 0) (rem 0)
+                          Themes.backgroundColor Colors.cloudBlue
+                        , borderLeftWidth (rem 0.25)
+                        , borderRightWidth (rem 0.25)
+                        , borderBottomWidth (rem 0.25)
+                        , borderTopWidth (rem 0.25)
+                        , paddingLeft (rem 0)
+                        , paddingRight (rem 0)
+                        , paddingBottom (rem 0)
+                        , paddingTop (rem 0)
                         , outline none
                         ]
-                    , border3 (rem 0.0625) solid Colors.mediumGray
-                    , borderRadius (rem 0.25)
+                    , borderBottom3 (rem 0.0625) solid Colors.mediumGray
+
+                    --, borderRadius (rem 0.25)
                     , hover [ Themes.backgroundColor Colors.cloudBlue ]
-                    , Themes.backgroundColor Colors.cloudBlue
-                        |> styleIf (config.selectedValue |> Maybe.isJust)
+                    , if config.selectedValue |> Maybe.isJust then
+                        Themes.backgroundColor Colors.cloudBlue
+
+                      else
+                        Themes.backgroundColor Colors.white
                     , Themes.color Colors.nordeaBlue |> styleIf (config.selectedValue |> Maybe.isJust)
                     , Themes.borderColor Colors.nordeaBlue |> styleIf (config.selectedValue |> Maybe.isJust)
                     ]
@@ -278,7 +232,11 @@ view attrs ((DropdownFilter config) as dropdown) =
                 (case config.searchResultAppearance of
                     Card ->
                         [ padding3 (rem 0.5) (rem 0) (rem 0.0)
-                        , children [ everything [ pseudoClass "not(:first-child)" [ marginTop (rem 0.5) ] ] ]
+
+                        --, children [ everything [ pseudoClass "not(:first-child)" [ marginTop (rem 0.5) ] ] ]
+                        , borderLeft3 (rem 0.0625) solid Colors.mediumGray
+                        , borderRight3 (rem 0.0625) solid Colors.mediumGray
+                        , marginTop (rem 0)
                         ]
 
                     Default ->
