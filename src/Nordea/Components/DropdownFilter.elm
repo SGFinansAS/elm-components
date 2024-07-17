@@ -79,7 +79,7 @@ import Css
         , translateY
         , width
         )
-import Css.Global exposing (class, descendants, typeSelector, withAttribute)
+import Css.Global exposing (children, class, descendants, everything, typeSelector, withAttribute)
 import Html.Events.Extra as Events
 import Html.Styled as Html exposing (Html)
 import Html.Styled.Attributes as Attrs exposing (css, readonly, tabindex)
@@ -90,7 +90,6 @@ import Nordea.Components.Spinner as Spinner
 import Nordea.Components.Text as Text
 import Nordea.Components.TextInput as TextInput
 import Nordea.Components.Tooltip as Tooltip
-import Nordea.Css exposing (gap)
 import Nordea.Html as Html exposing (hideIf, showIf, styleIf)
 import Nordea.Resources.Colors as Colors
 import Nordea.Resources.Icons as Icon
@@ -279,9 +278,7 @@ view attrs ((DropdownFilter config) as dropdown) =
                 (case config.searchResultAppearance of
                     Card ->
                         [ padding3 (rem 0.5) (rem 0) (rem 0.0)
-                        , gap (rem 0.5)
-                        , displayFlex
-                        , flexDirection column
+                        , children [ everything [ pseudoClass "not(:first-child)" [ marginTop (rem 0.5) ] ] ]
                         ]
 
                     Default ->
@@ -416,11 +413,12 @@ view attrs ((DropdownFilter config) as dropdown) =
         [ Tooltip.init
             |> Tooltip.withPlacement Tooltip.Bottom
             |> Tooltip.withVisibility
-                (if config.hasFocus then
-                    Tooltip.Show
-
-                 else
-                    Tooltip.Hidden
+                ({- if config.hasFocus then -}
+                 Tooltip.Show
+                 {-
+                    else
+                       Tooltip.Hidden
+                 -}
                 )
             |> Tooltip.withContent
                 (\_ ->
