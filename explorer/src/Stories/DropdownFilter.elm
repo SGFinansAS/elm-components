@@ -1,20 +1,17 @@
 module Stories.DropdownFilter exposing (stories)
 
 import Config exposing (Config, FinancingVariant(..), Msg(..), OrganizationInfo)
-import Css
-    exposing
-        ( column
-        , displayFlex
-        , flexDirection
-        , padding2
-        , rem
-        )
+import Css exposing (border3, borderRadius, column, displayFlex, flexDirection, hover, marginTop, none, outline, padding2, pseudoClass, rem, solid)
 import Html.Styled as Html exposing (Html)
-import Html.Styled.Attributes exposing (css)
-import Nordea.Components.DropdownFilter as DropdownFilter exposing (Item, ItemGroup, SearchResultAppearance(..))
+import Html.Styled.Attributes exposing (css, tabindex)
+import Maybe.Extra as Maybe
+import Nordea.Components.Card as Card
+import Nordea.Components.DropdownFilter as DropdownFilter exposing (Item, ItemGroup)
 import Nordea.Components.Text as Text
 import Nordea.Css exposing (gap)
-import Nordea.Html as Html
+import Nordea.Html as Html exposing (styleIf)
+import Nordea.Resources.Colors as Colors
+import Nordea.Themes as Themes
 import UIExplorer exposing (UI)
 import UIExplorer.Styled exposing (styledStoriesOf)
 
@@ -28,8 +25,8 @@ maybeToHtml element maybeVariable =
     maybeVariable |> Maybe.map element |> Maybe.withDefault (Html.text "")
 
 
-viewOrganizationInfo : Item OrganizationInfo -> Html msg
-viewOrganizationInfo organization =
+viewOrganizationInfo : Bool -> Item OrganizationInfo -> Html msg
+viewOrganizationInfo hasSelected organization =
     let
         textPostalCodeAndPlace =
             Maybe.map2 (\code place -> code ++ ", " ++ place)
@@ -37,7 +34,34 @@ viewOrganizationInfo organization =
                 organization.value.postalPlace
     in
     Html.column
-        [ css [ padding2 (rem 1) (rem 2) ] ]
+        [ tabindex 0
+        , css
+            [ --padding2 (rem 1) (rem 2)
+              border3 (rem 0.0625) solid Colors.mediumGray
+            , padding2 (rem (0.25 + 1)) (rem (2 + 0.25))
+            , borderRadius (rem 0.25)
+            , hover [ Themes.backgroundColor Colors.coolGray ]
+            , outline none
+            , marginTop (rem 0.5)
+            , pseudoClass "focus-within"
+                [ -- we must adjust the padding after increasing the border to avoid movement
+                  --  padding2 (rem (1 - 0.25 - 0.0625)) (rem (2 - 0.25 - 0.0625))
+                  Themes.backgroundColor Colors.cloudBlue
+                , border3 (rem 0.25) solid Colors.mediumGray
+
+                --, padding2 (rem (1 - 0.25 + 0.0625)) (rem (2 - 0.25 + 0.0625))
+                , outline none
+                , padding2 (rem (0.0625 + 1)) (rem (2 + 0.0625))
+
+                -- , borderColor Colors.mediumGray
+                ]
+            , Themes.backgroundColor Colors.cloudBlue |> styleIf hasSelected |> Css.important
+            , Themes.color Colors.nordeaBlue |> styleIf hasSelected
+
+            --  , Themes.borderColor Colors.nordeaBlue |> styleIf (config.selectedValue |> Maybe.isJust)
+            , border3 (rem 0.0625) solid Colors.nordeaBlue |> styleIf hasSelected
+            ]
+        ]
         [ Html.row [ css [ gap (rem 0.25) ] ]
             [ Text.textHeavy |> Text.view [] [ Html.text organization.value.name ]
             , Text.textLight |> Text.view [] [ Html.text organization.value.organizationNumber ]
@@ -95,6 +119,8 @@ stories =
                     [ { value = exampleOrgInfo, text = exampleOrgInfo.name }
                     , { value = exampleOrgInfo, text = exampleOrgInfo.name }
                     , { value = exampleOrgInfo, text = exampleOrgInfo.name }
+                    , { value = exampleOrgInfo, text = exampleOrgInfo.name }
+                    , { value = exampleOrgInfo, text = exampleOrgInfo.name }
                     ]
               }
             ]
@@ -113,28 +139,35 @@ stories =
                         }
                         |> DropdownFilter.withHasFocus model.customModel.searchHasFocus
                         |> DropdownFilter.withOnFocus SearchComponentFocus
+                        |> DropdownFilter.withoutScroll
                         |> DropdownFilter.view []
                     ]
           , {}
           )
         , ( "With style specified for result"
           , \model ->
-                Html.div [ css [ displayFlex, flexDirection column ] ]
-                    [ DropdownFilter.init
-                        { onInput = SearchComponentInput
-                        , input = model.customModel.searchComponentInput
-                        , onSelect = SearchComponentSelectedOrgInfo
-                        , items = organizationInfoSearchResult
-                        , selectedValue = model.customModel.selectedSearchComponentOrgInfo
-                        }
-                        |> DropdownFilter.withHasFocus model.customModel.searchHasFocus
-                        |> DropdownFilter.withOnFocus SearchComponentFocus
-                        |> DropdownFilter.withSearchResultAppearance Card
-                        |> DropdownFilter.withSearchResultRowMapper viewOrganizationInfo
-                        |> DropdownFilter.withoutChevron
-                        --|> DropdownFilter.withSmallSize
-                        |> DropdownFilter.view []
-                    ]
+                Card.init
+                    |> Card.withTitle "Card title"
+                    |> Card.withShadow
+                    |> Card.view []
+                        [ Html.div [ css [ displayFlex, flexDirection column ] ]
+                            [ DropdownFilter.init
+                                { onInput = SearchComponentInput
+                                , input = model.customModel.searchComponentInput
+                                , onSelect = SearchComponentSelectedOrgInfo
+                                , items = organizationInfoSearchResult
+                                , selectedValue = model.customModel.selectedSearchComponentOrgInfo
+                                }
+                                |> DropdownFilter.withHasFocus model.customModel.searchHasFocus
+                                |> DropdownFilter.withOnFocus SearchComponentFocus
+                                |> DropdownFilter.withSearchResultRowMapper (Just (viewOrganizationInfo (model.customModel.selectedSearchComponentOrgInfo |> Maybe.isJust)))
+                                |> DropdownFilter.withoutOverlay
+                                |> DropdownFilter.withoutChevron
+                                |> DropdownFilter.withoutScroll
+                                --|> DropdownFilter.withSmallSize
+                                |> DropdownFilter.view []
+                            ]
+                        ]
           , {}
           )
         , ( "With placeholder"

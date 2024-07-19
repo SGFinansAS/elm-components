@@ -1,7 +1,6 @@
 module Nordea.Components.DropdownFilter exposing
     ( Item
     , ItemGroup
-    , SearchResultAppearance(..)
     , init
     , view
     , withHasError
@@ -10,13 +9,14 @@ module Nordea.Components.DropdownFilter exposing
     , withOnFocus
     , withPlaceholder
     , withSearchIcon
-    , withSearchResultAppearance
     , withSearchResultRowMapper
     , withSmallSize
     , withoutChevron
+    , withoutOverlay
+    , withoutScroll
     )
 
-import Css exposing (absolute, alignItems, auto, backgroundColor, border, border3, borderBottom3, borderBottomLeftRadius, borderBottomRightRadius, borderBox, borderColor, borderLeft3, borderRight3, bottom, boxSizing, center, color, column, cursor, deg, displayFlex, flexDirection, fontSize, height, hidden, hover, justifyContent, lineHeight, listStyle, listStyleType, margin, margin2, marginRight, marginTop, maxHeight, minHeight, none, outline, overflow, overflowY, padding, padding3, padding4, paddingBottom, paddingLeft, paddingRight, paddingTop, pct, pointer, pointerEvents, position, pseudoClass, relative, rem, right, rotate, scroll, solid, top, transforms, translateY, width)
+import Css exposing (absolute, alignItems, backgroundColor, border, borderBottom3, borderBottomLeftRadius, borderBottomRightRadius, borderBox, borderColor, borderLeft3, borderRight3, borderTop3, boxSizing, center, color, column, cursor, deg, displayFlex, flexDirection, fontSize, height, hidden, hover, justifyContent, lineHeight, listStyle, listStyleType, margin2, marginTop, maxHeight, none, outline, overflow, overflowY, padding3, padding4, paddingRight, pct, pointer, pointerEvents, position, pseudoClass, relative, rem, right, rotate, scroll, solid, top, transforms, translateY, width)
 import Css.Global exposing (class, descendants, typeSelector, withAttribute)
 import Html.Events.Extra as Events
 import Html.Styled as Html exposing (Html)
@@ -59,20 +59,16 @@ type alias DropdownFilterProperties a msg =
     , selectedValue : Maybe (Item a)
     , size : Size
     , placeholder : Maybe String
-    , searchResultAppearance : SearchResultAppearance
-    , itemMapper : Item a -> Html msg
+    , itemMapper : Maybe (Item a -> Html msg)
     , showChevron : Bool
+    , showOverlay : Bool
+    , withScroll : Bool
     }
 
 
 type Size
     = StandardSize
     | SmallSize
-
-
-type SearchResultAppearance
-    = Default
-    | Card
 
 
 type DropdownFilter a msg
@@ -101,153 +97,57 @@ init { onInput, input, onSelect, items, selectedValue } =
         , selectedValue = selectedValue
         , size = StandardSize
         , placeholder = Nothing
-        , searchResultAppearance = Default
-        , itemMapper = \item -> Html.text item.text
+        , itemMapper = Nothing
         , showChevron = True
+        , showOverlay = True
+        , withScroll = True
         }
 
 
 view : List (Html.Attribute msg) -> DropdownFilter a msg -> Html msg
 view attrs ((DropdownFilter config) as dropdown) =
     let
-        clickableStyling isClickable =
-            if isClickable then
-                [ cursor pointer ]
+        defaultItemMapper =
+            let
+                sizeStyles =
+                    case config.size of
+                        StandardSize ->
+                            [ height (rem 2.5), fontSize (rem 1), padding4 (rem 0.25) (rem 2.5) (rem 0.25) (rem 0.75), lineHeight (rem 1.4) ]
 
-            else
-                []
+                        SmallSize ->
+                            [ height (rem 1.6), fontSize (rem 0.75), padding4 (rem 0.25) (rem 0.25) (rem 0.25) (rem 0.5), lineHeight (rem 1) ]
 
-        commonStyling =
-            [ overflow hidden, width (pct 100), listStyleType none ]
+                focusPadding =
+                    case config.size of
+                        StandardSize ->
+                            padding4 (rem (0.25 - 0.1)) (rem 2.5) (rem (0.25 - 0.1)) (rem 0.75)
 
-        sizeSpecificStyling =
-            case config.size of
-                StandardSize ->
-                    [ minHeight (rem 2.5), fontSize (rem 1), padding4 (rem 0.25) (rem 2.5) (rem 0.25) (rem 0.75), lineHeight (rem 1.4) ]
+                        SmallSize ->
+                            padding4 (rem 0.25) (rem 0.25) (rem 0.25) (rem 0.5)
 
-                SmallSize ->
-                    [ height (rem 1.6), fontSize (rem 0.75), padding4 (rem 0.25) (rem 0.25) (rem 0.25) (rem 0.5), lineHeight (rem 1) ]
-
-        variationSpecificStyling =
-            case config.searchResultAppearance of
-                Card ->
-                    [ paddingTop (rem 0.25)
-                    , paddingBottom (rem (0.25 - 0.0625))
-                    , paddingLeft (rem 0.25)
-                    , paddingRight (rem 0.25)
-                    , paddingTop (rem 0.25)
-
-                    -- , paddingBottom (rem 0.25)
-                    --, justifyContent spaceBetween
-                    , pseudoClass "focus-within"
+                focusStyles =
+                    [ pseudoClass "focus-within"
                         [ -- we must adjust the padding after increasing the border to avoid movement
                           --   padding2 (rem 0) (rem 0)
                           Themes.backgroundColor Colors.cloudBlue
-                        , border3 (rem 0.25) solid Colors.mediumGray
-                        , padding (rem 0)
+                        , borderBottom3 (rem 0.1) solid Colors.mediumGray
+                        , borderTop3 (rem 0.1) solid Colors.mediumGray
+                        , focusPadding
+
+                        --, padding (rem 0)
                         , outline none
                         , borderColor Colors.mediumGray
                         ]
-                    , borderBottom3 (rem 0.0625) solid Colors.mediumGray
-
-                    --, borderRadius (rem 0.25)
-                    , hover [ Themes.backgroundColor Colors.cloudBlue ]
-                    , if config.selectedValue |> Maybe.isJust then
-                        Themes.backgroundColor Colors.cloudBlue
-
-                      else
-                        Themes.backgroundColor Colors.white
-                    , Themes.color Colors.nordeaBlue |> styleIf (config.selectedValue |> Maybe.isJust)
-
-                    --  , Themes.borderColor Colors.nordeaBlue |> styleIf (config.selectedValue |> Maybe.isJust)
-                    , border3 (rem 0.0625) solid Colors.nordeaBlue |> styleIf (config.selectedValue |> Maybe.isJust)
                     ]
 
-                Default ->
+                hoverStyles =
                     [ hover [ backgroundColor Colors.coolGray ] ]
-
-        viewHeader text =
-            Html.li
-                [ css [ color Colors.gray, margin2 (rem 0) (rem 0.625) ] ]
-                [ Text.textTinyLight |> Text.view [] [ Html.text text ] ]
-
-        clickableAttrs item =
-            [ Events.onClick (config.onSelect (Just item))
-            , Attrs.fromUnstyled (Events.onEnter (config.onSelect (Just item)))
-            ]
-
-        commonAttrs =
-            [ tabindex 0 ]
-
-        viewItem item isClickable =
-            Html.li
-                (commonAttrs
-                    ++ [ css (commonStyling ++ clickableStyling isClickable ++ sizeSpecificStyling ++ variationSpecificStyling) ]
-                    ++ (if isClickable then
-                            clickableAttrs item
-
-                        else
-                            [ css [ cursor auto ] ]
-                       )
-                )
-                [ config.itemMapper item ]
-
-        viewItemClickable item =
-            viewItem item True
-
-        viewItemNonClickable item =
-            viewItem item False
-
-        viewItemGroup group =
-            if not (List.isEmpty group.items) && not (String.isEmpty group.header) then
-                viewHeader group.header :: (group.items |> List.map viewItemClickable)
+            in
+            if config.selectedValue |> Maybe.isJust then
+                \_ -> textInput
 
             else
-                group.items |> List.map viewItemClickable
-
-        searchMatches =
-            let
-                filterValues value =
-                    value
-                        |> String.toLower
-                        |> String.contains (String.toLower config.input)
-            in
-            config.items
-                |> List.concatMap
-                    (\group ->
-                        viewItemGroup
-                            { group
-                                | items = group.items |> List.filter (.text >> filterValues)
-                            }
-                    )
-
-        showHasNoMatch =
-            config.input /= "" && List.isEmpty searchMatches
-
-        dropdownStyles =
-            Css.batch
-                (case config.searchResultAppearance of
-                    Card ->
-                        [ padding3 (rem 0.5) (rem 0) (rem 0.0)
-
-                        --, children [ everything [ pseudoClass "not(:first-child)" [ marginTop (rem 0.5) ] ] ]
-                        , borderLeft3 (rem 0.0625) solid Colors.mediumGray
-                        , borderRight3 (rem 0.0625) solid Colors.mediumGray
-                        , marginTop (rem 0)
-                        ]
-
-                    Default ->
-                        [ backgroundColor Colors.white
-                        , borderBottom3 (rem 0.0625) solid Colors.mediumGray
-                        , borderLeft3 (rem 0.0625) solid Colors.mediumGray
-                        , borderRight3 (rem 0.0625) solid Colors.mediumGray
-                        , borderBottomLeftRadius (rem 0.25)
-                        , borderBottomRightRadius (rem 0.25)
-                        , boxSizing borderBox
-                        , padding3 (rem 0.5) (rem 0) (rem 0.0)
-                        , marginTop (rem 0)
-                        ]
-                )
+                \item -> Html.div [ tabindex 0, css (sizeStyles ++ focusStyles ++ hoverStyles) ] [ Html.text item.text ]
 
         textInput =
             let
@@ -305,39 +205,127 @@ view attrs ((DropdownFilter config) as dropdown) =
                         ]
                     ]
 
-        cardCross attrs_ =
+        viewHeader text =
+            Html.li
+                [ css [ color Colors.gray, margin2 (rem 0) (rem 0.625) ] ]
+                [ Text.textTinyLight |> Text.view [] [ Html.text text ] ]
+
+        viewItem item isClickable =
+            let
+                commonStyles =
+                    [ overflow hidden, width (pct 100), listStyleType none ]
+                        ++ (if isClickable then
+                                [ cursor pointer ]
+
+                            else
+                                []
+                           )
+
+                predefinedStyles =
+                    []
+
+                attrs_ =
+                    css (commonStyles ++ predefinedStyles)
+                        :: (if isClickable then
+                                [ Events.onClick (config.onSelect (Just item))
+                                , Attrs.fromUnstyled (Events.onEnter (config.onSelect (Just item)))
+                                ]
+
+                            else
+                                []
+                           )
+                        ++ [ tabindex -1 ]
+            in
+            if isClickable then
+                Html.li
+                    attrs_
+                    [ (config.itemMapper |> Maybe.withDefault defaultItemMapper) item ]
+
+            else
+                Html.div
+                    [ css [ width (pct 100) ] ]
+                    [ (config.itemMapper |> Maybe.withDefault defaultItemMapper) item ]
+
+        viewItemClickable item =
+            viewItem item True
+
+        viewItemNonClickable item =
+            viewItem item False
+
+        viewItemGroup group =
+            if not (List.isEmpty group.items) && not (String.isEmpty group.header) then
+                viewHeader group.header :: (group.items |> List.map viewItemClickable)
+
+            else
+                group.items |> List.map viewItemClickable
+
+        searchMatches =
+            let
+                filterValues value =
+                    value
+                        |> String.toLower
+                        |> String.contains (String.toLower config.input)
+            in
+            config.items
+                |> List.map
+                    (\group ->
+                        { group
+                            | items = group.items |> List.filter (.text >> filterValues)
+                        }
+                    )
+
+        viewSearchMatches =
+            searchMatches |> List.concatMap viewItemGroup
+
+        showHasNoMatch =
+            config.input /= "" && List.isEmpty searchMatches
+
+        dropdownStyles =
+            Css.batch
+                ((if config.itemMapper |> Maybe.isJust then
+                    []
+
+                  else
+                    [ backgroundColor Colors.white
+                    , borderBottom3 (rem 0.0625) solid Colors.mediumGray
+                    , borderLeft3 (rem 0.0625) solid Colors.mediumGray
+                    , borderRight3 (rem 0.0625) solid Colors.mediumGray
+                    , borderBottomLeftRadius (rem 0.25)
+                    , borderBottomRightRadius (rem 0.25)
+                    , boxSizing borderBox
+                    , marginTop (rem 0)
+                    ]
+                 )
+                    ++ [ padding3 (rem 0.0) (rem 0) (rem 0.0) ]
+                )
+
+        cross =
             Icon.cross
-                ([ Events.onClick (config.onSelect Nothing)
-                 , css
+                [ Events.onClick (config.onSelect Nothing)
+                , css
                     [ width (rem 1)
                     , height (rem 1)
                     , cursor pointer
+                    , position absolute
+                    , top (pct 50)
+                    , right (rem 0.75)
+                    , transforms [ translateY (pct -50) ]
                     ]
-                 , tabindex 0
-                 , Attrs.fromUnstyled (Events.onEnter (config.onSelect Nothing))
-                 , Attrs.attribute "role" "button"
-                 , Attrs.attribute "aria-label"
+                , tabindex 0
+                , Attrs.fromUnstyled (Events.onEnter (config.onSelect Nothing))
+                , Attrs.attribute "role" "button"
+                , Attrs.attribute "aria-label"
                     (if config.selectedValue |> Maybe.isJust then
                         "Clear selection"
 
                      else
                         "Clear input"
                     )
-                 ]
-                    ++ attrs_
-                )
+                ]
 
         iconRight =
             if String.length config.input > 0 then
-                cardCross
-                    [ Events.onClick (config.onSelect Nothing)
-                    , css
-                        [ position absolute
-                        , top (pct 50)
-                        , right (rem 0.75)
-                        , transforms [ translateY (pct -50) ]
-                        ]
-                    ]
+                cross
 
             else
                 (case
@@ -363,49 +351,78 @@ view attrs ((DropdownFilter config) as dropdown) =
                         ]
                     ]
                     |> hideIf (config.hasSearchIcon || not config.showChevron)
+
+        content =
+            if hasSelectedValue dropdown then
+                Html.nothing
+
+            else if config.isLoading then
+                Html.div
+                    [ css
+                        [ height (rem 8)
+                        , displayFlex
+                        , flexDirection column
+                        , justifyContent center
+                        , dropdownStyles
+                        , alignItems center
+                        ]
+                    ]
+                    [ Spinner.small [] ]
+
+            else
+                Html.ul
+                    [ css
+                        ([ listStyle none
+                         , dropdownStyles
+                         , marginTop (rem 0.25)
+                         ]
+                            ++ (if config.withScroll then
+                                    [ overflowY scroll
+                                    , maxHeight (rem 16.75)
+                                    ]
+
+                                else
+                                    []
+                               )
+                        )
+                    ]
+                    viewSearchMatches
+                    |> showIf (not (List.isEmpty viewSearchMatches))
     in
     Html.column []
-        [ Tooltip.init
-            |> Tooltip.withPlacement Tooltip.Bottom
-            |> Tooltip.withVisibility
-                (if config.hasFocus then
-                    Tooltip.Show
-
-                 else
-                    Tooltip.Hidden
-                )
-            |> Tooltip.withContent
-                (\_ ->
-                    if hasSelectedValue dropdown then
-                        Html.nothing
-
-                    else if config.isLoading then
-                        Html.div
-                            [ css
-                                [ height (rem 8)
-                                , displayFlex
-                                , flexDirection column
-                                , justifyContent center
-                                , dropdownStyles
-                                , alignItems center
+        [ if config.showOverlay then
+            Tooltip.init
+                |> Tooltip.withPlacement Tooltip.Bottom
+                |> Tooltip.withVisibility
+                    {- (if config.hasFocus then -} Tooltip.Show
+                --TODO: fix this
+                {- else
+                   Tooltip.Hidden
+                -}
+                --)
+                |> Tooltip.withContent
+                    (\_ -> content)
+                |> Tooltip.view
+                    ((config.onFocus
+                        |> Maybe.map
+                            (\onFocus ->
+                                [ Events.on "focusout" (Decode.succeed (onFocus False))
+                                , Events.on "focusin" (Decode.succeed (onFocus True))
                                 ]
-                            ]
-                            [ Spinner.small [] ]
+                            )
+                        |> Maybe.withDefault []
+                     )
+                        ++ (css [ descendants [ class "tooltip" [ width (pct 100) ] ] ] :: attrs)
+                    )
+                    [ textInput
+                    , iconRight
+                    ]
+                |> hideIf (config.selectedValue |> Maybe.isJust)
 
-                    else
-                        Html.ul
-                            [ css
-                                [ overflowY scroll
-                                , maxHeight (rem 16.75)
-                                , listStyle none
-                                , dropdownStyles
-                                ]
-                            ]
-                            searchMatches
-                            |> showIf (not (List.isEmpty searchMatches))
-                )
-            |> Tooltip.view
-                ((config.onFocus
+          else
+            -- one can alternatively remove position absolute, left, and transform on the ".tooltip" but it would be dirtier
+            Html.column
+                (config.onFocus
                     |> Maybe.map
                         (\onFocus ->
                             [ Events.on "focusout" (Decode.succeed (onFocus False))
@@ -413,35 +430,22 @@ view attrs ((DropdownFilter config) as dropdown) =
                             ]
                         )
                     |> Maybe.withDefault []
-                 )
-                    ++ (css [ descendants [ class "tooltip" [ width (pct 100) ] ] ] :: attrs)
                 )
-                [ textInput
-                , iconRight
+                [ Html.row
+                    [ css [ position relative ] ]
+                    [ textInput, iconRight ]
+                    |> hideIf (config.selectedValue |> Maybe.isJust)
+                , content --|> showIf config.hasFocus --TODO: uncomment this
                 ]
-            |> hideIf (config.searchResultAppearance == Card && (config.selectedValue |> Maybe.isJust))
-        , if config.searchResultAppearance == Card then
-            config.selectedValue
-                |> Maybe.map
-                    (\v ->
-                        Html.row [ css [ position relative ] ]
-                            [ viewItemNonClickable v
-                            , cardCross
-                                [ css
-                                    [ margin auto
-                                    , top (rem 0)
-                                    , bottom (rem 0)
-                                    , position absolute
-                                    , right (rem 0)
-                                    , marginRight (rem 2)
-                                    ]
-                                ]
-                            ]
-                    )
-                |> Maybe.withDefault Html.nothing
-
-          else
-            Html.nothing
+        , config.selectedValue
+            |> Maybe.map
+                (\v ->
+                    Html.row [ css [ position relative ] ]
+                        [ viewItemNonClickable v
+                        , cross
+                        ]
+                )
+            |> Maybe.withDefault Html.nothing
         ]
 
 
@@ -485,12 +489,7 @@ hasSelectedValue (DropdownFilter config) =
     Maybe.isJust config.selectedValue
 
 
-withSearchResultAppearance : SearchResultAppearance -> DropdownFilter a msg -> DropdownFilter a msg
-withSearchResultAppearance searchResultAppearance (DropdownFilter config) =
-    DropdownFilter { config | searchResultAppearance = searchResultAppearance }
-
-
-withSearchResultRowMapper : (Item a -> Html msg) -> DropdownFilter a msg -> DropdownFilter a msg
+withSearchResultRowMapper : Maybe (Item a -> Html msg) -> DropdownFilter a msg -> DropdownFilter a msg
 withSearchResultRowMapper f (DropdownFilter config) =
     DropdownFilter { config | itemMapper = f }
 
@@ -498,3 +497,17 @@ withSearchResultRowMapper f (DropdownFilter config) =
 withoutChevron : DropdownFilter a msg -> DropdownFilter a msg
 withoutChevron (DropdownFilter config) =
     DropdownFilter { config | showChevron = False }
+
+
+
+--the results will actually occupy space, i.e. they won't overlay
+
+
+withoutOverlay : DropdownFilter a msg -> DropdownFilter a msg
+withoutOverlay (DropdownFilter config) =
+    DropdownFilter { config | showOverlay = False }
+
+
+withoutScroll : DropdownFilter a msg -> DropdownFilter a msg
+withoutScroll (DropdownFilter config) =
+    DropdownFilter { config | withScroll = False }
