@@ -139,7 +139,7 @@ stories =
                         }
                         |> DropdownFilter.withHasFocus model.customModel.searchHasFocus
                         |> DropdownFilter.withOnFocus SearchComponentFocus
-                        |> DropdownFilter.withoutScroll
+                        |> DropdownFilter.withScroll True
                         |> DropdownFilter.view []
                     ]
           , {}
@@ -161,9 +161,10 @@ stories =
                                 |> DropdownFilter.withHasFocus model.customModel.searchHasFocus
                                 |> DropdownFilter.withOnFocus SearchComponentFocus
                                 |> DropdownFilter.withSearchResultRowMapper (Just (viewOrganizationInfo (model.customModel.selectedSearchComponentOrgInfo |> Maybe.isJust)))
-                                |> DropdownFilter.withoutOverlay
-                                |> DropdownFilter.withoutChevron
-                                |> DropdownFilter.withoutScroll
+                                |> DropdownFilter.withResultsOverlaying False
+                                |> DropdownFilter.withChevron False
+                                |> DropdownFilter.withScroll False
+                                |> DropdownFilter.withCross False
                                 --|> DropdownFilter.withSmallSize
                                 |> DropdownFilter.view []
                             ]

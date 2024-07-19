@@ -3,17 +3,18 @@ module Nordea.Components.DropdownFilter exposing
     , ItemGroup
     , init
     , view
+    , withChevron
+    , withCross
     , withHasError
     , withHasFocus
     , withIsLoading
     , withOnFocus
     , withPlaceholder
+    , withResultsOverlaying
+    , withScroll
     , withSearchIcon
     , withSearchResultRowMapper
     , withSmallSize
-    , withoutChevron
-    , withoutOverlay
-    , withoutScroll
     )
 
 import Css exposing (absolute, alignItems, backgroundColor, border, borderBottom3, borderBottomLeftRadius, borderBottomRightRadius, borderBox, borderColor, borderLeft3, borderRight3, borderTop3, boxSizing, center, color, column, cursor, deg, displayFlex, flexDirection, fontSize, height, hidden, hover, justifyContent, lineHeight, listStyle, listStyleType, margin2, marginTop, maxHeight, none, outline, overflow, overflowY, padding3, padding4, paddingRight, pct, pointer, pointerEvents, position, pseudoClass, relative, rem, right, rotate, scroll, solid, top, transforms, translateY, width)
@@ -61,6 +62,7 @@ type alias DropdownFilterProperties a msg =
     , placeholder : Maybe String
     , itemMapper : Maybe (Item a -> Html msg)
     , showChevron : Bool
+    , showCross : Bool
     , showOverlay : Bool
     , withScroll : Bool
     }
@@ -99,6 +101,7 @@ init { onInput, input, onSelect, items, selectedValue } =
         , placeholder = Nothing
         , itemMapper = Nothing
         , showChevron = True
+        , showCross = True
         , showOverlay = True
         , withScroll = True
         }
@@ -494,20 +497,25 @@ withSearchResultRowMapper f (DropdownFilter config) =
     DropdownFilter { config | itemMapper = f }
 
 
-withoutChevron : DropdownFilter a msg -> DropdownFilter a msg
-withoutChevron (DropdownFilter config) =
-    DropdownFilter { config | showChevron = False }
+withChevron : Bool -> DropdownFilter a msg -> DropdownFilter a msg
+withChevron bool (DropdownFilter config) =
+    DropdownFilter { config | showChevron = bool }
+
+
+withCross : Bool -> DropdownFilter a msg -> DropdownFilter a msg
+withCross bool (DropdownFilter config) =
+    DropdownFilter { config | showCross = bool }
 
 
 
---the results will actually occupy space, i.e. they won't overlay
+--the results will actually occupy space, i.e. they won't "pop-up"
 
 
-withoutOverlay : DropdownFilter a msg -> DropdownFilter a msg
-withoutOverlay (DropdownFilter config) =
-    DropdownFilter { config | showOverlay = False }
+withResultsOverlaying : Bool -> DropdownFilter a msg -> DropdownFilter a msg
+withResultsOverlaying bool (DropdownFilter config) =
+    DropdownFilter { config | showOverlay = bool }
 
 
-withoutScroll : DropdownFilter a msg -> DropdownFilter a msg
-withoutScroll (DropdownFilter config) =
-    DropdownFilter { config | withScroll = False }
+withScroll : Bool -> DropdownFilter a msg -> DropdownFilter a msg
+withScroll bool (DropdownFilter config) =
+    DropdownFilter { config | withScroll = bool }
