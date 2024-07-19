@@ -327,7 +327,7 @@ view attrs ((DropdownFilter config) as dropdown) =
                 ]
 
         iconRight =
-            if String.length config.input > 0 then
+            if String.length config.input > 0 && config.showCross then
                 cross
 
             else
@@ -445,7 +445,7 @@ view attrs ((DropdownFilter config) as dropdown) =
                 (\v ->
                     Html.row [ css [ position relative ] ]
                         [ viewItemNonClickable v
-                        , cross
+                        , cross |> showIf config.showCross
                         ]
                 )
             |> Maybe.withDefault Html.nothing
