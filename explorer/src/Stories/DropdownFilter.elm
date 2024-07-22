@@ -160,7 +160,7 @@ stories =
                                 }
                                 |> DropdownFilter.withHasFocus model.customModel.searchHasFocus
                                 |> DropdownFilter.withOnFocus SearchComponentFocus
-                                |> DropdownFilter.withSearchResultRowMapper (Just (viewOrganizationInfo (model.customModel.selectedSearchComponentOrgInfo |> Maybe.isJust)))
+                                |> DropdownFilter.withItemViewMapper (Just (viewOrganizationInfo (model.customModel.selectedSearchComponentOrgInfo |> Maybe.isJust)))
                                 |> DropdownFilter.withResultsOverlaying False
                                 |> DropdownFilter.withChevron False
                                 |> DropdownFilter.withScroll False

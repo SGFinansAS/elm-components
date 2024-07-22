@@ -8,12 +8,12 @@ module Nordea.Components.DropdownFilter exposing
     , withHasError
     , withHasFocus
     , withIsLoading
+    , withItemViewMapper
     , withOnFocus
     , withPlaceholder
     , withResultsOverlaying
     , withScroll
     , withSearchIcon
-    , withSearchResultRowMapper
     , withSmallSize
     )
 
@@ -492,8 +492,8 @@ hasSelectedValue (DropdownFilter config) =
     Maybe.isJust config.selectedValue
 
 
-withSearchResultRowMapper : Maybe (Item a -> Html msg) -> DropdownFilter a msg -> DropdownFilter a msg
-withSearchResultRowMapper f (DropdownFilter config) =
+withItemViewMapper : Maybe (Item a -> Html msg) -> DropdownFilter a msg -> DropdownFilter a msg
+withItemViewMapper f (DropdownFilter config) =
     DropdownFilter { config | itemMapper = f }
 
 
