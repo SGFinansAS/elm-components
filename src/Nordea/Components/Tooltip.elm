@@ -247,7 +247,7 @@ view attrs children (Tooltip config) =
             Html.div
                 (css
                     [ display block
-                    , position relative
+                    , position absolute
                     , Css.property "clip-path" "polygon(50% 20%, 100% 70%, 0 70%)"
                     , arrowPosition
                     , width (rem arrowWidthInRem)
