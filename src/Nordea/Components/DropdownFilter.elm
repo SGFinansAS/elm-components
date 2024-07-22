@@ -185,14 +185,10 @@ view attrs ((DropdownFilter config) as dropdown) =
 
                 focusStyles =
                     [ pseudoClass "focus-within"
-                        [ -- we must adjust the padding after increasing the border to avoid movement
-                          --   padding2 (rem 0) (rem 0)
-                          Themes.backgroundColor Colors.cloudBlue
+                        [ Themes.backgroundColor Colors.cloudBlue
                         , borderBottom3 (rem 0.1) solid Colors.mediumGray
                         , borderTop3 (rem 0.1) solid Colors.mediumGray
                         , focusPadding
-
-                        --, padding (rem 0)
                         , outline none
                         , borderColor Colors.mediumGray
                         ]
