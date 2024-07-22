@@ -106,8 +106,9 @@ type alias DropdownFilterProperties a msg =
     { items : List (ItemGroup a)
     , onInput : String -> msg
     , onSelect : Maybe (Item a) -> msg
-    , input : String
     , onFocus : Maybe (Bool -> msg)
+    , onPaste : Maybe msg
+    , input : String
     , hasFocus : Bool
     , hasError : Bool
     , isLoading : Bool
@@ -147,6 +148,7 @@ init { onInput, input, onSelect, items, selectedValue } =
         , onSelect = onSelect
         , input = input
         , onFocus = Nothing
+        , onPaste = Nothing
         , hasFocus = False
         , hasError = False
         , isLoading = False
@@ -236,16 +238,16 @@ view attrs ((DropdownFilter config) as dropdown) =
             in
             componentWithSize
                 |> TextInput.view
-                    [ readonly (hasSelectedValue dropdown)
-                    , Attrs.attribute "role" "combobox"
-                    , Attrs.attribute "aria-expanded"
+                    ([ readonly (hasSelectedValue dropdown)
+                     , Attrs.attribute "role" "combobox"
+                     , Attrs.attribute "aria-expanded"
                         (if not config.hasFocus then
                             "false"
 
                          else
                             "true"
                         )
-                    , css
+                     , css
                         [ width (pct 100)
                         , borderBottomLeftRadius (pct 0) |> Css.important |> styleIf (config.hasFocus && not (hasSelectedValue dropdown))
                         , borderBottomRightRadius (pct 0) |> Css.important |> styleIf (config.hasFocus && not (hasSelectedValue dropdown))
@@ -257,7 +259,11 @@ view attrs ((DropdownFilter config) as dropdown) =
                                 ]
                             ]
                         ]
-                    ]
+                     ]
+                        ++ ([ config.onPaste |> Maybe.map (\m -> Events.on "paste" (Decode.succeed m)) ]
+                                |> List.filterMap identity
+                           )
+                    )
 
         viewHeader text =
             Html.li
@@ -570,3 +576,8 @@ withResultsOverlaying bool (DropdownFilter config) =
 withScroll : Bool -> DropdownFilter a msg -> DropdownFilter a msg
 withScroll bool (DropdownFilter config) =
     DropdownFilter { config | withScroll = bool }
+
+
+withOnPaste : msg -> DropdownFilter a msg -> DropdownFilter a msg
+withOnPaste msg (DropdownFilter config) =
+    DropdownFilter { config | onPaste = Just msg }
