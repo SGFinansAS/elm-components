@@ -10,6 +10,7 @@ module Nordea.Components.DropdownFilter exposing
     , withIsLoading
     , withItemViewMapper
     , withOnFocus
+    , withOnPaste
     , withPlaceholder
     , withResultsOverlaying
     , withScroll

@@ -165,6 +165,7 @@ stories =
                                 |> DropdownFilter.withChevron False
                                 |> DropdownFilter.withScroll False
                                 |> DropdownFilter.withCross False
+                                |> DropdownFilter.withOnPaste NoOp
                                 --|> DropdownFilter.withSmallSize
                                 |> DropdownFilter.view []
                             ]
