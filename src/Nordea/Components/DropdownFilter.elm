@@ -17,7 +17,62 @@ module Nordea.Components.DropdownFilter exposing
     , withSmallSize
     )
 
-import Css exposing (absolute, alignItems, backgroundColor, border, borderBottom3, borderBottomLeftRadius, borderBottomRightRadius, borderBox, borderColor, borderLeft3, borderRight3, borderTop3, boxSizing, center, color, column, cursor, deg, displayFlex, flexDirection, fontSize, height, hidden, hover, justifyContent, lineHeight, listStyle, listStyleType, margin2, marginTop, maxHeight, none, outline, overflow, overflowY, padding3, padding4, paddingRight, pct, pointer, pointerEvents, position, pseudoClass, relative, rem, right, rotate, scroll, solid, top, transforms, translateY, width)
+import Css
+    exposing
+        ( absolute
+        , alignItems
+        , backgroundColor
+        , border
+        , borderBottom3
+        , borderBottomLeftRadius
+        , borderBottomRightRadius
+        , borderBox
+        , borderColor
+        , borderLeft3
+        , borderRight3
+        , borderTop3
+        , boxSizing
+        , center
+        , color
+        , column
+        , cursor
+        , deg
+        , displayFlex
+        , flexDirection
+        , fontSize
+        , height
+        , hidden
+        , hover
+        , justifyContent
+        , lineHeight
+        , listStyle
+        , listStyleType
+        , margin2
+        , marginTop
+        , maxHeight
+        , none
+        , outline
+        , overflow
+        , overflowY
+        , padding3
+        , padding4
+        , paddingRight
+        , pct
+        , pointer
+        , pointerEvents
+        , position
+        , pseudoClass
+        , relative
+        , rem
+        , right
+        , rotate
+        , scroll
+        , solid
+        , top
+        , transforms
+        , translateY
+        , width
+        )
 import Css.Global exposing (class, descendants, typeSelector, withAttribute)
 import Html.Events.Extra as Events
 import Html.Styled as Html exposing (Html)
@@ -397,12 +452,12 @@ view attrs ((DropdownFilter config) as dropdown) =
             Tooltip.init
                 |> Tooltip.withPlacement Tooltip.Bottom
                 |> Tooltip.withVisibility
-                    {- (if config.hasFocus then -} Tooltip.Show
-                --TODO: fix this
-                {- else
-                   Tooltip.Hidden
-                -}
-                --)
+                    (if config.hasFocus then
+                        Tooltip.Show
+
+                     else
+                        Tooltip.Hidden
+                    )
                 |> Tooltip.withContent
                     (\_ -> content)
                 |> Tooltip.view
@@ -438,7 +493,7 @@ view attrs ((DropdownFilter config) as dropdown) =
                     [ css [ position relative ] ]
                     [ textInput, iconRight ]
                     |> hideIf (config.selectedValue |> Maybe.isJust)
-                , content --|> showIf config.hasFocus --TODO: uncomment this
+                , content |> showIf config.hasFocus
                 ]
         , config.selectedValue
             |> Maybe.map
