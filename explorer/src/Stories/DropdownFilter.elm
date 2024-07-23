@@ -26,29 +26,20 @@ maybeToHtml element maybeVariable =
 
 
 itemViewStyles hasSelected =
-    [ --padding2 (rem 1) (rem 2)
-      border3 (rem 0.0625) solid Colors.mediumGray
+    [ border3 (rem 0.0625) solid Colors.mediumGray
     , padding2 (rem (0.25 + 1)) (rem (2 + 0.25))
     , borderRadius (rem 0.25)
     , hover [ Themes.backgroundColor Colors.coolGray ]
     , outline none
     , marginTop (rem 0.5)
     , pseudoClass "focus-within"
-        [ -- we must adjust the padding after increasing the border to avoid movement
-          --  padding2 (rem (1 - 0.25 - 0.0625)) (rem (2 - 0.25 - 0.0625))
-          Themes.backgroundColor Colors.cloudBlue
+        [ Themes.backgroundColor Colors.cloudBlue
         , border3 (rem 0.25) solid Colors.mediumGray
-
-        --, padding2 (rem (1 - 0.25 + 0.0625)) (rem (2 - 0.25 + 0.0625))
         , outline none
         , padding2 (rem (0.0625 + 1)) (rem (2 + 0.0625))
-
-        -- , borderColor Colors.mediumGray
         ]
     , Themes.backgroundColor Colors.cloudBlue |> styleIf hasSelected |> Css.important
     , Themes.color Colors.nordeaBlue |> styleIf hasSelected
-
-    --  , Themes.borderColor Colors.nordeaBlue |> styleIf (config.selectedValue |> Maybe.isJust)
     , border3 (rem 0.0625) solid Colors.nordeaBlue |> styleIf hasSelected
     ]
 
@@ -168,7 +159,6 @@ stories =
                                 |> DropdownFilter.withScroll False
                                 |> DropdownFilter.withCross False
                                 |> DropdownFilter.withOnPaste NoOp
-                                --|> DropdownFilter.withSmallSize
                                 |> DropdownFilter.view []
                             ]
                         ]
