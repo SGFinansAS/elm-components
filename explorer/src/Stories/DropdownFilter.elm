@@ -157,8 +157,9 @@ stories =
                                 |> DropdownFilter.withResultsOverlaying False
                                 |> DropdownFilter.withChevron False
                                 |> DropdownFilter.withScroll False
-                                |> DropdownFilter.withCross False
+                                |> DropdownFilter.withCross True
                                 |> DropdownFilter.withOnPaste NoOp
+                                |> DropdownFilter.withResultsAlwaysShowing True
                                 |> DropdownFilter.view []
                             ]
                         ]

@@ -13,6 +13,7 @@ module Nordea.Components.DropdownFilter exposing
     , withOnFocus
     , withOnPaste
     , withPlaceholder
+    , withResultsAlwaysShowing
     , withResultsOverlaying
     , withScroll
     , withSearchIcon
@@ -122,6 +123,7 @@ type alias DropdownFilterProperties a msg =
     , placeholder : Maybe String
     , itemMapper : Maybe (Item a -> Html msg)
     , itemStyles : Maybe (List Style)
+    , showResultsAlways : Bool
     , showChevron : Bool
     , showCross : Bool
     , showOverlay : Bool
@@ -166,6 +168,7 @@ init { onInput, input, onSelect, items, selectedValue } =
         , showChevron = True
         , showCross = True
         , showOverlay = True
+        , showResultsAlways = False
         , withScroll = True
         }
 
@@ -452,13 +455,16 @@ view attrs ((DropdownFilter config) as dropdown) =
                     ]
                     viewSearchMatches
                     |> showIf (not (List.isEmpty viewSearchMatches))
+
+        isShown =
+            config.showResultsAlways || config.hasFocus
     in
     Html.column []
         [ if config.showOverlay then
             Tooltip.init
                 |> Tooltip.withPlacement Tooltip.Bottom
                 |> Tooltip.withVisibility
-                    (if config.hasFocus then
+                    (if isShown then
                         Tooltip.Show
 
                      else
@@ -499,7 +505,7 @@ view attrs ((DropdownFilter config) as dropdown) =
                     [ css [ position relative ] ]
                     [ textInput, iconRight ]
                     |> hideIf (config.selectedValue |> Maybe.isJust)
-                , content |> showIf config.hasFocus
+                , content |> showIf isShown
                 ]
         , config.selectedValue
             |> Maybe.map
@@ -594,3 +600,8 @@ withScroll bool (DropdownFilter config) =
 withOnPaste : msg -> DropdownFilter a msg -> DropdownFilter a msg
 withOnPaste msg (DropdownFilter config) =
     DropdownFilter { config | onPaste = Just msg }
+
+
+withResultsAlwaysShowing : Bool -> DropdownFilter a msg -> DropdownFilter a msg
+withResultsAlwaysShowing b (DropdownFilter config) =
+    DropdownFilter { config | showResultsAlways = b }
