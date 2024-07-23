@@ -8,8 +8,8 @@ module Nordea.Components.DropdownFilter exposing
     , withHasError
     , withHasFocus
     , withIsLoading
+    , withItemContainerStyles
     , withItemViewMapper
-    , withItemViewStyles
     , withOnFocus
     , withOnPaste
     , withPlaceholder
@@ -568,8 +568,8 @@ withItemViewMapper f (DropdownFilter config) =
     DropdownFilter { config | itemMapper = f }
 
 
-withItemViewStyles : Maybe (List Style) -> DropdownFilter a msg -> DropdownFilter a msg
-withItemViewStyles s (DropdownFilter config) =
+withItemContainerStyles : Maybe (List Style) -> DropdownFilter a msg -> DropdownFilter a msg
+withItemContainerStyles s (DropdownFilter config) =
     DropdownFilter { config | itemStyles = s }
 
 
