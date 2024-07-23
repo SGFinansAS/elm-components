@@ -492,7 +492,7 @@ view attrs ((DropdownFilter config) as dropdown) =
           else
             -- one can alternatively remove position absolute, left, and transform on the ".tooltip" but it would be dirtier
             Html.column
-                (config.onFocus
+                ((config.onFocus
                     |> Maybe.map
                         (\onFocus ->
                             [ Events.on "focusout" (Decode.succeed (onFocus False))
@@ -500,6 +500,8 @@ view attrs ((DropdownFilter config) as dropdown) =
                             ]
                         )
                     |> Maybe.withDefault []
+                 )
+                    ++ attrs
                 )
                 [ Html.row
                     [ css [ position relative ] ]
