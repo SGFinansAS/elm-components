@@ -9,6 +9,7 @@ module Nordea.Components.DropdownFilter exposing
     , withHasFocus
     , withIsLoading
     , withItemViewMapper
+    , withItemViewStyles
     , withOnFocus
     , withOnPaste
     , withPlaceholder
@@ -20,7 +21,8 @@ module Nordea.Components.DropdownFilter exposing
 
 import Css
     exposing
-        ( absolute
+        ( Style
+        , absolute
         , alignItems
         , backgroundColor
         , border
@@ -30,6 +32,7 @@ import Css
         , borderBox
         , borderColor
         , borderLeft3
+        , borderRadius
         , borderRight3
         , borderTop3
         , boxSizing
@@ -74,10 +77,10 @@ import Css
         , translateY
         , width
         )
-import Css.Global exposing (class, descendants, typeSelector, withAttribute)
+import Css.Global exposing (class, descendants, typeSelector)
 import Html.Events.Extra as Events
 import Html.Styled as Html exposing (Html)
-import Html.Styled.Attributes as Attrs exposing (css, readonly, tabindex)
+import Html.Styled.Attributes as Attrs exposing (css, tabindex)
 import Html.Styled.Events as Events
 import Json.Decode as Decode
 import Maybe.Extra as Maybe
@@ -118,6 +121,7 @@ type alias DropdownFilterProperties a msg =
     , size : Size
     , placeholder : Maybe String
     , itemMapper : Maybe (Item a -> Html msg)
+    , itemStyles : Maybe (List Style)
     , showChevron : Bool
     , showCross : Bool
     , showOverlay : Bool
@@ -158,6 +162,7 @@ init { onInput, input, onSelect, items, selectedValue } =
         , size = StandardSize
         , placeholder = Nothing
         , itemMapper = Nothing
+        , itemStyles = Nothing
         , showChevron = True
         , showCross = True
         , showOverlay = True
@@ -168,12 +173,18 @@ init { onInput, input, onSelect, items, selectedValue } =
 view : List (Html.Attribute msg) -> DropdownFilter a msg -> Html msg
 view attrs ((DropdownFilter config) as dropdown) =
     let
-        defaultItemMapper =
+        defaultMapper =
+            \item -> Html.text item.text
+
+        mapper =
+            config.itemMapper |> Maybe.withDefault defaultMapper
+
+        defaultStyles =
             let
                 sizeStyles =
                     case config.size of
                         StandardSize ->
-                            [ height (rem 2.5), fontSize (rem 1), padding4 (rem 0.25) (rem 2.5) (rem 0.25) (rem 0.75), lineHeight (rem 1.4) ]
+                            [ height (rem 2.5), fontSize (rem 1), padding4 (rem 0.25) (rem 2.5) (rem 0.25) (rem 0.75), lineHeight (rem 1.9) ]
 
                         SmallSize ->
                             [ height (rem 1.6), fontSize (rem 0.75), padding4 (rem 0.25) (rem 0.25) (rem 0.25) (rem 0.5), lineHeight (rem 1) ]
@@ -181,7 +192,11 @@ view attrs ((DropdownFilter config) as dropdown) =
                 focusPadding =
                     case config.size of
                         StandardSize ->
-                            padding4 (rem (0.25 - 0.1)) (rem 2.5) (rem (0.25 - 0.1)) (rem 0.75)
+                            if config.selectedValue |> Maybe.isNothing then
+                                padding4 (rem (0.25 - 0.1)) (rem 2.5) (rem (0.25 - 0.1)) (rem 0.75)
+
+                            else
+                                padding4 (rem 0.25) (rem 2.5) (rem 0.25) (rem 0.75)
 
                         SmallSize ->
                             padding4 (rem 0.25) (rem 0.25) (rem 0.25) (rem 0.5)
@@ -199,25 +214,25 @@ view attrs ((DropdownFilter config) as dropdown) =
 
                 hoverStyles =
                     [ hover [ backgroundColor Colors.coolGray ] ]
-            in
-            if config.selectedValue |> Maybe.isJust then
-                \_ -> textInput
 
-            else
-                \item -> Html.div [ tabindex 0, css (sizeStyles ++ focusStyles ++ hoverStyles) ] [ Html.text item.text ]
-
-        textInput =
-            let
                 selectedStyle =
                     if hasSelectedValue dropdown then
-                        [ Themes.backgroundColor Colors.cloudBlue
-                        , border (rem 0)
+                        [ Themes.backgroundColor Colors.cloudBlue |> Css.important
+                        , border (rem 0) |> Css.important
                         , Css.property "box-shadow" ("0rem 0rem 0rem 0.0625rem " ++ Themes.colorVariable Colors.nordeaBlue) |> Css.important
+                        , borderRadius (rem 0.25)
                         ]
 
                     else
                         []
+            in
+            sizeStyles ++ focusStyles ++ hoverStyles ++ selectedStyle
 
+        styles =
+            config.itemStyles |> Maybe.withDefault defaultStyles
+
+        textInput =
+            let
                 addPlaceholder =
                     config.placeholder
                         |> Maybe.map TextInput.withPlaceholder
@@ -239,8 +254,7 @@ view attrs ((DropdownFilter config) as dropdown) =
             in
             componentWithSize
                 |> TextInput.view
-                    ([ readonly (hasSelectedValue dropdown)
-                     , Attrs.attribute "role" "combobox"
+                    ([ Attrs.attribute "role" "combobox"
                      , Attrs.attribute "aria-expanded"
                         (if not config.hasFocus then
                             "false"
@@ -254,9 +268,7 @@ view attrs ((DropdownFilter config) as dropdown) =
                         , borderBottomRightRadius (pct 0) |> Css.important |> styleIf (config.hasFocus && not (hasSelectedValue dropdown))
                         , descendants
                             [ typeSelector "input"
-                                [ withAttribute "readonly"
-                                    selectedStyle
-                                , paddingRight (rem 2.5)
+                                [ paddingRight (rem 2.5)
                                 ]
                             ]
                         ]
@@ -283,7 +295,7 @@ view attrs ((DropdownFilter config) as dropdown) =
                            )
 
                 attrs_ =
-                    css commonStyles
+                    css (commonStyles ++ styles)
                         :: (if isClickable then
                                 [ Events.onClick (config.onSelect (Just item))
                                 , Attrs.fromUnstyled (Events.onEnter (config.onSelect (Just item)))
@@ -292,17 +304,11 @@ view attrs ((DropdownFilter config) as dropdown) =
                             else
                                 []
                            )
-                        ++ [ tabindex -1 ]
+                        ++ [ tabindex 0 ]
             in
-            if isClickable then
-                Html.li
-                    attrs_
-                    [ (config.itemMapper |> Maybe.withDefault defaultItemMapper) item ]
-
-            else
-                Html.div
-                    [ css [ width (pct 100) ] ]
-                    [ (config.itemMapper |> Maybe.withDefault defaultItemMapper) item ]
+            Html.li
+                attrs_
+                [ mapper item ]
 
         viewItemClickable item =
             viewItem item True
@@ -547,9 +553,18 @@ hasSelectedValue (DropdownFilter config) =
     Maybe.isJust config.selectedValue
 
 
+
+-- by default, dropdown shows Item.text, this lets you use Item.value
+
+
 withItemViewMapper : Maybe (Item a -> Html msg) -> DropdownFilter a msg -> DropdownFilter a msg
 withItemViewMapper f (DropdownFilter config) =
     DropdownFilter { config | itemMapper = f }
+
+
+withItemViewStyles : Maybe (List Style) -> DropdownFilter a msg -> DropdownFilter a msg
+withItemViewStyles s (DropdownFilter config) =
+    DropdownFilter { config | itemStyles = s }
 
 
 withChevron : Bool -> DropdownFilter a msg -> DropdownFilter a msg
