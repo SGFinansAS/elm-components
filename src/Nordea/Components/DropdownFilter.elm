@@ -282,11 +282,8 @@ view attrs ((DropdownFilter config) as dropdown) =
                                 []
                            )
 
-                predefinedStyles =
-                    []
-
                 attrs_ =
-                    css (commonStyles ++ predefinedStyles)
+                    css commonStyles
                         :: (if isClickable then
                                 [ Events.onClick (config.onSelect (Just item))
                                 , Attrs.fromUnstyled (Events.onEnter (config.onSelect (Just item)))
