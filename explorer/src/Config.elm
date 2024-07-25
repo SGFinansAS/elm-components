@@ -48,7 +48,7 @@ type alias Config =
     , textInputContent : String
     , sortableTable : Stories.SortableTableSharedTypes.Model
     , selectedSearchComponent : Maybe (Item FinancingVariant)
-    , selectedSearchComponentOrgInfo : Maybe (Item OrganizationInfo)
+    , selectedSearchComponentOrgInfo : Maybe OrganizationInfo
     , paginationCurrentPage : Int
     , datePicker : DatePicker Msg
     , currentDatePickerValue : Maybe DatePicker.DateResult
@@ -164,7 +164,7 @@ update msg config =
         SearchComponentSelectedOrgInfo item ->
             { config
                 | searchComponentInput = item |> Maybe.map .text |> Maybe.withDefault ""
-                , selectedSearchComponentOrgInfo = item
+                , selectedSearchComponentOrgInfo = item |> Maybe.map .value
                 , searchHasFocus = False
             }
 
