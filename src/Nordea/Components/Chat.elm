@@ -7,6 +7,8 @@ import Css
         , border3
         , borderRadius4
         , color
+        , columnReverse
+        , flexDirection
         , flexEnd
         , justifyContent
         , marginBottom
@@ -15,7 +17,6 @@ import Css
         , overflow
         , padding
         , paddingRight
-        , px
         , rem
         , solid
         , spaceBetween
@@ -40,8 +41,8 @@ type alias Config =
 
 
 type alias MessageViewConfig =
-    { sendFrom : String
-    , sendAt : String
+    { sentFrom : String
+    , sentAt : String
     , sender : String
     , message : String
     , isUserMessage : Bool
@@ -116,21 +117,28 @@ view optionals attrs history content (Chat config) =
                             gap (rem 0.5)
             in
             Html.column
-                [ css [ gapStyle, maxHeight (px 500), overflow auto, paddingRight (rem 0.3125) ]
+                [ css
+                    [ gapStyle
+                    , maxHeight (rem 32)
+                    , overflow auto
+                    , paddingRight (rem 0.3125)
+                    , flexDirection columnReverse |> Css.important
+                    ]
                 ]
-                history
+                [ Html.div [] history ]
                 |> showIf (not (List.isEmpty history))
     in
     Card.init
         |> Card.view (css appearanceSpecificStyles :: attrs)
             [ headerView
             , messageHistoryView
-            , Html.column [ css [ gap (rem 0.5) ] ] content |> showIf (not (List.isEmpty content))
+            , Html.column [ css [ gap (rem 0.5) ] ] content
+                |> showIf (not (List.isEmpty content))
             ]
 
 
 chatHistoryView : List (Attribute msg) -> MessageViewConfig -> Html msg
-chatHistoryView attrs { sendFrom, sendAt, sender, message, isUserMessage } =
+chatHistoryView attrs { sentFrom, sentAt, sender, message, isUserMessage } =
     let
         messageStyles =
             if isUserMessage then
@@ -150,8 +158,8 @@ chatHistoryView attrs { sendFrom, sendAt, sender, message, isUserMessage } =
     in
     Html.column (css [ gap (rem 0.25) ] :: attrs)
         [ Html.row [ css [ justifyContent spaceBetween ] ]
-            [ messageLabel sendFrom
-            , messageLabel sendAt
+            [ messageLabel sentFrom
+            , messageLabel sentAt
             ]
         , Text.textTinyHeavy
             |> Text.view [] [ Html.text sender ]
