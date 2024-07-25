@@ -85,6 +85,7 @@ import Html.Styled as Html exposing (Html)
 import Html.Styled.Attributes as Attrs exposing (css, tabindex)
 import Html.Styled.Events as Events
 import Json.Decode as Decode
+import List.Extra as List
 import Maybe.Extra as Maybe
 import Nordea.Components.Spinner as Spinner
 import Nordea.Components.Text as Text
@@ -119,7 +120,7 @@ type alias DropdownFilterProperties a msg =
     , hasError : Bool
     , isLoading : Bool
     , hasSearchIcon : Bool
-    , selectedValue : Maybe (Item a)
+    , selectedValue : Maybe a
     , size : Size
     , placeholder : Maybe String
     , itemMapper : Maybe (Item a -> Html msg)
@@ -145,7 +146,7 @@ init :
     { onInput : String -> msg
     , input : String
     , onSelect : Maybe (Item a) -> msg
-    , selectedValue : Maybe (Item a)
+    , selectedValue : Maybe a
     , items : List (ItemGroup a)
     }
     -> DropdownFilter a msg
@@ -312,7 +313,7 @@ view attrs ((DropdownFilter config) as dropdown) =
                         ++ [ tabindex 0
                            , Attrs.attribute "role" "option"
                            , Attrs.attribute "aria-selected"
-                                (if Just item == config.selectedValue then
+                                (if Just item.value == config.selectedValue then
                                     "true"
 
                                  else
@@ -522,6 +523,7 @@ view attrs ((DropdownFilter config) as dropdown) =
                 , content |> showIf isShown
                 ]
         , config.selectedValue
+            |> Maybe.andThen (\v -> config.items |> List.concatMap .items |> List.find (\e -> e.value == v))
             |> Maybe.map
                 (\v ->
                     Html.row [ css [ position relative ] ]
