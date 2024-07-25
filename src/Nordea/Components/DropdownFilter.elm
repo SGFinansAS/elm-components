@@ -386,7 +386,7 @@ view attrs ((DropdownFilter config) as dropdown) =
                     , height (rem 1)
                     , cursor pointer
                     , position absolute
-                    , property "top" "calc (50% - 0.25rem)" -- marginTop on li // 2 = 0.25
+                    , property "top" "calc(50% - 0.25rem)" -- marginTop on li // 2 = 0.25
                     , right (rem 0.75)
                     ]
                 , tabindex 0
