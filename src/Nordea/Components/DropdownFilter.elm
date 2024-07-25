@@ -20,64 +20,7 @@ module Nordea.Components.DropdownFilter exposing
     , withSmallSize
     )
 
-import Css
-    exposing
-        ( Style
-        , absolute
-        , alignItems
-        , backgroundColor
-        , border
-        , borderBottom3
-        , borderBottomLeftRadius
-        , borderBottomRightRadius
-        , borderBox
-        , borderColor
-        , borderLeft3
-        , borderRadius
-        , borderRight3
-        , borderTop3
-        , boxSizing
-        , center
-        , color
-        , column
-        , cursor
-        , deg
-        , displayFlex
-        , flexDirection
-        , fontSize
-        , height
-        , hidden
-        , hover
-        , justifyContent
-        , lineHeight
-        , listStyle
-        , listStyleType
-        , margin2
-        , marginTop
-        , maxHeight
-        , none
-        , outline
-        , overflow
-        , overflowY
-        , padding3
-        , padding4
-        , paddingRight
-        , pct
-        , pointer
-        , pointerEvents
-        , position
-        , pseudoClass
-        , relative
-        , rem
-        , right
-        , rotate
-        , scroll
-        , solid
-        , top
-        , transforms
-        , translateY
-        , width
-        )
+import Css exposing (Style, absolute, alignItems, backgroundColor, border, borderBottom3, borderBottomLeftRadius, borderBottomRightRadius, borderBox, borderColor, borderLeft3, borderRadius, borderRight3, borderTop3, boxSizing, center, color, column, cursor, deg, displayFlex, flexDirection, fontSize, height, hidden, hover, justifyContent, lineHeight, listStyle, listStyleType, margin2, marginTop, maxHeight, none, outline, overflow, overflowY, padding3, padding4, paddingRight, pct, pointer, pointerEvents, position, property, pseudoClass, relative, rem, right, rotate, scroll, solid, top, transforms, translateY, width)
 import Css.Global exposing (class, descendants, typeSelector)
 import Html.Events.Extra as Events
 import Html.Styled as Html exposing (Html)
@@ -384,9 +327,8 @@ view attrs ((DropdownFilter config) as dropdown) =
                     , height (rem 1)
                     , cursor pointer
                     , position absolute
-                    , top (pct 50)
+                    , property "top" "calc (50% - 0.25rem)" -- marginTop on li // 2 = 0.25
                     , right (rem 0.75)
-                    , transforms [ translateY (pct -50) ]
                     ]
                 , tabindex 0
                 , Attrs.fromUnstyled (Events.onEnter (config.onSelect Nothing))
