@@ -42,6 +42,7 @@ type alias Config =
     , paginationCurrentPage : Int
     , datePicker : DatePicker Msg
     , currentDatePickerValue : Maybe DatePicker.DateResult
+    , fiveStarRating : Int
     }
 
 
@@ -75,6 +76,7 @@ type Msg
     | PaginationClickedAt Int
     | DateSelected DatePicker.DateResult DatePicker.InternalState
     | UpdateDatePickerInternalState DatePicker.InternalState
+    | SetRating Int
 
 
 init : Config
@@ -115,6 +117,7 @@ init =
     , paginationCurrentPage = 1
     , datePicker = DatePicker.init (Date.fromCalendarDate 2024 May 1) "" DateSelected UpdateDatePickerInternalState
     , currentDatePickerValue = Nothing
+    , fiveStarRating = 0
     }
 
 
@@ -228,3 +231,6 @@ update msg config =
 
         UpdateDatePickerInternalState datePickerState ->
             { config | datePicker = DatePicker.updateInternalState datePickerState config.datePicker }
+
+        SetRating value ->
+            { config | fiveStarRating = value }

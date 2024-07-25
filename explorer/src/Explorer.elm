@@ -9,6 +9,7 @@ import Stories.AccordionMenu as AccordionMenu
 import Stories.Badge as Badge
 import Stories.Button as Button
 import Stories.Card as Card
+import Stories.Chat as Chat
 import Stories.Checkbox as Checkbox
 import Stories.Coachmark as Coachmark
 import Stories.Colors as Colors
@@ -20,6 +21,7 @@ import Stories.FeatureBox as FeatureBox
 import Stories.FileDownload as FileDownload
 import Stories.FileUpload as FileUpload
 import Stories.FilterChip as FilterChip
+import Stories.FiveStarRating as FiveStarRating
 import Stories.FlatLink as FlatLink
 import Stories.Hamburger as Hamburger
 import Stories.Icons as Icons
@@ -96,6 +98,7 @@ main =
                 , Badge.stories
                 , Button.stories
                 , Card.stories
+                , Chat.stories
                 , Checkbox.stories
                 , Coachmark.stories
                 , DatePicker.stories
@@ -107,6 +110,7 @@ main =
                 , FileDownload.stories
                 , FileUpload.stories
                 , FilterChip.stories
+                , FiveStarRating.stories
                 , FlatLink.stories
                 , Hamburger.stories
                 , InfoBanner.stories
