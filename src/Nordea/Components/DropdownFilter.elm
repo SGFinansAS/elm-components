@@ -258,6 +258,7 @@ view attrs ((DropdownFilter config) as dropdown) =
             componentWithSize
                 |> TextInput.view
                     ([ Attrs.attribute "role" "combobox"
+                     , Attrs.attribute "aria-controls" "searchMatches"
                      , Attrs.attribute "aria-expanded"
                         (if not config.hasFocus then
                             "false"
@@ -307,7 +308,7 @@ view attrs ((DropdownFilter config) as dropdown) =
                             else
                                 []
                            )
-                        ++ [ tabindex 0 ]
+                        ++ [ tabindex 0, Attrs.attribute "role" "option" ]
             in
             Html.li
                 attrs_
@@ -438,7 +439,9 @@ view attrs ((DropdownFilter config) as dropdown) =
 
             else
                 Html.ul
-                    [ css
+                    [ Attrs.id "searchMatches"
+                    , Attrs.attribute "role" "listbox"
+                    , css
                         ([ listStyle none
                          , dropdownStyles
                          , marginTop (rem 0.25)
