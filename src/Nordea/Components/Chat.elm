@@ -118,14 +118,16 @@ view optionals attrs history content (Chat config) =
             in
             Html.column
                 [ css
-                    [ gapStyle
-                    , maxHeight (rem 32)
+                    [ maxHeight (rem 32)
                     , overflow auto
                     , paddingRight (rem 0.3125)
                     , flexDirection columnReverse |> Css.important
                     ]
                 ]
-                [ Html.div [] history ]
+                [ Html.column
+                    [ css [ gapStyle ] ]
+                    history
+                ]
                 |> showIf (not (List.isEmpty history))
     in
     Card.init
