@@ -176,8 +176,8 @@ init { onInput, input, onSelect, items, selectedValue } =
 view : List (Html.Attribute msg) -> DropdownFilter a msg -> Html msg
 view attrs ((DropdownFilter config) as dropdown) =
     let
-        defaultMapper =
-            \item -> Html.text item.text
+        defaultMapper item =
+            Html.text item.text
 
         mapper =
             config.itemMapper |> Maybe.withDefault defaultMapper
