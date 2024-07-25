@@ -308,7 +308,16 @@ view attrs ((DropdownFilter config) as dropdown) =
                             else
                                 []
                            )
-                        ++ [ tabindex 0, Attrs.attribute "role" "option" ]
+                        ++ [ tabindex 0
+                           , Attrs.attribute "role" "option"
+                           , Attrs.attribute "aria-selected"
+                                (if Just item == config.selectedValue then
+                                    "true"
+
+                                 else
+                                    "false"
+                                )
+                           ]
             in
             Html.li
                 attrs_
