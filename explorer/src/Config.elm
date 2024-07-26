@@ -1,4 +1,4 @@
-module Config exposing (Config, FinancingVariant(..), Msg(..), init, update)
+module Config exposing (Config, FinancingVariant(..), Msg(..), OrganizationInfo, init, update)
 
 import Date
 import File exposing (File)
@@ -15,6 +15,15 @@ type FinancingVariant
     | Rent
     | Loan
     | HirePurchase
+
+
+type alias OrganizationInfo =
+    { name : String
+    , organizationNumber : String
+    , enterpriseTypeId : Maybe String
+    , postalCode : Maybe String
+    , postalPlace : Maybe String
+    }
 
 
 type alias Config =
@@ -38,7 +47,8 @@ type alias Config =
     , activeRadioButton : String
     , textInputContent : String
     , sortableTable : Stories.SortableTableSharedTypes.Model
-    , selectedSearchComponent : Maybe FinancingVariant
+    , selectedSearchComponent : Maybe (Item FinancingVariant)
+    , selectedSearchComponentOrgInfo : Maybe OrganizationInfo
     , paginationCurrentPage : Int
     , datePicker : DatePicker Msg
     , currentDatePickerValue : Maybe DatePicker.DateResult
@@ -50,6 +60,7 @@ type Msg
     = AccordionMsg Accordion.Msg
     | SearchComponentInput String
     | SearchComponentSelected (Maybe (Item FinancingVariant))
+    | SearchComponentSelectedOrgInfo (Maybe (Item OrganizationInfo))
     | SearchComponentFocus Bool
     | NoOp
     | FocusMultiSelectDropdown Bool
@@ -96,6 +107,7 @@ init =
                 }
     , searchComponentInput = ""
     , selectedSearchComponent = Nothing
+    , selectedSearchComponentOrgInfo = Nothing
     , hasMultiSelectDropdownFocus = False
     , isChoice1 = False
     , isChoice2 = False
@@ -145,7 +157,14 @@ update msg config =
         SearchComponentSelected item ->
             { config
                 | searchComponentInput = item |> Maybe.map .text |> Maybe.withDefault ""
-                , selectedSearchComponent = item |> Maybe.map .value
+                , selectedSearchComponent = item
+                , searchHasFocus = False
+            }
+
+        SearchComponentSelectedOrgInfo item ->
+            { config
+                | searchComponentInput = item |> Maybe.map .text |> Maybe.withDefault ""
+                , selectedSearchComponentOrgInfo = item |> Maybe.map .value
                 , searchHasFocus = False
             }
 
