@@ -25,6 +25,7 @@ import Css
         ( Style
         , absolute
         , alignItems
+        , auto
         , backgroundColor
         , border
         , borderBottom3
@@ -36,6 +37,7 @@ import Css
         , borderRadius
         , borderRight3
         , borderTop3
+        , bottom
         , boxSizing
         , center
         , color
@@ -53,6 +55,7 @@ import Css
         , listStyle
         , listStyleType
         , margin2
+        , marginBottom
         , marginTop
         , maxHeight
         , none
@@ -66,7 +69,6 @@ import Css
         , pointer
         , pointerEvents
         , position
-        , property
         , pseudoClass
         , relative
         , rem
@@ -74,6 +76,7 @@ import Css
         , rotate
         , scroll
         , solid
+        , spaceBetween
         , top
         , transforms
         , translateY
@@ -323,7 +326,7 @@ view attrs ((DropdownFilter config) as dropdown) =
             in
             Html.li
                 attrs_
-                [ mapper item ]
+                [ Html.row [ css [ justifyContent spaceBetween ] ] [ mapper item, cross [] |> showIf (config.showCross && not isClickable) ] ]
 
         viewItemClickable item =
             viewItem item True
@@ -378,32 +381,35 @@ view attrs ((DropdownFilter config) as dropdown) =
                     ++ [ padding3 (rem 0.0) (rem 0) (rem 0.0) ]
                 )
 
-        cross =
+        cross attrs_ =
             Icon.cross
-                [ Events.onClick (config.onSelect Nothing)
-                , css
+                ([ Events.onClick (config.onSelect Nothing)
+                 , css
                     [ width (rem 1)
                     , height (rem 1)
                     , cursor pointer
-                    , position absolute
-                    , property "top" "calc(50% - 0.25rem)" -- marginTop on li // 2 = 0.25
-                    , right (rem 0.75)
+                    , marginTop auto
+                    , marginBottom auto
                     ]
-                , tabindex 0
-                , Attrs.fromUnstyled (Events.onEnter (config.onSelect Nothing))
-                , Attrs.attribute "role" "button"
-                , Attrs.attribute "aria-label"
+                 , tabindex 0
+                 , Attrs.fromUnstyled (Events.onEnter (config.onSelect Nothing))
+                 , Attrs.attribute "role" "button"
+                 , Attrs.attribute "aria-label"
                     (if config.selectedValue |> Maybe.isJust then
                         "Clear selection"
 
                      else
                         "Clear input"
                     )
-                ]
+                 ]
+                    ++ attrs_
+                )
 
         iconRight =
             if String.length config.input > 0 && config.showCross then
                 cross
+                    [ css [ position absolute, right (rem 0.75), top (rem 0), bottom (rem 0) ]
+                    ]
 
             else
                 (case
@@ -528,7 +534,6 @@ view attrs ((DropdownFilter config) as dropdown) =
                 (\v ->
                     Html.row [ css [ position relative ] ]
                         [ viewItemNonClickable v
-                        , cross |> showIf config.showCross
                         ]
                 )
             |> Maybe.withDefault Html.nothing
