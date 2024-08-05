@@ -16,56 +16,6 @@ import UIExplorer exposing (UI)
 import UIExplorer.Styled exposing (styledStoriesOf)
 
 
-exampleOrgInfo =
-    { name = "Murat", organizationNumber = "12345", enterpriseTypeId = Nothing, postalCode = Just "0556", postalPlace = Just "OSLO" }
-
-
-maybeToHtml : (a -> Html msg) -> Maybe a -> Html msg
-maybeToHtml element maybeVariable =
-    maybeVariable |> Maybe.map element |> Maybe.withDefault (Html.text "")
-
-
-itemViewStyles hasSelected =
-    [ border3 (rem 0.0625) solid Colors.mediumGray
-    , padding2 (rem (0.25 + 1)) (rem (2 + 0.25))
-    , borderRadius (rem 0.25)
-    , hover [ Themes.backgroundColor Colors.coolGray ]
-    , outline none
-    , marginTop (rem 0.5)
-    , pseudoClass "focus-within"
-        [ Themes.backgroundColor Colors.cloudBlue
-        , border3 (rem 0.25) solid Colors.mediumGray
-        , outline none
-        , padding2 (rem (0.0625 + 1)) (rem (2 + 0.0625))
-        ]
-    , Themes.backgroundColor Colors.cloudBlue |> styleIf hasSelected |> Css.important
-    , Themes.color Colors.nordeaBlue |> styleIf hasSelected
-    , border3 (rem 0.0625) solid Colors.nordeaBlue |> styleIf hasSelected
-    ]
-
-
-viewOrganizationInfo : Item OrganizationInfo -> Html msg
-viewOrganizationInfo organization =
-    let
-        textPostalCodeAndPlace =
-            Maybe.map2 (\code place -> code ++ ", " ++ place)
-                organization.value.postalCode
-                organization.value.postalPlace
-    in
-    Html.column
-        []
-        [ Html.row [ css [ gap (rem 0.25) ] ]
-            [ Text.textHeavy |> Text.view [] [ Html.text organization.value.name ]
-            , Text.textLight |> Text.view [] [ Html.text organization.value.organizationNumber ]
-            ]
-        , textPostalCodeAndPlace
-            |> maybeToHtml
-                (\textPostalCodeAndPlace_ ->
-                    Text.textLight |> Text.view [] [ Html.text textPostalCodeAndPlace_ ]
-                )
-        ]
-
-
 financingVariantToString : FinancingVariant -> String
 financingVariantToString financingVariant =
     case financingVariant of
@@ -103,19 +53,6 @@ stories =
                     ]
               }
             ]
-
-        organizationInfoSearchResult : List (ItemGroup OrganizationInfo)
-        organizationInfoSearchResult =
-            [ { header = ""
-              , items =
-                    [ { value = exampleOrgInfo, text = exampleOrgInfo.name }
-                    , { value = exampleOrgInfo, text = exampleOrgInfo.name }
-                    , { value = exampleOrgInfo, text = exampleOrgInfo.name }
-                    , { value = exampleOrgInfo, text = exampleOrgInfo.name }
-                    , { value = exampleOrgInfo, text = exampleOrgInfo.name }
-                    ]
-              }
-            ]
     in
     styledStoriesOf
         "DropdownFilter"
@@ -136,52 +73,6 @@ stories =
                     ]
           , {}
           )
-        , ( "With style specified for result"
-          , \model ->
-                Card.init
-                    |> Card.withTitle "Card title"
-                    |> Card.withShadow
-                    |> Card.view []
-                        [ Html.div [ css [ displayFlex, flexDirection column ] ]
-                            [ DropdownFilter.init
-                                { onInput = SearchComponentInput
-                                , input = model.customModel.searchComponentInput
-                                , onSelect = SearchComponentSelectedOrgInfo
-                                , items = organizationInfoSearchResult
-                                , selectedValue = model.customModel.selectedSearchComponentOrgInfo
-                                }
-                                |> DropdownFilter.withHasFocus model.customModel.searchHasFocus
-                                |> DropdownFilter.withOnFocus SearchComponentFocus
-                                |> DropdownFilter.withItemViewMapper (Just viewOrganizationInfo)
-                                |> DropdownFilter.withItemContainerStyles (Just (itemViewStyles (model.customModel.selectedSearchComponentOrgInfo |> Maybe.isJust)))
-                                |> DropdownFilter.withResultsOverlaying False
-                                |> DropdownFilter.withChevron False
-                                |> DropdownFilter.withScroll False
-                                |> DropdownFilter.withCross True
-                                |> DropdownFilter.withOnPaste NoOp
-                                |> DropdownFilter.withResultsAlwaysShowing True
-                                |> DropdownFilter.view []
-                            ]
-                        ]
-          , {}
-          )
-        , ( "With placeholder"
-          , \model ->
-                Html.div [ css [ displayFlex, flexDirection column ] ]
-                    [ DropdownFilter.init
-                        { onInput = SearchComponentInput
-                        , input = model.customModel.searchComponentInput
-                        , onSelect = SearchComponentSelected
-                        , items = searchResult
-                        , selectedValue = model.customModel.selectedSearchComponent |> Maybe.map .value
-                        }
-                        |> DropdownFilter.withHasFocus model.customModel.searchHasFocus
-                        |> DropdownFilter.withOnFocus SearchComponentFocus
-                        |> DropdownFilter.withPlaceholder (Just "Placeholder")
-                        |> DropdownFilter.view []
-                    ]
-          , {}
-          )
         , ( "focused without group"
           , \model ->
                 let
@@ -194,22 +85,6 @@ stories =
                         , input = model.customModel.searchComponentInput
                         , onSelect = SearchComponentSelected
                         , items = removedGroups
-                        , selectedValue = model.customModel.selectedSearchComponent |> Maybe.map .value
-                        }
-                        |> DropdownFilter.withHasFocus model.customModel.searchHasFocus
-                        |> DropdownFilter.withOnFocus SearchComponentFocus
-                        |> DropdownFilter.view []
-                    ]
-          , {}
-          )
-        , ( "interactive with focus"
-          , \model ->
-                Html.div [ css [ displayFlex, flexDirection column ] ]
-                    [ DropdownFilter.init
-                        { onInput = SearchComponentInput
-                        , input = model.customModel.searchComponentInput
-                        , onSelect = SearchComponentSelected
-                        , items = searchResult
                         , selectedValue = model.customModel.selectedSearchComponent |> Maybe.map .value
                         }
                         |> DropdownFilter.withHasFocus model.customModel.searchHasFocus
