@@ -346,7 +346,7 @@ view attrs (DropdownFilter config) =
                         , color Colors.coolGray
                         ]
                     ]
-                    |> showIf config.showChevron
+                    |> showIf (config.showChevron && not config.hasSearchIcon)
 
         dropdownShowing =
             config.hasFocus && viewSearchMatches /= []
