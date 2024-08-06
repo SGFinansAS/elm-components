@@ -62,7 +62,6 @@ stories =
                         }
                         |> DropdownFilter.withHasFocus model.customModel.searchHasFocus
                         |> DropdownFilter.withOnFocus SearchComponentFocus
-                        |> DropdownFilter.withScroll True
                         |> DropdownFilter.view []
                     ]
           , {}

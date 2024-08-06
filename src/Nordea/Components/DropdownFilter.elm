@@ -9,7 +9,6 @@ module Nordea.Components.DropdownFilter exposing
     , withIsLoading
     , withOnFocus
     , withPlaceholder
-    , withScroll
     , withSearchIcon
     , withSmallSize
     )
@@ -112,7 +111,6 @@ type alias DropdownFilterProperties a msg =
     , size : Size
     , placeholder : Maybe String
     , showChevron : Bool
-    , withScroll : Bool
     , uniqueId : String
     }
 
@@ -150,7 +148,6 @@ init { onInput, input, onSelect, items, selectedValue, uniqueId } =
         , size = StandardSize
         , placeholder = Nothing
         , showChevron = True
-        , withScroll = True
         , uniqueId = uniqueId
         }
 
@@ -366,14 +363,8 @@ view attrs (DropdownFilter config) =
                         , boxSizing borderBox
                         , marginTop (rem 0)
                         , padding3 (rem 0.0) (rem 0) (rem 0.0)
-                        , if config.withScroll then
-                            Css.batch
-                                [ overflowY scroll
-                                , maxHeight (rem 16.75)
-                                ]
-
-                          else
-                            Css.batch []
+                        , overflowY scroll
+                        , maxHeight (rem 16.75)
                         ]
             in
             if config.isLoading then
@@ -468,8 +459,3 @@ withSmallSize (DropdownFilter config) =
 withChevron : Bool -> DropdownFilter a msg -> DropdownFilter a msg
 withChevron bool (DropdownFilter config) =
     DropdownFilter { config | showChevron = bool }
-
-
-withScroll : Bool -> DropdownFilter a msg -> DropdownFilter a msg
-withScroll bool (DropdownFilter config) =
-    DropdownFilter { config | withScroll = bool }
