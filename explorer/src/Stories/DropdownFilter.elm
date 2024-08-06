@@ -1,17 +1,10 @@
 module Stories.DropdownFilter exposing (stories)
 
-import Config exposing (Config, FinancingVariant(..), Msg(..), OrganizationInfo)
-import Css exposing (border3, borderRadius, column, displayFlex, flexDirection, hover, marginTop, none, outline, padding2, pseudoClass, rem, solid)
-import Html.Styled as Html exposing (Html)
+import Config exposing (Config, FinancingVariant(..), Msg(..))
+import Css exposing (column, displayFlex, flexDirection)
+import Html.Styled as Html
 import Html.Styled.Attributes exposing (css)
-import Maybe.Extra as Maybe
-import Nordea.Components.Card as Card
-import Nordea.Components.DropdownFilter as DropdownFilter exposing (Item, ItemGroup)
-import Nordea.Components.Text as Text
-import Nordea.Css exposing (gap)
-import Nordea.Html as Html exposing (styleIf)
-import Nordea.Resources.Colors as Colors
-import Nordea.Themes as Themes
+import Nordea.Components.DropdownFilter as DropdownFilter
 import UIExplorer exposing (UI)
 import UIExplorer.Styled exposing (styledStoriesOf)
 

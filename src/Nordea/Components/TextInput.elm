@@ -64,8 +64,7 @@ import Html.Styled.Attributes as Html
         , tabindex
         , value
         )
-import Html.Styled.Events exposing (keyCode, on, onBlur, onClick, onInput)
-import Json.Decode as Json
+import Html.Styled.Events exposing (onBlur, onClick, onInput)
 import Maybe.Extra as Maybe
 import Nordea.Components.Text as Text
 import Nordea.Html as Html exposing (showIf, styleIf)
