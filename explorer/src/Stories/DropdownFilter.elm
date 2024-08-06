@@ -58,6 +58,7 @@ stories =
                         , onSelect = SearchComponentSelected
                         , items = searchResult
                         , selectedValue = model.customModel.selectedSearchComponent |> Maybe.map .value
+                        , uniqueId = "my-id"
                         }
                         |> DropdownFilter.withHasFocus model.customModel.searchHasFocus
                         |> DropdownFilter.withOnFocus SearchComponentFocus
@@ -79,6 +80,7 @@ stories =
                         , onSelect = SearchComponentSelected
                         , items = removedGroups
                         , selectedValue = model.customModel.selectedSearchComponent |> Maybe.map .value
+                        , uniqueId = "my-id2"
                         }
                         |> DropdownFilter.withHasFocus model.customModel.searchHasFocus
                         |> DropdownFilter.withOnFocus SearchComponentFocus
@@ -95,6 +97,7 @@ stories =
                         , onSelect = SearchComponentSelected
                         , items = searchResult
                         , selectedValue = Nothing
+                        , uniqueId = "my-id3"
                         }
                         |> DropdownFilter.withHasFocus model.customModel.searchHasFocus
                         |> DropdownFilter.withOnFocus SearchComponentFocus
@@ -112,6 +115,7 @@ stories =
                         , onSelect = SearchComponentSelected
                         , items = searchResult
                         , selectedValue = Nothing
+                        , uniqueId = "my-id4"
                         }
                         |> DropdownFilter.withHasFocus model.customModel.searchHasFocus
                         |> DropdownFilter.withOnFocus SearchComponentFocus
@@ -131,6 +135,7 @@ stories =
                             , onSelect = SearchComponentSelected
                             , items = searchResult
                             , selectedValue = model.customModel.selectedSearchComponent |> Maybe.map .value
+                            , uniqueId = "my-id5"
                             }
                             |> DropdownFilter.withHasFocus model.customModel.searchHasFocus
                             |> DropdownFilter.withOnFocus SearchComponentFocus
@@ -149,6 +154,7 @@ stories =
                         , onSelect = SearchComponentSelected
                         , items = searchResult
                         , selectedValue = model.customModel.selectedSearchComponent |> Maybe.map .value
+                        , uniqueId = "my-id6"
                         }
                         |> DropdownFilter.withHasFocus model.customModel.searchHasFocus
                         |> DropdownFilter.withOnFocus SearchComponentFocus
@@ -166,6 +172,7 @@ stories =
                         , onSelect = SearchComponentSelected
                         , items = searchResult
                         , selectedValue = model.customModel.selectedSearchComponent |> Maybe.map .value
+                        , uniqueId = "my-id7"
                         }
                         |> DropdownFilter.withHasFocus model.customModel.searchHasFocus
                         |> DropdownFilter.withOnFocus SearchComponentFocus
@@ -184,6 +191,7 @@ stories =
                         , onSelect = SearchComponentSelected
                         , items = searchResult
                         , selectedValue = model.customModel.selectedSearchComponent |> Maybe.map .value
+                        , uniqueId = "my-id8"
                         }
                         |> DropdownFilter.withHasFocus model.customModel.searchHasFocus
                         |> DropdownFilter.withOnFocus SearchComponentFocus
