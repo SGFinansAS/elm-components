@@ -113,6 +113,7 @@ type alias DropdownFilterProperties a msg =
     , placeholder : Maybe String
     , showChevron : Bool
     , withScroll : Bool
+    , uniqueId : String
     }
 
 
@@ -131,9 +132,10 @@ init :
     , onSelect : Maybe (Item a) -> msg
     , selectedValue : Maybe a
     , items : List (ItemGroup a)
+    , uniqueId : String
     }
     -> DropdownFilter a msg
-init { onInput, input, onSelect, items, selectedValue } =
+init { onInput, input, onSelect, items, selectedValue, uniqueId } =
     DropdownFilter
         { items = items
         , onInput = onInput
@@ -149,6 +151,7 @@ init { onInput, input, onSelect, items, selectedValue } =
         , placeholder = Nothing
         , showChevron = True
         , withScroll = True
+        , uniqueId = uniqueId
         }
 
 
@@ -177,7 +180,7 @@ view attrs (DropdownFilter config) =
                 |> conditionallyWithSmallSize
                 |> TextInput.view
                     [ Attrs.attribute "role" "combobox"
-                    , Attrs.attribute "aria-controls" "searchMatches"
+                    , Attrs.attribute "aria-controls" config.uniqueId
                     , Attrs.attribute "aria-expanded"
                         (if config.hasFocus then
                             "true"
@@ -386,7 +389,7 @@ view attrs (DropdownFilter config) =
 
             else
                 Html.ul
-                    [ Attrs.id "searchMatches"
+                    [ Attrs.id config.uniqueId
                     , Attrs.attribute "role" "listbox"
                     , css [ listStyle none, styles ]
                     ]

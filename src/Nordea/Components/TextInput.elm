@@ -69,6 +69,7 @@ import Json.Decode as Json
 import Maybe.Extra as Maybe
 import Nordea.Components.Text as Text
 import Nordea.Html as Html exposing (showIf, styleIf)
+import Nordea.Html.Events as Events
 import Nordea.Resources.Colors as Colors
 import Nordea.Resources.Icons as Icons
 import Nordea.Themes as Themes
@@ -186,19 +187,6 @@ withId id (TextInput config) =
     TextInput { config | id = Just id }
 
 
-onEnterPress : msg -> Attribute msg
-onEnterPress msg =
-    let
-        isEnter code =
-            if code == 13 then
-                Json.succeed msg
-
-            else
-                Json.fail "not ENTER"
-    in
-    on "keydown" (Json.andThen isEnter keyCode)
-
-
 
 -- VIEW
 
@@ -260,7 +248,7 @@ view attributes (TextInput config) =
         [ viewSearchIcon
         , styled input
             (getStyles config)
-            (getAttributes config ++ attributes)
+            (getAttributes config)
             []
         , viewCurrency config
         , viewClearIcon
@@ -310,7 +298,7 @@ getAttributes config =
         , config.maxLength |> Maybe.map maxlength
         , config.pattern |> Maybe.map pattern
         , config.onBlur |> Maybe.map onBlur
-        , config.onEnterPress |> Maybe.map onEnterPress
+        , config.onEnterPress |> Maybe.map Events.onEnterPress
         , config.id |> Maybe.map Html.id
         ]
 
