@@ -195,11 +195,11 @@ view attributes (TextInput config) =
     let
         containerAttrs =
             attributes
-                |> List.filter (\a -> a /= Html.disabled True && a /= Html.disabled False)
+                |> List.filter (\a -> a /= Html.disabled True || a /= Html.disabled False)
 
         inputFieldAttrs =
             attributes
-                |> List.filter (\a -> a == Html.disabled True && a == Html.disabled False)
+                |> List.filter (\a -> a == Html.disabled True || a == Html.disabled False)
 
         viewSearchIcon =
             Icons.search
