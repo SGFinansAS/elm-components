@@ -193,6 +193,14 @@ withId id (TextInput config) =
 view : List (Attribute msg) -> TextInput msg -> Html msg
 view attributes (TextInput config) =
     let
+        containerAttrs =
+            attributes
+                |> List.filter (\a -> a /= Html.disabled True && a /= Html.disabled False)
+
+        inputFieldAttrs =
+            attributes
+                |> List.filter (\a -> a == Html.disabled True && a == Html.disabled False)
+
         viewSearchIcon =
             Icons.search
                 [ css
@@ -243,11 +251,11 @@ view attributes (TextInput config) =
                 |> showIf ((config.value |> String.isEmpty |> not) && config.hasClearIcon)
     in
     Html.div
-        (css [ displayFlex, position relative ] :: attributes)
+        (css [ displayFlex, position relative ] :: containerAttrs)
         [ viewSearchIcon
         , styled input
             (getStyles config)
-            (getAttributes config)
+            (getAttributes config ++ inputFieldAttrs)
             []
         , viewCurrency config
         , viewClearIcon
