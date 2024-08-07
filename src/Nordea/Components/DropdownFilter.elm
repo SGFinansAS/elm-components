@@ -175,7 +175,7 @@ view attrs (DropdownFilter config) =
                 |> TextInput.withSearchIcon config.hasSearchIcon
                 |> conditionallyWithPlaceholder
                 |> conditionallyWithSmallSize
-                |> TextInput.view
+                |> TextInput.withInputAttrs
                     [ Attrs.attribute "role" "combobox"
                     , Attrs.attribute "aria-controls" config.uniqueId
                     , Attrs.attribute "aria-expanded"
@@ -185,7 +185,9 @@ view attrs (DropdownFilter config) =
                          else
                             "false"
                         )
-                    , css
+                    ]
+                |> TextInput.view
+                    [ css
                         [ width (pct 100)
                         , borderBottomLeftRadius (pct 0) |> Css.important |> styleIf dropdownShowing
                         , borderBottomRightRadius (pct 0) |> Css.important |> styleIf dropdownShowing
