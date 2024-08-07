@@ -6,6 +6,7 @@ module Nordea.Components.TextInput exposing
     , withCurrency
     , withError
     , withId
+    , withInputAttrs
     , withMaxLength
     , withOnBlur
     , withOnEnterPress
@@ -92,6 +93,7 @@ type alias Config msg =
     , currency : Maybe String
     , size : Size
     , id : Maybe String
+    , inputAttrs : List (Attribute msg)
     }
 
 
@@ -120,6 +122,7 @@ init value =
         , currency = Nothing
         , size = Standard
         , id = Nothing
+        , inputAttrs = []
         }
 
 
@@ -184,6 +187,11 @@ withSmallSize (TextInput config) =
 withId : String -> TextInput msg -> TextInput msg
 withId id (TextInput config) =
     TextInput { config | id = Just id }
+
+
+withInputAttrs : List (Attribute msg) -> TextInput msg -> TextInput msg
+withInputAttrs attrs (TextInput config) =
+    TextInput { config | inputAttrs = attrs }
 
 
 
@@ -300,6 +308,7 @@ getAttributes config =
         , config.onEnterPress |> Maybe.map Events.onEnterPress
         , config.id |> Maybe.map Html.id
         ]
+        ++ config.inputAttrs
 
 
 
