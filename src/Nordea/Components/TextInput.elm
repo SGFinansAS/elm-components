@@ -6,6 +6,7 @@ module Nordea.Components.TextInput exposing
     , withCurrency
     , withError
     , withId
+    , withInputAttrs
     , withMaxLength
     , withOnBlur
     , withOnEnterPress
@@ -92,6 +93,7 @@ type alias Config msg =
     , currency : Maybe String
     , size : Size
     , id : Maybe String
+    , inputAttrs : List (Attribute msg)
     }
 
 
@@ -120,6 +122,7 @@ init value =
         , currency = Nothing
         , size = Standard
         , id = Nothing
+        , inputAttrs = []
         }
 
 
@@ -186,6 +189,11 @@ withId id (TextInput config) =
     TextInput { config | id = Just id }
 
 
+withInputAttrs : List (Attribute msg) -> TextInput msg -> TextInput msg
+withInputAttrs attrs (TextInput config) =
+    TextInput { config | inputAttrs = attrs }
+
+
 
 -- VIEW
 
@@ -193,14 +201,6 @@ withId id (TextInput config) =
 view : List (Attribute msg) -> TextInput msg -> Html msg
 view attributes (TextInput config) =
     let
-        containerAttrs =
-            attributes
-                |> List.filter (\a -> a /= Html.disabled True || a /= Html.disabled False)
-
-        inputFieldAttrs =
-            attributes
-                |> List.filter (\a -> a == Html.disabled True || a == Html.disabled False)
-
         viewSearchIcon =
             Icons.search
                 [ css
@@ -251,11 +251,11 @@ view attributes (TextInput config) =
                 |> showIf ((config.value |> String.isEmpty |> not) && config.hasClearIcon)
     in
     Html.div
-        (css [ displayFlex, position relative ] :: containerAttrs)
+        (css [ displayFlex, position relative ] :: attributes)
         [ viewSearchIcon
         , styled input
             (getStyles config)
-            (getAttributes config ++ inputFieldAttrs)
+            (getAttributes config)
             []
         , viewCurrency config
         , viewClearIcon
@@ -308,6 +308,7 @@ getAttributes config =
         , config.onEnterPress |> Maybe.map Events.onEnterPress
         , config.id |> Maybe.map Html.id
         ]
+        ++ config.inputAttrs
 
 
 
