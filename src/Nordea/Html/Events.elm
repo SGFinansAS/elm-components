@@ -46,7 +46,7 @@ onEnterPress msg =
         (Events.keyCode
             |> Decode.andThen
                 (\keyCode ->
-                    if keyCode == 32 then
+                    if keyCode == 13 then
                         Decode.succeed ( msg, True )
 
                     else
