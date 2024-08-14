@@ -1,6 +1,25 @@
 module Nordea.Components.Badge exposing (Notification(..), view)
 
-import Css exposing (absolute, alignItems, backgroundColor, borderRadius, bottom, center, color, displayFlex, height, justifyContent, pct, position, relative, rem, right, top, width)
+import Css
+    exposing
+        ( absolute
+        , alignItems
+        , backgroundColor
+        , borderRadius
+        , bottom
+        , center
+        , color
+        , displayFlex
+        , height
+        , justifyContent
+        , pct
+        , position
+        , relative
+        , rem
+        , right
+        , top
+        , width
+        )
 import Html.Styled as Html exposing (Attribute, Html)
 import Html.Styled.Attributes exposing (css)
 import Nordea.Components.Text as Text
