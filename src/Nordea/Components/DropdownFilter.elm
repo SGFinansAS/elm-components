@@ -484,4 +484,3 @@ withChevron bool (DropdownFilter config) =
 withDisabled : Bool -> DropdownFilter a msg -> DropdownFilter a msg
 withDisabled disabled (DropdownFilter config) =
     DropdownFilter { config | disabled = disabled }
-
