@@ -70,7 +70,7 @@ import Css
         , width
         )
 import Css.Global exposing (class, descendants, typeSelector)
-import Html.Styled as Html exposing (Attribute, Html)
+import Html.Styled as Html exposing (Html)
 import Html.Styled.Attributes as Attrs exposing (css, tabindex)
 import Html.Styled.Events as Events
 import Json.Decode as Decode
