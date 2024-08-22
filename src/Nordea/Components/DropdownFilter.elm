@@ -4,6 +4,7 @@ module Nordea.Components.DropdownFilter exposing
     , init
     , view
     , withChevron
+    , withDisabled
     , withHasError
     , withHasFocus
     , withIsLoading
@@ -112,6 +113,7 @@ type alias DropdownFilterProperties a msg =
     , placeholder : Maybe String
     , showChevron : Bool
     , uniqueId : String
+    , disabled : Bool
     }
 
 
@@ -149,12 +151,25 @@ init { onInput, input, onSelect, items, selectedValue, uniqueId } =
         , placeholder = Nothing
         , showChevron = True
         , uniqueId = uniqueId
+        , disabled = False
         }
 
 
 view : List (Html.Attribute msg) -> DropdownFilter a msg -> Html msg
 view attrs (DropdownFilter config) =
     let
+        ( maybeResetEvents, maybeSelectEventsForItem ) =
+            if config.disabled then
+                ( [], \_ -> [] )
+
+            else
+                ( [ Events.onClick (config.onSelect Nothing), Events.onEnterOrSpacePress (config.onSelect Nothing) ]
+                , \item ->
+                    [ Events.onClick (config.onSelect (Just item))
+                    , Events.onEnterOrSpacePress (config.onSelect (Just item))
+                    ]
+                )
+
         textInput =
             let
                 conditionallyWithPlaceholder =
@@ -185,6 +200,7 @@ view attrs (DropdownFilter config) =
                          else
                             "false"
                         )
+                    , Attrs.disabled config.disabled
                     ]
                 |> TextInput.view
                     [ css
@@ -244,7 +260,7 @@ view attrs (DropdownFilter config) =
                     Css.batch [ hover [ backgroundColor Colors.coolGray ] ]
             in
             Html.li
-                [ css
+                ([ css
                     [ overflow hidden
                     , width (pct 100)
                     , listStyleType none
@@ -253,18 +269,18 @@ view attrs (DropdownFilter config) =
                     , focusStyles
                     , hoverStyles
                     ]
-                , tabindex 0
-                , Attrs.attribute "role" "option"
-                , Attrs.attribute "aria-selected"
+                 , tabindex 0
+                 , Attrs.attribute "role" "option"
+                 , Attrs.attribute "aria-selected"
                     (if Just item.value == config.selectedValue then
                         "true"
 
                      else
                         "false"
                     )
-                , Events.onClick (config.onSelect (Just item))
-                , Events.onEnterOrSpacePress (config.onSelect (Just item))
-                ]
+                 ]
+                    ++ maybeSelectEventsForItem item
+                )
                 [ Html.text item.text ]
 
         viewItemGroup group =
@@ -298,8 +314,7 @@ view attrs (DropdownFilter config) =
         iconRight =
             if String.length config.input > 0 then
                 Icon.cross
-                    [ Events.onClick (config.onSelect Nothing)
-                    , css
+                    ([ css
                         [ position absolute
                         , right (rem 0.75)
                         , top (rem 0)
@@ -310,17 +325,19 @@ view attrs (DropdownFilter config) =
                         , marginTop auto
                         , marginBottom auto
                         ]
-                    , tabindex 0
-                    , Events.onEnterOrSpacePress (config.onSelect Nothing)
-                    , Attrs.attribute "role" "button"
-                    , Attrs.attribute "aria-label"
+                     , tabindex 0
+                     , Attrs.disabled config.disabled
+                     , Attrs.attribute "role" "button"
+                     , Attrs.attribute "aria-label"
                         (if config.selectedValue |> Maybe.isJust then
                             "Clear selection"
 
                          else
                             "Clear input"
                         )
-                    ]
+                     ]
+                        ++ maybeResetEvents
+                    )
 
             else
                 let
@@ -391,6 +408,7 @@ view attrs (DropdownFilter config) =
 
         focusAttrs =
             config.onFocus
+                |> Maybe.filter (\_ -> not config.disabled)
                 |> Maybe.map
                     (\onFocus ->
                         [ Events.on "focusout" (Decode.succeed (onFocus False))
@@ -461,3 +479,8 @@ withSmallSize (DropdownFilter config) =
 withChevron : Bool -> DropdownFilter a msg -> DropdownFilter a msg
 withChevron bool (DropdownFilter config) =
     DropdownFilter { config | showChevron = bool }
+
+
+withDisabled : Bool -> DropdownFilter a msg -> DropdownFilter a msg
+withDisabled disabled (DropdownFilter config) =
+    DropdownFilter { config | disabled = disabled }
