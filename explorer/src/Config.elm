@@ -72,7 +72,7 @@ type Msg
     | ToggleProgressBarCompleted
     | OnDragEnterFileUpload
     | OnDragLeaveFileUpload
-    | OnFilesSelected File (List File)
+    | OnFilesSelected (List File)
     | RemoveFile File
     | SliderMsg String
     | RangeMsg Float
@@ -189,8 +189,8 @@ update msg config =
         OnDragLeaveFileUpload ->
             { config | isHoveringFileUpload = False }
 
-        OnFilesSelected first rest ->
-            { config | selectedFiles = (first :: rest) ++ config.selectedFiles, isHoveringFileUpload = False }
+        OnFilesSelected files ->
+            { config | selectedFiles = files ++ config.selectedFiles, isHoveringFileUpload = False }
 
         RemoveFile file ->
             { config | selectedFiles = config.selectedFiles |> List.filter ((/=) file) }
