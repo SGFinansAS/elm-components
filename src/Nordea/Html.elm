@@ -11,6 +11,7 @@ module Nordea.Html exposing
     )
 
 import Css exposing (Style, displayFlex, flexDirection, flexWrap, wrap)
+import Html.Attributes.Extra as Attributes
 import Html.Styled as Html exposing (Attribute, Html, div, styled)
 import Html.Styled.Attributes as Attributes
 
@@ -86,9 +87,10 @@ styleIf condition style =
         Css.property "_" "_"
 
 
+attrIf : Bool -> Attribute msg -> Attribute msg
 attrIf condition attr =
     if condition then
         attr
 
     else
-        Attributes.attribute "" ""
+        Attributes.empty |> Attributes.fromUnstyled

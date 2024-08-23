@@ -19,14 +19,14 @@ import Css exposing (absolute, alignItems, backgroundColor, border3, borderRadiu
 import Css.Global as Global
 import File exposing (File)
 import Html.Styled as Html exposing (Attribute, Html)
-import Html.Styled.Attributes exposing (accept, css, multiple, type_, value)
+import Html.Styled.Attributes as Attributes exposing (accept, css, multiple, type_, value)
 import Html.Styled.Events as Events
 import Json.Decode as Decode
 import Maybe.Extra as Maybe
 import Nordea.Components.Spinner as Spinner
 import Nordea.Components.Text as Text
 import Nordea.Components.Tooltip as Tooltip
-import Nordea.Html as Html exposing (showIf, styleIf)
+import Nordea.Html as Html exposing (attrIf, showIf, styleIf)
 import Nordea.Resources.Colors as Colors
 import Nordea.Resources.I18N exposing (Translation)
 import Nordea.Resources.Icons as Icon
@@ -206,36 +206,44 @@ view (FileUpload config) =
                         |> String.join ","
 
         inputFile =
+            let
+                isDisabled =
+                    (config.allowMultiple || List.isEmpty config.files) |> not
+            in
             Html.input
                 [ type_ "file"
                 , onSelectFiles config.accept config.onFilesSelected
                 , multiple config.allowMultiple
                 , accept mimeTypesAsString
                 , value ""
+                , Attributes.disabled True |> attrIf isDisabled
+                , Attributes.attribute "aria-description" (config.translate strings.ariaNoMoreFiles) |> attrIf isDisabled
                 , css [ opacity (num 0), position absolute, height (rem 0), width (rem 0) ]
                 ]
                 []
-                |> showIf (config.allowMultiple || List.isEmpty config.files)
     in
     -- Inline is currently only supported with one file; feel free to enhance :)
     config.onFileRemoval
         |> Maybe.filter (\_ -> not config.allowMultiple && (List.isEmpty config.files |> not) && config.appearance == Large)
         |> Maybe.map
             (\onFileRemoval ->
-                fileList
-                    config.files
-                    onFileRemoval
-                    config.translate
-                    (attrs
-                        ++ [ css
-                                [ borderWidth (px 0) |> Css.important
-                                , cursor default |> Css.important
-                                , Global.children [ Global.typeSelector ":first-child" [ height inherit, width (pct 100) ] ]
+                Html.div []
+                    [ inputFile
+                    , fileList
+                        config.files
+                        onFileRemoval
+                        config.translate
+                        (attrs
+                            ++ [ css
+                                    [ borderWidth (px 0) |> Css.important
+                                    , cursor default |> Css.important
+                                    , Global.children [ Global.typeSelector ":first-child" [ height inherit, width (pct 100) ] ]
 
-                                -- 2024-08-22 Elm css first-child is b0rken! ^
-                                ]
-                           ]
-                    )
+                                    -- 2024-08-22 Elm css first-child is b0rken! ^
+                                    ]
+                               ]
+                        )
+                    ]
             )
         |> Maybe.withDefault
             (Html.div
@@ -357,6 +365,8 @@ fileList files onClickRemove translate attrs =
                             ]
                         , Html.button
                             [ preventDefaultOn "click" (onClickRemove file)
+                            , Attributes.attribute "aria-label" <| translate strings.ariaRemove
+                            , Attributes.attribute "aria-description" <| (translate strings.ariaRemoveFromList ++ File.name file)
                             , css
                                 [ borderStyle none
                                 , Css.property "appearance" "none"
@@ -366,7 +376,11 @@ fileList files onClickRemove translate attrs =
                                 , backgroundColor Colors.transparent
                                 ]
                             ]
-                            [ Icon.trash [ css [ Themes.color Colors.deepBlue ] ] ]
+                            [ Icon.trash
+                                [ Attributes.attribute "aria-hidden" "true"
+                                , css [ Themes.color Colors.deepBlue ]
+                                ]
+                            ]
                         ]
                 )
         )
@@ -425,6 +439,12 @@ withAppearance appearance (FileUpload config) =
     FileUpload { config | appearance = appearance }
 
 
+{-| Make FileUpload aware of already selected files and upload status.
+
+Care should be taken when using this in combination with Labels; Label must be updated to indicate the file upload status
+from the file list (e.g. do we have files in the list, uploading, etc) for accessibility purposes.
+
+-}
 withFiles : List ( File, FileUploadStatus ) -> (File -> msg) -> FileUpload msg -> FileUpload msg
 withFiles files onFileRemoval (FileUpload config) =
     FileUpload
@@ -528,5 +548,23 @@ strings =
         , se = "Uppladdade filer:"
         , dk = "Uploadede filer:"
         , en = "Uploaded files:"
+        }
+    , ariaNoMoreFiles =
+        { no = "Ingen flere filer kan legges til"
+        , se = "Inga fler filer kan inte läggas till"
+        , dk = "Der kan ikke tilføjes flere filer"
+        , en = "No more files can be added"
+        }
+    , ariaRemove =
+        { no = "Fjern"
+        , se = "Ta bort"
+        , dk = "Fjern"
+        , en = "Remove"
+        }
+    , ariaRemoveFromList =
+        { no = "Fjern fra listen: "
+        , se = "Ta bort från listan: "
+        , dk = "Fjern fra listen: "
+        , en = "Remove from list: "
         }
     }
