@@ -99,6 +99,12 @@ stories =
                         , Icons.object [ css [ width (rem 1.5) ] ]
                         , Icons.lightBulb [ css [ width (rem 1.5) ] ]
                         ]
+                    , iconCategoryHeader "Country flags"
+                    , iconsRow
+                        [ Icons.norway [ css [ width (rem 1.5) ] ]
+                        , Icons.sweden [ css [ width (rem 1.5) ] ]
+                        , Icons.denmark [ css [ width (rem 1.5) ] ]
+                        ]
                     ]
           , {}
           )
