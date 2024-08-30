@@ -183,14 +183,14 @@ view attrs config =
                     if config.isCompleted then
                         keyframes
                             [ ( 0, [ Animations.opacity (Css.int 1) ] )
-                            , ( 99, [ Animations.opacity (Css.int 1) ] )
                             , ( 100, [ Animations.opacity (Css.int 0) ] )
                             ]
 
                     else
                         keyframes
                             [ ( 0, [ Animations.opacity (Css.int 1) ] )
-                            , ( 99, [ Animations.opacity (Css.int 1) ] )
+                            , ( 99, [ Animations.opacity (Css.int 0) ] )
+                            , ( 100, [ Animations.opacity (Css.int 0) ] )
                             ]
 
                 animPlayState =
@@ -225,6 +225,7 @@ view attrs config =
                                         , fontWeight (int 500)
                                         , lineHeight (rem 0)
                                         , opacity (int 0)
+                                        , Css.property "will-change" "opacity"
                                         , Css.property "animation-fill-mode" "forwards"
                                         , Css.property "animation-timing-function" "steps(1)"
                                         , animationName animation
