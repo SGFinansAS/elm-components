@@ -4,6 +4,7 @@ module Nordea.Components.ProgressBar exposing
     , withAnimationDurationMs
     , withCheckmarkColor
     , withCustomCenterLabel
+    , withOnCompletionAnimEnd
     , withStrokeColor
     , withStrokeWidth
     , withUnfilledStrokeColor
@@ -45,12 +46,14 @@ import Css
 import Css.Animations as Animations exposing (keyframes)
 import Html.Styled as Html exposing (Attribute, Html)
 import Html.Styled.Attributes as Attrs
+import Json.Decode as Json
 import Nordea.Css exposing (propertyWithVariable)
 import Nordea.Html exposing (showIf)
 import Nordea.Resources.Colors as Colors
 import Nordea.Themes as Themes
 import Svg.Styled as Svg
 import Svg.Styled.Attributes as SvgAttrs
+import Svg.Styled.Events exposing (on)
 
 
 type alias ViewConfig msg =
@@ -62,6 +65,7 @@ type alias ViewConfig msg =
     , progress : Float
     , isCompleted : Bool
     , customCenterLabel : Maybe (Html msg)
+    , completeAnimationEnd : Maybe msg
     }
 
 
@@ -75,6 +79,7 @@ init { progress, isCompleted } =
     , progress = progress
     , isCompleted = isCompleted
     , customCenterLabel = Nothing
+    , completeAnimationEnd = Nothing
     }
 
 
@@ -165,6 +170,10 @@ view attrs config =
                 , SvgAttrs.y "35"
                 , SvgAttrs.width "15"
                 , SvgAttrs.height "35"
+                , config.completeAnimationEnd
+                    |> Maybe.map Json.succeed
+                    |> Maybe.withDefault (Json.fail "no-callback")
+                    |> on "animationend"
                 ]
                 []
 
@@ -174,14 +183,14 @@ view attrs config =
                     if config.isCompleted then
                         keyframes
                             [ ( 0, [ Animations.opacity (Css.int 1) ] )
-                            , ( 99, [ Animations.opacity (Css.int 1) ] )
                             , ( 100, [ Animations.opacity (Css.int 0) ] )
                             ]
 
                     else
                         keyframes
                             [ ( 0, [ Animations.opacity (Css.int 1) ] )
-                            , ( 99, [ Animations.opacity (Css.int 1) ] )
+                            , ( 99, [ Animations.opacity (Css.int 0) ] )
+                            , ( 100, [ Animations.opacity (Css.int 0) ] )
                             ]
 
                 animPlayState =
@@ -216,8 +225,9 @@ view attrs config =
                                         , fontWeight (int 500)
                                         , lineHeight (rem 0)
                                         , opacity (int 0)
+                                        , Css.property "will-change" "opacity"
                                         , Css.property "animation-fill-mode" "forwards"
-                                        , Css.property "animation-timing-function" "linear"
+                                        , Css.property "animation-timing-function" "steps(1)"
                                         , animationName animation
                                         , animationDuration (ms partAnimDuration)
                                         , Css.property "animation-play-state" animPlayState
@@ -283,6 +293,11 @@ withAnimationDurationMs animDurationMs viewConfig =
 withCustomCenterLabel : Html msg -> ViewConfig msg -> ViewConfig msg
 withCustomCenterLabel centerLabel viewConfig =
     { viewConfig | customCenterLabel = Just centerLabel }
+
+
+withOnCompletionAnimEnd : msg -> ViewConfig msg -> ViewConfig msg
+withOnCompletionAnimEnd msg viewConfig =
+    { viewConfig | completeAnimationEnd = Just msg }
 
 
 
