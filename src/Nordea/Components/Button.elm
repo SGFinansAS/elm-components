@@ -368,8 +368,18 @@ variantStyle variant size =
             batch
                 [ border3 (rem 0.0625) solid Colors.mediumGray
                 , borderRadius (pct 50)
-                , width (rem 2.5)
-                , height (rem 2.5)
+                , case size of
+                    Standard ->
+                        batch
+                            [ width (rem 2.5)
+                            , height (rem 2.5)
+                            ]
+
+                    Small ->
+                        batch
+                            [ width (rem 2)
+                            , height (rem 2)
+                            ]
                 , padding (rem 0.5)
                 , displayFlex
                 , justifyContent center

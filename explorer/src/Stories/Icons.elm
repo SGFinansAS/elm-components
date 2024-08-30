@@ -68,6 +68,7 @@ stories =
                         , Icons.visible [ css [ width (rem 1.5) ] ]
                         , Icons.invisible [ css [ width (rem 1.5) ] ]
                         , Icons.pdf [ css [ width (rem 1.5) ] ]
+                        , Icons.openEnvelope [ css [ width (rem 1.5) ] ]
                         ]
                     , iconCategoryHeader "Add, remove, accept and cancel"
                     , iconsRow
@@ -97,6 +98,12 @@ stories =
                         , Icons.abacus [ css [ width (rem 1.5) ] ]
                         , Icons.object [ css [ width (rem 1.5) ] ]
                         , Icons.lightBulb [ css [ width (rem 1.5) ] ]
+                        ]
+                    , iconCategoryHeader "Country flags"
+                    , iconsRow
+                        [ Icons.norway [ css [ width (rem 1.5) ] ]
+                        , Icons.sweden [ css [ width (rem 1.5) ] ]
+                        , Icons.denmark [ css [ width (rem 1.5) ] ]
                         ]
                     ]
           , {}

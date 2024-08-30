@@ -23,6 +23,7 @@ module Nordea.Resources.Icons exposing
     , contacts
     , cross
     , delete
+    , denmark
     , dismiss
     , document
     , download
@@ -43,7 +44,9 @@ module Nordea.Resources.Icons exposing
     , lightBulb
     , logout
     , mediumPlus
+    , norway
     , object
+    , openEnvelope
     , orders
     , outerLink
     , pdf
@@ -56,6 +59,7 @@ module Nordea.Resources.Icons exposing
     , settings
     , spinner
     , star
+    , sweden
     , trash
     , triangleDown
     , triangleUp
@@ -89,10 +93,10 @@ import Css
 import Css.Animations as Animations exposing (keyframes)
 import Css.Global exposing (children, everything)
 import Html.Styled as Html exposing (Attribute, Html, div, styled)
-import Html.Styled.Attributes exposing (css)
+import Html.Styled.Attributes exposing (css, id)
 import Nordea.Resources.Colors as Colors
-import Svg.Styled as Svg exposing (Svg, ellipse, svg)
-import Svg.Styled.Attributes as SvgAttrs exposing (clipRule, cx, cy, d, fill, fillRule, height, r, rx, ry, stroke, strokeWidth, transform, viewBox, width)
+import Svg.Styled as Svg exposing (Svg, ellipse, g, svg)
+import Svg.Styled.Attributes as SvgAttrs exposing (clipPath, clipRule, cx, cy, d, fill, fillRule, height, r, rx, ry, stroke, strokeWidth, transform, viewBox, width)
 
 
 
@@ -697,6 +701,24 @@ largeEnvelope attrs =
         ]
 
 
+openEnvelope : List (Attribute msg) -> Html msg
+openEnvelope attrs =
+    iconContainer attrs
+        [ Svg.svg [ viewBox "0 0 16 16", fill "none" ]
+            [ Svg.path
+                [ d "M14.0815 4.90955L9.08152 1.69526C8.4227 1.27174 7.5773 1.27174 6.91848 1.69526L1.91848 4.90955C1.34604 5.27755 1 5.91138 1 6.5919V13C1 14.1046 1.89543 15 3 15H13C14.1046 15 15 14.1046 15 13V6.5919C15 5.91137 14.654 5.27755 14.0815 4.90955Z"
+                , stroke "currentColor"
+                ]
+                []
+            , Svg.path
+                [ d "M13.7021 6.92259C13.7865 6.85457 13.9022 6.84021 14.0007 6.88551C14.0992 6.93081 14.1635 7.02796 14.1669 7.13633C14.1702 7.2447 14.1119 7.34562 14.0163 7.39687L7.68492 11.5397L1.27349 7.40259C1.14114 7.31724 1.1028 7.14089 1.18777 7.0083C1.2277 6.94349 1.2923 6.89773 1.36668 6.88156C1.44107 6.86539 1.51883 6.8802 1.58206 6.92259L7.68492 10.854L13.7021 6.92259Z"
+                , fill "currentColor"
+                ]
+                []
+            ]
+        ]
+
+
 largePhone : List (Attribute msg) -> Html msg
 largePhone attrs =
     iconContainer attrs
@@ -1142,6 +1164,78 @@ calendar attrs =
                 , fill "currentColor"
                 ]
                 []
+            ]
+        ]
+
+
+
+-- Country flags
+
+
+norway : List (Attribute msg) -> Html msg
+norway attrs =
+    iconContainer attrs
+        [ Svg.svg
+            [ viewBox "0 0 54 30", fill "none" ]
+            [ g [ clipPath "url(#clip0_1016_105060)" ]
+                [ Svg.path [ fill "#EF2B2D", d "M53.3908 -4.43659H-0.0563965V34.4329H53.3908V-4.43659Z", fillRule "evenodd", clipRule "evenodd" ] []
+                , Svg.path [ fill "white", d "M24.2357 -4.43659H14.519V34.4329H24.2357V-4.43659Z", fillRule "evenodd", clipRule "evenodd" ] []
+                , Svg.path [ fill "white", d "M53.3908 10.1416H-0.0563965V19.8583H53.3908V10.1416Z", fillRule "evenodd", clipRule "evenodd" ] []
+                , Svg.path [ fill "#002868", d "M21.8085 -4.43659H16.9502V34.4329H21.8085V-4.43659Z", fillRule "evenodd", clipRule "evenodd" ] []
+                , Svg.path [ fill "#002868", d "M53.3908 12.5695H-0.0563965V17.4279H53.3908V12.5695Z", fillRule "evenodd", clipRule "evenodd" ] []
+                ]
+            , Svg.clipPath [ id "clip0_1016_105060" ]
+                [ Svg.rect
+                    [ width "53.3333"
+                    , height "30"
+                    , fill (Colors.toString Colors.white)
+                    , transform "translate(-0.000244141)"
+                    ]
+                    []
+                ]
+            ]
+        ]
+
+
+sweden : List (Attribute msg) -> Html msg
+sweden attrs =
+    iconContainer attrs
+        [ Svg.svg
+            [ viewBox "0 0 54 30", fill "none" ]
+            [ g [ clipPath "url(#clip0_1016_105060)" ]
+                [ Svg.path [ fill "#006AA7", d "M0.333008 0H53.6663V30H0.333008V0Z", fillRule "evenodd", clipRule "evenodd" ] []
+                , Svg.path [ fill "#FECC00", d "M0.333008 12H16.9997V0H23.6663V12H53.6663V18H23.6663V30H16.9997V18H0.333008V12Z", fillRule "evenodd", clipRule "evenodd" ] []
+                ]
+            , Svg.clipPath [ id "clip0_1016_105061" ]
+                [ Svg.rect
+                    [ width "53.3333"
+                    , height "30"
+                    , fill (Colors.toString Colors.white)
+                    , transform "translate(0.333008)"
+                    ]
+                    []
+                ]
+            ]
+        ]
+
+
+denmark : List (Attribute msg) -> Html msg
+denmark attrs =
+    iconContainer attrs
+        [ Svg.svg
+            [ viewBox "0 0 54 30", fill "none" ]
+            [ g [ clipPath "url(#clip0_1016_105096)" ]
+                [ Svg.path [ fill "#C60C30", d "M-0.188965 -5.32439H53.5248V35.3229H-0.188965V-5.32439Z", fillRule "evenodd", clipRule "evenodd" ] []
+                , Svg.path [ fill "#FFFFFF", d "M-0.188965 12.0969H17.2305V-5.32249H23.036V12.0969H53.5221V17.9025H23.036V35.3219H17.2305V17.9025H-0.188965V12.0969Z", fillRule "evenodd", clipRule "evenodd" ] []
+                ]
+            , Svg.clipPath [ id "clip0_1016_105096" ]
+                [ Svg.rect
+                    [ width "53.3333"
+                    , height "30"
+                    , fill (Colors.toString Colors.white)
+                    ]
+                    []
+                ]
             ]
         ]
 

@@ -200,4 +200,22 @@ stories =
                     ]
           , {}
           )
+        , ( "Disabled"
+          , \model ->
+                Html.div [ css [ displayFlex, flexDirection column ] ]
+                    [ DropdownFilter.init
+                        { onInput = SearchComponentInput
+                        , input = model.customModel.searchComponentInput
+                        , onSelect = SearchComponentSelected
+                        , items = searchResult
+                        , selectedValue = model.customModel.selectedSearchComponent |> Maybe.map .value
+                        , uniqueId = "my-id-8"
+                        }
+                        |> DropdownFilter.withHasFocus model.customModel.searchHasFocus
+                        |> DropdownFilter.withOnFocus SearchComponentFocus
+                        |> DropdownFilter.withDisabled True
+                        |> DropdownFilter.view []
+                    ]
+          , {}
+          )
         ]
