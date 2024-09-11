@@ -54,6 +54,7 @@ stories =
                         , Icons.download [ css [ width (rem 1.5) ] ]
                         , Icons.orders [ css [ width (rem 1.5) ] ]
                         , Icons.agreements [ css [ width (rem 1.5) ] ]
+                        , Icons.completedOrder [ css [ width (rem 1.5) ] ]
                         , Icons.insights [ css [ width (rem 1.5) ] ]
                         , Icons.applications [ css [ width (rem 1.5) ] ]
                         , Icons.portfolio [ css [ width (rem 1.5) ] ]
