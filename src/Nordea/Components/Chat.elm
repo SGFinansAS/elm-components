@@ -43,7 +43,7 @@ type alias Config =
 type alias MessageViewConfig =
     { sentFrom : String
     , sentAt : String
-    , sender : String
+    , sender : Maybe String
     , message : String
     , isUserMessage : Bool
     }
@@ -163,8 +163,13 @@ chatHistoryView attrs { sentFrom, sentAt, sender, message, isUserMessage } =
             [ messageLabel sentFrom
             , messageLabel sentAt
             ]
-        , Text.textTinyHeavy
-            |> Text.view [] [ Html.text sender ]
+        , sender
+            |> Maybe.map
+                (\sender_ ->
+                    Text.textTinyHeavy
+                        |> Text.view [] [ Html.text sender_ ]
+                )
+            |> Maybe.withDefault Html.nothing
         , Text.textSmallLight
             |> Text.view
                 [ css (padding (rem 0.625) :: messageStyles) ]

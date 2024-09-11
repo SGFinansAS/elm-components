@@ -25,14 +25,14 @@ stories =
                                         [ Chat.chatHistoryView []
                                             { sentFrom = "Nordea Finance"
                                             , sentAt = "30.05.2024, kl. 12:26"
-                                            , sender = "Line"
+                                            , sender = Nothing
                                             , message = "I forbindelse med deres søknad om finansiering gjennom oss ønsker vi innsikt i deres 2023-tall. Kan du oversende disse? Resultat- og balanserapport."
                                             , isUserMessage = False
                                             }
                                         , Chat.chatHistoryView []
                                             { sentFrom = "PartnerHub"
                                             , sentAt = "30.05.2024, kl. 13:54"
-                                            , sender = "Thomas Olsen"
+                                            , sender = Just "Thomas Olsen"
                                             , message = "Har lagt ved resultatrapport og balanserepport pr. 31.11.2023. Vi har ikke fått tilbake rapportene for des. 2023 fra regnskap firma."
                                             , isUserMessage = True
                                             }
@@ -56,14 +56,14 @@ stories =
                                         [ Chat.chatHistoryView []
                                             { sentFrom = "Nordea Finance"
                                             , sentAt = "30.05.2024, kl. 12:26"
-                                            , sender = "Line"
+                                            , sender = Just "Line"
                                             , message = "I forbindelse med deres søknad om finansiering gjennom oss ønsker vi innsikt i deres 2023-tall. Kan du oversende disse? Resultat- og balanserapport."
                                             , isUserMessage = False
                                             }
                                         , Chat.chatHistoryView []
                                             { sentFrom = "PartnerHub"
                                             , sentAt = "30.05.2024, kl. 13:54"
-                                            , sender = "Thomas Olsen"
+                                            , sender = Just "Thomas Olsen"
                                             , message = "Har lagt ved resultatrapport og balanserepport pr. 31.11.2023. Vi har ikke fått tilbake rapportene for des. 2023 fra regnskap firma."
                                             , isUserMessage = True
                                             }
