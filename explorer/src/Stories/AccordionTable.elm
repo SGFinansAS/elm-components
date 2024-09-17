@@ -3,7 +3,8 @@ module Stories.AccordionTable exposing (stories)
 import Config exposing (Config, Msg)
 import Css exposing (color, display, marginLeft, marginTop, maxWidth, padding, px, rem)
 import Html.Styled exposing (div, text)
-import Html.Styled.Attributes exposing (css)
+import Html.Styled.Attributes exposing (attribute, css)
+import Json.Encode as Encode
 import Nordea.Components.AccordionTableHeader as Header
 import Nordea.Components.AccordionTableRow as Row
 import Nordea.Components.Checkbox as Checkbox
@@ -71,14 +72,21 @@ stories =
           )
         , ( "Selectable rows"
           , \config ->
+                let
+                    allSelected =
+                        Set.size config.customModel.selectedAccordionTableRows == 2
+
+                    ariaSelected =
+                        Encode.bool allSelected |> Encode.encode 0
+                in
                 div [ css [ displayGrid, gridTemplateColumns "1fr auto auto", gap2 (rem 0) (rem 1), maxWidth (px 800) ] ]
                     [ Header.init
                         |> Header.view
-                            [ css [ displayGrid, gridTemplateColumns "subgrid", color Colors.cloudBlue, padding (rem 1) ] ]
+                            [ css [ displayGrid, gridTemplateColumns "subgrid", gridColumn "1/-1" ], attribute "aria-selected" ariaSelected ]
                             [ Text.textLight |> Text.view [] [ text "Selectable rows" ]
                             , Checkbox.init "selectable-rows" nothing (\checked -> Config.AccordionTableAllRowsChecked checked)
                                 |> Checkbox.withAppearance Checkbox.Simple
-                                |> Checkbox.withIsChecked (Set.size config.customModel.selectedAccordionTableRows == 2)
+                                |> Checkbox.withIsChecked allSelected
                                 |> Checkbox.view []
                             ]
                     , Row.init (Set.member 0 config.customModel.openAccordionTableRows) (Config.AccordionTableRowToggled 0)

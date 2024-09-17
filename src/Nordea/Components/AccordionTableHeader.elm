@@ -1,11 +1,11 @@
 module Nordea.Components.AccordionTableHeader exposing (init, view, withSmallSize)
 
-import Css exposing (borderRadius, padding2, rem)
+import Css exposing (backgroundColor, borderRadius, padding2, rem)
 import Html.Styled as Html exposing (Html, h3)
 import Nordea.Components.Text as Text
 import Nordea.Css exposing (gridColumn)
 import Nordea.Resources.Colors as Colors
-import Nordea.Themes exposing (backgroundColor, color)
+import Nordea.Themes exposing (color)
 import Svg.Styled.Attributes exposing (css)
 
 
@@ -29,11 +29,9 @@ view attrs content config =
 
             else
                 ( 1, 0.75 )
-    in
-    Text.textTinyHeavy
-        |> Text.withHtmlTag h3
-        |> Text.view
-            (css
+
+        combinedAttrs =
+            css
                 [ gridColumn "1 / -1"
                 , color Colors.black
                 , padding2 (rem verticalPadding) (rem horizontalPadding)
@@ -41,8 +39,10 @@ view attrs content config =
                 , borderRadius (rem 0.5)
                 ]
                 :: attrs
-            )
-            content
+    in
+    Text.textTinyHeavy
+        |> Text.withHtmlTag h3
+        |> Text.view combinedAttrs content
 
 
 withSmallSize : Config -> Config
