@@ -2,7 +2,7 @@ module Nordea.Components.AccordionTableRow exposing (init, view, withChevron, wi
 
 import Css exposing (alignItems, backgroundColor, border3, borderRadius, borderRadius4, center, color, cursor, display, hover, important, marginTop, padding, padding2, pointer, rem, solid, unset, width)
 import Css.Global exposing (children, typeSelector)
-import Html.Styled as Html exposing (Html)
+import Html.Styled as Html exposing (Attribute, Html)
 import Html.Styled.Attributes exposing (attribute, css)
 import Html.Styled.Events as Events
 import Json.Decode as Decode
@@ -14,9 +14,15 @@ import Nordea.Resources.Icons as Icons
 import Nordea.Themes as Themes
 
 
+type alias Component msg =
+    { attributes : List (Attribute msg)
+    , content : List (Html msg)
+    }
+
+
 type alias Config msg =
-    { summary : Html msg
-    , details : Html msg
+    { summary : Component msg
+    , details : Component msg
     , isOpen : Bool
     , onToggle : Bool -> msg
     , size : Size
@@ -29,10 +35,17 @@ type Size
     | Small
 
 
+placeholder : Component msg
+placeholder =
+    { attributes = []
+    , content = []
+    }
+
+
 init : Bool -> (Bool -> msg) -> Config msg
 init isOpen onToggle =
-    { summary = nothing
-    , details = nothing
+    { summary = placeholder
+    , details = placeholder
     , isOpen = isOpen
     , onToggle = onToggle
     , size = Standard
@@ -56,6 +69,40 @@ withChevron show config =
 
 withSummary : List (Html.Attribute msg) -> List (Html msg) -> Config msg -> Config msg
 withSummary attrs content config =
+    { config
+        | summary =
+            { attributes = attrs
+            , content = content
+            }
+    }
+
+
+withDetails : List (Html.Attribute msg) -> List (Html msg) -> Config msg -> Config msg
+withDetails attrs content config =
+    { config
+        | details =
+            { attributes = attrs
+            , content = content
+            }
+    }
+
+
+view : List (Html.Attribute msg) -> Config msg -> Html msg
+view attrs config =
+    Html.details
+        ([ css [ displayContents ]
+         , boolProperty "open" config.isOpen
+         , Events.on "toggle" (Decode.map config.onToggle decodeNewState)
+         ]
+            ++ attrs
+        )
+        [ viewSummary config
+        , viewDetails config
+        ]
+
+
+viewSummary : Config msg -> Html msg
+viewSummary config =
     let
         openCss =
             if config.isOpen then
@@ -77,67 +124,47 @@ withSummary attrs content config =
                 Standard ->
                     ( 1, 0.75 )
     in
-    { config
-        | summary =
-            Html.summary
-                ([ css
-                    [ displayGrid
-                    , gridColumn "1/-1"
-                    , gridTemplateColumns "subgrid"
-                    , alignItems center
-                    , cursor pointer
-                    , marginTop (rem 1)
-                    , padding2 (rem verticalPadding) (rem horizontalPadding)
-                    , borderRadius (rem 0.5)
-                    , Themes.color Colors.darkestGray
-                    , backgroundColor Colors.grayWarm
-                    , hover [ cursor pointer, backgroundColor Colors.deepBlue, color Colors.white ]
-                    ]
-                 , attribute "role" "row"
-                 ]
-                    ++ openCss
-                    ++ attrs
-                )
-                (content
-                    ++ [ if config.showChevron then
-                            viewChevron config.isOpen
-
-                         else
-                            nothing
-                       ]
-                )
-    }
-
-
-withDetails : List (Html.Attribute msg) -> List (Html msg) -> Config msg -> Config msg
-withDetails attrs content config =
-    { config
-        | details =
-            Html.div
-                (css
-                    [ padding (rem 1.5)
-                    , border3 (rem 0.1875) solid Colors.deepBlue
-                    , borderRadius4 (rem 0) (rem 0) (rem 0.5) (rem 0.5)
-                    , gridColumn "1/-1"
-                    ]
-                    :: attrs
-                )
-                content
-    }
-
-
-view : List (Html.Attribute msg) -> Config msg -> Html msg
-view attrs config =
-    Html.details
-        ([ css [ displayContents ]
-         , boolProperty "open" config.isOpen
-         , Events.on "toggle" (Decode.map config.onToggle decodeNewState)
+    Html.summary
+        ([ css
+            [ displayGrid
+            , gridColumn "1/-1"
+            , gridTemplateColumns "subgrid"
+            , alignItems center
+            , cursor pointer
+            , marginTop (rem 1)
+            , padding2 (rem verticalPadding) (rem horizontalPadding)
+            , borderRadius (rem 0.5)
+            , Themes.color Colors.darkestGray
+            , backgroundColor Colors.grayWarm
+            , hover [ cursor pointer, backgroundColor Colors.deepBlue, color Colors.white ]
+            ]
+         , attribute "role" "row"
          ]
-            ++ attrs
+            ++ openCss
+            ++ config.summary.attributes
         )
-        [ config.summary
-        , config.details
-        ]
+        (config.summary.content
+            ++ [ if config.showChevron then
+                    viewChevron config.isOpen
+
+                 else
+                    nothing
+               ]
+        )
+
+
+viewDetails : Config msg -> Html msg
+viewDetails config =
+    Html.div
+        (css
+            [ padding (rem 1.5)
+            , border3 (rem 0.1875) solid Colors.deepBlue
+            , borderRadius4 (rem 0) (rem 0) (rem 0.5) (rem 0.5)
+            , gridColumn "1/-1"
+            ]
+            :: config.details.attributes
+        )
+        config.details.content
 
 
 viewChevron : Bool -> Html msg
