@@ -6,6 +6,7 @@ import Html.Styled exposing (toUnstyled)
 import Nordea.Resources.Fonts.Fonts as Fonts
 import Stories.Accordion as Accordion
 import Stories.AccordionMenu as AccordionMenu
+import Stories.AccordionTable as AccordionTable
 import Stories.Badge as Badge
 import Stories.Button as Button
 import Stories.Card as Card
@@ -95,6 +96,7 @@ main =
             |> UIExplorer.category "Components"
                 [ Accordion.stories
                 , AccordionMenu.stories
+                , AccordionTable.stories
                 , Badge.stories
                 , Button.stories
                 , Card.stories

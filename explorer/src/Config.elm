@@ -1,6 +1,7 @@
 module Config exposing (Config, FinancingVariant(..), Msg(..), OrganizationInfo, init, update)
 
 import Date
+import Set exposing (Set)
 import File exposing (File)
 import Html.Styled as Html
 import Nordea.Components.Accordion as Accordion exposing (Accordion)
@@ -28,6 +29,7 @@ type alias OrganizationInfo =
 
 type alias Config =
     { accordion : Accordion
+    , openAccordionTableRows : Set Int
     , isModalOpen : Bool
     , searchComponentInput : String
     , hasMultiSelectDropdownFocus : Bool
@@ -58,6 +60,7 @@ type alias Config =
 
 type Msg
     = AccordionMsg Accordion.Msg
+    | AccordionTableMsg Int Bool
     | SearchComponentInput String
     | SearchComponentSelected (Maybe (Item FinancingVariant))
     | SearchComponentSelectedOrgInfo (Maybe (Item OrganizationInfo))
@@ -105,6 +108,7 @@ init =
                 , body = [ Html.text "This is an answer" ]
                 , open = False
                 }
+    , openAccordionTableRows = Set.empty
     , searchComponentInput = ""
     , selectedSearchComponent = Nothing
     , selectedSearchComponentOrgInfo = Nothing
@@ -138,6 +142,16 @@ update msg config =
     case msg of
         AccordionMsg m ->
             { config | accordion = Accordion.update m config.accordion }
+
+        AccordionTableMsg index isOpen ->
+            let
+                operation =
+                    if isOpen then
+                        Set.insert
+                    else
+                        Set.remove
+            in
+            { config | openAccordionTableRows = operation index config.openAccordionTableRows  }
 
         SearchComponentInput input ->
             { config | searchComponentInput = input }
