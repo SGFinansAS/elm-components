@@ -1,18 +1,16 @@
 module Stories.AccordionTable exposing (stories)
 
 import Config exposing (Config, Msg)
-import Css exposing (color, marginBottom, marginLeft, maxWidth, px, rem)
+import Css exposing (marginBottom, marginLeft, maxWidth, px, rem)
 import Html.Styled exposing (div, text)
 import Html.Styled.Attributes exposing (css)
 import Nordea.Components.AccordionTableHeader as AccordionTableHeader
 import Nordea.Components.AccordionTableRow as AccordionTableRow
 import Nordea.Components.Text as Text
 import Nordea.Css exposing (displayGrid, gridColumn, gridTemplateColumns)
-import Nordea.Resources.Colors as Colors
-import Set exposing (Set)
+import Set
 import UIExplorer exposing (UI)
 import UIExplorer.Styled exposing (styledStoriesOf)
-
 
 
 stories : UI Config Msg {}

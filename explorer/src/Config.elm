@@ -1,12 +1,12 @@
 module Config exposing (Config, FinancingVariant(..), Msg(..), OrganizationInfo, init, update)
 
 import Date
-import Set exposing (Set)
 import File exposing (File)
 import Html.Styled as Html
 import Nordea.Components.Accordion as Accordion exposing (Accordion)
 import Nordea.Components.DatePicker as DatePicker exposing (DatePicker)
 import Nordea.Components.DropdownFilter exposing (Item)
+import Set exposing (Set)
 import Stories.SortableTableSharedTypes
 import Time exposing (Month(..))
 
@@ -148,10 +148,11 @@ update msg config =
                 operation =
                     if isOpen then
                         Set.insert
+
                     else
                         Set.remove
             in
-            { config | openAccordionTableRows = operation index config.openAccordionTableRows  }
+            { config | openAccordionTableRows = operation index config.openAccordionTableRows }
 
         SearchComponentInput input ->
             { config | searchComponentInput = input }
