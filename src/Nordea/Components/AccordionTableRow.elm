@@ -1,6 +1,6 @@
 module Nordea.Components.AccordionTableRow exposing (init, view, withChevron, withDetails, withSmallSize, withSummary)
 
-import Css exposing (alignItems, backgroundColor, border3, borderRadius, borderRadius4, center, color, cursor, display, hover, important, marginTop, padding, padding2, pointer, rem, solid, unset, width)
+import Css exposing (alignItems, backgroundColor, border3, borderRadius, borderRadius4, center, color, cursor, display, hover, important, lineHeight, marginTop, padding, padding2, pointer, rem, solid, unset, width)
 import Css.Global exposing (children, typeSelector)
 import Html.Styled as Html exposing (Attribute, Html)
 import Html.Styled.Attributes exposing (attribute, css)
@@ -180,6 +180,7 @@ viewChevron isOpen =
     Html.div
         [ css
             [ width (rem 1)
+            , lineHeight (rem 1)
             , children [ typeSelector "*" [ display unset |> important ] ]
             ]
         ]
