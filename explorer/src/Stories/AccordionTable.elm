@@ -39,6 +39,10 @@ stories =
           )
         , ( "Multiple columns"
           , \config ->
+                let
+                    isOpen index =
+                        Set.member index config.customModel.openAccordionTableRows
+                in
                 div [ css [ displayGrid, gridTemplateColumns "repeat(3, 1fr) auto", maxWidth (px 800) ] ]
                     [ Header.init
                         |> Header.view [] [ Text.textLight |> Text.view [] [ text "People" ] ]
@@ -47,7 +51,7 @@ stories =
                         , Text.textLight |> Text.view [] [ text "Occupation" ]
                         , Text.textLight |> Text.view [] [ text "Age" ]
                         ]
-                    , Row.init (Set.member 0 config.customModel.openAccordionTableRows) (Config.AccordionTableRowToggled 0)
+                    , Row.init (isOpen 0) (Config.AccordionTableRowToggled 0)
                         |> Row.withSummary []
                             [ Text.textLight |> Text.view [] [ text "Johnny" ]
                             , Text.textLight |> Text.view [] [ text "Carpenter" ]
@@ -55,7 +59,7 @@ stories =
                             ]
                         |> Row.withDetails [] [ Text.textLight |> Text.view [] [ text "Details about Johnny" ] ]
                         |> Row.view []
-                    , Row.init (Set.member 1 config.customModel.openAccordionTableRows) (Config.AccordionTableRowToggled 1)
+                    , Row.init (isOpen 1) (Config.AccordionTableRowToggled 1)
                         |> Row.withSummary []
                             [ Text.textLight |> Text.view [] [ text "Maximilian" ]
                             , Text.textLight |> Text.view [] [ text "Musician" ]
@@ -69,39 +73,45 @@ stories =
         , ( "Selectable rows"
           , \config ->
                 let
-                    allSelected =
-                        Set.size config.customModel.selectedAccordionTableRows == 2
+                    isOpen index =
+                        Set.member index config.customModel.openAccordionTableRows
 
-                    ariaSelected =
-                        Encode.bool allSelected |> Encode.encode 0
+                    isSelected index =
+                        Set.member index config.customModel.selectedAccordionTableRows
+
+                    allSelected =
+                        List.all isSelected [ 0, 1 ]
+
+                    toAriaSelected selected =
+                        attribute "aria-selected" <| (Encode.bool selected |> Encode.encode 0)
                 in
                 div [ css [ displayGrid, gridTemplateColumns "1fr auto auto", gap2 (rem 0) (rem 1), maxWidth (px 800) ] ]
                     [ Header.init
                         |> Header.view
-                            [ css [ displayGrid, gridTemplateColumns "subgrid", gridColumn "1/-1" ], attribute "aria-selected" ariaSelected ]
+                            [ css [ displayGrid, gridTemplateColumns "subgrid", gridColumn "1/-1" ], toAriaSelected allSelected ]
                             [ Text.textLight |> Text.view [] [ text "Selectable rows" ]
                             , Checkbox.init "selectable-rows" nothing (\checked -> Config.AccordionTableAllRowsChecked checked)
                                 |> Checkbox.withAppearance Checkbox.Simple
                                 |> Checkbox.withIsChecked allSelected
                                 |> Checkbox.view []
                             ]
-                    , Row.init (Set.member 0 config.customModel.openAccordionTableRows) (Config.AccordionTableRowToggled 0)
+                    , Row.init (isOpen 0) (Config.AccordionTableRowToggled 0)
                         |> Row.withSummary []
                             [ Text.textLight |> Text.view [] [ text "Some summary" ]
                             , Checkbox.init "selectable-rows" nothing (\checked -> Config.AccordionTableRowChecked 0 checked)
                                 |> Checkbox.withAppearance Checkbox.Simple
-                                |> Checkbox.withIsChecked (Set.member 0 config.customModel.selectedAccordionTableRows)
-                                |> Checkbox.view []
+                                |> Checkbox.withIsChecked (isSelected 0)
+                                |> Checkbox.view [ toAriaSelected (isSelected 0) ]
                             ]
                         |> Row.withDetails [] [ Text.textLight |> Text.view [] [ text "Details" ] ]
                         |> Row.view []
-                    , Row.init (Set.member 1 config.customModel.openAccordionTableRows) (Config.AccordionTableRowToggled 1)
+                    , Row.init (isOpen 1) (Config.AccordionTableRowToggled 1)
                         |> Row.withSummary []
                             [ Text.textLight |> Text.view [] [ text "Some other summary" ]
                             , Checkbox.init "selectable-rows" nothing (\checked -> Config.AccordionTableRowChecked 1 checked)
                                 |> Checkbox.withAppearance Checkbox.Simple
-                                |> Checkbox.withIsChecked (Set.member 1 config.customModel.selectedAccordionTableRows)
-                                |> Checkbox.view []
+                                |> Checkbox.withIsChecked (isSelected 1)
+                                |> Checkbox.view [ toAriaSelected (isSelected 1) ]
                             ]
                         |> Row.withDetails [] [ Text.textLight |> Text.view [] [ text "More details" ] ]
                         |> Row.view []
