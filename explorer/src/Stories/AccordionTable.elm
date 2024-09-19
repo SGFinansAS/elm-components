@@ -1,7 +1,7 @@
 module Stories.AccordionTable exposing (stories)
 
 import Config exposing (Config, Msg)
-import Css exposing (color, display, marginLeft, marginTop, maxWidth, padding, px, rem)
+import Css exposing (color, marginLeft, marginTop, maxWidth, px, rem)
 import Html.Styled exposing (div, text)
 import Html.Styled.Attributes exposing (attribute, css)
 import Json.Encode as Encode
