@@ -13,11 +13,9 @@ import Css
         , ellipsis
         , height
         , hidden
-        , important
         , inlineBlock
         , left
         , overflow
-        , padding
         , padding2
         , pct
         , position
@@ -45,18 +43,18 @@ type StatusColor
 view : String -> StatusColor -> Bool -> List (Attribute msg) -> Html msg
 view text statusColor isSmall attrs =
     let
-        padding =
+        ( paddingStyle, borderRadiusStyle ) =
             if isSmall then
-                padding2 (rem 0.25) (rem 0.5)
+                ( padding2 (rem 0.25) (rem 0.5), borderRadius (rem 0.5) )
 
             else
-                padding2 (rem 0.5) (rem 0.75)
+                ( padding2 (rem 0.5) (rem 0.75), borderRadius (rem 0.75) )
 
         attrs_ bgColor =
             css
                 [ display inlineBlock
-                , borderRadius (rem 0.75)
-                , padding
+                , borderRadiusStyle
+                , paddingStyle
                 , backgroundColor bgColor
                 , textOverflow ellipsis
                 , overflow hidden
