@@ -25,7 +25,7 @@ stories =
           , \config ->
                 div [ css [ displayGrid, gridTemplateColumns "1fr auto", maxWidth (px 800) ] ]
                     [ Header.init
-                        |> Header.view [] [ Text.textLight |> Text.view [] [ text "Table header" ] ]
+                        |> Header.view [] [] [ Text.textLight |> Text.view [] [ text "Table header" ] ]
                     , Row.init (Set.member 0 config.customModel.openAccordionTableRows) (Config.AccordionTableRowToggled 0)
                         |> Row.withSummary [] [ Text.textLight |> Text.view [] [ text "Some summary" ] ]
                         |> Row.withDetails [] [ Text.textLight |> Text.view [] [ text "Details" ] ]
@@ -45,7 +45,7 @@ stories =
                 in
                 div [ css [ displayGrid, gridTemplateColumns "repeat(3, 1fr) auto", maxWidth (px 800) ] ]
                     [ Header.init
-                        |> Header.view [] [ Text.textLight |> Text.view [] [ text "People" ] ]
+                        |> Header.view [] [] [ Text.textLight |> Text.view [] [ text "People" ] ]
                     , div [ css [ color Colors.nordeaGray, marginTop (rem 1), displayGrid, gridTemplateColumns "subgrid", gridColumn "1/-1" ] ]
                         [ Text.textLight |> Text.view [ css [ marginLeft (rem 1) ] ] [ text "Name" ]
                         , Text.textLight |> Text.view [] [ text "Occupation" ]
@@ -88,7 +88,8 @@ stories =
                 div [ css [ displayGrid, gridTemplateColumns "1fr auto auto", gap2 (rem 0) (rem 1), maxWidth (px 800) ] ]
                     [ Header.init
                         |> Header.view
-                            [ css [ displayGrid, gridTemplateColumns "subgrid", gridColumn "1/-1" ], toAriaSelected allSelected ]
+                            [ displayGrid, gridTemplateColumns "subgrid", gridColumn "1/-1" ]
+                            [ toAriaSelected allSelected ]
                             [ Text.textLight |> Text.view [] [ text "Selectable rows" ]
                             , Checkbox.init "selectable-rows" nothing (\checked -> Config.AccordionTableAllRowsChecked checked)
                                 |> Checkbox.withAppearance Checkbox.Simple
@@ -123,7 +124,7 @@ stories =
                 div [ css [ displayGrid, gridTemplateColumns "1fr auto", maxWidth (px 600) ] ]
                     [ Header.init
                         |> Header.withSmallSize
-                        |> Header.view [] [ Text.textSmallLight |> Text.view [] [ text "Table header" ] ]
+                        |> Header.view [] [] [ Text.textSmallLight |> Text.view [] [ text "Table header" ] ]
                     , Row.init (Set.member 0 config.customModel.openAccordionTableRows) (Config.AccordionTableRowToggled 0)
                         |> Row.withSmallSize
                         |> Row.withSummary [] [ Text.textSmallLight |> Text.view [] [ text "Summary" ] ]

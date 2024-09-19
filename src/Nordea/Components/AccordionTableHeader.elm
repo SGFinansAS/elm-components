@@ -20,8 +20,8 @@ init =
     }
 
 
-view : List (Html.Attribute msg) -> List (Html msg) -> Config -> Html msg
-view attrs content config =
+view : List Css.Style -> List (Html.Attribute msg) -> List (Html msg) -> Config -> Html msg
+view styles attrs content config =
     let
         ( horizontalPadding, verticalPadding ) =
             if config.small then
@@ -30,19 +30,20 @@ view attrs content config =
             else
                 ( 1, 0.75 )
 
-        combinedAttrs =
+        combinedStyles =
             css
-                [ gridColumn "1 / -1"
-                , color Colors.black
-                , padding2 (rem verticalPadding) (rem horizontalPadding)
-                , backgroundColor Colors.cloudBlue
-                , borderRadius (rem 0.5)
-                ]
-                :: attrs
+                ([ gridColumn "1 / -1"
+                 , color Colors.black
+                 , padding2 (rem verticalPadding) (rem horizontalPadding)
+                 , backgroundColor Colors.cloudBlue
+                 , borderRadius (rem 0.5)
+                 ]
+                    ++ styles
+                )
     in
     Text.textTinyHeavy
         |> Text.withHtmlTag h3
-        |> Text.view combinedAttrs content
+        |> Text.view (combinedStyles :: attrs) content
 
 
 withSmallSize : Config -> Config
