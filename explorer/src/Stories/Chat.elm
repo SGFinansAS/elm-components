@@ -48,7 +48,7 @@ stories =
           , \_ ->
                 Html.div [ css [ maxWidth (rem 25) ] ]
                     [ Chat.init .no
-                        |> Chat.view []
+                        |> Chat.view [ Chat.Appearance Chat.Small ]
                             []
                             (List.range 0 100
                                 |> List.concatMap
