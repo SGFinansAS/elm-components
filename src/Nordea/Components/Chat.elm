@@ -12,6 +12,7 @@ import Css
         , flexEnd
         , justifyContent
         , marginBottom
+        , marginLeft
         , marginRight
         , maxHeight
         , overflow
@@ -25,6 +26,7 @@ import Css
 import Html.Styled as Html exposing (Attribute, Html)
 import Html.Styled.Attributes exposing (css)
 import Nordea.Components.Card as Card
+import Nordea.Components.Tag as Tag
 import Nordea.Components.Text as Text
 import Nordea.Css exposing (gap)
 import Nordea.Html as Html exposing (showIf)
@@ -56,6 +58,7 @@ type Appearance
 
 type OptionalConfig
     = Appearance Appearance
+    | BetaTag
 
 
 type Chat
@@ -73,11 +76,20 @@ init translate =
 view : List OptionalConfig -> List (Attribute msg) -> List (Html msg) -> List (Html msg) -> Chat -> Html msg
 view optionals attrs history content (Chat config) =
     let
-        appearance =
+        { appearance, showBetaTag } =
             optionals
-                |> List.head
-                |> Maybe.map (\(Appearance app) -> app)
-                |> Maybe.withDefault Standard
+                |> List.foldl
+                    (\e acc ->
+                        case e of
+                            Appearance app ->
+                                { acc | appearance = app }
+
+                            BetaTag ->
+                                { acc | showBetaTag = True }
+                    )
+                    { appearance = Standard
+                    , showBetaTag = False
+                    }
 
         appearanceSpecificStyles =
             case appearance of
@@ -104,6 +116,7 @@ view optionals attrs history content (Chat config) =
                         [ Illustrations.messageInstructionalStar [ css [ width (rem 1.5), marginRight (rem 0.5) ] ]
                         , Text.textTinyHeavy
                             |> Text.view [ css [ Themes.color Colors.deepBlue, alignSelf flexEnd ] ] [ strings.title |> config.translate |> Html.text ]
+                        , Tag.beta [ css [ marginLeft auto ] ] |> showIf showBetaTag
                         ]
 
         messageHistoryView =

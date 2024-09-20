@@ -20,6 +20,7 @@ module Nordea.Resources.Colors exposing
     , greenStatus
     , haasBlue
     , lightGray
+    , lightOrange
     , mediumBlue
     , mediumGray
     , nordeaBlue
@@ -214,6 +215,11 @@ withAlpha alpha color =
 purple : Color
 purple =
     hex "#7E15D1"
+
+
+lightOrange : Color
+lightOrange =
+    hex "#FBD9CA"
 
 
 toString : Css.Color -> String
