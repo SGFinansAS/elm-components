@@ -3,7 +3,6 @@ module Nordea.Components.Tag exposing (beta)
 import Css
     exposing
         ( Color
-        , auto
         , backgroundColor
         , borderRadius
         , color
@@ -13,7 +12,6 @@ import Css
         , inlineBlock
         , int
         , lineHeight
-        , marginLeft
         , padding
         , rem
         )
