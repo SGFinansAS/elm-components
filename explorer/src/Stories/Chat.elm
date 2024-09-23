@@ -61,7 +61,7 @@ stories =
                                             , isUserMessage = False
                                             }
                                         , Chat.chatHistoryView []
-                                            { sentFrom = "PartnerHub"
+                                            { sentFrom = "Nordea Finance Equipment AS - Long company name"
                                             , sentAt = "30.05.2024, kl. 13:54"
                                             , sender = Just "Thomas Olsen"
                                             , message = "Har lagt ved resultatrapport og balanserepport pr. 31.11.2023. Vi har ikke fått tilbake rapportene for des. 2023 fra regnskap firma."

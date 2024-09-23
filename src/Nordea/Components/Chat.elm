@@ -8,19 +8,24 @@ import Css
         , borderRadius4
         , color
         , columnReverse
+        , ellipsis
         , flexDirection
         , flexEnd
+        , hidden
         , justifyContent
         , marginBottom
         , marginLeft
         , marginRight
         , maxHeight
+        , noWrap
         , overflow
         , padding
         , paddingRight
         , rem
         , solid
         , spaceBetween
+        , textOverflow
+        , whiteSpace
         , width
         )
 import Html.Styled as Html exposing (Attribute, Html)
@@ -167,14 +172,14 @@ chatHistoryView attrs { sentFrom, sentAt, sender, message, isUserMessage } =
                 , Themes.backgroundColor Colors.nordeaBlue
                 ]
 
-        messageLabel text =
+        messageLabel attr text =
             Text.textTinyLight
-                |> Text.view [ css [ color Colors.darkGray ] ] [ Html.text text ]
+                |> Text.view (css [ color Colors.darkGray, whiteSpace noWrap ] :: attr) [ Html.text text ]
     in
     Html.column (css [ gap (rem 0.25) ] :: attrs)
         [ Html.row [ css [ justifyContent spaceBetween ] ]
-            [ messageLabel sentFrom
-            , messageLabel sentAt
+            [ messageLabel [ css [ marginRight (rem 0.25), textOverflow ellipsis, overflow hidden ] ] sentFrom
+            , messageLabel [] sentAt
             ]
         , sender
             |> Maybe.map
