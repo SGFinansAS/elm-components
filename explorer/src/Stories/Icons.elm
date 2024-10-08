@@ -99,6 +99,7 @@ stories =
                         , Icons.abacus [ css [ width (rem 1.5) ] ]
                         , Icons.object [ css [ width (rem 1.5) ] ]
                         , Icons.lightBulb [ css [ width (rem 1.5) ] ]
+                        , Icons.eye [ css [ width (rem 1.5) ] ]
                         ]
                     , iconCategoryHeader "Country flags"
                     , iconsRow
