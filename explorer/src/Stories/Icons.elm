@@ -1,18 +1,10 @@
 module Stories.Icons exposing (stories)
 
-import Css
-    exposing
-        ( column
-        , displayFlex
-        , flexDirection
-        , rem
-        , row
-        , width
-        )
+import Css exposing (alignItems, center, column, displayFlex, flexDirection, flexWrap, height, justifyContent, rem, row, spaceBetween, width, wrap)
 import Html.Styled as Html
 import Html.Styled.Attributes exposing (css)
 import Nordea.Components.Text as Text
-import Nordea.Css exposing (gap)
+import Nordea.Css exposing (columnGap, gap)
 import Nordea.Resources.Icons as Icons
 import UIExplorer exposing (UI)
 import UIExplorer.Styled exposing (styledStoriesOf)
@@ -27,6 +19,18 @@ stories =
         iconsRow icons =
             Html.div [ css [ displayFlex, flexDirection row, gap (rem 2) ] ]
                 icons
+
+        iconsRowWithDescription iconsWithDescription =
+            Html.div [ css [ displayFlex, flexDirection row, columnGap (rem 1) ] ]
+                (iconsWithDescription
+                    |> List.map
+                        (\( icon, description ) ->
+                            Html.div [ css [ displayFlex, flexDirection column, flexWrap wrap, justifyContent spaceBetween, alignItems center, height (rem 4) ] ]
+                                [ icon [ css [ width (rem 1.5) ] ]
+                                , Text.textTinyLight |> Text.view [] [ Html.text description ]
+                                ]
+                        )
+                )
     in
     styledStoriesOf
         "Icons"
@@ -94,12 +98,12 @@ stories =
                         , Icons.largePhone [ css [ width (rem 1.5) ] ]
                         ]
                     , iconCategoryHeader "Misc."
-                    , iconsRow
-                        [ Icons.downloaded [ css [ width (rem 1.5) ] ]
-                        , Icons.abacus [ css [ width (rem 1.5) ] ]
-                        , Icons.object [ css [ width (rem 1.5) ] ]
-                        , Icons.lightBulb [ css [ width (rem 1.5) ] ]
-                        , Icons.eye [ css [ width (rem 1.5) ] ]
+                    , iconsRowWithDescription
+                        [ ( Icons.downloaded, "downloaded" )
+                        , ( Icons.abacus, "abacus" )
+                        , ( Icons.object, "object" )
+                        , ( Icons.lightBulb, "lightBulb" )
+                        , ( Icons.eye, "eye" )
                         ]
                     , iconCategoryHeader "Country flags"
                     , iconsRow
