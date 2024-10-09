@@ -26,7 +26,7 @@ stories =
                     |> List.map
                         (\( icon, description ) ->
                             Html.div [ css [ displayFlex, flexDirection column, flexWrap wrap, justifyContent spaceBetween, alignItems center, height (rem 4) ] ]
-                                [ icon [ css [ width (rem 1.5) ] ]
+                                [ icon [ css [ width (rem 1.5), height (rem 2) ] ]
                                 , Text.textTinyLight |> Text.view [] [ Html.text description ]
                                 ]
                         )
