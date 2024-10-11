@@ -56,6 +56,7 @@ type alias Config =
     , datePicker : DatePicker Msg
     , currentDatePickerValue : Maybe DatePicker.DateResult
     , fiveStarRating : Int
+    , isCardOpen : Bool
     }
 
 
@@ -93,6 +94,7 @@ type Msg
     | PaginationClickedAt Int
     | DateSelected DatePicker.DateResult DatePicker.InternalState
     | UpdateDatePickerInternalState DatePicker.InternalState
+    | ToggleOpenCard
     | SetRating Int
 
 
@@ -137,6 +139,7 @@ init =
     , paginationCurrentPage = 1
     , datePicker = DatePicker.init (Date.fromCalendarDate 2024 May 1) "" DateSelected UpdateDatePickerInternalState
     , currentDatePickerValue = Nothing
+    , isCardOpen = True
     , fiveStarRating = 0
     }
 
@@ -293,3 +296,6 @@ update msg config =
 
         SetRating value ->
             { config | fiveStarRating = value }
+
+        ToggleOpenCard ->
+            { config | isCardOpen = not config.isCardOpen }
