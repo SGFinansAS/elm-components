@@ -6,9 +6,11 @@ import Html.Styled exposing (toUnstyled)
 import Nordea.Resources.Fonts.Fonts as Fonts
 import Stories.Accordion as Accordion
 import Stories.AccordionMenu as AccordionMenu
+import Stories.AccordionTable as AccordionTable
 import Stories.Badge as Badge
 import Stories.Button as Button
 import Stories.Card as Card
+import Stories.Chat as Chat
 import Stories.Checkbox as Checkbox
 import Stories.Coachmark as Coachmark
 import Stories.Colors as Colors
@@ -20,6 +22,7 @@ import Stories.FeatureBox as FeatureBox
 import Stories.FileDownload as FileDownload
 import Stories.FileUpload as FileUpload
 import Stories.FilterChip as FilterChip
+import Stories.FiveStarRating as FiveStarRating
 import Stories.FlatLink as FlatLink
 import Stories.Hamburger as Hamburger
 import Stories.Icons as Icons
@@ -45,6 +48,7 @@ import Stories.Status as Status
 import Stories.StepIndicator as StepIndicator
 import Stories.Table as Table
 import Stories.Tabs as Tabs
+import Stories.Tag as Tag
 import Stories.Text as Text
 import Stories.TextArea as TextArea
 import Stories.TextInput as TextInput
@@ -93,9 +97,11 @@ main =
             |> UIExplorer.category "Components"
                 [ Accordion.stories
                 , AccordionMenu.stories
+                , AccordionTable.stories
                 , Badge.stories
                 , Button.stories
                 , Card.stories
+                , Chat.stories
                 , Checkbox.stories
                 , Coachmark.stories
                 , DatePicker.stories
@@ -107,6 +113,7 @@ main =
                 , FileDownload.stories
                 , FileUpload.stories
                 , FilterChip.stories
+                , FiveStarRating.stories
                 , FlatLink.stories
                 , Hamburger.stories
                 , InfoBanner.stories
@@ -130,6 +137,7 @@ main =
                 , StepIndicator.stories
                 , Table.stories
                 , Tabs.stories
+                , Tag.stories
                 , TextArea.stories
                 , TextInput.stories
                 , Toggle.stories

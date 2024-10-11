@@ -34,4 +34,12 @@ stories =
           , \_ -> Status.partiallyFilled "Control prerequisites" Color.yellowStatus 60.0 []
           , {}
           )
+        , ( "Small"
+          , \_ -> Status.small Status.CloudBlue "Status" []
+          , {}
+          )
+        , ( "Small Mixed"
+          , \_ -> Status.smallPartiallyFilled "Control prerequisites" Color.yellowStatus 60.0 []
+          , {}
+          )
         ]

@@ -1,4 +1,4 @@
-module Config exposing (Config, FinancingVariant(..), Msg(..), init, update)
+module Config exposing (Config, FinancingVariant(..), Msg(..), OrganizationInfo, init, update)
 
 import Date
 import File exposing (File)
@@ -6,6 +6,7 @@ import Html.Styled as Html
 import Nordea.Components.Accordion as Accordion exposing (Accordion)
 import Nordea.Components.DatePicker as DatePicker exposing (DatePicker)
 import Nordea.Components.DropdownFilter exposing (Item)
+import Set exposing (Set)
 import Stories.SortableTableSharedTypes
 import Time exposing (Month(..))
 
@@ -17,8 +18,19 @@ type FinancingVariant
     | HirePurchase
 
 
+type alias OrganizationInfo =
+    { name : String
+    , organizationNumber : String
+    , enterpriseTypeId : Maybe String
+    , postalCode : Maybe String
+    , postalPlace : Maybe String
+    }
+
+
 type alias Config =
     { accordion : Accordion
+    , openAccordionTableRows : Set Int
+    , selectedAccordionTableRows : Set Int
     , isModalOpen : Bool
     , searchComponentInput : String
     , hasMultiSelectDropdownFocus : Bool
@@ -38,18 +50,24 @@ type alias Config =
     , activeRadioButton : String
     , textInputContent : String
     , sortableTable : Stories.SortableTableSharedTypes.Model
-    , selectedSearchComponent : Maybe FinancingVariant
+    , selectedSearchComponent : Maybe (Item FinancingVariant)
+    , selectedSearchComponentOrgInfo : Maybe OrganizationInfo
     , paginationCurrentPage : Int
     , datePicker : DatePicker Msg
     , currentDatePickerValue : Maybe DatePicker.DateResult
+    , fiveStarRating : Int
     , isCardOpen : Bool
     }
 
 
 type Msg
     = AccordionMsg Accordion.Msg
+    | AccordionTableRowToggled Int Bool
+    | AccordionTableAllRowsChecked Bool
+    | AccordionTableRowChecked Int Bool
     | SearchComponentInput String
     | SearchComponentSelected (Maybe (Item FinancingVariant))
+    | SearchComponentSelectedOrgInfo (Maybe (Item OrganizationInfo))
     | SearchComponentFocus Bool
     | NoOp
     | FocusMultiSelectDropdown Bool
@@ -61,7 +79,7 @@ type Msg
     | ToggleProgressBarCompleted
     | OnDragEnterFileUpload
     | OnDragLeaveFileUpload
-    | OnFilesSelected File (List File)
+    | OnFilesSelected (List File)
     | RemoveFile File
     | SliderMsg String
     | RangeMsg Float
@@ -77,6 +95,7 @@ type Msg
     | DateSelected DatePicker.DateResult DatePicker.InternalState
     | UpdateDatePickerInternalState DatePicker.InternalState
     | ToggleOpenCard
+    | SetRating Int
 
 
 init : Config
@@ -94,8 +113,11 @@ init =
                 , body = [ Html.text "This is an answer" ]
                 , open = False
                 }
+    , openAccordionTableRows = Set.empty
+    , selectedAccordionTableRows = Set.empty
     , searchComponentInput = ""
     , selectedSearchComponent = Nothing
+    , selectedSearchComponentOrgInfo = Nothing
     , hasMultiSelectDropdownFocus = False
     , isChoice1 = False
     , isChoice2 = False
@@ -118,6 +140,7 @@ init =
     , datePicker = DatePicker.init (Date.fromCalendarDate 2024 May 1) "" DateSelected UpdateDatePickerInternalState
     , currentDatePickerValue = Nothing
     , isCardOpen = True
+    , fiveStarRating = 0
     }
 
 
@@ -126,6 +149,38 @@ update msg config =
     case msg of
         AccordionMsg m ->
             { config | accordion = Accordion.update m config.accordion }
+
+        AccordionTableRowToggled index isOpen ->
+            let
+                operation =
+                    if isOpen then
+                        Set.insert
+
+                    else
+                        Set.remove
+            in
+            { config | openAccordionTableRows = operation index config.openAccordionTableRows }
+
+        AccordionTableAllRowsChecked areChecked ->
+            { config
+                | selectedAccordionTableRows =
+                    if areChecked then
+                        Set.fromList [ 0, 1 ]
+
+                    else
+                        Set.empty
+            }
+
+        AccordionTableRowChecked index isChecked ->
+            let
+                operation =
+                    if isChecked then
+                        Set.insert
+
+                    else
+                        Set.remove
+            in
+            { config | selectedAccordionTableRows = operation index config.selectedAccordionTableRows }
 
         SearchComponentInput input ->
             { config | searchComponentInput = input }
@@ -145,7 +200,14 @@ update msg config =
         SearchComponentSelected item ->
             { config
                 | searchComponentInput = item |> Maybe.map .text |> Maybe.withDefault ""
-                , selectedSearchComponent = item |> Maybe.map .value
+                , selectedSearchComponent = item
+                , searchHasFocus = False
+            }
+
+        SearchComponentSelectedOrgInfo item ->
+            { config
+                | searchComponentInput = item |> Maybe.map .text |> Maybe.withDefault ""
+                , selectedSearchComponentOrgInfo = item |> Maybe.map .value
                 , searchHasFocus = False
             }
 
@@ -170,8 +232,8 @@ update msg config =
         OnDragLeaveFileUpload ->
             { config | isHoveringFileUpload = False }
 
-        OnFilesSelected first rest ->
-            { config | selectedFiles = (first :: rest) ++ config.selectedFiles, isHoveringFileUpload = False }
+        OnFilesSelected files ->
+            { config | selectedFiles = files ++ config.selectedFiles, isHoveringFileUpload = False }
 
         RemoveFile file ->
             { config | selectedFiles = config.selectedFiles |> List.filter ((/=) file) }
@@ -231,6 +293,9 @@ update msg config =
 
         UpdateDatePickerInternalState datePickerState ->
             { config | datePicker = DatePicker.updateInternalState datePickerState config.datePicker }
+
+        SetRating value ->
+            { config | fiveStarRating = value }
 
         ToggleOpenCard ->
             {config | isCardOpen = not config.isCardOpen}

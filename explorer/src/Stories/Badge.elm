@@ -29,6 +29,14 @@ stories =
                     ]
           , {}
           )
+        , ( "Specific number top placement"
+          , \_ ->
+                Html.div [ css [ displayFlex ] ]
+                    [ Badge.NumberTopPlacement 4
+                        |> Badge.view [] [ Icons.pdf [ css [ width (rem 5) |> Css.important ] ] ]
+                    ]
+          , {}
+          )
         , ( "Generic"
           , \_ ->
                 Html.div [ css [ displayFlex ] ]

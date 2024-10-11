@@ -2,6 +2,7 @@ module Nordea.Components.FileUpload exposing
     ( AcceptFileType(..)
     , Appearance(..)
     , FileUpload
+    , FileUploadStatus
     , MimeType(..)
     , init
     , supportedFileTypesText
@@ -10,57 +11,27 @@ module Nordea.Components.FileUpload exposing
     , withAcceptedFileTypes
     , withAllowMultipleFiles
     , withAppearance
+    , withFiles
     , withIsHovering
     )
 
-import Css
-    exposing
-        ( absolute
-        , alignItems
-        , backgroundColor
-        , border3
-        , borderRadius
-        , borderStyle
-        , center
-        , color
-        , column
-        , cursor
-        , dashed
-        , displayFlex
-        , flex
-        , flexDirection
-        , height
-        , hover
-        , justifyContent
-        , listStyle
-        , listStyleType
-        , margin2
-        , marginBottom
-        , marginRight
-        , marginTop
-        , none
-        , num
-        , opacity
-        , padding
-        , padding2
-        , pointer
-        , position
-        , pseudoClass
-        , rem
-        , row
-        , width
-        )
+import Css exposing (absolute, alignItems, backgroundColor, border3, borderRadius, borderStyle, borderWidth, center, color, column, cursor, dashed, default, displayFlex, flex, flexDirection, height, hover, inherit, justifyContent, left, listStyle, listStyleType, margin2, marginBottom, marginRight, marginTop, none, num, opacity, padding, padding2, pct, pointer, position, pseudoClass, px, relative, rem, row, top, width)
+import Css.Global as Global
 import File exposing (File)
 import Html.Styled as Html exposing (Attribute, Html)
-import Html.Styled.Attributes exposing (accept, css, multiple, type_, value)
+import Html.Styled.Attributes as Attributes exposing (accept, css, multiple, type_, value)
 import Html.Styled.Events as Events
 import Json.Decode as Decode
+import Maybe.Extra as Maybe
+import Nordea.Components.Spinner as Spinner
 import Nordea.Components.Text as Text
-import Nordea.Html as Html exposing (showIf, styleIf)
+import Nordea.Components.Tooltip as Tooltip
+import Nordea.Html as Html exposing (attrIf, showIf, styleIf)
 import Nordea.Resources.Colors as Colors
 import Nordea.Resources.I18N exposing (Translation)
 import Nordea.Resources.Icons as Icon
 import Nordea.Themes as Themes
+import RemoteData exposing (RemoteData)
 import Round
 
 
@@ -89,20 +60,25 @@ type FileUpload msg
     = FileUpload (Config msg)
 
 
+type alias FileUploadStatus =
+    RemoteData Translation ()
+
+
 type alias Config msg =
     { isHovering : Bool
     , onDragEnter : msg
     , onDragLeave : msg
-    , files : List File
+    , files : List ( File, FileUploadStatus )
     , translate : Translate
     , allowMultiple : Bool
-    , onFilesSelected : File -> List File -> msg
+    , onFilesSelected : List File -> msg
+    , onFileRemoval : Maybe (File -> msg)
     , accept : AcceptFileType
     , appearance : Appearance
     }
 
 
-init : Translate -> (File -> List File -> msg) -> msg -> msg -> FileUpload msg
+init : Translate -> (List File -> msg) -> msg -> msg -> FileUpload msg
 init translate onFilesSelected onDragEnter onDragLeave =
     FileUpload
         { isHovering = False
@@ -112,6 +88,7 @@ init translate onFilesSelected onDragEnter onDragLeave =
         , translate = translate
         , allowMultiple = False
         , onFilesSelected = onFilesSelected
+        , onFileRemoval = Nothing
         , accept = Any
         , appearance = Large
         }
@@ -159,27 +136,12 @@ view (FileUpload config) =
                             , hover [ backgroundColor Colors.coolGray ]
                             ]
             in
-            [ onFilesDropped
-                config.accept
-                (\first rest ->
-                    config.onFilesSelected
-                        first
-                        (if config.allowMultiple then
-                            rest
-
-                         else
-                            []
-                        )
-                )
-            , preventDefaultOn "dragover" config.onDragEnter
-            , preventDefaultOn "dragleave" config.onDragLeave
-            , css
+            [ css
                 [ displayFlex
                 , styleAppearance
                 , alignItems center
                 , borderRadius (rem 0.25)
                 , cursor pointer
-                , pseudoClass "focus-within" [ border3 (rem 0.0625) dashed Colors.deepBlue ]
                 , styleOnHover
                 ]
             ]
@@ -242,30 +204,95 @@ view (FileUpload config) =
                     mimeTypes
                         |> List.map toMimeTypeString
                         |> String.join ","
+
+        inputFile =
+            let
+                isDisabled =
+                    (config.allowMultiple || List.isEmpty config.files) |> not
+            in
+            Html.input
+                [ type_ "file"
+                , onSelectFiles config.accept config.onFilesSelected
+                , multiple config.allowMultiple
+                , accept mimeTypesAsString
+                , value ""
+                , Attributes.disabled True |> attrIf isDisabled
+                , Attributes.attribute "aria-description" (config.translate strings.ariaNoMoreFiles) |> attrIf isDisabled
+                , css [ opacity (num 0), position absolute, height (rem 0), width (rem 0) ]
+                ]
+                []
     in
-    Html.div attrs
-        [ iconUpload |> showIf (not config.isHovering)
-        , description |> showIf (not config.isHovering)
-        , viewSupportedFileTypesText
-            |> showIf (not config.isHovering && config.appearance == Large)
-        , textType
-            |> Text.view [ css [ Themes.color Colors.nordeaBlue ] ]
-                [ Html.text (config.translate strings.dropToUploadFile) ]
-            |> showIf config.isHovering
-        , Html.input
-            [ type_ "file"
-            , onSelectFiles config.onFilesSelected
-            , multiple config.allowMultiple
-            , accept mimeTypesAsString
-            , value ""
-            , css [ opacity (num 0), position absolute, height (rem 0), width (rem 0) ]
-            ]
-            []
-        ]
+    -- Inline is currently only supported with one file; feel free to enhance :)
+    config.onFileRemoval
+        |> Maybe.filter (\_ -> not config.allowMultiple && (List.isEmpty config.files |> not) && config.appearance == Large)
+        |> Maybe.map
+            (\onFileRemoval ->
+                Html.div []
+                    [ inputFile
+                    , fileList
+                        config.files
+                        onFileRemoval
+                        config.translate
+                        (attrs
+                            ++ [ css
+                                    [ borderWidth (px 0) |> Css.important
+                                    , cursor default |> Css.important
+                                    , Global.children [ Global.typeSelector ":first-child" [ height inherit, width (pct 100) ] ]
+
+                                    -- 2024-08-22 Elm css first-child is b0rken! ^
+                                    ]
+                               ]
+                        )
+                    ]
+            )
+        |> Maybe.withDefault
+            (Html.div
+                (attrs
+                    ++ [ css [ pseudoClass "focus-within" [ border3 (rem 0.0625) dashed Colors.deepBlue ] ]
+                       , onFilesDropped
+                            config.accept
+                            (\files ->
+                                config.onFilesSelected
+                                    (if config.allowMultiple then
+                                        files
+
+                                     else
+                                        files |> List.take 1
+                                    )
+                            )
+                       , preventDefaultOn "dragover" config.onDragEnter
+                       , preventDefaultOn "dragleave" config.onDragLeave
+                       ]
+                )
+                [ iconUpload |> showIf (not config.isHovering)
+                , description |> showIf (not config.isHovering)
+                , viewSupportedFileTypesText
+                    |> showIf (not config.isHovering && config.appearance == Large)
+                , textType
+                    |> Text.view [ css [ Themes.color Colors.nordeaBlue ] ]
+                        [ Html.text (config.translate strings.dropToUploadFile) ]
+                    |> showIf config.isHovering
+                , inputFile
+                ]
+            )
 
 
 uploadedFilesView : List File -> (File -> msg) -> Translate -> List (Attribute msg) -> Html msg
 uploadedFilesView files onClickRemove translate attrs =
+    Html.section attrs
+        [ Text.textSmallLight
+            |> Text.withHtmlTag Html.h1
+            |> Text.view [ css [ marginBottom (rem 0.25) ] ] [ Html.text (translate strings.uploadedFiles) ]
+        , fileList
+            (files |> List.map (\f -> ( f, RemoteData.NotAsked )))
+            onClickRemove
+            translate
+            []
+        ]
+
+
+fileList : List ( File, FileUploadStatus ) -> (File -> msg) -> Translate -> List (Attribute msg) -> Html msg
+fileList files onClickRemove translate attrs =
     let
         fileSizeToString fileSize =
             if fileSize < 1000 then
@@ -287,49 +314,76 @@ uploadedFilesView files onClickRemove translate attrs =
                     |> Round.round 2
                     |> String.replace "." ","
                     |> (\str -> str ++ " GB")
-    in
-    Html.section attrs
-        [ Text.textSmallLight
-            |> Text.withHtmlTag Html.h1
-            |> Text.view [ css [ marginBottom (rem 0.25) ] ] [ Html.text (translate strings.uploadedFiles) ]
-        , Html.ul [ css [ listStyleType none, padding (rem 0) ] ]
-            (files
-                |> List.map
-                    (\file ->
-                        Html.li
-                            [ css
-                                [ displayFlex
-                                , alignItems center
-                                , listStyle none
-                                , padding2 (rem 0.75) (rem 1.25)
-                                , backgroundColor Colors.coolGray
-                                , borderRadius (rem 0.5)
-                                , pseudoClass "not(:last-child)" [ marginBottom (rem 1) ]
-                                ]
+
+        statusOverlay status =
+            (case status of
+                RemoteData.NotAsked ->
+                    Html.nothing
+
+                RemoteData.Loading ->
+                    Spinner.custom [ css [ color Colors.nordeaBlue, width (rem 2) ] ]
+
+                RemoteData.Success _ ->
+                    Html.nothing
+
+                RemoteData.Failure translation ->
+                    Tooltip.init
+                        |> Tooltip.withContent
+                            (Tooltip.infoTooltip [] [ translation |> translate |> Html.text ])
+                        |> Tooltip.view []
+                            [ Icon.warning
+                                [ css [ backgroundColor Colors.redStatus, borderRadius (pct 50), width (rem 2) ] ]
                             ]
-                            [ Icon.pdf [ css [ color Colors.black, marginRight (rem 1) ] ]
-                            , Html.div [ css [ displayFlex, flexDirection column, flex (num 1), marginRight (rem 1) ] ]
-                                [ Text.bodyTextSmall
-                                    |> Text.view [] [ Html.text (File.name file) ]
-                                , Text.textTinyLight
-                                    |> Text.view [] [ file |> File.size |> fileSizeToString |> Html.text ]
-                                ]
-                            , Html.button
-                                [ preventDefaultOn "click" (onClickRemove file)
-                                , css
-                                    [ borderStyle none
-                                    , Css.property "appearance" "none"
-                                    , cursor pointer
-                                    , padding2 (rem 0.75) (rem 1.25)
-                                    , margin2 (rem -0.75) (rem -1.25)
-                                    , backgroundColor Colors.transparent
-                                    ]
-                                ]
-                                [ Icon.trash [ css [ Themes.color Colors.deepBlue ] ] ]
-                            ]
-                    )
             )
-        ]
+                |> List.singleton
+    in
+    Html.ul (css [ listStyleType none, padding (rem 0) ] :: attrs)
+        (files
+            |> List.map
+                (\( file, status ) ->
+                    Html.li
+                        [ css
+                            [ displayFlex
+                            , alignItems center
+                            , listStyle none
+                            , padding2 (rem 0.75) (rem 1.25)
+                            , backgroundColor Colors.coolGray
+                            , borderRadius (rem 0.5)
+                            , pseudoClass "not(:last-child)" [ marginBottom (rem 1) ]
+                            ]
+                        ]
+                        [ Html.div [ css [ position relative ] ]
+                            [ Html.div [ css [ position absolute, top (rem -0.4), left (rem -0.45) ] ]
+                                (statusOverlay status)
+                            , Icon.pdf [ css [ color Colors.black, marginRight (rem 1) ] ]
+                            ]
+                        , Html.div [ css [ displayFlex, flexDirection column, flex (num 1), marginRight (rem 1) ] ]
+                            [ Text.bodyTextSmall
+                                |> Text.view [] [ Html.text (File.name file) ]
+                            , Text.textTinyLight
+                                |> Text.view [] [ file |> File.size |> fileSizeToString |> Html.text ]
+                            ]
+                        , Html.button
+                            [ preventDefaultOn "click" (onClickRemove file)
+                            , Attributes.attribute "aria-label" <| translate strings.ariaRemove
+                            , Attributes.attribute "aria-description" <| (translate strings.ariaRemoveFromList ++ File.name file)
+                            , css
+                                [ borderStyle none
+                                , Css.property "appearance" "none"
+                                , cursor pointer
+                                , padding2 (rem 0.75) (rem 1.25)
+                                , margin2 (rem -0.75) (rem -1.25)
+                                , backgroundColor Colors.transparent
+                                ]
+                            ]
+                            [ Icon.trash
+                                [ Attributes.attribute "aria-hidden" "true"
+                                , css [ Themes.color Colors.deepBlue ]
+                                ]
+                            ]
+                        ]
+                )
+        )
 
 
 supportedFileTypesText : Translate -> AcceptFileType -> Maybe String
@@ -385,29 +439,39 @@ withAppearance appearance (FileUpload config) =
     FileUpload { config | appearance = appearance }
 
 
-onFilesDropped : AcceptFileType -> (File -> List File -> msg) -> Attribute msg
+{-| Make FileUpload aware of already selected files and upload status.
+
+Care should be taken when using this in combination with Labels; Label must be updated to indicate the file upload status
+from the file list (e.g. do we have files in the list, uploading, etc) for accessibility purposes.
+
+-}
+withFiles : List ( File, FileUploadStatus ) -> (File -> msg) -> FileUpload msg -> FileUpload msg
+withFiles files onFileRemoval (FileUpload config) =
+    FileUpload
+        { config
+            | files = files
+            , onFileRemoval = Just onFileRemoval
+        }
+
+
+filterFiles : AcceptFileType -> List File -> List File
+filterFiles acceptFileType files =
+    case acceptFileType of
+        Any ->
+            files
+
+        Only mimeTypes ->
+            files |> List.filter (\file -> List.member (File.mime file) (List.map toMimeTypeString mimeTypes))
+
+
+onFilesDropped : AcceptFileType -> (List File -> msg) -> Attribute msg
 onFilesDropped acceptFileType msg =
     let
         filesDroppedDecoder =
             Decode.at [ "dataTransfer", "files" ] (Decode.list File.decoder)
-                |> Decode.map
-                    (\files ->
-                        case acceptFileType of
-                            Any ->
-                                files
-
-                            Only mimeTypes ->
-                                files |> List.filter (\file -> List.member (File.mime file) (List.map toMimeTypeString mimeTypes))
-                    )
+                |> Decode.map (filterFiles acceptFileType)
                 |> Decode.andThen
-                    (\files ->
-                        case files of
-                            head :: tail ->
-                                Decode.succeed ( msg head tail, True )
-
-                            _ ->
-                                Decode.fail "No files selected"
-                    )
+                    (\files -> Decode.succeed ( msg files, True ))
     in
     Events.preventDefaultOn "drop" filesDroppedDecoder
 
@@ -417,20 +481,14 @@ preventDefaultOn event msg =
     Events.preventDefaultOn event (Decode.succeed ( msg, True ))
 
 
-onSelectFiles : (File -> List File -> msg) -> Attribute msg
-onSelectFiles msg =
+onSelectFiles : AcceptFileType -> (List File -> msg) -> Attribute msg
+onSelectFiles acceptFileType msg =
     let
         filesDecoder =
             Decode.at [ "target", "files" ] (Decode.list File.decoder)
+                |> Decode.map (filterFiles acceptFileType)
                 |> Decode.andThen
-                    (\files ->
-                        case files of
-                            head :: tail ->
-                                Decode.succeed (msg head tail)
-
-                            _ ->
-                                Decode.fail "No files selected"
-                    )
+                    (\files -> Decode.succeed (msg files))
     in
     Events.on "change" filesDecoder
 
@@ -490,5 +548,23 @@ strings =
         , se = "Uppladdade filer:"
         , dk = "Uploadede filer:"
         , en = "Uploaded files:"
+        }
+    , ariaNoMoreFiles =
+        { no = "Ingen flere filer kan legges til"
+        , se = "Inga fler filer kan inte läggas till"
+        , dk = "Der kan ikke tilføjes flere filer"
+        , en = "No more files can be added"
+        }
+    , ariaRemove =
+        { no = "Fjern"
+        , se = "Ta bort"
+        , dk = "Fjern"
+        , en = "Remove"
+        }
+    , ariaRemoveFromList =
+        { no = "Fjern fra listen: "
+        , se = "Ta bort från listan: "
+        , dk = "Fjern fra listen: "
+        , en = "Remove from list: "
         }
     }

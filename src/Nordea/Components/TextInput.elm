@@ -6,6 +6,7 @@ module Nordea.Components.TextInput exposing
     , withCurrency
     , withError
     , withId
+    , withInputAttrs
     , withMaxLength
     , withOnBlur
     , withOnEnterPress
@@ -64,11 +65,11 @@ import Html.Styled.Attributes as Html
         , tabindex
         , value
         )
-import Html.Styled.Events exposing (keyCode, on, onBlur, onClick, onInput)
-import Json.Decode as Json
+import Html.Styled.Events exposing (onBlur, onClick, onInput)
 import Maybe.Extra as Maybe
 import Nordea.Components.Text as Text
 import Nordea.Html as Html exposing (showIf, styleIf)
+import Nordea.Html.Events as Events
 import Nordea.Resources.Colors as Colors
 import Nordea.Resources.Icons as Icons
 import Nordea.Themes as Themes
@@ -92,6 +93,7 @@ type alias Config msg =
     , currency : Maybe String
     , size : Size
     , id : Maybe String
+    , inputAttrs : List (Attribute msg)
     }
 
 
@@ -120,6 +122,7 @@ init value =
         , currency = Nothing
         , size = Standard
         , id = Nothing
+        , inputAttrs = []
         }
 
 
@@ -186,17 +189,9 @@ withId id (TextInput config) =
     TextInput { config | id = Just id }
 
 
-onEnterPress : msg -> Attribute msg
-onEnterPress msg =
-    let
-        isEnter code =
-            if code == 13 then
-                Json.succeed msg
-
-            else
-                Json.fail "not ENTER"
-    in
-    on "keydown" (Json.andThen isEnter keyCode)
+withInputAttrs : List (Attribute msg) -> TextInput msg -> TextInput msg
+withInputAttrs attrs (TextInput config) =
+    TextInput { config | inputAttrs = attrs }
 
 
 
@@ -260,7 +255,7 @@ view attributes (TextInput config) =
         [ viewSearchIcon
         , styled input
             (getStyles config)
-            (getAttributes config ++ attributes)
+            (getAttributes config)
             []
         , viewCurrency config
         , viewClearIcon
@@ -310,9 +305,10 @@ getAttributes config =
         , config.maxLength |> Maybe.map maxlength
         , config.pattern |> Maybe.map pattern
         , config.onBlur |> Maybe.map onBlur
-        , config.onEnterPress |> Maybe.map onEnterPress
+        , config.onEnterPress |> Maybe.map Events.onEnterPress
         , config.id |> Maybe.map Html.id
         ]
+        ++ config.inputAttrs
 
 
 

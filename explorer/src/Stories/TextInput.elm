@@ -20,7 +20,8 @@ stories =
         , ( "Default (Disabled)"
           , \_ ->
                 TextInput.init "Text"
-                    |> TextInput.view [ disabled True ]
+                    |> TextInput.withInputAttrs [ disabled True ]
+                    |> TextInput.view []
           , {}
           )
         , ( "Placeholder"
@@ -56,7 +57,8 @@ stories =
         , ( "Disabled"
           , \_ ->
                 TextInput.init "Text"
-                    |> TextInput.view [ disabled True ]
+                    |> TextInput.withInputAttrs [ disabled True ]
+                    |> TextInput.view []
           , {}
           )
         , ( "With search icon"

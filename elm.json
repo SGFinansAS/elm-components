@@ -17,6 +17,7 @@
         "elm-community/list-extra": "8.2.4 <= v < 9.0.0",
         "elm-community/maybe-extra": "5.2.0 <= v < 6.0.0",
         "justinmimbs/date": "3.2.1 <= v < 5.0.0",
+        "krisajenkins/remotedata": "6.0.1 <= v < 7.0.0",
         "myrho/elm-round": "1.0.4 <= v < 2.0.0",
         "rtfeldman/elm-css": "16.1.0 <= v < 19.0.0"
     },

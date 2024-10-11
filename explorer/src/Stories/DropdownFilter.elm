@@ -57,27 +57,11 @@ stories =
                         , input = model.customModel.searchComponentInput
                         , onSelect = SearchComponentSelected
                         , items = searchResult
-                        , selectedValue = model.customModel.selectedSearchComponent
+                        , selectedValue = model.customModel.selectedSearchComponent |> Maybe.map .value
+                        , uniqueId = "my-id"
                         }
                         |> DropdownFilter.withHasFocus model.customModel.searchHasFocus
                         |> DropdownFilter.withOnFocus SearchComponentFocus
-                        |> DropdownFilter.view []
-                    ]
-          , {}
-          )
-        , ( "With placeholder"
-          , \model ->
-                Html.div [ css [ displayFlex, flexDirection column ] ]
-                    [ DropdownFilter.init
-                        { onInput = SearchComponentInput
-                        , input = model.customModel.searchComponentInput
-                        , onSelect = SearchComponentSelected
-                        , items = searchResult
-                        , selectedValue = model.customModel.selectedSearchComponent
-                        }
-                        |> DropdownFilter.withHasFocus model.customModel.searchHasFocus
-                        |> DropdownFilter.withOnFocus SearchComponentFocus
-                        |> DropdownFilter.withPlaceholder (Just "Placeholder")
                         |> DropdownFilter.view []
                     ]
           , {}
@@ -94,23 +78,8 @@ stories =
                         , input = model.customModel.searchComponentInput
                         , onSelect = SearchComponentSelected
                         , items = removedGroups
-                        , selectedValue = model.customModel.selectedSearchComponent
-                        }
-                        |> DropdownFilter.withHasFocus model.customModel.searchHasFocus
-                        |> DropdownFilter.withOnFocus SearchComponentFocus
-                        |> DropdownFilter.view []
-                    ]
-          , {}
-          )
-        , ( "interactive with focus"
-          , \model ->
-                Html.div [ css [ displayFlex, flexDirection column ] ]
-                    [ DropdownFilter.init
-                        { onInput = SearchComponentInput
-                        , input = model.customModel.searchComponentInput
-                        , onSelect = SearchComponentSelected
-                        , items = searchResult
-                        , selectedValue = model.customModel.selectedSearchComponent
+                        , selectedValue = model.customModel.selectedSearchComponent |> Maybe.map .value
+                        , uniqueId = "my-id2"
                         }
                         |> DropdownFilter.withHasFocus model.customModel.searchHasFocus
                         |> DropdownFilter.withOnFocus SearchComponentFocus
@@ -127,6 +96,7 @@ stories =
                         , onSelect = SearchComponentSelected
                         , items = searchResult
                         , selectedValue = Nothing
+                        , uniqueId = "my-id3"
                         }
                         |> DropdownFilter.withHasFocus model.customModel.searchHasFocus
                         |> DropdownFilter.withOnFocus SearchComponentFocus
@@ -144,6 +114,7 @@ stories =
                         , onSelect = SearchComponentSelected
                         , items = searchResult
                         , selectedValue = Nothing
+                        , uniqueId = "my-id4"
                         }
                         |> DropdownFilter.withHasFocus model.customModel.searchHasFocus
                         |> DropdownFilter.withOnFocus SearchComponentFocus
@@ -162,7 +133,8 @@ stories =
                             , input = model.customModel.searchComponentInput
                             , onSelect = SearchComponentSelected
                             , items = searchResult
-                            , selectedValue = model.customModel.selectedSearchComponent
+                            , selectedValue = model.customModel.selectedSearchComponent |> Maybe.map .value
+                            , uniqueId = "my-id5"
                             }
                             |> DropdownFilter.withHasFocus model.customModel.searchHasFocus
                             |> DropdownFilter.withOnFocus SearchComponentFocus
@@ -180,7 +152,8 @@ stories =
                         , input = model.customModel.searchComponentInput
                         , onSelect = SearchComponentSelected
                         , items = searchResult
-                        , selectedValue = model.customModel.selectedSearchComponent
+                        , selectedValue = model.customModel.selectedSearchComponent |> Maybe.map .value
+                        , uniqueId = "my-id6"
                         }
                         |> DropdownFilter.withHasFocus model.customModel.searchHasFocus
                         |> DropdownFilter.withOnFocus SearchComponentFocus
@@ -197,7 +170,8 @@ stories =
                         , input = model.customModel.searchComponentInput
                         , onSelect = SearchComponentSelected
                         , items = searchResult
-                        , selectedValue = model.customModel.selectedSearchComponent
+                        , selectedValue = model.customModel.selectedSearchComponent |> Maybe.map .value
+                        , uniqueId = "my-id7"
                         }
                         |> DropdownFilter.withHasFocus model.customModel.searchHasFocus
                         |> DropdownFilter.withOnFocus SearchComponentFocus
@@ -215,12 +189,31 @@ stories =
                         , input = model.customModel.searchComponentInput
                         , onSelect = SearchComponentSelected
                         , items = searchResult
-                        , selectedValue = model.customModel.selectedSearchComponent
+                        , selectedValue = model.customModel.selectedSearchComponent |> Maybe.map .value
+                        , uniqueId = "my-id8"
                         }
                         |> DropdownFilter.withHasFocus model.customModel.searchHasFocus
                         |> DropdownFilter.withOnFocus SearchComponentFocus
                         |> DropdownFilter.withSmallSize
                         |> DropdownFilter.withIsLoading True
+                        |> DropdownFilter.view []
+                    ]
+          , {}
+          )
+        , ( "Disabled"
+          , \model ->
+                Html.div [ css [ displayFlex, flexDirection column ] ]
+                    [ DropdownFilter.init
+                        { onInput = SearchComponentInput
+                        , input = model.customModel.searchComponentInput
+                        , onSelect = SearchComponentSelected
+                        , items = searchResult
+                        , selectedValue = model.customModel.selectedSearchComponent |> Maybe.map .value
+                        , uniqueId = "my-id-8"
+                        }
+                        |> DropdownFilter.withHasFocus model.customModel.searchHasFocus
+                        |> DropdownFilter.withOnFocus SearchComponentFocus
+                        |> DropdownFilter.withDisabled True
                         |> DropdownFilter.view []
                     ]
           , {}

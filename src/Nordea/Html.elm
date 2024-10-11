@@ -1,6 +1,6 @@
 module Nordea.Html exposing
-    ( column
-    , hideIf
+    ( attrIf
+    , column
     , nothing
     , row
     , showIf
@@ -11,7 +11,9 @@ module Nordea.Html exposing
     )
 
 import Css exposing (Style, displayFlex, flexDirection, flexWrap, wrap)
+import Html.Attributes.Extra as Attributes
 import Html.Styled as Html exposing (Attribute, Html, div, styled)
+import Html.Styled.Attributes as Attributes
 
 
 nothing : Html msg
@@ -67,15 +69,6 @@ showIf condition element =
         nothing
 
 
-hideIf : Bool -> Html msg -> Html msg
-hideIf condition html =
-    if condition then
-        nothing
-
-    else
-        html
-
-
 viewIfNotEmpty : List a -> (List a -> Html msg) -> Html msg
 viewIfNotEmpty list view =
     if not (List.isEmpty list) then
@@ -92,3 +85,12 @@ styleIf condition style =
 
     else
         Css.property "_" "_"
+
+
+attrIf : Bool -> Attribute msg -> Attribute msg
+attrIf condition attr =
+    if condition then
+        attr
+
+    else
+        Attributes.empty |> Attributes.fromUnstyled

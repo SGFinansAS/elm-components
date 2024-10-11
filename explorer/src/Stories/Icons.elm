@@ -1,18 +1,10 @@
 module Stories.Icons exposing (stories)
 
-import Css
-    exposing
-        ( column
-        , displayFlex
-        , flexDirection
-        , rem
-        , row
-        , width
-        )
+import Css exposing (alignItems, center, column, displayFlex, flexDirection, flexWrap, height, justifyContent, rem, row, spaceBetween, width, wrap)
 import Html.Styled as Html
 import Html.Styled.Attributes exposing (css)
 import Nordea.Components.Text as Text
-import Nordea.Css exposing (gap)
+import Nordea.Css exposing (columnGap, gap)
 import Nordea.Resources.Icons as Icons
 import UIExplorer exposing (UI)
 import UIExplorer.Styled exposing (styledStoriesOf)
@@ -24,9 +16,17 @@ stories =
         iconCategoryHeader headerText =
             Text.bodyTextHeavy |> Text.view [] [ Html.text headerText ]
 
-        iconsRow icons =
-            Html.div [ css [ displayFlex, flexDirection row, gap (rem 2) ] ]
-                icons
+        iconsRowWithDescription iconsWithDescription =
+            Html.div [ css [ displayFlex, flexDirection row, columnGap (rem 1) ] ]
+                (iconsWithDescription
+                    |> List.map
+                        (\( icon, description ) ->
+                            Html.div [ css [ displayFlex, flexDirection column, flexWrap wrap, justifyContent spaceBetween, alignItems center, height (rem 4) ] ]
+                                [ icon [ css [ width (rem 1.5), height (rem 2) ] ]
+                                , Text.textTinyLight |> Text.view [] [ Html.text description ]
+                                ]
+                        )
+                )
     in
     styledStoriesOf
         "Icons"
@@ -34,68 +34,78 @@ stories =
           , \_ ->
                 Html.div [ css [ displayFlex, flexDirection column, gap (rem 1) ] ]
                     [ iconCategoryHeader "Arrows and directions"
-                    , iconsRow
-                        [ Icons.arrowBack [ css [ width (rem 1.5) ] ]
-                        , Icons.chevronLeft [ css [ width (rem 1.5) ] ]
-                        , Icons.chevronUp [ css [ width (rem 1.5) ] ]
-                        , Icons.chevronDown [ css [ width (rem 1.5) ] ]
-                        , Icons.chevronRight [ css [ width (rem 1.5) ] ]
-                        , Icons.triangleDown [ css [ width (rem 1.5) ] ]
-                        , Icons.triangleUp [ css [ width (rem 1.5) ] ]
+                    , iconsRowWithDescription
+                        [ ( Icons.arrowBack, "arrowBack" )
+                        , ( Icons.chevronLeft, "chevronLeft" )
+                        , ( Icons.chevronUp, "chevronUp" )
+                        , ( Icons.chevronDown, "chevronDown" )
+                        , ( Icons.chevronRight, "chevronRight" )
+                        , ( Icons.triangleDown, "triangleDown" )
+                        , ( Icons.triangleUp, "triangleUp" )
                         ]
                     , iconCategoryHeader "Functions & features"
-                    , iconsRow
-                        [ Icons.delete [ css [ width (rem 1.5) ] ]
-                        , Icons.user [ css [ width (rem 1.5) ] ]
-                        , Icons.contacts [ css [ width (rem 1.5) ] ]
-                        , Icons.cog [ css [ width (rem 1.5) ] ]
-                        , Icons.exit [ css [ width (rem 1.5) ] ]
-                        , Icons.document [ css [ width (rem 1.5) ] ]
-                        , Icons.download [ css [ width (rem 1.5) ] ]
-                        , Icons.orders [ css [ width (rem 1.5) ] ]
-                        , Icons.agreements [ css [ width (rem 1.5) ] ]
-                        , Icons.insights [ css [ width (rem 1.5) ] ]
-                        , Icons.applications [ css [ width (rem 1.5) ] ]
-                        , Icons.portfolio [ css [ width (rem 1.5) ] ]
-                        , Icons.search [ css [ width (rem 1.5) ] ]
-                        , Icons.search2 [ css [ width (rem 1.5) ] ]
-                        , Icons.edit [ css [ width (rem 1.5) ] ]
-                        , Icons.settings [ css [ width (rem 1.5) ] ]
-                        , Icons.bell [ css [ width (rem 1.5) ] ]
-                        , Icons.star [ css [ width (rem 1.5) ] ]
-                        , Icons.calendar [ css [ width (rem 1.5) ] ]
-                        , Icons.visible [ css [ width (rem 1.5) ] ]
-                        , Icons.invisible [ css [ width (rem 1.5) ] ]
-                        , Icons.pdf [ css [ width (rem 1.5) ] ]
+                    , iconsRowWithDescription
+                        [ ( Icons.delete, "delete" )
+                        , ( Icons.user, "user" )
+                        , ( Icons.contacts, "contacts" )
+                        , ( Icons.cog, "cog" )
+                        , ( Icons.exit, "exit" )
+                        , ( Icons.document, "document" )
+                        , ( Icons.download, "download" )
+                        , ( Icons.orders, "orders" )
+                        , ( Icons.agreements, "agreements" )
+                        , ( Icons.completedOrder, "completedOrder" )
+                        , ( Icons.insights, "insights" )
+                        , ( Icons.applications, "applications" )
+                        , ( Icons.portfolio, "portfolio" )
+                        , ( Icons.search, "search" )
+                        , ( Icons.search2, "search2" )
+                        , ( Icons.edit, "edit" )
+                        , ( Icons.settings, "settings" )
+                        , ( Icons.bell, "bell" )
+                        , ( Icons.star, "star" )
+                        , ( Icons.filledStar, "filledStar" )
+                        , ( Icons.calendar, "calendar" )
+                        , ( Icons.visible, "visible" )
+                        , ( Icons.invisible, "invisible" )
+                        , ( Icons.pdf, "pdf" )
+                        , ( Icons.openEnvelope, "openEnvelope" )
                         ]
                     , iconCategoryHeader "Add, remove, accept and cancel"
-                    , iconsRow
-                        [ Icons.warning [ css [ width (rem 1.5) ] ]
-                        , Icons.filledWarning [ css [ width (rem 1.5) ] ]
-                        , Icons.info [ css [ width (rem 1.5) ] ]
-                        , Icons.filledInfo [ css [ width (rem 1.5) ] ]
-                        , Icons.questionMark [ css [ width (rem 1.5) ] ]
-                        , Icons.close [ css [ width (rem 1.5) ] ]
-                        , Icons.filledCheckmark [ css [ width (rem 1.5) ] ]
-                        , Icons.unfilledCheckmark [ css [ width (rem 1.5) ] ]
-                        , Icons.unfilledMark [ css [ width (rem 1.5) ] ]
-                        , Icons.dismiss [ css [ width (rem 1.5) ] ]
-                        , Icons.unfilledDismiss [ css [ width (rem 1.5) ] ]
-                        , Icons.mediumPlus [ css [ width (rem 1.5) ] ]
-                        , Icons.add [ css [ width (rem 1.5) ] ]
+                    , iconsRowWithDescription
+                        [ ( Icons.warning, "warning" )
+                        , ( Icons.filledWarning, "filledWarning" )
+                        , ( Icons.info, "info" )
+                        , ( Icons.filledInfo, "filledInfo" )
+                        , ( Icons.questionMark, "questionMark" )
+                        , ( Icons.close, "close" )
+                        , ( Icons.filledCheckmark, "filledCheckmark" )
+                        , ( Icons.unfilledCheckmark, "unfilledCheckmark" )
+                        , ( Icons.unfilledMark, "unfilledMark" )
+                        , ( Icons.dismiss, "dismiss" )
+                        , ( Icons.unfilledDismiss, "unfilledDismiss" )
+                        , ( Icons.mediumPlus, "mediumPlus" )
+                        , ( Icons.add, "add" )
                         ]
                     , iconCategoryHeader "Contact"
-                    , iconsRow
-                        [ Icons.contact [ css [ width (rem 1.5) ] ]
-                        , Icons.largeEnvelope [ css [ width (rem 1.5) ] ]
-                        , Icons.largePhone [ css [ width (rem 1.5) ] ]
+                    , iconsRowWithDescription
+                        [ ( Icons.contact, "contact" )
+                        , ( Icons.largeEnvelope, "largeEnvelope" )
+                        , ( Icons.largePhone, "largePhone" )
                         ]
                     , iconCategoryHeader "Misc."
-                    , iconsRow
-                        [ Icons.downloaded [ css [ width (rem 1.5) ] ]
-                        , Icons.abacus [ css [ width (rem 1.5) ] ]
-                        , Icons.object [ css [ width (rem 1.5) ] ]
-                        , Icons.lightBulb [ css [ width (rem 1.5) ] ]
+                    , iconsRowWithDescription
+                        [ ( Icons.downloaded, "downloaded" )
+                        , ( Icons.abacus, "abacus" )
+                        , ( Icons.object, "object" )
+                        , ( Icons.lightBulb, "lightBulb" )
+                        , ( Icons.eye, "eye" )
+                        ]
+                    , iconCategoryHeader "Country flags"
+                    , iconsRowWithDescription
+                        [ ( Icons.norway, "norway" )
+                        , ( Icons.sweden, "sweden" )
+                        , ( Icons.denmark, "denmark" )
                         ]
                     ]
           , {}

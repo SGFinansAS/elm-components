@@ -1,4 +1,4 @@
-module Nordea.Html.Events exposing (Key(..), onChange, onEnterOrSpacePress, onEscPress, onKeyDown)
+module Nordea.Html.Events exposing (Key(..), onChange, onEnterOrSpacePress, onEnterPress, onEscPress, onKeyDown)
 
 import Html.Styled exposing (Attribute)
 import Html.Styled.Events as Events
@@ -39,6 +39,22 @@ onKeyDown msg =
         )
 
 
+onEnterPress : msg -> Attribute msg
+onEnterPress msg =
+    Events.preventDefaultOn "keydown"
+        -- prevent the space from moving the page
+        (Events.keyCode
+            |> Decode.andThen
+                (\keyCode ->
+                    if keyCode == 13 then
+                        Decode.succeed ( msg, True )
+
+                    else
+                        Decode.fail "Not enter"
+                )
+        )
+
+
 onEnterOrSpacePress : msg -> Attribute msg
 onEnterOrSpacePress msg =
     Events.preventDefaultOn "keydown"
@@ -50,7 +66,7 @@ onEnterOrSpacePress msg =
                         Decode.succeed ( msg, True )
 
                     else
-                        Decode.fail "Not space and enter"
+                        Decode.fail "Not space or enter"
                 )
         )
 
