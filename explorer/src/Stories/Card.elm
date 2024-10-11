@@ -1,7 +1,7 @@
 module Stories.Card exposing (stories)
 
 import Config exposing (Config, Msg(..))
-import Css exposing (alignItems, center, displayFlex, marginBottom, rem, width)
+import Css exposing (alignItems, center, displayFlex, rem, width)
 import Html.Styled as Html
 import Html.Styled.Attributes exposing (css)
 import Nordea.Components.Card as Card

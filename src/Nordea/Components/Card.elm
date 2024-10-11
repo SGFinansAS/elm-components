@@ -70,15 +70,15 @@ view attrs children (Card config) =
     if config.isCollapsible then
         AccordionMenu.view { isOpen = config.isOpen }
             baseStyle
-            (headerCollapsible (Maybe.values [ config.onClick |> Maybe.map onClick ] ++ attrs)
+            [ headerCollapsible (Maybe.values [ config.onClick |> Maybe.map onClick ] ++ attrs)
                 [ config.title
                     |> viewMaybe (\title_ -> title_)
                 , config.emphasisedText
                     |> viewMaybe
                         (\emphasisedText_ -> emphasisedTextWithTransition emphasisedText_)
                 ]
-                :: [ Html.div [ css [ marginTop (rem 1.5) ] ] children ]
-            )
+            , Html.div [ css [ marginTop (rem 1.5) ] ] children
+            ]
 
     else
         Html.div baseStyle
