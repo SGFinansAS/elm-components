@@ -7,9 +7,10 @@ module Nordea.Components.Card exposing
     , isCollapsible
     , title
     , view
+    , withHtmlTitle
     , withShadow
     , withTitle
-    , withHtmlTitle)
+    )
 
 import Css
     exposing
@@ -193,6 +194,7 @@ footer attrs children =
 withTitle : String -> Card msg -> Card msg
 withTitle title_ (Card config) =
     Card { config | title = Just title_ }
+
 
 withHtmlTitle : Html msg -> Card msg -> Card msg
 withHtmlTitle title_ (Card config) =

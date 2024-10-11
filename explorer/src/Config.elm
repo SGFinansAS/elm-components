@@ -298,4 +298,4 @@ update msg config =
             { config | fiveStarRating = value }
 
         ToggleOpenCard ->
-            {config | isCardOpen = not config.isCardOpen}
+            { config | isCardOpen = not config.isCardOpen }

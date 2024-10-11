@@ -79,25 +79,25 @@ stories =
                             ]
                         ]
           , {}
-          ),
-          ( "Collapsible with html title"
-                    , \model ->
-                          Card.init
-                              |> Card.withHtmlTitle (Html.div [css [displayFlex, gap (rem 1), alignItems center, marginBottom (rem 1.5)]] [Icons.user [css [width (rem 1.5)]], Html.text "Title with icon"])
-                              |> Card.isCollapsible (Just {emphasisedText = Html.nothing, isOpen=model.customModel.isCardOpen, onClick= ToggleOpenCard})
-                              |> Card.withShadow
-                              |> Card.view []
-                                  [ Card.infoBox [ css [ gap (rem 1) ] ]
-                                      [ Html.row [ css [ alignItems center, gap (rem 0.5) ] ]
-                                          [ Icons.filledCheckmark [ css [ width (rem 1.5) ] ]
-                                          , Html.text "Some completed task"
-                                          ]
-                                      , Html.row [ css [ alignItems center, gap (rem 0.5) ] ]
-                                          [ Icons.unfilledMark [ css [ width (rem 1.5) ] ]
-                                          , Html.text "Some not completed task"
-                                          ]
-                                      ]
-                                  ]
-                    , {}
-                    )
+          )
+        , ( "Collapsible with html title"
+          , \model ->
+                Card.init
+                    |> Card.withHtmlTitle (Html.div [ css [ displayFlex, gap (rem 1), alignItems center, marginBottom (rem 1.5) ] ] [ Icons.user [ css [ width (rem 1.5) ] ], Html.text "Title with icon" ])
+                    |> Card.isCollapsible (Just { emphasisedText = Html.nothing, isOpen = model.customModel.isCardOpen, onClick = ToggleOpenCard })
+                    |> Card.withShadow
+                    |> Card.view []
+                        [ Card.infoBox [ css [ gap (rem 1) ] ]
+                            [ Html.row [ css [ alignItems center, gap (rem 0.5) ] ]
+                                [ Icons.filledCheckmark [ css [ width (rem 1.5) ] ]
+                                , Html.text "Some completed task"
+                                ]
+                            , Html.row [ css [ alignItems center, gap (rem 0.5) ] ]
+                                [ Icons.unfilledMark [ css [ width (rem 1.5) ] ]
+                                , Html.text "Some not completed task"
+                                ]
+                            ]
+                        ]
+          , {}
+          )
         ]
