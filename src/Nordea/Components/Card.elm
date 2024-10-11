@@ -26,7 +26,7 @@ import Nordea.Resources.Icons as Icons
 
 
 type alias CardProperties msg =
-    { htmlTitle : Maybe (Html msg)
+    { title : Maybe (Html msg)
     , emphasisedText : Maybe (Html msg)
     , hasShadow : Bool
     , isCollapsible : Bool
@@ -42,7 +42,7 @@ type Card msg
 init : Card msg
 init =
     Card
-        {  htmlTitle = Nothing
+        { title = Nothing
         , emphasisedText = Nothing
         , hasShadow = False
         , isCollapsible = False
@@ -71,20 +71,18 @@ view attrs children (Card config) =
         AccordionMenu.view { isOpen = config.isOpen }
             baseStyle
             (headerCollapsible (Maybe.values [ config.onClick |> Maybe.map onClick ] ++ attrs)
-                [
-                config.htmlTitle
-                    |> viewMaybe (\htmlTitle -> htmlTitle)
+                [ config.title
+                    |> viewMaybe (\title_ -> title_)
                 , config.emphasisedText
                     |> viewMaybe
                         (\emphasisedText_ -> emphasisedTextWithTransition emphasisedText_)
                 ]
-                :: [Html.div [css [ marginTop (rem 1.5) ]] children]
-
+                :: [ Html.div [ css [ marginTop (rem 1.5) ] ] children ]
             )
 
     else
         Html.div baseStyle
-            ((config.htmlTitle |> viewMaybe (\htmlTitle -> htmlTitle))
+            ((config.title |> viewMaybe (\title_ -> title_))
                 :: children
             )
 
@@ -165,12 +163,12 @@ footer attrs children =
 
 withTitle : String -> Card msg -> Card msg
 withTitle title_ (Card config) =
-    Card { config | htmlTitle = Just (header [] [ title [] [ Html.text title_ ]]) }
+    Card { config | title = Just (header [] [ title [] [ Html.text title_ ] ]) }
 
 
 withHtmlTitle : Html msg -> Card msg -> Card msg
 withHtmlTitle title_ (Card config) =
-    Card { config | htmlTitle = Just title_ }
+    Card { config | title = Just title_ }
 
 
 withShadow : Card msg -> Card msg
