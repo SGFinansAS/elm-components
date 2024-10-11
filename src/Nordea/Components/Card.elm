@@ -101,7 +101,7 @@ view attrs children (Card config) =
             baseStyle
             (headerCollapsible (Maybe.values [ config.onClick |> Maybe.map onClick ] ++ attrs)
                 [ config.title |> viewMaybe (\title_ -> Text.bodyTextHeavy |> Text.view [ css [] ] [ Html.text title_ ])
-                , config.htmlTitle |> viewMaybe (\htmlTitle -> htmlTitle)
+                , config.htmlTitle |> viewMaybe (\htmlTitle -> Html.div [css [marginBottom (rem 1.5)]] [htmlTitle])
                 , config.emphasisedText
                     |> viewMaybe
                         (\emphasisedText_ -> emphasisedTextWithTransition emphasisedText_)

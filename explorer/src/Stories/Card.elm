@@ -83,7 +83,7 @@ stories =
         , ( "Collapsible with html title"
           , \model ->
                 Card.init
-                    |> Card.withHtmlTitle (Html.div [ css [ displayFlex, gap (rem 1), alignItems center, marginBottom (rem 1.5) ] ] [ Icons.user [ css [ width (rem 1.5) ] ], Html.text "Title with icon" ])
+                    |> Card.withHtmlTitle (Html.div [ css [ displayFlex, gap (rem 1), alignItems center ] ] [ Icons.user [ css [ width (rem 1.5) ] ], Html.text "Title with icon" ])
                     |> Card.isCollapsible (Just { emphasisedText = Html.nothing, isOpen = model.customModel.isCardOpen, onClick = ToggleOpenCard })
                     |> Card.withShadow
                     |> Card.view []
