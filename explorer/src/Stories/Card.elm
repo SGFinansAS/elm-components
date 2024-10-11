@@ -80,6 +80,26 @@ stories =
                         ]
           , {}
           )
+        , ( "Collapsible with string title"
+          , \model ->
+                Card.init
+                    |> Card.withTitle "Title"
+                    |> Card.isCollapsible (Just { emphasisedText = Html.nothing, isOpen = model.customModel.isCardOpen, onClick = ToggleOpenCard })
+                    |> Card.withShadow
+                    |> Card.view []
+                        [ Card.infoBox [ css [ gap (rem 1) ] ]
+                            [ Html.row [ css [ alignItems center, gap (rem 0.5) ] ]
+                                [ Icons.filledCheckmark [ css [ width (rem 1.5) ] ]
+                                , Html.text "Some completed task"
+                                ]
+                            , Html.row [ css [ alignItems center, gap (rem 0.5) ] ]
+                                [ Icons.unfilledMark [ css [ width (rem 1.5) ] ]
+                                , Html.text "Some not completed task"
+                                ]
+                            ]
+                        ]
+          , {}
+          )
         , ( "Collapsible with html title"
           , \model ->
                 Card.init

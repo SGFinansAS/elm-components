@@ -12,34 +12,7 @@ module Nordea.Components.Card exposing
     , withTitle
     )
 
-import Css
-    exposing
-        ( alignItems
-        , auto
-        , backgroundColor
-        , border3
-        , borderRadius
-        , borderStyle
-        , boxShadow4
-        , center
-        , color
-        , column
-        , cursor
-        , displayFlex
-        , flexDirection
-        , height
-        , left
-        , margin2
-        , marginBottom
-        , marginLeft
-        , none
-        , padding
-        , pointer
-        , rem
-        , solid
-        , textAlign
-        , width
-        )
+import Css exposing (alignItems, auto, backgroundColor, border3, borderRadius, borderStyle, boxShadow4, center, color, column, cursor, displayFlex, flexDirection, height, left, margin2, marginBottom, marginLeft, marginTop, none, padding, pointer, rem, solid, textAlign, width)
 import Css.Transitions as Transitions exposing (transition)
 import Html.Styled as Html exposing (Attribute, Html)
 import Html.Styled.Attributes as Html exposing (css)
@@ -53,8 +26,7 @@ import Nordea.Resources.Icons as Icons
 
 
 type alias CardProperties msg =
-    { title : Maybe String
-    , htmlTitle : Maybe (Html msg)
+    { htmlTitle : Maybe (Html msg)
     , emphasisedText : Maybe (Html msg)
     , hasShadow : Bool
     , isCollapsible : Bool
@@ -70,8 +42,7 @@ type Card msg
 init : Card msg
 init =
     Card
-        { title = Nothing
-        , htmlTitle = Nothing
+        {  htmlTitle = Nothing
         , emphasisedText = Nothing
         , hasShadow = False
         , isCollapsible = False
@@ -100,19 +71,20 @@ view attrs children (Card config) =
         AccordionMenu.view { isOpen = config.isOpen }
             baseStyle
             (headerCollapsible (Maybe.values [ config.onClick |> Maybe.map onClick ] ++ attrs)
-                [ config.title |> viewMaybe (\title_ -> Text.bodyTextHeavy |> Text.view [ css [] ] [ Html.text title_ ])
-                , config.htmlTitle |> viewMaybe (\htmlTitle -> Html.div [ css (if config.isOpen then [ marginBottom (rem 1.5) ] else []) ] [ htmlTitle ])
+                [
+                config.htmlTitle
+                    |> viewMaybe (\htmlTitle -> htmlTitle)
                 , config.emphasisedText
                     |> viewMaybe
                         (\emphasisedText_ -> emphasisedTextWithTransition emphasisedText_)
                 ]
-                :: children
+                :: [Html.div [css [ marginTop (rem 1.5) ]] children]
+
             )
 
     else
         Html.div baseStyle
-            ((config.title |> viewMaybe (\title_ -> header [] [ title [] [ Html.text title_ ] ]))
-                :: (config.htmlTitle |> viewMaybe (\htmlTitle -> htmlTitle))
+            ((config.htmlTitle |> viewMaybe (\htmlTitle -> htmlTitle))
                 :: children
             )
 
@@ -193,7 +165,7 @@ footer attrs children =
 
 withTitle : String -> Card msg -> Card msg
 withTitle title_ (Card config) =
-    Card { config | title = Just title_ }
+    Card { config | htmlTitle = Just (header [] [ title [] [ Html.text title_ ]]) }
 
 
 withHtmlTitle : Html msg -> Card msg -> Card msg
