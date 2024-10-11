@@ -9,7 +9,7 @@ module Nordea.Components.Card exposing
     , view
     , withShadow
     , withTitle
-    )
+    , withHtmlTitle)
 
 import Css
     exposing
@@ -53,6 +53,7 @@ import Nordea.Resources.Icons as Icons
 
 type alias CardProperties msg =
     { title : Maybe String
+    , htmlTitle : Maybe (Html msg)
     , emphasisedText : Maybe (Html msg)
     , hasShadow : Bool
     , isCollapsible : Bool
@@ -69,6 +70,7 @@ init : Card msg
 init =
     Card
         { title = Nothing
+        , htmlTitle = Nothing
         , emphasisedText = Nothing
         , hasShadow = False
         , isCollapsible = False
@@ -98,6 +100,7 @@ view attrs children (Card config) =
             baseStyle
             (headerCollapsible (Maybe.values [ config.onClick |> Maybe.map onClick ] ++ attrs)
                 [ config.title |> viewMaybe (\title_ -> Text.bodyTextHeavy |> Text.view [ css [] ] [ Html.text title_ ])
+                , config.htmlTitle |> viewMaybe (\htmlTitle -> htmlTitle)
                 , config.emphasisedText
                     |> viewMaybe
                         (\emphasisedText_ -> emphasisedTextWithTransition emphasisedText_)
@@ -108,6 +111,7 @@ view attrs children (Card config) =
     else
         Html.div baseStyle
             ((config.title |> viewMaybe (\title_ -> header [] [ title [] [ Html.text title_ ] ]))
+                :: (config.htmlTitle |> viewMaybe (\htmlTitle -> htmlTitle))
                 :: children
             )
 
@@ -189,6 +193,10 @@ footer attrs children =
 withTitle : String -> Card msg -> Card msg
 withTitle title_ (Card config) =
     Card { config | title = Just title_ }
+
+withHtmlTitle : Html msg -> Card msg -> Card msg
+withHtmlTitle title_ (Card config) =
+    Card { config | htmlTitle = Just title_ }
 
 
 withShadow : Card msg -> Card msg
