@@ -8,56 +8,7 @@ module Nordea.Components.DatePicker exposing
     , view
     )
 
-import Css
-    exposing
-        ( absolute
-        , alignItems
-        , alignSelf
-        , backgroundColor
-        , border
-        , border3
-        , borderBox
-        , borderRadius
-        , borderRadius4
-        , boxSizing
-        , center
-        , column
-        , cursor
-        , deg
-        , display
-        , displayFlex
-        , flexDirection
-        , flexEnd
-        , focus
-        , fontSize
-        , height
-        , hover
-        , int
-        , justifyContent
-        , left
-        , marginTop
-        , none
-        , outline
-        , padding
-        , padding2
-        , paddingRight
-        , pct
-        , pointer
-        , pointerEvents
-        , position
-        , relative
-        , rem
-        , right
-        , rotateZ
-        , row
-        , solid
-        , spaceBetween
-        , top
-        , transforms
-        , transparent
-        , width
-        , zIndex
-        )
+import Css exposing (absolute, alignItems, alignSelf, backgroundColor, border, border3, borderBox, borderRadius, borderRadius4, boxSizing, center, column, cursor, deg, display, displayFlex, flexDirection, flexEnd, focus, fontSize, height, hover, int, justifyContent, left, marginTop, none, outline, padding, padding2, paddingRight, pct, pointer, position, relative, rem, right, rotateZ, row, solid, spaceBetween, top, transforms, transparent, width, zIndex)
 import Date exposing (Date)
 import Html.Styled as Html exposing (Attribute, Html, input, styled)
 import Html.Styled.Attributes exposing (css, placeholder, value)
@@ -171,7 +122,7 @@ view attrs optional (DatePicker config) =
                             Error v ->
                                 { acc | error = v }
                     )
-                    { placeholder = "dd.MM.yyyy"
+                    { placeholder = "dd.mm.yyyy"
                     , parser = defaultDateParser
                     , formatter = Date.format "dd.MM.yyyy"
                     , firstDayOfWeek = Time.Mon
@@ -279,8 +230,11 @@ dateInput config (InternalState internalState) parser datePlaceholder showError 
                 , position absolute
                 , right (rem 0)
                 , padding (rem 0.375)
-                , pointerEvents none
+
+                --, pointerEvents none
                 , calendarIconColor
+
+                --, cursor help
                 ]
             ]
         ]
