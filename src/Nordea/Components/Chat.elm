@@ -136,8 +136,9 @@ view optionals attrs history content (Chat config) =
             in
             Html.column
                 [ css
-                    [ maxHeight (rem 32)
+                    [ maxHeight (rem 15)
                     , overflow auto
+                    , Css.property "scrollbar-width" "thin"
                     , paddingRight (rem 0.3125)
                     , flexDirection columnReverse |> Css.important
                     ]
