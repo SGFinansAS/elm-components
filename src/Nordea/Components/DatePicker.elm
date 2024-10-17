@@ -278,11 +278,7 @@ dateInput config (InternalState internalState) parser datePlaceholder showError 
                 , position absolute
                 , right (rem 0)
                 , padding (rem 0.375)
-
-                --, pointerEvents none
                 , calendarIconColor
-
-                --, cursor help
                 ]
             ]
         ]
