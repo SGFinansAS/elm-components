@@ -92,6 +92,7 @@ stories =
                         [ ( Icons.contact, "contact" )
                         , ( Icons.largeEnvelope, "largeEnvelope" )
                         , ( Icons.largePhone, "largePhone" )
+                        , ( Icons.salary, "salary" )
                         ]
                     , iconCategoryHeader "Misc."
                     , iconsRowWithDescription
