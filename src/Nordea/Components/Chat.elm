@@ -61,9 +61,10 @@ type Appearance
     | Standard
 
 
-type OptionalConfig
+type OptionalConfig msg
     = Appearance Appearance
     | BetaTag
+    | HeaderText (Html msg)
 
 
 type Chat
@@ -78,10 +79,10 @@ init translate =
         }
 
 
-view : List OptionalConfig -> List (Attribute msg) -> List (Html msg) -> List (Html msg) -> Chat -> Html msg
+view : List (OptionalConfig msg) -> List (Attribute msg) -> List (Html msg) -> List (Html msg) -> Chat -> Html msg
 view optionals attrs history content (Chat config) =
     let
-        { appearance, showBetaTag } =
+        { appearance, showBetaTag, headerText } =
             optionals
                 |> List.foldl
                     (\e acc ->
@@ -91,9 +92,13 @@ view optionals attrs history content (Chat config) =
 
                             BetaTag ->
                                 { acc | showBetaTag = True }
+
+                            HeaderText headerText ->
+                                { acc | headerText = headerText }
                     )
                     { appearance = Standard
                     , showBetaTag = False
+                    , headerText = strings.title |> config.translate |> Html.text
                     }
 
         appearanceSpecificStyles =
@@ -113,14 +118,14 @@ view optionals attrs history content (Chat config) =
                     Html.row [ css [ marginBottom (rem 1) ] ]
                         [ Illustrations.messageInstructionalStar [ css [ width (rem 2), marginRight (rem 0.5) ] ]
                         , Text.bodyTextHeavy
-                            |> Text.view [ css [ Themes.color Colors.deepBlue, alignSelf flexEnd ] ] [ strings.title |> config.translate |> Html.text ]
+                            |> Text.view [ css [ Themes.color Colors.deepBlue, alignSelf flexEnd ] ] [ headerText ]
                         ]
 
                 Small ->
                     Html.row [ css [ marginBottom (rem 0.5) ] ]
                         [ Illustrations.messageInstructionalStar [ css [ width (rem 1.5), marginRight (rem 0.5) ] ]
                         , Text.textTinyHeavy
-                            |> Text.view [ css [ Themes.color Colors.deepBlue, alignSelf flexEnd ] ] [ strings.title |> config.translate |> Html.text ]
+                            |> Text.view [ css [ Themes.color Colors.deepBlue, alignSelf flexEnd ] ] [ headerText ]
                         , Tag.beta [ css [ marginLeft auto ] ] |> showIf showBetaTag
                         ]
 
