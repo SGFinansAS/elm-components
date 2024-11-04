@@ -1,4 +1,4 @@
-module Nordea.Components.Status exposing (blue, gray, green, partiallyFilled, red, yellow)
+module Nordea.Components.Status exposing (StatusColor(..), blue, gray, green, partiallyFilled, red, small, smallPartiallyFilled, yellow)
 
 import Css
     exposing
@@ -16,7 +16,7 @@ import Css
         , inlineBlock
         , left
         , overflow
-        , padding
+        , padding2
         , pct
         , position
         , relative
@@ -40,14 +40,21 @@ type StatusColor
     | TwoColors Color Color Float
 
 
-view : String -> StatusColor -> List (Attribute msg) -> Html msg
-view text statusColor attrs =
+view : String -> StatusColor -> Bool -> List (Attribute msg) -> Html msg
+view text statusColor isSmall attrs =
     let
+        ( paddingStyle, borderRadiusStyle ) =
+            if isSmall then
+                ( padding2 (rem 0.25) (rem 0.5), borderRadius (rem 0.5) )
+
+            else
+                ( padding2 (rem 0.5) (rem 0.75), borderRadius (rem 0.75) )
+
         attrs_ bgColor =
             css
                 [ display inlineBlock
-                , borderRadius (rem 0.75)
-                , padding (rem 0.5)
+                , borderRadiusStyle
+                , paddingStyle
                 , backgroundColor bgColor
                 , textOverflow ellipsis
                 , overflow hidden
@@ -114,29 +121,39 @@ view text statusColor attrs =
 
 green : String -> List (Attribute msg) -> Html msg
 green text =
-    view text Green
+    view text Green False
 
 
 yellow : String -> List (Attribute msg) -> Html msg
 yellow text =
-    view text Yellow
+    view text Yellow False
 
 
 red : String -> List (Attribute msg) -> Html msg
 red text =
-    view text Red
+    view text Red False
 
 
 blue : String -> List (Attribute msg) -> Html msg
 blue text =
-    view text CloudBlue
+    view text CloudBlue False
 
 
 gray : String -> List (Attribute msg) -> Html msg
 gray text =
-    view text LightGray
+    view text LightGray False
+
+
+small : StatusColor -> String -> List (Attribute msg) -> Html msg
+small color text attrs =
+    view text color True attrs
 
 
 partiallyFilled : String -> Color -> Float -> List (Attribute msg) -> Html msg
 partiallyFilled text colorDone pctDone =
-    view text (TwoColors colorDone (colorDone |> Color.withAlpha 0.4) pctDone)
+    view text (TwoColors colorDone (colorDone |> Color.withAlpha 0.4) pctDone) False
+
+
+smallPartiallyFilled : String -> Color -> Float -> List (Attribute msg) -> Html msg
+smallPartiallyFilled text colorDone pctDone attrs =
+    view text (TwoColors colorDone (colorDone |> Color.withAlpha 0.4) pctDone) True attrs

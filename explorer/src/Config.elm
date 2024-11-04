@@ -6,6 +6,7 @@ import Html.Styled as Html
 import Nordea.Components.Accordion as Accordion exposing (Accordion)
 import Nordea.Components.DatePicker as DatePicker exposing (DatePicker)
 import Nordea.Components.DropdownFilter exposing (Item)
+import Set exposing (Set)
 import Stories.SortableTableSharedTypes
 import Time exposing (Month(..))
 
@@ -28,6 +29,8 @@ type alias OrganizationInfo =
 
 type alias Config =
     { accordion : Accordion
+    , openAccordionTableRows : Set Int
+    , selectedAccordionTableRows : Set Int
     , isModalOpen : Bool
     , searchComponentInput : String
     , hasMultiSelectDropdownFocus : Bool
@@ -53,11 +56,15 @@ type alias Config =
     , datePicker : DatePicker Msg
     , currentDatePickerValue : Maybe DatePicker.DateResult
     , fiveStarRating : Int
+    , isCardOpen : Bool
     }
 
 
 type Msg
     = AccordionMsg Accordion.Msg
+    | AccordionTableRowToggled Int Bool
+    | AccordionTableAllRowsChecked Bool
+    | AccordionTableRowChecked Int Bool
     | SearchComponentInput String
     | SearchComponentSelected (Maybe (Item FinancingVariant))
     | SearchComponentSelectedOrgInfo (Maybe (Item OrganizationInfo))
@@ -87,6 +94,7 @@ type Msg
     | PaginationClickedAt Int
     | DateSelected DatePicker.DateResult DatePicker.InternalState
     | UpdateDatePickerInternalState DatePicker.InternalState
+    | ToggleOpenCard
     | SetRating Int
 
 
@@ -105,6 +113,8 @@ init =
                 , body = [ Html.text "This is an answer" ]
                 , open = False
                 }
+    , openAccordionTableRows = Set.empty
+    , selectedAccordionTableRows = Set.empty
     , searchComponentInput = ""
     , selectedSearchComponent = Nothing
     , selectedSearchComponentOrgInfo = Nothing
@@ -129,6 +139,7 @@ init =
     , paginationCurrentPage = 1
     , datePicker = DatePicker.init (Date.fromCalendarDate 2024 May 1) "" DateSelected UpdateDatePickerInternalState
     , currentDatePickerValue = Nothing
+    , isCardOpen = True
     , fiveStarRating = 0
     }
 
@@ -138,6 +149,38 @@ update msg config =
     case msg of
         AccordionMsg m ->
             { config | accordion = Accordion.update m config.accordion }
+
+        AccordionTableRowToggled index isOpen ->
+            let
+                operation =
+                    if isOpen then
+                        Set.insert
+
+                    else
+                        Set.remove
+            in
+            { config | openAccordionTableRows = operation index config.openAccordionTableRows }
+
+        AccordionTableAllRowsChecked areChecked ->
+            { config
+                | selectedAccordionTableRows =
+                    if areChecked then
+                        Set.fromList [ 0, 1 ]
+
+                    else
+                        Set.empty
+            }
+
+        AccordionTableRowChecked index isChecked ->
+            let
+                operation =
+                    if isChecked then
+                        Set.insert
+
+                    else
+                        Set.remove
+            in
+            { config | selectedAccordionTableRows = operation index config.selectedAccordionTableRows }
 
         SearchComponentInput input ->
             { config | searchComponentInput = input }
@@ -253,3 +296,6 @@ update msg config =
 
         SetRating value ->
             { config | fiveStarRating = value }
+
+        ToggleOpenCard ->
+            { config | isCardOpen = not config.isCardOpen }

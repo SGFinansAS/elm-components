@@ -43,7 +43,6 @@ import Css
         , paddingRight
         , pct
         , pointer
-        , pointerEvents
         , position
         , relative
         , rem
@@ -171,7 +170,7 @@ view attrs optional (DatePicker config) =
                             Error v ->
                                 { acc | error = v }
                     )
-                    { placeholder = "dd.MM.yyyy"
+                    { placeholder = "dd.mm.yyyy"
                     , parser = defaultDateParser
                     , formatter = Date.format "dd.MM.yyyy"
                     , firstDayOfWeek = Time.Mon
@@ -279,7 +278,6 @@ dateInput config (InternalState internalState) parser datePlaceholder showError 
                 , position absolute
                 , right (rem 0)
                 , padding (rem 0.375)
-                , pointerEvents none
                 , calendarIconColor
                 ]
             ]

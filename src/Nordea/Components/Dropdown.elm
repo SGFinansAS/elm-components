@@ -189,6 +189,13 @@ view attrs (Dropdown config) =
         isDisabled =
             List.member (Attrs.disabled True) attrs
 
+        cursorValue =
+            if isDisabled then
+                Css.default
+
+            else
+                pointer
+
         iconChevron =
             case ( config.variant, config.size ) of
                 ( Standard, StandardSize ) ->
@@ -261,7 +268,7 @@ view attrs (Dropdown config) =
                     ]
                  , color inherit
                  , withAttribute "disabled" [ color Colors.nordeaGray, backgroundColor Colors.coolGray ]
-                 , cursor pointer
+                 , cursor cursorValue
                  , textOverflow ellipsis |> styleIf (config.variant == Simple)
                  ]
                     ++ sizeSpecificStyling

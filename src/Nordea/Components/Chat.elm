@@ -8,23 +8,30 @@ import Css
         , borderRadius4
         , color
         , columnReverse
+        , ellipsis
         , flexDirection
         , flexEnd
+        , hidden
         , justifyContent
         , marginBottom
+        , marginLeft
         , marginRight
         , maxHeight
+        , noWrap
         , overflow
         , padding
         , paddingRight
         , rem
         , solid
         , spaceBetween
+        , textOverflow
+        , whiteSpace
         , width
         )
 import Html.Styled as Html exposing (Attribute, Html)
 import Html.Styled.Attributes exposing (css)
 import Nordea.Components.Card as Card
+import Nordea.Components.Tag as Tag
 import Nordea.Components.Text as Text
 import Nordea.Css exposing (gap)
 import Nordea.Html as Html exposing (showIf)
@@ -43,7 +50,7 @@ type alias Config =
 type alias MessageViewConfig =
     { sentFrom : String
     , sentAt : String
-    , sender : String
+    , sender : Maybe String
     , message : String
     , isUserMessage : Bool
     }
@@ -56,6 +63,7 @@ type Appearance
 
 type OptionalConfig
     = Appearance Appearance
+    | BetaTag
 
 
 type Chat
@@ -73,11 +81,20 @@ init translate =
 view : List OptionalConfig -> List (Attribute msg) -> List (Html msg) -> List (Html msg) -> Chat -> Html msg
 view optionals attrs history content (Chat config) =
     let
-        appearance =
+        { appearance, showBetaTag } =
             optionals
-                |> List.head
-                |> Maybe.map (\(Appearance app) -> app)
-                |> Maybe.withDefault Standard
+                |> List.foldl
+                    (\e acc ->
+                        case e of
+                            Appearance app ->
+                                { acc | appearance = app }
+
+                            BetaTag ->
+                                { acc | showBetaTag = True }
+                    )
+                    { appearance = Standard
+                    , showBetaTag = False
+                    }
 
         appearanceSpecificStyles =
             case appearance of
@@ -104,6 +121,7 @@ view optionals attrs history content (Chat config) =
                         [ Illustrations.messageInstructionalStar [ css [ width (rem 1.5), marginRight (rem 0.5) ] ]
                         , Text.textTinyHeavy
                             |> Text.view [ css [ Themes.color Colors.deepBlue, alignSelf flexEnd ] ] [ strings.title |> config.translate |> Html.text ]
+                        , Tag.beta [ css [ marginLeft auto ] ] |> showIf showBetaTag
                         ]
 
         messageHistoryView =
@@ -118,8 +136,9 @@ view optionals attrs history content (Chat config) =
             in
             Html.column
                 [ css
-                    [ maxHeight (rem 32)
+                    [ maxHeight (rem 15)
                     , overflow auto
+                    , Css.property "scrollbar-width" "thin"
                     , paddingRight (rem 0.3125)
                     , flexDirection columnReverse |> Css.important
                     ]
@@ -154,17 +173,22 @@ chatHistoryView attrs { sentFrom, sentAt, sender, message, isUserMessage } =
                 , Themes.backgroundColor Colors.nordeaBlue
                 ]
 
-        messageLabel text =
+        messageLabel attr text =
             Text.textTinyLight
-                |> Text.view [ css [ color Colors.darkGray ] ] [ Html.text text ]
+                |> Text.view (css [ color Colors.darkGray, whiteSpace noWrap ] :: attr) [ Html.text text ]
     in
     Html.column (css [ gap (rem 0.25) ] :: attrs)
         [ Html.row [ css [ justifyContent spaceBetween ] ]
-            [ messageLabel sentFrom
-            , messageLabel sentAt
+            [ messageLabel [ css [ marginRight (rem 0.25), textOverflow ellipsis, overflow hidden ] ] sentFrom
+            , messageLabel [] sentAt
             ]
-        , Text.textTinyHeavy
-            |> Text.view [] [ Html.text sender ]
+        , sender
+            |> Maybe.map
+                (\sender_ ->
+                    Text.textTinyHeavy
+                        |> Text.view [] [ Html.text sender_ ]
+                )
+            |> Maybe.withDefault Html.nothing
         , Text.textSmallLight
             |> Text.view
                 [ css (padding (rem 0.625) :: messageStyles) ]

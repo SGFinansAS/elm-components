@@ -43,6 +43,7 @@ import Css.Global exposing (descendants, everything, selector, typeSelector)
 import Html.Styled as Html exposing (Attribute, Html)
 import Html.Styled.Attributes exposing (class, css)
 import Nordea.Components.Text as Text
+import Nordea.Css exposing (columnGap)
 import Nordea.Html as Html exposing (showIf)
 import Nordea.Resources.Colors as Colors
 import Nordea.Resources.I18N exposing (Translation)
@@ -126,6 +127,7 @@ view attrs children (Label config) =
                 [ css
                     [ justifyContent spaceBetween
                     , marginBottom (rem 0.2)
+                    , columnGap (rem 1)
                     ]
                 ]
                 [ initText config.size
