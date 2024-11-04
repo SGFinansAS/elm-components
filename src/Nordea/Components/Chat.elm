@@ -93,8 +93,8 @@ view optionals attrs history content (Chat config) =
                             BetaTag ->
                                 { acc | showBetaTag = True }
 
-                            HeaderText headerText ->
-                                { acc | headerText = headerText }
+                            HeaderText headerText_ ->
+                                { acc | headerText = headerText_ }
                     )
                     { appearance = Standard
                     , showBetaTag = False
