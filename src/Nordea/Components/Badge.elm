@@ -12,7 +12,7 @@ import Css
         , displayFlex
         , height
         , justifyContent
-        , pct
+        , padding2
         , position
         , relative
         , rem
@@ -22,15 +22,17 @@ import Css
         )
 import Html.Styled as Html exposing (Attribute, Html)
 import Html.Styled.Attributes exposing (css)
+import Maybe.Extra as Maybe
 import Nordea.Components.Text as Text
-import Nordea.Html exposing (showIf)
+import Nordea.Html exposing (showIf, styleIf)
 import Nordea.Resources.Colors as Colors
 
 
 type Notification
-    = Number Int
+    = Number Int (Maybe Int)
     | Generic
     | NumberTopPlacement Int
+    | Dot
 
 
 view : List (Attribute msg) -> List (Html msg) -> Notification -> Html msg
@@ -38,20 +40,24 @@ view attrs children config =
     let
         ( showBadge, badgeTextContent, configSpecificStyles ) =
             case config of
-                Number num ->
+                Number num maxCharCount ->
                     ( num > 0
-                    , String.fromInt num
+                    , maxCharCount
+                        |> Maybe.filter (\charCount -> num >= (10 ^ charCount))
+                        |> Maybe.map (\charCount -> String.fromInt (10 ^ charCount - 1) ++ "+")
+                        |> Maybe.withDefault (String.fromInt num)
+                        |> Just
                     , Css.batch
-                        [ right (rem 0)
-                        , bottom (rem 0)
-                        , width (rem 1.125)
+                        [ right (rem 0) |> styleIf (List.isEmpty children |> not)
+                        , bottom (rem 0) |> styleIf (List.isEmpty children |> not)
+                        , padding2 (rem 0) (rem 0.375)
                         , height (rem 1.125)
                         ]
                     )
 
                 NumberTopPlacement num ->
                     ( num > 0
-                    , String.fromInt num
+                    , Just (String.fromInt num)
                     , Css.batch
                         [ top (rem -0.5)
                         , right (rem -0.5)
@@ -62,7 +68,7 @@ view attrs children config =
 
                 Generic ->
                     ( True
-                    , "•"
+                    , Just "•"
                     , Css.batch
                         [ right (rem 0)
                         , bottom (rem 0)
@@ -70,23 +76,43 @@ view attrs children config =
                         , height (rem 1.125)
                         ]
                     )
+
+                Dot ->
+                    ( True
+                    , Nothing
+                    , Css.batch
+                        [ width (rem 0.5)
+                        , height (rem 0.5)
+                        , bottom (rem 0) |> styleIf (List.isEmpty children |> not)
+                        ]
+                    )
+
+        commonStyles =
+            Css.batch
+                [ displayFlex
+                , backgroundColor Colors.darkRed
+                , position absolute |> styleIf (List.isEmpty children |> not)
+                , configSpecificStyles
+                ]
     in
     Html.div
         (css [ position relative ] :: attrs)
-        ((Text.textTinyHeavy
-            |> Text.view
-                [ css
-                    [ displayFlex
-                    , alignItems center
-                    , justifyContent center
-                    , position absolute
-                    , backgroundColor Colors.darkRed
-                    , borderRadius (pct 50)
-                    , color Colors.white
-                    , configSpecificStyles
-                    ]
-                ]
-                [ Html.text badgeTextContent ]
+        ((badgeTextContent
+            |> Maybe.map
+                (\textContent ->
+                    Text.textTinyHeavy
+                        |> Text.view
+                            [ css
+                                [ commonStyles
+                                , alignItems center
+                                , justifyContent center
+                                , color Colors.white
+                                , borderRadius (rem 0.75)
+                                ]
+                            ]
+                            [ Html.text textContent ]
+                )
+            |> Maybe.withDefault (Html.div [ css [ commonStyles, borderRadius (rem 0.25) ] ] [])
             |> showIf showBadge
          )
             :: children
