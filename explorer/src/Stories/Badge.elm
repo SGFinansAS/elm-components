@@ -37,14 +37,6 @@ stories =
                     ]
           , {}
           )
-        , ( "Generic"
-          , \_ ->
-                Html.div [ css [ displayFlex ] ]
-                    [ Badge.Generic
-                        |> Badge.view [] [ Icons.pdf [ css [ width (rem 5) |> Css.important ] ] ]
-                    ]
-          , {}
-          )
         , ( "Number no icon"
           , \_ ->
                 Html.div [ css [ displayFlex ] ]
@@ -57,16 +49,18 @@ stories =
                     [ Badge.Number 110 (Just 2) |> Badge.view [] [] ]
           , {}
           )
-        , ( "Dot"
+        , ( "Generic"
           , \_ ->
                 Html.div [ css [ displayFlex ] ]
-                    [ Badge.Dot |> Badge.view [] [ Icons.calendar [ css [ width (rem 2) |> Css.important ] ] ] ]
+                    [ Badge.Generic
+                        |> Badge.view [] [ Icons.calendar [ css [ width (rem 2) |> Css.important ] ] ]
+                    ]
           , {}
           )
-        , ( "Dot no icon"
+        , ( "Generic no icon"
           , \_ ->
                 Html.div [ css [ displayFlex ] ]
-                    [ Badge.Dot |> Badge.view [] [] ]
+                    [ Badge.Generic |> Badge.view [] [] ]
           , {}
           )
         ]

@@ -32,7 +32,6 @@ type Notification
     = Number Int (Maybe Int)
     | Generic
     | NumberTopPlacement Int
-    | Dot
 
 
 view : List (Attribute msg) -> List (Html msg) -> Notification -> Html msg
@@ -67,17 +66,6 @@ view attrs children config =
                     )
 
                 Generic ->
-                    ( True
-                    , Just "•"
-                    , Css.batch
-                        [ right (rem 0)
-                        , bottom (rem 0)
-                        , width (rem 1.125)
-                        , height (rem 1.125)
-                        ]
-                    )
-
-                Dot ->
                     ( True
                     , Nothing
                     , Css.batch
