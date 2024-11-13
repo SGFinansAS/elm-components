@@ -16,7 +16,7 @@ stories =
         [ ( "Specific number"
           , \_ ->
                 Html.div [ css [ displayFlex ] ]
-                    [ Badge.Number 4
+                    [ Badge.Number 4 Nothing
                         |> Badge.view [] [ Icons.pdf [ css [ width (rem 5) |> Css.important ] ] ]
                     ]
           , {}
@@ -24,7 +24,7 @@ stories =
         , ( "Not showing"
           , \_ ->
                 Html.div [ css [ displayFlex ] ]
-                    [ Badge.Number 0
+                    [ Badge.Number 0 Nothing
                         |> Badge.view [] [ Icons.pdf [ css [ width (rem 5) |> Css.important ] ] ]
                     ]
           , {}
@@ -37,12 +37,30 @@ stories =
                     ]
           , {}
           )
+        , ( "Number no icon"
+          , \_ ->
+                Html.div [ css [ displayFlex ] ]
+                    [ Badge.Number 4 Nothing |> Badge.view [] [] ]
+          , {}
+          )
+        , ( "Number with max char count"
+          , \_ ->
+                Html.div [ css [ displayFlex ] ]
+                    [ Badge.Number 110 (Just 2) |> Badge.view [] [] ]
+          , {}
+          )
         , ( "Generic"
           , \_ ->
                 Html.div [ css [ displayFlex ] ]
                     [ Badge.Generic
-                        |> Badge.view [] [ Icons.pdf [ css [ width (rem 5) |> Css.important ] ] ]
+                        |> Badge.view [] [ Icons.calendar [ css [ width (rem 2) |> Css.important ] ] ]
                     ]
+          , {}
+          )
+        , ( "Generic no icon"
+          , \_ ->
+                Html.div [ css [ displayFlex ] ]
+                    [ Badge.Generic |> Badge.view [] [] ]
           , {}
           )
         ]
