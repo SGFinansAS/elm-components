@@ -101,6 +101,7 @@ stories =
                         , ( Icons.object, "object" )
                         , ( Icons.lightBulb, "lightBulb" )
                         , ( Icons.eye, "eye" )
+                        , ( Icons.externalLink, "external link" )
                         ]
                     , iconCategoryHeader "Country flags"
                     , iconsRowWithDescription
