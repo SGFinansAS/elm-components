@@ -8,6 +8,7 @@ import Nordea.Components.FileUpload as FileUpload
 import Nordea.Components.Label as Label
 import Nordea.Css exposing (gap)
 import Nordea.Html exposing (showIf)
+import Nordea.Utils.List as List
 import RemoteData
 import UIExplorer exposing (UI)
 import UIExplorer.Styled exposing (styledStoriesOf)
@@ -33,7 +34,7 @@ stories =
                                 |> FileUpload.view
                             ]
                     , FileUpload.uploadedFilesView model.customModel.selectedFiles RemoveFile .no [ css [ marginTop (rem 1) ] ]
-                        |> showIf (not (List.isEmpty model.customModel.selectedFiles))
+                        |> showIf (List.isNotEmpty model.customModel.selectedFiles)
                     ]
           , {}
           )
@@ -72,7 +73,7 @@ stories =
                                 |> FileUpload.view
                             ]
                     , FileUpload.uploadedFilesView model.customModel.selectedFiles RemoveFile .no [ css [ marginTop (rem 1) ] ]
-                        |> showIf (not (List.isEmpty model.customModel.selectedFiles))
+                        |> showIf (List.isNotEmpty model.customModel.selectedFiles)
                     ]
           , {}
           )
@@ -88,7 +89,7 @@ stories =
                                 |> FileUpload.view
                             ]
                     , FileUpload.uploadedFilesView model.customModel.selectedFiles RemoveFile .no [ css [ marginTop (rem 1) ] ]
-                        |> showIf (not (List.isEmpty model.customModel.selectedFiles))
+                        |> showIf (List.isNotEmpty model.customModel.selectedFiles)
                     ]
           , {}
           )
@@ -106,7 +107,7 @@ stories =
                                 |> FileUpload.view
                             ]
                     , FileUpload.uploadedFilesView model.customModel.selectedFiles RemoveFile .no [ css [ marginTop (rem 1) ] ]
-                        |> showIf (not (List.isEmpty model.customModel.selectedFiles))
+                        |> showIf (List.isNotEmpty model.customModel.selectedFiles)
                     ]
           , {}
           )
@@ -125,7 +126,7 @@ stories =
                                 |> FileUpload.view
                             ]
                     , FileUpload.uploadedFilesView model.customModel.selectedFiles RemoveFile .no [ css [ marginTop (rem 1) ] ]
-                        |> showIf (not (List.isEmpty model.customModel.selectedFiles))
+                        |> showIf (List.isNotEmpty model.customModel.selectedFiles)
                     ]
           , {}
           )
@@ -144,7 +145,7 @@ stories =
                                 |> FileUpload.view
                             ]
                     , FileUpload.uploadedFilesView model.customModel.selectedFiles RemoveFile .no [ css [ marginTop (rem 1) ] ]
-                        |> showIf (not (List.isEmpty model.customModel.selectedFiles))
+                        |> showIf (List.isNotEmpty model.customModel.selectedFiles)
                     ]
           , {}
           )
@@ -164,7 +165,7 @@ stories =
                                 |> FileUpload.view
                             ]
                     , FileUpload.uploadedFilesView model.customModel.selectedFiles RemoveFile .no [ css [ marginTop (rem 1) ] ]
-                        |> showIf (not (List.isEmpty model.customModel.selectedFiles))
+                        |> showIf (List.isNotEmpty model.customModel.selectedFiles)
                     ]
           , {}
           )
@@ -184,7 +185,7 @@ stories =
                                 |> FileUpload.view
                             ]
                     , FileUpload.uploadedFilesView model.customModel.selectedFiles RemoveFile .no [ css [ marginTop (rem 1) ] ]
-                        |> showIf (not (List.isEmpty model.customModel.selectedFiles))
+                        |> showIf (List.isNotEmpty model.customModel.selectedFiles)
                     ]
           , {}
           )
