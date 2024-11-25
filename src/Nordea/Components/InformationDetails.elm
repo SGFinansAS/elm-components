@@ -38,7 +38,7 @@ card :
     List (Attribute msg)
     -> List (Html msg)
     -> Maybe String
-    -> Maybe { emphasisedText : Html msg, isOpen : Bool, onClick : msg }
+    -> Maybe { emphasisedText : Maybe (Html msg), isOpen : Bool, onClick : msg }
     -> Html msg
 card attrs children title collapsibleProps =
     let
