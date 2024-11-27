@@ -162,7 +162,7 @@ view optionals attrs history content (Chat config) =
             [ headerView
             , messageHistoryView
             , Html.column [ css [ gap (rem 0.5) ] ] content
-                |> showIf (List.isEmpty content)
+                |> showIf (List.isNotEmpty content)
             ]
 
 
