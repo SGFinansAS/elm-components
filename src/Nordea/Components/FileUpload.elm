@@ -209,7 +209,7 @@ view (FileUpload config) =
         inputFile =
             let
                 isDisabled =
-                    config.allowMultiple || List.isNotEmpty config.files
+                    not config.allowMultiple && List.isNotEmpty config.files
             in
             Html.input
                 [ type_ "file"
