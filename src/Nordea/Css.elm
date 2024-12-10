@@ -3,6 +3,7 @@ module Nordea.Css exposing
     , colorToString
     , colorVariable
     , columnGap
+    , cssIf
     , displayContents
     , displayGrid
     , gap
@@ -262,3 +263,12 @@ overridableCss className styles =
     [ css [ Css.children [ Css.selector selector styles ] ]
     , class className
     ]
+
+
+cssIf : Bool -> Css.Style -> Css.Style
+cssIf enable style =
+    if enable then
+        style
+
+    else
+        Css.property "" ""

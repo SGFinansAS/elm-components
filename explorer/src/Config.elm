@@ -49,6 +49,7 @@ type alias Config =
     , showCoachMarkStep : Maybe Int
     , activeRadioButton : String
     , textInputContent : String
+    , labelInputContent : String
     , sortableTable : Stories.SortableTableSharedTypes.Model
     , selectedSearchComponent : Maybe (Item FinancingVariant)
     , selectedSearchComponentOrgInfo : Maybe OrganizationInfo
@@ -88,6 +89,7 @@ type Msg
     | UpdateCoachmarkStep (Maybe Int)
     | UpdateActiveRadioButton String
     | TextInputContentChange String
+    | LabelInputContentChange String
     | OnClickCollapsible
     | SortableTableMsg Stories.SortableTableSharedTypes.Msg
     | SnackbarMsg
@@ -135,6 +137,7 @@ init =
     , showCoachMarkStep = Nothing
     , activeRadioButton = "second"
     , textInputContent = "Initialized"
+    , labelInputContent = "Text"
     , sortableTable = Stories.SortableTableSharedTypes.initModel
     , paginationCurrentPage = 1
     , datePicker = DatePicker.init (Date.fromCalendarDate 2024 May 1) "" DateSelected UpdateDatePickerInternalState
@@ -258,6 +261,9 @@ update msg config =
 
         TextInputContentChange string ->
             { config | textInputContent = string }
+
+        LabelInputContentChange string ->
+            { config | labelInputContent = string }
 
         OnClickCollapsible ->
             config

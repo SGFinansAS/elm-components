@@ -11,39 +11,13 @@ module Nordea.Components.Label exposing
     , withSmallSize
     )
 
-import Css
-    exposing
-        ( Style
-        , border
-        , borderColor
-        , color
-        , column
-        , displayFlex
-        , flex
-        , flexBasis
-        , flexDirection
-        , flexWrap
-        , justifyContent
-        , marginBottom
-        , marginInlineEnd
-        , marginInlineStart
-        , marginRight
-        , marginTop
-        , none
-        , outline
-        , padding
-        , pct
-        , pseudoClass
-        , rem
-        , spaceBetween
-        , width
-        , wrap
-        )
+import Css exposing (Style, border, borderColor, color, column, displayFlex, flex, flexBasis, flexDirection, flexWrap, hidden, justifyContent, marginBottom, marginInlineEnd, marginInlineStart, marginRight, marginTop, none, outline, padding, pct, pseudoClass, rem, spaceBetween, visibility, width, wrap)
 import Css.Global exposing (descendants, everything, selector, typeSelector)
 import Html.Styled as Html exposing (Attribute, Html)
 import Html.Styled.Attributes exposing (class, css)
+import Maybe.Extra as Maybe
 import Nordea.Components.Text as Text
-import Nordea.Css exposing (columnGap)
+import Nordea.Css as Css exposing (columnGap)
 import Nordea.Html as Html exposing (showIf)
 import Nordea.Resources.Colors as Colors
 import Nordea.Resources.I18N exposing (Translation)
@@ -74,6 +48,7 @@ type alias InputProperties =
     , labelType : LabelType
     , requirednessHint : Maybe RequirednessHint
     , errorMessage : Maybe String
+    , withError : Bool
     , hintText : Maybe String
     , charCounter : Maybe CharCounter
     , size : Size
@@ -96,6 +71,7 @@ init labelText labelType =
         , labelType = labelType
         , requirednessHint = Nothing
         , errorMessage = Nothing
+        , withError = False
         , hintText = Nothing
         , charCounter = Nothing
         , size = Standard
@@ -143,12 +119,17 @@ view attrs children (Label config) =
                     initText config.size
                         |> Text.view [ css [ color Colors.darkGray ] ] [ Html.text text ]
 
-                viewError errorText =
+                viewError maybeError =
                     initText config.size
                         |> Text.view
-                            [ class "input-focus-color", css [ displayFlex ] ]
+                            [ class "input-focus-color"
+                            , css
+                                [ displayFlex
+                                , visibility hidden |> Css.cssIf (Maybe.isNothing maybeError)
+                                ]
+                            ]
                             [ Icons.error [ css [ marginRight (rem 0.5), flex none ] ]
-                            , Html.text errorText
+                            , maybeError |> Maybe.withDefault "No errors" |> Html.text
                             ]
 
                 viewCharCounter counter =
@@ -165,12 +146,12 @@ view attrs children (Label config) =
                     :: attrs_
                 )
                 [ Html.column []
-                    [ config.errorMessage |> Html.viewMaybe viewError
+                    [ viewError config.errorMessage |> Html.showIf config.withError
                     , config.hintText |> Html.viewMaybe viewHintText
                     ]
                 , config.charCounter |> Html.viewMaybe viewCharCounter
                 ]
-                |> showIf (config.errorMessage /= Nothing || config.hintText /= Nothing || config.charCounter /= Nothing)
+                |> showIf (config.withError || config.hintText /= Nothing || config.charCounter /= Nothing)
     in
     case config.labelType of
         InputLabel ->
@@ -267,7 +248,7 @@ withRequirednessHint requirednessHint (Label config) =
 
 withErrorMessage : Maybe String -> Label -> Label
 withErrorMessage errorMessage (Label config) =
-    Label { config | errorMessage = errorMessage }
+    Label { config | errorMessage = errorMessage, withError = True }
 
 
 withHintText : Maybe String -> Label -> Label
