@@ -1,6 +1,6 @@
 module Nordea.Components.AccordionTableRow exposing (init, view, withChevron, withDetails, withSmallSize, withSummary)
 
-import Css exposing (alignItems, backgroundColor, border3, borderRadius, borderRadius4, center, color, cursor, display, hover, important, lineHeight, marginTop, padding, padding2, pointer, rem, solid, unset, width)
+import Css exposing (alignItems, backgroundColor, border3, borderRadius, borderRadius4, center, color, cursor, display, hover, important, lineHeight, marginTop, padding, padding2, pointer, pseudoClass, pseudoElement, rem, solid, unset, width)
 import Css.Global exposing (children, typeSelector)
 import Html.Styled as Html exposing (Attribute, Html)
 import Html.Styled.Attributes exposing (attribute, css)
@@ -89,8 +89,17 @@ withDetails attrs content config =
 
 view : List (Html.Attribute msg) -> Config msg -> Html msg
 view attrs config =
+    let
+        displayContentsWithFix =
+            [ displayContents
+
+            -- Fix for bug in Chrome (https://issues.chromium.org/issues/40069963)
+            , pseudoClass "not([open])::details-content" [ Css.property "display" "none" ]
+            , pseudoElement "details-content" [ displayContents ]
+            ]
+    in
     Html.details
-        ([ css [ displayContents ]
+        ([ css displayContentsWithFix
          , boolProperty "open" config.isOpen
          , Events.on "toggle" (Decode.map config.onToggle decodeNewState)
          ]

@@ -70,7 +70,7 @@ view attrs children (Card config) =
     if config.isCollapsible then
         AccordionMenu.view { isOpen = config.isOpen }
             baseStyle
-            [ headerCollapsible (Maybe.values [ config.onClick |> Maybe.map onClick ] ++ attrs)
+            [ headerCollapsible (Maybe.values [ config.onClick |> Maybe.map onClick ])
                 [ config.title
                     |> viewMaybe (\title_ -> title_)
                 , config.emphasisedText
@@ -177,7 +177,7 @@ withShadow (Card config) =
 
 
 isCollapsible :
-    Maybe { emphasisedText : Html msg, isOpen : Bool, onClick : msg }
+    Maybe { emphasisedText : Maybe (Html msg), isOpen : Bool, onClick : msg }
     -> Card msg
     -> Card msg
 isCollapsible collapsibleProps (Card config) =
@@ -189,7 +189,7 @@ isCollapsible collapsibleProps (Card config) =
             Card
                 { config
                     | isCollapsible = True
-                    , emphasisedText = Just props.emphasisedText
+                    , emphasisedText = props.emphasisedText
                     , isOpen = props.isOpen
                     , onClick = Just props.onClick
                 }

@@ -31,6 +31,7 @@ import Nordea.Resources.Colors as Colors
 import Nordea.Resources.I18N exposing (Translation)
 import Nordea.Resources.Icons as Icon
 import Nordea.Themes as Themes
+import Nordea.Utils.List as List
 import RemoteData exposing (RemoteData)
 import Round
 
@@ -208,7 +209,7 @@ view (FileUpload config) =
         inputFile =
             let
                 isDisabled =
-                    (config.allowMultiple || List.isEmpty config.files) |> not
+                    not config.allowMultiple && List.isNotEmpty config.files
             in
             Html.input
                 [ type_ "file"
@@ -224,7 +225,7 @@ view (FileUpload config) =
     in
     -- Inline is currently only supported with one file; feel free to enhance :)
     config.onFileRemoval
-        |> Maybe.filter (\_ -> not config.allowMultiple && (List.isEmpty config.files |> not) && config.appearance == Large)
+        |> Maybe.filter (\_ -> not config.allowMultiple && List.isNotEmpty config.files && config.appearance == Large)
         |> Maybe.map
             (\onFileRemoval ->
                 Html.div []

@@ -30,6 +30,7 @@ import Css
         )
 import Html.Styled as Html exposing (Attribute, Html)
 import Html.Styled.Attributes exposing (css)
+import List
 import Nordea.Components.Card as Card
 import Nordea.Components.Tag as Tag
 import Nordea.Components.Text as Text
@@ -39,6 +40,7 @@ import Nordea.Resources.Colors as Colors
 import Nordea.Resources.I18N exposing (Translation)
 import Nordea.Resources.Illustrations as Illustrations
 import Nordea.Themes as Themes
+import Nordea.Utils.List as List
 
 
 type alias Config =
@@ -52,7 +54,8 @@ type alias MessageViewConfig =
     , sentAt : String
     , sender : Maybe String
     , message : String
-    , isUserMessage : Bool
+    , isIncomingMessage : Bool
+    , readReceipt : Maybe String
     }
 
 
@@ -152,31 +155,33 @@ view optionals attrs history content (Chat config) =
                     [ css [ gapStyle ] ]
                     history
                 ]
-                |> showIf (not (List.isEmpty history))
+                |> showIf (List.isNotEmpty history)
     in
     Card.init
         |> Card.view (css appearanceSpecificStyles :: attrs)
             [ headerView
             , messageHistoryView
             , Html.column [ css [ gap (rem 0.5) ] ] content
-                |> showIf (not (List.isEmpty content))
+                |> showIf (List.isNotEmpty content)
             ]
 
 
 chatHistoryView : List (Attribute msg) -> MessageViewConfig -> Html msg
-chatHistoryView attrs { sentFrom, sentAt, sender, message, isUserMessage } =
+chatHistoryView attrs { sentFrom, sentAt, sender, message, isIncomingMessage, readReceipt } =
     let
         messageStyles =
-            if isUserMessage then
-                [ borderRadius4 (rem 0.5) (rem 0.5) (rem 0) (rem 0.5)
-                , Themes.backgroundColor Colors.coolGray
-                ]
+            if isIncomingMessage then
+                Css.batch
+                    [ borderRadius4 (rem 0.5) (rem 0.5) (rem 0.5) (rem 0)
+                    , Themes.color Colors.white
+                    , Themes.backgroundColor Colors.nordeaBlue
+                    ]
 
             else
-                [ borderRadius4 (rem 0.5) (rem 0.5) (rem 0.5) (rem 0)
-                , Themes.color Colors.white
-                , Themes.backgroundColor Colors.nordeaBlue
-                ]
+                Css.batch
+                    [ borderRadius4 (rem 0.5) (rem 0.5) (rem 0) (rem 0.5)
+                    , Themes.backgroundColor Colors.coolGray
+                    ]
 
         messageLabel attr text =
             Text.textTinyLight
@@ -194,10 +199,16 @@ chatHistoryView attrs { sentFrom, sentAt, sender, message, isUserMessage } =
                         |> Text.view [] [ Html.text sender_ ]
                 )
             |> Maybe.withDefault Html.nothing
-        , Text.textSmallLight
-            |> Text.view
-                [ css (padding (rem 0.625) :: messageStyles) ]
-                [ Html.text message ]
+        , Html.column [ css [ padding (rem 0.625), gap (rem 0.625), messageStyles ] ]
+            [ Text.textSmallLight
+                |> Text.view
+                    []
+                    [ Html.text message ]
+            , readReceipt
+                |> Maybe.map (messageLabel [])
+                |> Maybe.withDefault Html.nothing
+                |> showIf (not isIncomingMessage)
+            ]
         ]
 
 

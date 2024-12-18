@@ -1,9 +1,10 @@
 module Stories.Label exposing (stories)
 
-import Config exposing (Msg(..))
+import Config exposing (Config, Msg(..))
 import Css exposing (column, displayFlex, flexDirection, marginRight, maxWidth, rem)
 import Html.Styled as Html exposing (text)
 import Html.Styled.Attributes exposing (css)
+import Maybe.Extra as Maybe
 import Nordea.Components.Checkbox as Checkbox
 import Nordea.Components.Dropdown as Dropdown
 import Nordea.Components.Label as Label
@@ -14,56 +15,67 @@ import UIExplorer exposing (UI)
 import UIExplorer.Styled exposing (styledStoriesOf)
 
 
-stories : UI a Msg {}
+stories : UI Config Msg {}
 stories =
     styledStoriesOf
         "Label"
         [ ( "With text input"
-          , \_ ->
+          , \model ->
                 Html.div [ css [ displayFlex, flexDirection column, maxWidth (rem 20), gap (rem 2) ] ]
                     [ Label.init "Customer name" Label.InputLabel
                         |> Label.view []
-                            [ TextInput.init "Text"
+                            [ TextInput.init model.customModel.labelInputContent
+                                |> TextInput.withOnInput LabelInputContentChange
                                 |> TextInput.view []
                             ]
                     , Label.init "Customer name (with error)" Label.InputLabel
-                        |> Label.withErrorMessage (Just "The input is invalid")
+                        |> Label.withErrorMessage
+                            (Just model.customModel.labelInputContent
+                                |> Maybe.filter (\s -> String.length s > 0)
+                                |> Maybe.map (\_ -> "The input is invalid")
+                            )
                         |> Label.view []
-                            [ TextInput.init "Text"
+                            [ TextInput.init model.customModel.labelInputContent
+                                |> TextInput.withOnInput LabelInputContentChange
                                 |> TextInput.withError True
                                 |> TextInput.view []
                             ]
                     , Label.init "Customer name (with hint)" Label.InputLabel
                         |> Label.withHintText (Just "This is some extra hint")
                         |> Label.view []
-                            [ TextInput.init "Text"
+                            [ TextInput.init model.customModel.labelInputContent
+                                |> TextInput.withOnInput LabelInputContentChange
                                 |> TextInput.view []
                             ]
                     , Label.init "Customer name (with error and hint)" Label.InputLabel
                         |> Label.withHintText (Just "This is some extra hint")
                         |> Label.withErrorMessage (Just "The input is invalid")
                         |> Label.view []
-                            [ TextInput.init "Text"
+                            [ TextInput.init model.customModel.labelInputContent
+                                |> TextInput.withOnInput LabelInputContentChange
                                 |> TextInput.withError True
                                 |> TextInput.view []
                             ]
                     , Label.init "Customer name (with requiredness)" Label.InputLabel
                         |> Label.withRequirednessHint (Just (Label.Mandatory .no))
                         |> Label.view []
-                            [ TextInput.init "Text"
+                            [ TextInput.init model.customModel.labelInputContent
+                                |> TextInput.withOnInput LabelInputContentChange
                                 |> TextInput.view []
                             ]
                     , Label.init "Customer name (with requiredness)" Label.InputLabel
                         |> Label.withRequirednessHint (Just (Label.Optional .no))
                         |> Label.view []
-                            [ TextInput.init "Text"
+                            [ TextInput.init model.customModel.labelInputContent
+                                |> TextInput.withOnInput LabelInputContentChange
                                 |> TextInput.withError True
                                 |> TextInput.view []
                             ]
                     , Label.init "Customer name (with max char counter view)" Label.InputLabel
-                        |> Label.withCharCounter (Just { current = 4, max = 100 })
+                        |> Label.withCharCounter (Just { current = String.length model.customModel.labelInputContent, max = 100 })
                         |> Label.view []
-                            [ TextInput.init "Text"
+                            [ TextInput.init model.customModel.labelInputContent
+                                |> TextInput.withOnInput LabelInputContentChange
                                 |> TextInput.view []
                             ]
                     ]

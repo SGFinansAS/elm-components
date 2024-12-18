@@ -63,6 +63,8 @@ stories =
                         , ( Icons.edit, "edit" )
                         , ( Icons.settings, "settings" )
                         , ( Icons.bell, "bell" )
+                        , ( Icons.bellSmall, "bellSmall" )
+                        , ( Icons.bellOff, "bellOff" )
                         , ( Icons.star, "star" )
                         , ( Icons.filledStar, "filledStar" )
                         , ( Icons.calendar, "calendar" )
