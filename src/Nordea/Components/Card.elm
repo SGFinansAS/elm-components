@@ -1,7 +1,6 @@
 module Nordea.Components.Card exposing
     ( Card
     , footer
-    , header
     , infoBox
     , init
     , isCollapsible
@@ -124,11 +123,6 @@ view attrs children (Card config) =
                 Html.div baseStyle children
 
 
-header : List (Attribute msg) -> List (Html msg) -> Html msg
-header attrs children =
-    Html.div attrs children
-
-
 headerCollapsible : List (Attribute msg) -> List (Html msg) -> Html msg
 headerCollapsible attrs children =
     Html.summary
@@ -198,7 +192,7 @@ footer attrs children =
 
 withTitle : String -> Card msg -> Card msg
 withTitle title_ (Card config) =
-    Card { config | title = Just (header [] [ title [] [ Html.text title_ ] ]) }
+    Card { config | title = Just (title [] [ Html.text title_ ]) }
 
 
 withHtmlTitle : Html msg -> Card msg -> Card msg
