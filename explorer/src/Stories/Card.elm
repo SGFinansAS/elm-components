@@ -37,19 +37,6 @@ stories =
                     |> Card.view [] [ Html.text "Card content" ]
           , {}
           )
-        , ( "With custom header content"
-          , \_ ->
-                Card.init
-                    |> Card.withShadow
-                    |> Card.view []
-                        [ Card.header []
-                            [ Card.title [] [ Html.text "Card title" ]
-                            , Html.text "Custom header content"
-                            ]
-                        , Html.text "Card content"
-                        ]
-          , {}
-          )
         , ( "With footer"
           , \_ ->
                 Card.init

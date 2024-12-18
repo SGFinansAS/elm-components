@@ -1,7 +1,6 @@
 module Nordea.Components.Card exposing
     ( Card
     , footer
-    , header
     , infoBox
     , init
     , isCollapsible
@@ -12,7 +11,37 @@ module Nordea.Components.Card exposing
     , withTitle
     )
 
-import Css exposing (alignItems, auto, backgroundColor, border3, borderRadius, borderStyle, boxShadow4, center, color, column, cursor, displayFlex, flexDirection, height, left, margin2, marginBottom, marginLeft, marginTop, none, padding, pointer, rem, solid, textAlign, width)
+import Css
+    exposing
+        ( alignItems
+        , auto
+        , backgroundColor
+        , border3
+        , borderRadius
+        , borderStyle
+        , boxShadow4
+        , center
+        , color
+        , column
+        , cursor
+        , displayFlex
+        , firstChild
+        , flexDirection
+        , height
+        , left
+        , margin2
+        , marginBottom
+        , marginLeft
+        , marginTop
+        , none
+        , padding
+        , pointer
+        , rem
+        , solid
+        , textAlign
+        , width
+        )
+import Css.Global as Css
 import Css.Transitions as Transitions exposing (transition)
 import Html.Styled as Html exposing (Attribute, Html)
 import Html.Styled.Attributes as Html exposing (css)
@@ -81,17 +110,17 @@ view attrs children (Card config) =
             ]
 
     else
-        Html.div baseStyle
-            ((config.title |> viewMaybe (\title_ -> title_))
-                :: children
-            )
+        case config.title of
+            Just title_ ->
+                Html.div
+                    (css
+                        [ Css.children [ Css.everything [ firstChild [ marginBottom (rem 1.5) ] ] ] ]
+                        :: baseStyle
+                    )
+                    (title_ :: children)
 
-
-header : List (Attribute msg) -> List (Html msg) -> Html msg
-header attrs children =
-    Html.div
-        (css [ marginBottom (rem 1.5) ] :: attrs)
-        children
+            Nothing ->
+                Html.div baseStyle children
 
 
 headerCollapsible : List (Attribute msg) -> List (Html msg) -> Html msg
@@ -163,7 +192,7 @@ footer attrs children =
 
 withTitle : String -> Card msg -> Card msg
 withTitle title_ (Card config) =
-    Card { config | title = Just (header [] [ title [] [ Html.text title_ ] ]) }
+    Card { config | title = Just (title [] [ Html.text title_ ]) }
 
 
 withHtmlTitle : Html msg -> Card msg -> Card msg
