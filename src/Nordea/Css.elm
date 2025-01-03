@@ -25,6 +25,7 @@ module Nordea.Css exposing
     , justifyItems
     , justifySelf
     , overridableCss
+    , propertyMaybe
     , propertyWithColorVariable
     , propertyWithVariable
     , rowGap
@@ -272,3 +273,10 @@ cssIf enable style =
 
     else
         Css.property "" ""
+
+
+propertyMaybe : (a -> Css.Style) -> Maybe a -> Css.Style
+propertyMaybe f mby =
+    mby
+        |> Maybe.map f
+        |> Maybe.withDefault (Css.property "" "")
