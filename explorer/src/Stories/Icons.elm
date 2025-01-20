@@ -17,7 +17,7 @@ stories =
             Text.bodyTextHeavy |> Text.view [] [ Html.text headerText ]
 
         iconsRowWithDescription iconsWithDescription =
-            Html.div [ css [ displayFlex, flexDirection row, columnGap (rem 1) ] ]
+            Html.div [ css [ displayFlex, flexDirection row, columnGap (rem 1), flexWrap wrap ] ]
                 (iconsWithDescription
                     |> List.map
                         (\( icon, description ) ->
@@ -72,6 +72,8 @@ stories =
                         , ( Icons.invisible, "invisible" )
                         , ( Icons.pdf, "pdf" )
                         , ( Icons.openEnvelope, "openEnvelope" )
+                        , ( Icons.logout, "logout" )
+                        , ( Icons.copy, "copy" )
                         ]
                     , iconCategoryHeader "Add, remove, accept and cancel"
                     , iconsRowWithDescription
@@ -81,6 +83,7 @@ stories =
                         , ( Icons.filledInfo, "filledInfo" )
                         , ( Icons.questionMark, "questionMark" )
                         , ( Icons.close, "close" )
+                        , ( Icons.checkmark, "checkmark" )
                         , ( Icons.filledCheckmark, "filledCheckmark" )
                         , ( Icons.unfilledCheckmark, "unfilledCheckmark" )
                         , ( Icons.unfilledMark, "unfilledMark" )
