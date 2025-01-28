@@ -26,6 +26,7 @@ import Stories.FiveStarRating as FiveStarRating
 import Stories.FlatLink as FlatLink
 import Stories.Hamburger as Hamburger
 import Stories.Icons as Icons
+import Stories.Illustrations as Illustrations
 import Stories.InfoBanner as InfoBanner
 import Stories.InfoPanel as InfoPanel
 import Stories.InformationDetails as InformationDetails
@@ -93,6 +94,7 @@ main =
                 [ Colors.stories
                 , Text.stories
                 , Icons.stories
+                , Illustrations.stories
                 ]
             |> UIExplorer.category "Components"
                 [ Accordion.stories
