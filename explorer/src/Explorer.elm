@@ -38,6 +38,7 @@ import Stories.NumberInput as NumberInput
 import Stories.Pagination as Pagination
 import Stories.ProgressBar as ProgressBar
 import Stories.ProgressBarStepper as ProgressBarStepper
+import Stories.PhasedProgressBar as PhasedProgressBar
 import Stories.RadioButton as RadioButton
 import Stories.Range as Range
 import Stories.SkeletonLoader as SkeletonLoader
@@ -128,6 +129,7 @@ main =
                 , Pagination.stories
                 , ProgressBar.stories
                 , ProgressBarStepper.stories
+                , PhasedProgressBar.stories
                 , RadioButton.stories
                 , Range.stories
                 , SkeletonLoader.stories
