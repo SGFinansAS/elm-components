@@ -6,7 +6,6 @@ import Css
         ( alignItems
         , alignSelf
         , backgroundColor
-        , backgroundSize
         , borderRadius
         , center
         , color
@@ -16,11 +15,8 @@ import Css
         , flexEnd
         , flexWrap
         , height
-        , hidden
         , justifyContent
         , margin
-        , marginRight
-        , overflow
         , pct
         , rem
         , width
@@ -28,7 +24,6 @@ import Css
         )
 import Html.Styled as Html exposing (Attribute, Html)
 import Html.Styled.Attributes exposing (css, disabled)
-import List.Extra as List
 import Nordea.Components.Text as Text
 import Nordea.Css exposing (columnGap, gap)
 import Nordea.Html exposing (showIf)
