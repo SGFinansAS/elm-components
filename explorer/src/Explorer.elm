@@ -36,6 +36,7 @@ import Stories.Modal as Modal
 import Stories.MultiSelectDropdown as MultiSelectDropdown
 import Stories.NumberInput as NumberInput
 import Stories.Pagination as Pagination
+import Stories.PhasedProgressBar as PhasedProgressBar
 import Stories.ProgressBar as ProgressBar
 import Stories.ProgressBarStepper as ProgressBarStepper
 import Stories.RadioButton as RadioButton
@@ -128,6 +129,7 @@ main =
                 , Pagination.stories
                 , ProgressBar.stories
                 , ProgressBarStepper.stories
+                , PhasedProgressBar.stories
                 , RadioButton.stories
                 , Range.stories
                 , SkeletonLoader.stories
