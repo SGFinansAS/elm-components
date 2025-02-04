@@ -92,7 +92,16 @@ withDisabled (FlatLink config) =
 
 withButtonStyle : Button.Variant -> FlatLink -> FlatLink
 withButtonStyle buttonVariant (FlatLink config) =
-    FlatLink { config | styles = buttonStyle buttonVariant }
+    let
+        buttonSize =
+            case config.variant of
+                Default ->
+                    Button.Standard
+
+                Mini ->
+                    Button.Small
+    in
+    FlatLink { config | styles = buttonStyle buttonVariant buttonSize }
 
 
 
@@ -202,9 +211,9 @@ variantStyle variant =
                 ]
 
 
-buttonStyle : Button.Variant -> List Style
-buttonStyle buttonVariant =
+buttonStyle : Button.Variant -> Button.Size -> List Style
+buttonStyle buttonVariant buttonSize =
     [ maxWidth fitContent
     , textDecoration none
-    , Button.buttonStyleForExport buttonVariant Button.Standard
+    , Button.buttonStyleForExport buttonVariant buttonSize
     ]
