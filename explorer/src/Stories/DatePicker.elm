@@ -16,4 +16,10 @@ stories =
                     |> DatePicker.view [] []
           , {}
           )
+        , ( "Small"
+          , \model ->
+                model.customModel.datePicker
+                    |> DatePicker.view [] [ DatePicker.SmallSize ]
+          , {}
+          )
         ]
