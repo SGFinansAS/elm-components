@@ -114,6 +114,12 @@ stories =
                         , ( Icons.sweden, "sweden" )
                         , ( Icons.denmark, "denmark" )
                         ]
+                    , iconCategoryHeader "Identification methods"
+                    , iconsRowWithDescription
+                        [ ( Icons.norwegianBankId, "norwegianBankId" )
+                        , ( Icons.swedishBankId, "swedishBankId" )
+                        , ( Icons.danishMitId, "danishMitId" )
+                        ]
                     ]
           , {}
           )
