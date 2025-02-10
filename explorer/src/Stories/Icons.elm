@@ -110,9 +110,9 @@ stories =
                         ]
                     , iconCategoryHeader "Country flags"
                     , iconsRowWithDescription
-                        [ ( Icons.norway, "norway" )
-                        , ( Icons.sweden, "sweden" )
-                        , ( Icons.denmark, "denmark" )
+                        [ ( Icons.flagNorway, "flagNorway" )
+                        , ( Icons.flagSweden, "flagSweden" )
+                        , ( Icons.denmark, "flagDenmark" )
                         ]
                     , iconCategoryHeader "Identification methods"
                     , iconsRowWithDescription

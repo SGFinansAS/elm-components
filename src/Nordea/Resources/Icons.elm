@@ -43,6 +43,8 @@ module Nordea.Resources.Icons exposing
     , filledInfo
     , filledStar
     , filledWarning
+    , flagNorway
+    , flagSweden
     , info
     , insights
     , invisible
@@ -52,7 +54,6 @@ module Nordea.Resources.Icons exposing
     , lightBulb
     , logout
     , mediumPlus
-    , norway
     , norwegianBankId
     , object
     , openEnvelope
@@ -69,7 +70,6 @@ module Nordea.Resources.Icons exposing
     , settings
     , spinner
     , star
-    , sweden
     , swedishBankId
     , trash
     , triangleDown
@@ -1324,8 +1324,8 @@ externalLink attrs =
 -- Country flags
 
 
-norway : List (Attribute msg) -> Html msg
-norway attrs =
+flagNorway : List (Attribute msg) -> Html msg
+flagNorway attrs =
     iconContainer attrs
         [ Svg.svg
             [ viewBox "0 0 54 30", fill "none" ]
@@ -1349,8 +1349,8 @@ norway attrs =
         ]
 
 
-sweden : List (Attribute msg) -> Html msg
-sweden attrs =
+flagSweden : List (Attribute msg) -> Html msg
+flagSweden attrs =
     iconContainer attrs
         [ Svg.svg
             [ viewBox "0 0 54 30", fill "none" ]
