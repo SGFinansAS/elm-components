@@ -47,6 +47,7 @@ stories =
                     , iconsRowWithDescription
                         [ ( Icons.delete, "delete" )
                         , ( Icons.user, "user" )
+                        , ( Icons.userSmall, "userSmall" )
                         , ( Icons.contacts, "contacts" )
                         , ( Icons.cog, "cog" )
                         , ( Icons.exit, "exit" )
@@ -71,9 +72,11 @@ stories =
                         , ( Icons.visible, "visible" )
                         , ( Icons.invisible, "invisible" )
                         , ( Icons.pdf, "pdf" )
+                        , ( Icons.envelope, "envelope" )
                         , ( Icons.openEnvelope, "openEnvelope" )
                         , ( Icons.logout, "logout" )
                         , ( Icons.copy, "copy" )
+                        , ( Icons.filter, "filter" )
                         ]
                     , iconCategoryHeader "Add, remove, accept and cancel"
                     , iconsRowWithDescription
