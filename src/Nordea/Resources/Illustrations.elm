@@ -6,6 +6,7 @@ module Nordea.Resources.Illustrations exposing
     , errorSvg
     , feedbackEnvelope
     , instructionalBlocks
+    , instructionalInfo
     , instructionalStar
     , instructionalWarning
     , messageInstructionalStar
@@ -187,6 +188,144 @@ instructionalBlocks attrs =
             , ellipse [ cx "118.858", cy "41.003", rx "8.6", ry "14.825", transform "rotate(-89.84 118.858 41.003)", fill "white" ] []
             , Svg.path [ d "M94.2754 63.4252V69.5002C94.0452 72.14 92.4118 74.4516 90.0004 75.5502C83.4098 78.8993 75.616 78.8993 69.0254 75.5502C66.574 74.4411 64.9045 72.1038 64.6504 69.4252V63.3252C64.9093 66.0094 66.5892 68.348 69.0504 69.4502C75.641 72.7993 83.4348 72.7993 90.0254 69.4502C92.3996 68.3249 94.0118 66.0393 94.2754 63.4252V63.4252Z", fill "#F0C1AE" ] []
             , ellipse [ cx "79.4476", cy "63.3653", rx "8.6", ry "14.825", transform "rotate(-89.84 79.4476 63.3653)", fill "white" ] []
+            ]
+        ]
+
+
+instructionalInfo : List (Attribute msg) -> Html msg
+instructionalInfo attrs =
+    illustrationsContainer attrs
+        [ Svg.svg [ viewBox "0 0 42 50", fill "none" ]
+            [ Svg.path
+                [ d "M4.54561 31.7202L5.00001 3.7714C5.00001 3.7714 11.9632 -2.2254 19.0096 1.2114L28.9744 7.2786C35.944 11.4898 41.48 22.6514 41.2624 32.0402L41.192 34.8114C40.968 45.205 32.7248 48.4306 32.7248 48.4306L4.54561 31.7202Z"
+                , fill "#0000FF"
+                ]
+                []
+            , Svg.mask
+                [ SvgAttr.id "mask0_8191_14689"
+                , SvgAttr.style "mask-type:luminance"
+                , SvgAttr.maskUnits "userSpaceOnUse"
+                , SvgAttr.x "4"
+                , SvgAttr.y "0"
+                , SvgAttr.width "38"
+                , SvgAttr.height "49"
+                ]
+                [ Svg.path
+                    [ SvgAttr.fillRule "evenodd"
+                    , SvgAttr.clipRule "evenodd"
+                    , SvgAttr.d "M4.54561 31.7202L5.00001 3.7714C5.00001 3.7714 11.9632 -2.2254 19.0096 1.2114L28.9744 7.2786C35.944 11.4898 41.48 22.6514 41.2624 32.0402L41.192 34.8114C40.968 45.205 32.7248 48.4306 32.7248 48.4306L4.54561 31.7202Z"
+                    , SvgAttr.fill "white"
+                    ]
+                    []
+                ]
+            , Svg.g
+                [ SvgAttr.mask "url(#mask0_8191_14689)"
+                ]
+                [ Svg.rect [ SvgAttr.x "0.801605", SvgAttr.y "-3.59375", width "44.2176", height "55.7696", fill "#0000FF" ] []
+                ]
+            , Svg.path
+                [ SvgAttr.d "M0.801605 34.269L1.24961 13.9618C1.47361 3.773 7.7712 -0.796597 15.24 3.773L25.2048 9.8402C32.2 14.1218 37.7424 25.2002 37.5184 34.6018L37.4416 37.373C37.2176 47.7858 30.7728 52.509 23.0544 47.7858L0.801605 34.269Z"
+                , SvgAttr.fill "#99CCFF"
+                ]
+                []
+            , Svg.path
+                [ SvgAttr.d "M21.64 36.1426L14.9648 32.3922C14.9648 32.3922 13.7616 31.797 13.7616 31.0482C13.7733 30.6886 13.9064 30.3434 14.1392 30.069C14.5672 29.8353 15.0909 29.8651 15.4896 30.1458L17.064 31.1186V24.0786L15.88 23.477C15.88 23.477 14.6832 22.9522 14.6832 22.2802C14.6686 21.9986 14.7786 21.7247 14.984 21.5314C15.3336 21.1643 15.8829 21.0706 16.3344 21.301L18.2544 22.3506C18.5552 22.5042 19.4512 23.1762 19.4512 23.8546V32.3922L21.64 33.5954C21.64 33.5954 22.76 34.1202 22.8368 34.7922C22.984 35.9186 22.0816 36.3666 21.64 36.1426Z"
+                , SvgAttr.fill "#0000FF"
+                ]
+                []
+            , Svg.mask
+                [ SvgAttr.id "mask1_8191_14689"
+                , SvgAttr.style "mask-type:luminance"
+                , SvgAttr.maskUnits "userSpaceOnUse"
+                , SvgAttr.x "13"
+                , SvgAttr.y "21"
+                , SvgAttr.width "10"
+                , SvgAttr.height "16"
+                ]
+                [ Svg.path
+                    [ SvgAttr.fillRule "evenodd"
+                    , SvgAttr.clipRule "evenodd"
+                    , SvgAttr.d "M21.64 36.1426L14.9648 32.3922C14.9648 32.3922 13.7616 31.797 13.7616 31.0482C13.7733 30.6886 13.9064 30.3434 14.1392 30.069C14.5672 29.8353 15.0909 29.8651 15.4896 30.1458L17.064 31.1186V24.0786L15.88 23.477C15.88 23.477 14.6832 22.9522 14.6832 22.2802C14.6686 21.9986 14.7786 21.7247 14.984 21.5314C15.3336 21.1643 15.8829 21.0706 16.3344 21.301L18.2544 22.3506C18.5552 22.5042 19.4512 23.1762 19.4512 23.8546V32.3922L21.64 33.5954C21.64 33.5954 22.76 34.1202 22.8368 34.7922C22.984 35.9186 22.0816 36.3666 21.64 36.1426Z"
+                    , SvgAttr.fill "white"
+                    ]
+                    []
+                ]
+            , Svg.g
+                [ SvgAttr.mask "url(#mask1_8191_14689)"
+                ]
+                [ Svg.rect [ SvgAttr.x "10.0176", SvgAttr.y "17.4297", width "16.576", height "22.5152", fill "#0000FF" ] []
+                ]
+            , Svg.path
+                [ SvgAttr.d "M16.1616 15.6124C16.9872 15.0876 18.3376 15.6828 19.2336 16.9564C20.1296 18.23 20.2064 19.8044 19.3872 20.3292C18.568 20.854 17.2112 20.2588 16.3152 18.9788C15.4192 17.6988 15.4128 16.1372 16.1616 15.6124Z"
+                , SvgAttr.fill "#0000FF"
+                ]
+                []
+            , Svg.mask
+                [ SvgAttr.id "mask2_8191_14689"
+                , SvgAttr.style "mask-type:luminance"
+                , SvgAttr.maskUnits "userSpaceOnUse"
+                , SvgAttr.x "15"
+                , SvgAttr.y "15"
+                , SvgAttr.width "5"
+                , SvgAttr.height "6"
+                ]
+                [ Svg.path
+                    [ SvgAttr.fillRule "evenodd"
+                    , SvgAttr.clipRule "evenodd"
+                    , SvgAttr.d "M16.1616 15.6124C16.9872 15.0876 18.3376 15.6828 19.2336 16.9564C20.1296 18.23 20.2064 19.8044 19.3872 20.3292C18.568 20.854 17.2112 20.2588 16.3152 18.9788C15.4192 17.6988 15.4128 16.1372 16.1616 15.6124Z"
+                    , SvgAttr.fill "white"
+                    ]
+                    []
+                ]
+            , Svg.g
+                [ SvgAttr.mask "url(#mask2_8191_14689)"
+                ]
+                [ Svg.rect [ SvgAttr.x "11.8736", SvgAttr.y "11.6758", width "11.8336", height "12.5952", fill "#0000FF" ] []
+                ]
+            , Svg.mask
+                [ SvgAttr.id "mask3_8191_14689"
+                , SvgAttr.style "mask-type:luminance"
+                , SvgAttr.maskUnits "userSpaceOnUse"
+                , SvgAttr.x "8"
+                , SvgAttr.y "21"
+                , SvgAttr.width "30"
+                , SvgAttr.height "22"
+                ]
+                [ Svg.path
+                    [ SvgAttr.fillRule "evenodd"
+                    , SvgAttr.clipRule "evenodd"
+                    , SvgAttr.d "M34.5936 21.3789L8.20001 37.8653L16.4432 42.9853L37.3712 30.0701L36.8464 27.5997C36.7792 27.2162 36.6785 26.8393 36.5456 26.4733L34.5936 21.3789Z"
+                    , SvgAttr.fill "white"
+                    ]
+                    []
+                ]
+            , Svg.g
+                [ SvgAttr.mask "url(#mask3_8191_14689)"
+                ]
+                [ Svg.rect [ opacity "0.8", SvgAttr.x "4.47522", SvgAttr.y "17.6367", width "36.64", height "29.0752", fill "white" ] []
+                ]
+            , Svg.mask
+                [ SvgAttr.id "mask4_8191_14689"
+                , SvgAttr.style "mask-type:luminance"
+                , SvgAttr.maskUnits "userSpaceOnUse"
+                , SvgAttr.x "20"
+                , SvgAttr.y "35"
+                , SvgAttr.width "18"
+                , SvgAttr.height "12"
+                ]
+                [ Svg.path
+                    [ SvgAttr.fillRule "evenodd"
+                    , SvgAttr.clipRule "evenodd"
+                    , SvgAttr.d "M37.5952 35.0938L20.2832 45.2826L21.7808 46.2554L37.4416 37.3402L37.5952 35.0938Z"
+                    , SvgAttr.fill "white"
+                    ]
+                    []
+                ]
+            , Svg.g
+                [ SvgAttr.mask "url(#mask4_8191_14689)"
+                ]
+                [ Svg.rect [ opacity "0.8", SvgAttr.x "16.5392", SvgAttr.y "31.3438", width "24.8", height "18.656", fill "white" ] []
+                ]
             ]
         ]
 
