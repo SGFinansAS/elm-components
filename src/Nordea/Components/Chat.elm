@@ -6,6 +6,7 @@ import Css
         , auto
         , border3
         , borderRadius4
+        , breakWord
         , color
         , columnReverse
         , ellipsis
@@ -19,6 +20,7 @@ import Css
         , maxHeight
         , noWrap
         , overflow
+        , overflowWrap
         , padding
         , paddingRight
         , rem
@@ -202,7 +204,12 @@ chatHistoryView attrs { sentFrom, sentAt, sender, message, isIncomingMessage, re
         , Html.column [ css [ padding (rem 0.625), gap (rem 0.625), messageStyles ] ]
             [ Text.textSmallLight
                 |> Text.view
-                    []
+                    [ css
+                        [ overflow hidden
+                        , overflowWrap breakWord
+                        , Css.property "hyphens" "auto"
+                        ]
+                    ]
                     [ Html.text message ]
             , readReceipt
                 |> Maybe.map (messageLabel [])
