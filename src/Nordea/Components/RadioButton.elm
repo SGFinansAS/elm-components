@@ -149,6 +149,10 @@ view attrs (RadioButton config) =
                         [ border3 (rem 0.0625) solid transparent
                         , borderRadius (rem 0.25)
                         , justifyContent center
+                        , backgroundColor Colors.grayWarm
+                            |> styleIf isDisabled
+                        , Themes.color Colors.nordeaGray
+                            |> styleIf isDisabled
                         , Themes.backgroundColor Colors.cloudBlue
                             |> styleIf config.isSelected
                         , transition
@@ -157,6 +161,9 @@ view attrs (RadioButton config) =
                             ]
                         , if config.showError then
                             borderColor Colors.darkRed
+
+                          else if isDisabled && not config.isSelected then
+                            borderColor Colors.lightGray
 
                           else
                             borderColor Colors.mediumGray
