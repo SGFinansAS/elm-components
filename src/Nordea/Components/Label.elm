@@ -48,7 +48,6 @@ type alias InputProperties =
     , labelType : LabelType
     , requirednessHint : Maybe RequirednessHint
     , errorMessage : Maybe String
-    , withError : Bool
     , hintText : Maybe String
     , charCounter : Maybe CharCounter
     , size : Size
@@ -71,7 +70,6 @@ init labelText labelType =
         , labelType = labelType
         , requirednessHint = Nothing
         , errorMessage = Nothing
-        , withError = False
         , hintText = Nothing
         , charCounter = Nothing
         , size = Standard
@@ -119,17 +117,14 @@ view attrs children (Label config) =
                     initText config.size
                         |> Text.view [ css [ color Colors.darkGray ] ] [ Html.text text ]
 
-                viewError maybeError =
+                viewError error =
                     initText config.size
                         |> Text.view
                             [ class "input-focus-color"
-                            , css
-                                [ displayFlex
-                                , visibility hidden |> Css.cssIf (Maybe.isNothing maybeError)
-                                ]
+                            , css [ displayFlex ]
                             ]
                             [ Icons.error [ css [ marginRight (rem 0.5), flex none ] ]
-                            , maybeError |> Maybe.withDefault "No errors" |> Html.text
+                            , Html.text error
                             ]
 
                 viewCharCounter counter =
@@ -146,12 +141,12 @@ view attrs children (Label config) =
                     :: attrs_
                 )
                 [ Html.column []
-                    [ viewError config.errorMessage |> Html.showIf config.withError
+                    [ Html.viewMaybe viewError config.errorMessage
                     , config.hintText |> Html.viewMaybe viewHintText
                     ]
                 , config.charCounter |> Html.viewMaybe viewCharCounter
                 ]
-                |> showIf (config.withError || config.hintText /= Nothing || config.charCounter /= Nothing)
+                |> showIf (config.errorMessage /= Nothing || config.hintText /= Nothing || config.charCounter /= Nothing)
     in
     case config.labelType of
         InputLabel ->
@@ -248,7 +243,7 @@ withRequirednessHint requirednessHint (Label config) =
 
 withErrorMessage : Maybe String -> Label -> Label
 withErrorMessage errorMessage (Label config) =
-    Label { config | errorMessage = errorMessage, withError = True }
+    Label { config | errorMessage = errorMessage }
 
 
 withHintText : Maybe String -> Label -> Label
