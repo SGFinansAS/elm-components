@@ -106,7 +106,7 @@ stories =
                         (UpdateActiveRadioButton "second")
                         |> RadioButton.withIsSelected (config.customModel.activeRadioButton == "second")
                         |> RadioButton.withAppearance RadioButton.Small
-                        |> RadioButton.view [ disabled True]
+                        |> RadioButton.view [ disabled True ]
                     ]
           , {}
           )
