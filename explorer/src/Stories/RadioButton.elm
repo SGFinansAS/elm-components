@@ -90,6 +90,26 @@ stories =
                     ]
           , {}
           )
+        , ( "Small disabled "
+          , \config ->
+                Html.div [ css [ displayFlex, gap (rem 1) ] ]
+                    [ RadioButton.init
+                        "small"
+                        (text "Click me")
+                        (UpdateActiveRadioButton "first")
+                        |> RadioButton.withIsSelected (config.customModel.activeRadioButton == "first")
+                        |> RadioButton.withAppearance RadioButton.Small
+                        |> RadioButton.view [ disabled True ]
+                    , RadioButton.init
+                        "small"
+                        (text "Click me")
+                        (UpdateActiveRadioButton "second")
+                        |> RadioButton.withIsSelected (config.customModel.activeRadioButton == "second")
+                        |> RadioButton.withAppearance RadioButton.Small
+                        |> RadioButton.view [ disabled True ]
+                    ]
+          , {}
+          )
         , ( "Simple"
           , \config ->
                 Html.div [ css [ displayFlex, gap (rem 1) ] ]
