@@ -7,6 +7,7 @@ module Nordea.Components.Label exposing
     , withCharCounter
     , withErrorMessage
     , withHintText
+    , withNoReservedErrorSpace
     , withRequirednessHint
     , withSmallSize
     )
@@ -48,6 +49,7 @@ type alias InputProperties =
     , labelType : LabelType
     , requirednessHint : Maybe RequirednessHint
     , errorMessage : Maybe String
+    , reserveSpaceForError : Bool
     , hintText : Maybe String
     , charCounter : Maybe CharCounter
     , size : Size
@@ -70,6 +72,7 @@ init labelText labelType =
         , labelType = labelType
         , requirednessHint = Nothing
         , errorMessage = Nothing
+        , reserveSpaceForError = False
         , hintText = Nothing
         , charCounter = Nothing
         , size = Standard
@@ -117,14 +120,17 @@ view attrs children (Label config) =
                     initText config.size
                         |> Text.view [ css [ color Colors.darkGray ] ] [ Html.text text ]
 
-                viewError error =
+                viewError maybeError =
                     initText config.size
                         |> Text.view
                             [ class "input-focus-color"
-                            , css [ displayFlex ]
+                            , css
+                                [ displayFlex
+                                , visibility hidden |> Css.cssIf (Maybe.isNothing maybeError)
+                                ]
                             ]
                             [ Icons.error [ css [ marginRight (rem 0.5), flex none ] ]
-                            , Html.text error
+                            , maybeError |> Maybe.withDefault "No errors" |> Html.text
                             ]
 
                 viewCharCounter counter =
@@ -132,6 +138,9 @@ view attrs children (Label config) =
                         |> Text.view
                             [ css [ color Colors.darkGray ] ]
                             [ String.fromInt counter.current ++ "/" ++ String.fromInt counter.max |> Html.text ]
+
+                showErrorRow =
+                    config.errorMessage /= Nothing || config.reserveSpaceForError
             in
             Html.row
                 (css
@@ -141,12 +150,12 @@ view attrs children (Label config) =
                     :: attrs_
                 )
                 [ Html.column []
-                    [ Html.viewMaybe viewError config.errorMessage
+                    [ viewError config.errorMessage |> Html.showIf showErrorRow
                     , config.hintText |> Html.viewMaybe viewHintText
                     ]
                 , config.charCounter |> Html.viewMaybe viewCharCounter
                 ]
-                |> showIf (config.errorMessage /= Nothing || config.hintText /= Nothing || config.charCounter /= Nothing)
+                |> showIf (showErrorRow || config.hintText /= Nothing || config.charCounter /= Nothing)
     in
     case config.labelType of
         InputLabel ->
@@ -243,7 +252,12 @@ withRequirednessHint requirednessHint (Label config) =
 
 withErrorMessage : Maybe String -> Label -> Label
 withErrorMessage errorMessage (Label config) =
-    Label { config | errorMessage = errorMessage }
+    Label { config | errorMessage = errorMessage, reserveSpaceForError = True }
+
+
+withNoReservedErrorSpace : Bool -> Label -> Label
+withNoReservedErrorSpace reserveSpace (Label config) =
+    Label { config | reserveSpaceForError = False }
 
 
 withHintText : Maybe String -> Label -> Label
