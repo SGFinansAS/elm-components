@@ -7,6 +7,7 @@ module Nordea.Components.Label exposing
     , withCharCounter
     , withErrorMessage
     , withHintText
+    , withNoReservedErrorSpace
     , withRequirednessHint
     , withSmallSize
     )
@@ -49,6 +50,7 @@ type alias InputProperties =
     , requirednessHint : Maybe RequirednessHint
     , errorMessage : Maybe String
     , withError : Bool
+    , reserveSpaceForError : Bool
     , hintText : Maybe String
     , charCounter : Maybe CharCounter
     , size : Size
@@ -72,6 +74,7 @@ init labelText labelType =
         , requirednessHint = Nothing
         , errorMessage = Nothing
         , withError = False
+        , reserveSpaceForError = True
         , hintText = Nothing
         , charCounter = Nothing
         , size = Standard
@@ -137,6 +140,9 @@ view attrs children (Label config) =
                         |> Text.view
                             [ css [ color Colors.darkGray ] ]
                             [ String.fromInt counter.current ++ "/" ++ String.fromInt counter.max |> Html.text ]
+
+                showErrorRow =
+                    config.withError && config.reserveSpaceForError
             in
             Html.row
                 (css
@@ -146,12 +152,12 @@ view attrs children (Label config) =
                     :: attrs_
                 )
                 [ Html.column []
-                    [ viewError config.errorMessage |> Html.showIf config.withError
+                    [ viewError config.errorMessage |> Html.showIf showErrorRow
                     , config.hintText |> Html.viewMaybe viewHintText
                     ]
                 , config.charCounter |> Html.viewMaybe viewCharCounter
                 ]
-                |> showIf (config.withError || config.hintText /= Nothing || config.charCounter /= Nothing)
+                |> showIf (showErrorRow || config.hintText /= Nothing || config.charCounter /= Nothing)
     in
     case config.labelType of
         InputLabel ->
@@ -249,6 +255,11 @@ withRequirednessHint requirednessHint (Label config) =
 withErrorMessage : Maybe String -> Label -> Label
 withErrorMessage errorMessage (Label config) =
     Label { config | errorMessage = errorMessage, withError = True }
+
+
+withNoReservedErrorSpace : Label -> Label
+withNoReservedErrorSpace (Label config) =
+    Label { config | reserveSpaceForError = False }
 
 
 withHintText : Maybe String -> Label -> Label
