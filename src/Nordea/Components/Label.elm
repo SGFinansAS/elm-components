@@ -49,6 +49,7 @@ type alias InputProperties =
     , labelType : LabelType
     , requirednessHint : Maybe RequirednessHint
     , errorMessage : Maybe String
+    , withError : Bool
     , reserveSpaceForError : Bool
     , hintText : Maybe String
     , charCounter : Maybe CharCounter
@@ -72,7 +73,8 @@ init labelText labelType =
         , labelType = labelType
         , requirednessHint = Nothing
         , errorMessage = Nothing
-        , reserveSpaceForError = False
+        , withError = False
+        , reserveSpaceForError = True
         , hintText = Nothing
         , charCounter = Nothing
         , size = Standard
@@ -140,7 +142,7 @@ view attrs children (Label config) =
                             [ String.fromInt counter.current ++ "/" ++ String.fromInt counter.max |> Html.text ]
 
                 showErrorRow =
-                    config.errorMessage /= Nothing || config.reserveSpaceForError
+                    config.withError && config.reserveSpaceForError
             in
             Html.row
                 (css
@@ -252,7 +254,7 @@ withRequirednessHint requirednessHint (Label config) =
 
 withErrorMessage : Maybe String -> Label -> Label
 withErrorMessage errorMessage (Label config) =
-    Label { config | errorMessage = errorMessage, reserveSpaceForError = True }
+    Label { config | errorMessage = errorMessage, withError = True }
 
 
 withNoReservedErrorSpace : Label -> Label
