@@ -255,8 +255,8 @@ withErrorMessage errorMessage (Label config) =
     Label { config | errorMessage = errorMessage, reserveSpaceForError = True }
 
 
-withNoReservedErrorSpace : Bool -> Label -> Label
-withNoReservedErrorSpace reserveSpace (Label config) =
+withNoReservedErrorSpace : Label -> Label
+withNoReservedErrorSpace (Label config) =
     Label { config | reserveSpaceForError = False }
 
 
