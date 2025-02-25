@@ -16,7 +16,7 @@ module Nordea.Components.NumberInput exposing
     , withStep
     )
 
-import Css exposing (Style, absolute, alignItems, backgroundColor, border3, borderBox, borderRadius, boxSizing, center, cursor, default, disabled, display, displayFlex, focus, fontSize, height, left, none, outline, padding4, pct, position, property, pseudoElement, relative, rem, right, solid, textAlign, width)
+import Css exposing (Style, absolute, alignItems, backgroundColor, border3, borderBox, borderRadius, boxSizing, center, cursor, default, disabled, display, displayFlex, focus, fontSize, height, int, left, none, outline, padding4, pct, position, property, pseudoElement, relative, rem, right, solid, textAlign, width, zIndex)
 import Html.Styled as Html exposing (Attribute, Html, input, styled)
 import Html.Styled.Attributes as Attributes exposing (css, placeholder, step, type_, value)
 import Html.Styled.Events exposing (onBlur, onInput)
@@ -163,7 +163,17 @@ view attributes (NumberInput config) =
             (getStyles config)
             (getAttributes config ++ attributes)
             []
-        , Html.div [ css ([ position absolute, right (rem 0.5), cursor default ] ++ getFontSize config.size) ] [ Html.text (config.suffix |> Maybe.map toString |> Maybe.withDefault "") ]
+        , Html.div
+            [ css
+                ([ position absolute
+                 , right (rem 0.5)
+                 , cursor default
+                 , zIndex (int 99) --otherwise invisible on focus
+                 ]
+                    ++ getFontSize config.size
+                )
+            ]
+            [ Html.text (config.suffix |> Maybe.map toString |> Maybe.withDefault "") ]
         ]
 
 
