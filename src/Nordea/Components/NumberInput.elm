@@ -168,8 +168,6 @@ view attributes (NumberInput config) =
                 ([ position absolute
                  , right (rem 0.5)
                  , cursor default
-
-                 --    , zIndex (int 99) --otherwise invisible on focus
                  , color nordeaGray
                  ]
                     ++ getFontSize config.size
