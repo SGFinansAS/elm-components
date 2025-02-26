@@ -73,7 +73,7 @@ stories =
                 NumberInput.init "123456"
                     |> NumberInput.withLeftAlignment
                     |> NumberInput.withSmallSize
-                    |> NumberInput.withKrSuffix
+                    |> NumberInput.withPctSuffix
                     |> NumberInput.view []
           , {}
           )

@@ -16,41 +16,7 @@ module Nordea.Components.NumberInput exposing
     , withStep
     )
 
-import Css
-    exposing
-        ( Style
-        , absolute
-        , alignItems
-        , backgroundColor
-        , border3
-        , borderBox
-        , borderRadius
-        , boxSizing
-        , center
-        , color
-        , cursor
-        , default
-        , disabled
-        , display
-        , displayFlex
-        , focus
-        , fontSize
-        , height
-        , left
-        , none
-        , outline
-        , padding4
-        , pct
-        , position
-        , property
-        , pseudoElement
-        , relative
-        , rem
-        , right
-        , solid
-        , textAlign
-        , width
-        )
+import Css exposing (Style, absolute, alignItems, backgroundColor, border3, borderBox, borderRadius, boxSizing, center, color, cursor, default, disabled, display, displayFlex, focus, fontSize, height, left, none, outline, padding4, pct, position, property, pseudoElement, relative, rem, right, solid, textAlign, width)
 import Html.Styled as Html exposing (Attribute, Html, input, styled)
 import Html.Styled.Attributes as Attributes exposing (css, placeholder, step, type_, value)
 import Html.Styled.Events exposing (onBlur, onInput)
