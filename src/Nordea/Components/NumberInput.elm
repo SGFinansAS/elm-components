@@ -16,12 +16,46 @@ module Nordea.Components.NumberInput exposing
     , withStep
     )
 
-import Css exposing (Style, absolute, alignItems, backgroundColor, border3, borderBox, borderRadius, boxSizing, center, cursor, default, disabled, display, displayFlex, focus, fontSize, height, int, left, none, outline, padding4, pct, position, property, pseudoElement, relative, rem, right, solid, textAlign, width, zIndex)
+import Css
+    exposing
+        ( Style
+        , absolute
+        , alignItems
+        , backgroundColor
+        , border3
+        , borderBox
+        , borderRadius
+        , boxSizing
+        , center
+        , color
+        , cursor
+        , default
+        , disabled
+        , display
+        , displayFlex
+        , focus
+        , fontSize
+        , height
+        , left
+        , none
+        , outline
+        , padding4
+        , pct
+        , position
+        , property
+        , pseudoElement
+        , relative
+        , rem
+        , right
+        , solid
+        , textAlign
+        , width
+        )
 import Html.Styled as Html exposing (Attribute, Html, input, styled)
 import Html.Styled.Attributes as Attributes exposing (css, placeholder, step, type_, value)
 import Html.Styled.Events exposing (onBlur, onInput)
 import Maybe.Extra as Maybe
-import Nordea.Resources.Colors as Colors
+import Nordea.Resources.Colors as Colors exposing (nordeaGray)
 import Nordea.Themes as Themes
 
 
@@ -168,7 +202,9 @@ view attributes (NumberInput config) =
                 ([ position absolute
                  , right (rem 0.5)
                  , cursor default
-                 , zIndex (int 99) --otherwise invisible on focus
+
+                 --    , zIndex (int 99) --otherwise invisible on focus
+                 , color nordeaGray
                  ]
                     ++ getFontSize config.size
                 )
@@ -230,7 +266,7 @@ getStyles config =
                     1.5
 
                 Just Pct ->
-                    1
+                    1.5
 
         sizeSpecificStyling =
             (case config.size of
