@@ -60,7 +60,7 @@ stories =
                     |> NumberInput.view []
           , {}
           )
-        , ( "With left align and suffix"
+        , ( "With left align and kr suffix"
           , \_ ->
                 NumberInput.init "123456"
                     |> NumberInput.withLeftAlignment
@@ -68,7 +68,7 @@ stories =
                     |> NumberInput.view []
           , {}
           )
-        , ( "With left align and small and suffix"
+        , ( "With left align and pct suffix"
           , \_ ->
                 NumberInput.init "123456"
                     |> NumberInput.withLeftAlignment
