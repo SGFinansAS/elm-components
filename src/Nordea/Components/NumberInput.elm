@@ -4,21 +4,24 @@ module Nordea.Components.NumberInput exposing
     , view
     , withError
     , withFormatter
+    , withKrSuffix
+    , withLeftAlignment
     , withMax
     , withMin
     , withOnBlur
     , withOnInput
+    , withPctSuffix
     , withPlaceholder
     , withSmallSize
     , withStep
     )
 
-import Css exposing (Style, backgroundColor, border3, borderBox, borderRadius, boxSizing, disabled, display, focus, fontSize, height, none, outline, padding2, pct, property, pseudoElement, rem, right, solid, textAlign, width)
-import Html.Styled exposing (Attribute, Html, input, styled)
-import Html.Styled.Attributes as Attributes exposing (placeholder, step, type_, value)
+import Css exposing (Style, absolute, alignItems, backgroundColor, border3, borderBox, borderRadius, boxSizing, center, color, cursor, default, disabled, display, displayFlex, focus, fontSize, height, left, none, outline, padding4, pct, position, property, pseudoElement, relative, rem, right, solid, textAlign, width)
+import Html.Styled as Html exposing (Attribute, Html, input, styled)
+import Html.Styled.Attributes as Attributes exposing (css, placeholder, step, type_, value)
 import Html.Styled.Events exposing (onBlur, onInput)
 import Maybe.Extra as Maybe
-import Nordea.Resources.Colors as Colors
+import Nordea.Resources.Colors as Colors exposing (nordeaGray)
 import Nordea.Themes as Themes
 
 
@@ -37,7 +40,29 @@ type alias Config msg =
     , onBlur : Maybe msg
     , formatter : Maybe (Float -> String)
     , size : Size
+    , alignment : Alignment
+    , suffix : Maybe Suffix
     }
+
+
+type Suffix
+    = Kr
+    | Pct
+
+
+toString : Suffix -> String
+toString suffix =
+    case suffix of
+        Kr ->
+            "KR"
+
+        Pct ->
+            "%"
+
+
+type Alignment
+    = Left
+    | Right
 
 
 type Size
@@ -62,6 +87,8 @@ init value =
         , onBlur = Nothing
         , formatter = Nothing
         , size = Standard
+        , alignment = Right
+        , suffix = Nothing
         }
 
 
@@ -110,16 +137,44 @@ withSmallSize (NumberInput config) =
     NumberInput { config | size = Small }
 
 
+withLeftAlignment : NumberInput msg -> NumberInput msg
+withLeftAlignment (NumberInput config) =
+    NumberInput { config | alignment = Left }
+
+
+withPctSuffix : NumberInput msg -> NumberInput msg
+withPctSuffix (NumberInput config) =
+    NumberInput { config | suffix = Just Pct }
+
+
+withKrSuffix : NumberInput msg -> NumberInput msg
+withKrSuffix (NumberInput config) =
+    NumberInput { config | suffix = Just Kr }
+
+
 
 -- VIEW
 
 
 view : List (Attribute msg) -> NumberInput msg -> Html msg
 view attributes (NumberInput config) =
-    styled input
-        (getStyles config)
-        (getAttributes config ++ attributes)
-        []
+    Html.div [ css [ position relative, displayFlex, alignItems center ] ]
+        [ styled input
+            (getStyles config)
+            (getAttributes config ++ attributes)
+            []
+        , Html.div
+            [ css
+                ([ position absolute
+                 , right (rem 0.5)
+                 , cursor default
+                 , color nordeaGray
+                 ]
+                    ++ getFontSize config.size
+                )
+            ]
+            [ Html.text (config.suffix |> Maybe.map toString |> Maybe.withDefault "") ]
+        ]
 
 
 getAttributes : Config msg -> List (Attribute msg)
@@ -166,24 +221,43 @@ getStyles config =
             else
                 Colors.mediumGray
 
+        rightPaddingAdditionDueToIcon =
+            case config.suffix of
+                Nothing ->
+                    0
+
+                Just Kr ->
+                    1.5
+
+                Just Pct ->
+                    1.5
+
         sizeSpecificStyling =
-            case config.size of
+            (case config.size of
                 Small ->
-                    [ fontSize (rem 0.75)
-                    , height (rem 1.5)
-                    , padding2 (rem 0.25) (rem 0.5)
+                    [ height (rem 1.5)
+                    , padding4 (rem 0.25) (rem (0.5 + rightPaddingAdditionDueToIcon)) (rem 0.25) (rem 0.5)
                     ]
 
                 Standard ->
-                    [ fontSize (rem 1)
-                    , height (rem 2.5)
-                    , padding2 (rem 0) (rem 0.75)
+                    [ height (rem 2.5)
+                    , padding4 (rem 0) (rem (0.75 + rightPaddingAdditionDueToIcon)) (rem 0) (rem 0.75)
                     ]
+            )
+                ++ getFontSize config.size
+
+        textAlignValue =
+            case config.alignment of
+                Left ->
+                    left
+
+                Right ->
+                    right
     in
     [ pseudoElement "-webkit-outer-spin-button" [ display none ]
     , pseudoElement "-webkit-inner-spin-button" [ display none ]
     , property "-moz-appearance" "textfield"
-    , textAlign right
+    , textAlign textAlignValue
     , borderRadius (rem 0.25)
     , border3 (rem 0.0625) solid borderColorStyle
     , boxSizing borderBox
@@ -195,3 +269,13 @@ getStyles config =
         ]
     ]
         ++ sizeSpecificStyling
+
+
+getFontSize : Size -> List Style
+getFontSize size =
+    case size of
+        Small ->
+            [ fontSize (rem 0.75) ]
+
+        Standard ->
+            [ fontSize (rem 1) ]
