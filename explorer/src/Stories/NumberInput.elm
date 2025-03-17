@@ -53,4 +53,27 @@ stories =
                     |> NumberInput.view []
           , {}
           )
+        , ( "With left align"
+          , \_ ->
+                NumberInput.init "123456"
+                    |> NumberInput.withLeftAlignment
+                    |> NumberInput.view []
+          , {}
+          )
+        , ( "With left align and kr suffix"
+          , \_ ->
+                NumberInput.init "123456"
+                    |> NumberInput.withLeftAlignment
+                    |> NumberInput.withKrSuffix
+                    |> NumberInput.view []
+          , {}
+          )
+        , ( "With left align and pct suffix"
+          , \_ ->
+                NumberInput.init "123456"
+                    |> NumberInput.withLeftAlignment
+                    |> NumberInput.withPctSuffix
+                    |> NumberInput.view []
+          , {}
+          )
         ]

@@ -1,4 +1,4 @@
-module Nordea.Components.FilterChip exposing (init, view)
+module Nordea.Components.FilterChip exposing (init, view, withSmallSize)
 
 import Css
     exposing
@@ -36,16 +36,30 @@ import Nordea.Themes as Themes
 
 
 type FilterChip
-    = FilterChip { label : String }
+    = FilterChip { label : String, appearance : Appearance }
+
+
+type Appearance
+    = Standard
+    | Small
 
 
 init : { label : String } -> FilterChip
 init { label } =
-    FilterChip { label = label }
+    FilterChip { label = label, appearance = Standard }
 
 
 view : List (Attribute msg) -> FilterChip -> Html msg
-view attrs (FilterChip { label }) =
+view attrs (FilterChip { label, appearance }) =
+    let
+        ( gapStyle, iconSizeStyle, textType ) =
+            case appearance of
+                Standard ->
+                    ( gap (rem 1), width (rem 1), Text.bodyTextSmall )
+
+                Small ->
+                    ( gap (rem 0.25), width (rem 0.5), Text.textTinyLight )
+    in
     Html.button
         (css
             [ padding2 (rem 0.25) (rem 0.75)
@@ -57,7 +71,7 @@ view attrs (FilterChip { label }) =
             , Themes.backgroundColor Color.cloudBlue
             , Themes.color Color.deepBlue
             , maxWidth fitContent
-            , gap (rem 1)
+            , gapStyle
             , Css.property "height" "fit-content"
             , whiteSpace noWrap
             , alignItems center
@@ -72,6 +86,11 @@ view attrs (FilterChip { label }) =
             ]
             :: attrs
         )
-        [ Text.bodyTextSmall |> Text.view [] [ Html.text label ]
-        , Icon.cross [ css [ width (rem 1.0) ] ]
+        [ textType |> Text.view [] [ Html.text label ]
+        , Icon.cross [ css [ iconSizeStyle ] ]
         ]
+
+
+withSmallSize : FilterChip -> FilterChip
+withSmallSize (FilterChip config) =
+    FilterChip { config | appearance = Small }

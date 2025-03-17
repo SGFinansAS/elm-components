@@ -37,3 +37,5 @@ config =
     , NoExposingEverything.rule
     , NoImportingEverything.rule []
     ]
+        -- don't review the non-explorer src-code, since it has its own review
+        |> List.map (Review.Rule.ignoreErrorsForDirectories [ "../src" ])

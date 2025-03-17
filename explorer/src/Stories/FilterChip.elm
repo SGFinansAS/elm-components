@@ -23,4 +23,16 @@ stories =
                     ]
           , {}
           )
+        , ( "Small"
+          , \_ ->
+                Html.row [ css [ gap (rem 1) ] ]
+                    [ FilterChip.init { label = "Under behandling" }
+                        |> FilterChip.withSmallSize
+                        |> FilterChip.view []
+                    , FilterChip.init { label = "Under oppstart" }
+                        |> FilterChip.withSmallSize
+                        |> FilterChip.view []
+                    ]
+          , {}
+          )
         ]

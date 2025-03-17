@@ -104,6 +104,7 @@ type OptionalConfig msg
     | FirstDayOfWeek Weekday
     | ShowError msg
     | Error Bool
+    | SmallSize
 
 
 type DateResult
@@ -147,7 +148,7 @@ view attrs optional (DatePicker config) =
         internalState =
             internalStateValues config.internalState
 
-        { placeholder, parser, formatter, firstDayOfWeek, showError, error } =
+        { placeholder, parser, formatter, firstDayOfWeek, showError, error, smallSize } =
             optional
                 |> List.foldl
                     (\e acc ->
@@ -169,6 +170,9 @@ view attrs optional (DatePicker config) =
 
                             Error v ->
                                 { acc | error = v }
+
+                            SmallSize ->
+                                { acc | smallSize = True }
                     )
                     { placeholder = "dd.mm.yyyy"
                     , parser = defaultDateParser
@@ -176,6 +180,7 @@ view attrs optional (DatePicker config) =
                     , firstDayOfWeek = Time.Mon
                     , showError = Nothing
                     , error = False
+                    , smallSize = False
                     }
 
         chosenDate =
@@ -192,12 +197,17 @@ view attrs optional (DatePicker config) =
                 )
     in
     Html.column
-        (Events.on "outsideclick" (Decode.succeed (config.onInternalStateChange (InternalState { internalState | hasFocus = False })))
+        (({ internalState | hasFocus = False }
+            |> InternalState
+            |> config.onInternalStateChange
+            |> Decode.succeed
+            |> Events.on "outsideclick"
+         )
             :: css [ position relative ]
             :: attrs
         )
         [ OnClickOutsideSupport.view { isActive = internalState.hasFocus }
-        , dateInput config (InternalState internalState) parser placeholder showError error
+        , dateInput config (InternalState internalState) parser placeholder showError error smallSize
         , Html.div
             [ css
                 [ border3 (rem 0.0625) solid Colors.mediumGray
@@ -223,8 +233,8 @@ view attrs optional (DatePicker config) =
         ]
 
 
-dateInput : Config msg -> InternalState -> (String -> Result String Date) -> String -> Maybe msg -> Bool -> Html msg
-dateInput config (InternalState internalState) parser datePlaceholder showError error =
+dateInput : Config msg -> InternalState -> (String -> Result String Date) -> String -> Maybe msg -> Bool -> Bool -> Html msg
+dateInput config (InternalState internalState) parser datePlaceholder showError error smallSize =
     let
         ( borderColor, calendarIconColor ) =
             if error then
@@ -244,23 +254,62 @@ dateInput config (InternalState internalState) parser datePlaceholder showError 
             [ internalState.input |> value
             , (\input ->
                 parser input
-                    |> Result.map (\date -> config.onSelect (Picked date) (InternalState { internalState | input = input }))
-                    |> Result.withDefault (config.onSelect (Invalid input) (InternalState { internalState | input = input, selectedMonth = Nothing }))
+                    |> Result.map
+                        (\date ->
+                            config.onSelect (Picked date)
+                                (InternalState { internalState | input = input })
+                        )
+                    |> Result.withDefault
+                        (config.onSelect (Invalid input)
+                            (InternalState { internalState | input = input, selectedMonth = Nothing })
+                        )
               )
                 |> onInput
             , datePlaceholder |> placeholder
-            , config.onInternalStateChange (InternalState { internalState | hasFocus = not internalState.hasFocus }) |> onClick
-            , config.onInternalStateChange (InternalState { internalState | hasFocus = not internalState.hasFocus }) |> Events.onEnterOrSpacePress
+            , config.onInternalStateChange
+                (InternalState { internalState | hasFocus = not internalState.hasFocus })
+                |> onClick
+            , config.onInternalStateChange
+                (InternalState { internalState | hasFocus = not internalState.hasFocus })
+                |> Events.onEnterOrSpacePress
             ]
-                ++ (showError |> Maybe.filter (\_ -> not internalState.hasFocus) |> Maybe.map onBlur |> toList)
+                ++ (showError
+                        |> Maybe.filter (\_ -> not internalState.hasFocus)
+                        |> Maybe.map onBlur
+                        |> toList
+                   )
+
+        ( inputSizing, iconSizing ) =
+            if smallSize then
+                ( Css.batch
+                    [ fontSize (rem 0.75)
+                    , height (rem 1.5)
+                    , padding2 (rem 0.25) (rem 0.5)
+                    , paddingRight (rem 2)
+                    ]
+                , Css.batch
+                    [ width (rem 1.5)
+                    , padding (rem 0.375)
+                    ]
+                )
+
+            else
+                ( Css.batch
+                    [ fontSize (rem 1)
+                    , height (rem 2.5)
+                    , padding2 (rem 0) (rem 0.75)
+                    , paddingRight (rem 3)
+                    ]
+                , Css.batch
+                    [ width (rem 2.5)
+                    , padding (rem 0.375)
+                    ]
+                )
     in
     Html.div
         [ css [ displayFlex, position relative ] ]
         [ styled input
-            [ fontSize (rem 1)
-            , height (rem 2.5)
-            , padding2 (rem 0) (rem 0.75)
-            , paddingRight (rem 3)
+            [ inputSizing
             , borderRadiusStyle
             , border3 (rem 0.0625) solid borderColor
             , boxSizing borderBox
@@ -274,10 +323,9 @@ dateInput config (InternalState internalState) parser datePlaceholder showError 
             []
         , Icons.calendar
             [ css
-                [ width (rem 2.5)
+                [ iconSizing
                 , position absolute
                 , right (rem 0)
-                , padding (rem 0.375)
                 , calendarIconColor
                 ]
             ]

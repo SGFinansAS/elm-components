@@ -16,4 +16,9 @@ stories =
                 Illustrations.parachute [ css [ width (rem 10) ] ]
           , {}
           )
+        , ( "InstructionalInfo"
+          , \_ ->
+                Illustrations.instructionalInfo [ css [ width (rem 5) ] ]
+          , {}
+          )
         ]
