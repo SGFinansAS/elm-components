@@ -183,14 +183,13 @@ chatHistoryView attrs { sentFrom, sentAt, sender, message, isIncomingMessage, re
             if isIncomingMessage then
                 Css.batch
                     [ borderRadius4 (rem 0.5) (rem 0.5) (rem 0.5) (rem 0)
-                    , Themes.color Colors.white
-                    , Themes.backgroundColor Colors.nordeaBlue
+                    , Themes.backgroundColor Colors.coolGray
                     ]
 
             else
                 Css.batch
                     [ borderRadius4 (rem 0.5) (rem 0.5) (rem 0) (rem 0.5)
-                    , Themes.backgroundColor Colors.coolGray
+                    , Themes.backgroundColor Colors.cloudBlue
                     ]
 
         messageLabel attr text =
