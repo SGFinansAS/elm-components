@@ -2,17 +2,23 @@ module Nordea.Components.Chat exposing (Appearance(..), OptionalConfig(..), chat
 
 import Css
     exposing
-        ( alignSelf
+        ( alignItems
+        , alignSelf
         , auto
+        , backgroundColor
         , border3
+        , borderRadius
         , borderRadius4
         , breakWord
+        , center
         , color
         , columnReverse
+        , display
         , ellipsis
         , flexDirection
         , flexEnd
         , hidden
+        , inlineBlock
         , justifyContent
         , marginBottom
         , marginLeft
@@ -22,6 +28,7 @@ import Css
         , overflow
         , overflowWrap
         , padding
+        , padding2
         , paddingRight
         , rem
         , solid
@@ -31,7 +38,7 @@ import Css
         , width
         )
 import Html.Styled as Html exposing (Attribute, Html)
-import Html.Styled.Attributes exposing (css)
+import Html.Styled.Attributes exposing (class, css)
 import List
 import Nordea.Components.Card as Card
 import Nordea.Components.Tag as Tag
@@ -58,6 +65,7 @@ type alias MessageViewConfig =
     , message : String
     , isIncomingMessage : Bool
     , readReceipt : Maybe String
+    , messageChipText : Maybe String
     }
 
 
@@ -169,7 +177,7 @@ view optionals attrs history content (Chat config) =
 
 
 chatHistoryView : List (Attribute msg) -> MessageViewConfig -> Html msg
-chatHistoryView attrs { sentFrom, sentAt, sender, message, isIncomingMessage, readReceipt } =
+chatHistoryView attrs { sentFrom, sentAt, sender, message, isIncomingMessage, readReceipt, messageChipText } =
     let
         messageStyles =
             if isIncomingMessage then
@@ -194,14 +202,31 @@ chatHistoryView attrs { sentFrom, sentAt, sender, message, isIncomingMessage, re
             [ messageLabel [ css [ marginRight (rem 0.25), textOverflow ellipsis, overflow hidden ] ] sentFrom
             , messageLabel [] sentAt
             ]
-        , sender
-            |> Maybe.map
-                (\sender_ ->
-                    Text.textTinyHeavy
-                        |> Text.view [] [ Html.text sender_ ]
-                )
-            |> Maybe.withDefault Html.nothing
-        , Html.column [ css [ padding (rem 0.625), gap (rem 0.625), messageStyles ] ]
+        , Html.row [ css [ alignItems center, justifyContent spaceBetween ] ]
+            [ sender
+                |> Html.viewMaybe
+                    (\sender_ ->
+                        Text.textTinyHeavy |> Text.view [] [ Html.text sender_ ]
+                    )
+            , messageChipText
+                |> Html.viewMaybe
+                    (\messageChipText_ ->
+                        Text.textTinyLight
+                            |> Text.view
+                                [ css
+                                    [ display inlineBlock
+                                    , borderRadius (rem 1.25)
+                                    , padding2 (rem 0.125) (rem 0.5)
+                                    , backgroundColor Colors.lightBlue
+                                    , textOverflow ellipsis
+                                    , overflow hidden
+                                    , whiteSpace noWrap
+                                    ]
+                                ]
+                                [ Html.text messageChipText_ ]
+                    )
+            ]
+        , Html.column [ class "chat-message", css [ padding (rem 0.625), gap (rem 0.625), messageStyles ] ]
             [ Text.textSmallLight
                 |> Text.view
                     [ css

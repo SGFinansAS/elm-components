@@ -29,6 +29,7 @@ stories =
                                             , message = "I forbindelse med deres søknad om finansiering gjennom oss ønsker vi innsikt i deres 2023-tall. Kan du oversende disse? Resultat- og balanserapport."
                                             , isIncomingMessage = False
                                             , readReceipt = Just "Lest i går kl. 14:36"
+                                            , messageChipText = Nothing
                                             }
                                         , Chat.chatHistoryView []
                                             { sentFrom = "PartnerHub"
@@ -37,6 +38,7 @@ stories =
                                             , message = "Har lagt ved resultatrapport og balanserepport pr. 31.11.2023. Vi har ikke fått tilbake rapportene for des. 2023 fra regnskap firma."
                                             , isIncomingMessage = True
                                             , readReceipt = Nothing
+                                            , messageChipText = Nothing
                                             }
                                         ]
                                     )
@@ -62,6 +64,7 @@ stories =
                                             , message = "I forbindelse med deres søknad om finansiering gjennom oss ønsker vi innsikt i deres 2023-tall. Kan du oversende disse? Resultat- og balanserapport."
                                             , isIncomingMessage = False
                                             , readReceipt = Just "Lest i går kl. 14:36"
+                                            , messageChipText = Just "Intern melding"
                                             }
                                         , Chat.chatHistoryView []
                                             { sentFrom = "Nordea Finance Equipment AS - Long company name"
@@ -70,6 +73,7 @@ stories =
                                             , message = "Har lagt ved resultatrapport og balanserepport pr. 31.11.2023. Vi har ikke fått tilbake rapportene for des. 2023 fra regnskap firma."
                                             , isIncomingMessage = True
                                             , readReceipt = Nothing
+                                            , messageChipText = Nothing
                                             }
                                         ]
                                     )
