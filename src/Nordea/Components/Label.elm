@@ -188,7 +188,7 @@ view attrs children (Label config) =
                     [ css
                         [ padding (rem 0)
                         , width (pct 100)
-                        , Css.Global.children [ everything [ flexBasis (pct 100) ] ]
+                        , Css.Global.children [ everything [ flexBasis (pct 100), marginBottom (rem 0) ] ]
                         ]
                     ]
                     [ topInfo ]
