@@ -11,8 +11,7 @@ module Nordea.Components.MultiSelectDropdown exposing
     , withRequirednessHint
     )
 
-import Css exposing (absolute, alignItems, backgroundColor, border3, borderBottomLeftRadius, borderBottomRightRadius, borderBox, borderRadius4, boxSizing, center, color, column, cursor, display, displayFlex, flexDirection, height, hover, int, justifyContent, left, listStyle, margin, marginLeft, marginTop, maxHeight, none, overflowY, padding, padding4, paddingTop, pct, pointer, position, relative, rem, right, scroll, solid, spaceBetween, start, top, width, zIndex)
-import Html.Attributes.Extra as Attributes
+import Css exposing (absolute, alignItems, backgroundColor, border3, borderBottomLeftRadius, borderBottomRightRadius, borderBox, borderRadius4, boxSizing, center, color, column, cursor, display, displayFlex, flexDirection, height, hover, int, justifyContent, left, listStyle, margin, marginLeft, marginTop, maxHeight, none, overflowY, padding, padding4, pct, pointer, position, relative, rem, right, scroll, solid, spaceBetween, start, top, width, zIndex)
 import Html.Styled as Html exposing (Attribute, Html)
 import Html.Styled.Attributes exposing (css, tabindex)
 import Html.Styled.Events as Events
