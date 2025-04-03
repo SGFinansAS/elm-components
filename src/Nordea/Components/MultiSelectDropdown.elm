@@ -5,52 +5,14 @@ module Nordea.Components.MultiSelectDropdown exposing
     , withHasFocus
     , withHintText
     , withLabel
+    , withOptionGroups
     , withOptions
     , withPlaceholder
     , withRequirednessHint
     )
 
-import Css
-    exposing
-        ( absolute
-        , alignItems
-        , backgroundColor
-        , border3
-        , borderBottomLeftRadius
-        , borderBottomRightRadius
-        , borderBox
-        , borderRadius4
-        , boxSizing
-        , center
-        , column
-        , cursor
-        , display
-        , displayFlex
-        , flexDirection
-        , hover
-        , int
-        , justifyContent
-        , left
-        , listStyle
-        , margin
-        , maxHeight
-        , none
-        , overflowY
-        , padding
-        , padding4
-        , pct
-        , pointer
-        , position
-        , relative
-        , rem
-        , right
-        , scroll
-        , solid
-        , spaceBetween
-        , top
-        , width
-        , zIndex
-        )
+import Css exposing (absolute, alignItems, backgroundColor, border3, borderBottomLeftRadius, borderBottomRightRadius, borderBox, borderRadius4, boxSizing, center, color, column, cursor, display, displayFlex, flexDirection, height, hover, int, justifyContent, left, listStyle, margin, marginLeft, marginTop, maxHeight, none, overflowY, padding, padding4, paddingTop, pct, pointer, position, relative, rem, right, scroll, solid, spaceBetween, start, top, width, zIndex)
+import Html.Attributes.Extra as Attributes
 import Html.Styled as Html exposing (Attribute, Html)
 import Html.Styled.Attributes exposing (css, tabindex)
 import Html.Styled.Events as Events
@@ -58,17 +20,22 @@ import Json.Decode as Decode
 import Nordea.Components.Checkbox as Checkbox
 import Nordea.Components.Label as Label exposing (RequirednessHint)
 import Nordea.Components.OnClickOutsideSupport as OnClickOutsideSupport
+import Nordea.Components.Text as Text
 import Nordea.Html.Events as Events
 import Nordea.Resources.Colors as Colors
 import Nordea.Resources.Icons as Icon
 import Nordea.Themes as Themes
 
 
+type alias OptionGroup msg =
+    { groupLabel : Maybe String, options : List (Option msg) }
+
+
 type alias MultiSelectDropdown msg =
     { label : String
     , placeholder : String
     , hint : Maybe String
-    , options : List (Option msg)
+    , optionGroups : List (OptionGroup msg)
     , onFocus : Bool -> msg
     , hasFocus : Bool
     , requirednessHint : Maybe RequirednessHint
@@ -88,7 +55,7 @@ init { onFocus } =
     { label = ""
     , placeholder = ""
     , hint = Nothing
-    , options = []
+    , optionGroups = []
     , onFocus = onFocus
     , hasFocus = True
     , requirednessHint = Nothing
@@ -98,8 +65,35 @@ init { onFocus } =
 view : List (Attribute msg) -> MultiSelectDropdown msg -> Html msg
 view attrs dropdown =
     let
-        viewSelectItems =
+        viewSelectItems index optionGroup =
             let
+                viewOptionGroup =
+                    (case optionGroup.groupLabel of
+                        Nothing ->
+                            []
+
+                        Just groupLabel ->
+                            [ Html.li
+                                [ css
+                                    [ displayFlex
+                                    , height (rem 1.5)
+                                    , alignItems center
+                                    , justifyContent start
+                                    , marginLeft (rem 0.75)
+                                    , if index == 0 then
+                                        marginTop (rem 0.75)
+
+                                      else
+                                        marginTop (rem 0)
+                                    ]
+                                ]
+                                [ Text.textTinyLight
+                                    |> Text.view [ css [ color Colors.darkGray ] ] [ Html.text groupLabel ]
+                                ]
+                            ]
+                    )
+                        ++ List.map viewOption optionGroup.options
+
                 viewOption option =
                     Html.li
                         []
@@ -117,16 +111,10 @@ view attrs dropdown =
             in
             Html.ul
                 [ css
-                    [ position absolute
-                    , top (pct 100)
-                    , left (rem 0)
-                    , right (rem 0)
-                    , zIndex (int 1)
-                    , overflowY scroll
-                    , maxHeight (rem 16.75)
-                    , listStyle none
+                    [ left (rem 0)
                     , margin (rem 0)
                     , padding (rem 0)
+                    , listStyle none
                     , if dropdown.hasFocus then
                         displayFlex
 
@@ -134,14 +122,9 @@ view attrs dropdown =
                         display none
                     , flexDirection column
                     , backgroundColor Colors.white
-                    , border3 (rem 0.0625) solid Colors.mediumGray
-                    , Themes.borderColor Colors.nordeaBlue
-                    , borderBottomLeftRadius (rem 0.25)
-                    , borderBottomRightRadius (rem 0.25)
-                    , boxSizing borderBox
                     ]
                 ]
-                (dropdown.options |> List.map viewOption)
+                viewOptionGroup
     in
     Label.init
         dropdown.label
@@ -191,7 +174,33 @@ view attrs dropdown =
                 [ Html.text dropdown.placeholder
                 , Icon.chevronDownFilled []
                 ]
-            , viewSelectItems
+            , Html.ul
+                [ css
+                    [ position absolute
+                    , top (pct 100)
+                    , left (rem 0)
+                    , right (rem 0)
+                    , zIndex (int 1)
+                    , overflowY scroll
+                    , maxHeight (rem 16.75)
+                    , listStyle none
+                    , margin (rem 0)
+                    , padding (rem 0)
+                    , if dropdown.hasFocus then
+                        displayFlex
+
+                      else
+                        display none
+                    , flexDirection column
+                    , backgroundColor Colors.white
+                    , border3 (rem 0.0625) solid Colors.mediumGray
+                    , Themes.borderColor Colors.nordeaBlue
+                    , borderBottomLeftRadius (rem 0.25)
+                    , borderBottomRightRadius (rem 0.25)
+                    , boxSizing borderBox
+                    ]
+                ]
+                (List.indexedMap viewSelectItems dropdown.optionGroups)
             ]
 
 
@@ -205,9 +214,14 @@ withPlaceholder placeholder dropdown =
     { dropdown | placeholder = placeholder }
 
 
+withOptionGroups : List (OptionGroup msg) -> MultiSelectDropdown msg -> MultiSelectDropdown msg
+withOptionGroups optionGroups dropdown =
+    { dropdown | optionGroups = optionGroups }
+
+
 withOptions : List (Option msg) -> MultiSelectDropdown msg -> MultiSelectDropdown msg
 withOptions options dropdown =
-    { dropdown | options = options }
+    { dropdown | optionGroups = [ { groupLabel = Nothing, options = options } ] }
 
 
 withHintText : Maybe String -> MultiSelectDropdown msg -> MultiSelectDropdown msg
