@@ -13,7 +13,7 @@ stories =
         "MultiSelectDropdown"
         [ ( "Standard"
           , \model ->
-                MultiSelectDropdown.init { onFocus = FocusMultiSelectDropdown }
+                MultiSelectDropdown.init { onFocus = FocusMultiSelectDropdown, newOutsideClickListener = True }
                     |> MultiSelectDropdown.withLabel "Label"
                     |> MultiSelectDropdown.withPlaceholder "Choose an option"
                     |> MultiSelectDropdown.withHasFocus model.customModel.hasMultiSelectDropdownFocus
@@ -29,7 +29,7 @@ stories =
           )
         , ( "With groups"
           , \model ->
-                MultiSelectDropdown.init { onFocus = FocusMultiSelectDropdown }
+                MultiSelectDropdown.init { onFocus = FocusMultiSelectDropdown, newOutsideClickListener = True }
                     |> MultiSelectDropdown.withLabel "Label"
                     |> MultiSelectDropdown.withPlaceholder "Choose an option"
                     |> MultiSelectDropdown.withHasFocus model.customModel.hasMultiSelectDropdownFocus

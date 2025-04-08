@@ -2,23 +2,38 @@ module Nordea.Components.OnClickOutsideSupport exposing (view)
 
 import Css exposing (display, none)
 import Html.Styled as Html exposing (Html)
-import Html.Styled.Attributes exposing (attribute, css, srcdoc)
+import Html.Styled.Attributes exposing (attribute, class, css, srcdoc)
 
 
-view : { isActive : Bool } -> Html msg
-view { isActive } =
-    Html.iframe
-        [ css [ display none ]
-        , attribute "data-is-active"
-            (if isActive then
-                "true"
+view : { isActive : Bool, useNewBehaviour : Bool } -> Html msg
+view { isActive, useNewBehaviour } =
+    if useNewBehaviour then
+        Html.span
+            [ css [ display none ]
+            , class "outside-click"
+            , attribute "data-is-active"
+                (if isActive then
+                    "true"
 
-             else
-                "false"
-            )
-        , srcdoc jsCode
-        ]
-        []
+                 else
+                    "false"
+                )
+            ]
+            []
+
+    else
+        Html.iframe
+            [ css [ display none ]
+            , attribute "data-is-active"
+                (if isActive then
+                    "true"
+
+                 else
+                    "false"
+                )
+            , srcdoc jsCode
+            ]
+            []
 
 
 jsCode =
