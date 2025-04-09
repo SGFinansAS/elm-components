@@ -1,0 +1,39 @@
+@font-face {
+  font-family: 'Nordea Sans Large';
+  src: url('./../../../../static/fonts/NordeaSansLarge-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Nordea Sans Large';
+  src: url('./../../../../static/fonts/NordeaSansLarge-Medium.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Nordea Sans Small';
+  src: url('./../../../../static/fonts/NordeaSansSmall-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Nordea Sans Small';
+  src: url('./../../../../static/fonts/NordeaSansSmall-Italic.woff2') format('woff2');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Nordea Sans Small';
+  src: url('./../../../../static/fonts/NordeaSansSmall-Medium.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
