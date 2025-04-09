@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -10,18 +10,19 @@
       type="text/css"
       href="https://cdn.jsdelivr.net/gh/kalutheo/elm-ui-explorer@master/assets/styles.css"
     />
-    <script
-      src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"
-      async
-      defer
-    ></script>
+    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js" async defer></script>
+
+    <link rel="stylesheet" href="/fonts.css" />
   </head>
   <body class="overflow-hidden">
     <div id="root"></div>
+
+    <script src="/js/on-click-outside.js"></script>
     <script src="explorer.js"></script>
+
     <script type="text/javascript">
       Elm.Explorer.init({
-        node: document.getElementById("root"),
+        node: document.getElementById('root'),
       });
     </script>
   </body>

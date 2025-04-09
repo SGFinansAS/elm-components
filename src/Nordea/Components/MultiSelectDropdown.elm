@@ -38,6 +38,7 @@ type alias MultiSelectDropdown msg =
     , onFocus : Bool -> msg
     , hasFocus : Bool
     , requirednessHint : Maybe RequirednessHint
+    , newOutsideClickListener : Bool
     }
 
 
@@ -49,8 +50,8 @@ type alias Option msg =
     }
 
 
-init : { onFocus : Bool -> msg } -> MultiSelectDropdown msg
-init { onFocus } =
+init : { onFocus : Bool -> msg, newOutsideClickListener : Bool } -> MultiSelectDropdown msg
+init { onFocus, newOutsideClickListener } =
     { label = ""
     , placeholder = ""
     , hint = Nothing
@@ -58,6 +59,7 @@ init { onFocus } =
     , onFocus = onFocus
     , hasFocus = True
     , requirednessHint = Nothing
+    , newOutsideClickListener = newOutsideClickListener
     }
 
 
@@ -135,7 +137,7 @@ view attrs dropdown =
                 :: css [ position relative ]
                 :: attrs
             )
-            [ OnClickOutsideSupport.view { isActive = dropdown.hasFocus }
+            [ OnClickOutsideSupport.view { isActive = dropdown.hasFocus, useNewBehaviour = dropdown.newOutsideClickListener }
             , Html.div
                 [ Events.onClick (dropdown.onFocus (not dropdown.hasFocus))
                 , Events.onKeyDown
