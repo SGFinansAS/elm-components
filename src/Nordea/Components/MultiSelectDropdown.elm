@@ -4,6 +4,7 @@ module Nordea.Components.MultiSelectDropdown exposing
     , view
     , withHasFocus
     , withHintText
+    , withInput
     , withLabel
     , withOptionGroups
     , withOptions
@@ -11,15 +12,20 @@ module Nordea.Components.MultiSelectDropdown exposing
     , withRequirednessHint
     )
 
-import Css exposing (absolute, alignItems, backgroundColor, border3, borderBottomLeftRadius, borderBottomRightRadius, borderBox, borderRadius4, boxSizing, center, color, column, cursor, display, displayFlex, flexDirection, height, hover, int, justifyContent, left, listStyle, margin, marginLeft, marginTop, maxHeight, none, overflowY, padding, padding4, pct, pointer, position, relative, rem, right, scroll, solid, spaceBetween, start, top, width, zIndex)
+import Css exposing (absolute, alignItems, auto, backgroundColor, border, border3, borderBottomLeftRadius, borderBottomRightRadius, borderBox, borderRadius4, bottom, boxSizing, center, color, column, cursor, deg, display, displayFlex, flexDirection, height, hover, int, justifyContent, left, listStyle, margin, marginBottom, marginLeft, marginTop, maxHeight, none, overflowY, padding, padding4, paddingRight, pct, pointer, pointerEvents, position, relative, rem, right, rotate, scroll, solid, spaceBetween, start, top, transforms, translateY, width, zIndex)
+import Css.Global exposing (descendants, typeSelector)
+import Html.Extra as Html
 import Html.Styled as Html exposing (Attribute, Html)
-import Html.Styled.Attributes exposing (css, tabindex)
-import Html.Styled.Events as Events
+import Html.Styled.Attributes as Attrs exposing (css, tabindex)
+import Html.Styled.Events as Events exposing (onClick)
 import Json.Decode as Decode
+import Maybe.Extra as Maybe
 import Nordea.Components.Checkbox as Checkbox
 import Nordea.Components.Label as Label exposing (RequirednessHint)
 import Nordea.Components.OnClickOutsideSupport as OnClickOutsideSupport
 import Nordea.Components.Text as Text
+import Nordea.Components.TextInput as TextInput
+import Nordea.Html exposing (showIf, styleIf)
 import Nordea.Html.Events as Events
 import Nordea.Resources.Colors as Colors
 import Nordea.Resources.Icons as Icon
@@ -28,6 +34,12 @@ import Nordea.Themes as Themes
 
 type alias OptionGroup msg =
     { groupLabel : Maybe String, options : List (Option msg) }
+
+
+type alias InputProperties msg =
+    { onInput : String -> msg
+    , input : String
+    }
 
 
 type alias MultiSelectDropdown msg =
@@ -39,6 +51,7 @@ type alias MultiSelectDropdown msg =
     , hasFocus : Bool
     , requirednessHint : Maybe RequirednessHint
     , newOutsideClickListener : Bool
+    , input : Maybe (InputProperties msg)
     }
 
 
@@ -60,16 +73,70 @@ init { onFocus, newOutsideClickListener } =
     , hasFocus = True
     , requirednessHint = Nothing
     , newOutsideClickListener = newOutsideClickListener
+    , input = Nothing
     }
 
 
 view : List (Attribute msg) -> MultiSelectDropdown msg -> Html msg
 view attrs dropdown =
     let
+        dropdownShowing =
+            dropdown.hasFocus
+
+        textInput : InputProperties msg -> Html msg
+        textInput inputProps =
+            TextInput.init inputProps.input
+                --|> TextInput.withError (config.hasError || showHasNoMatch)
+                |> TextInput.withOnInput inputProps.onInput
+                --|> TextInput.withSearchIcon inputProps.hasSearchIcon
+                |> TextInput.withPlaceholder dropdown.placeholder
+                |> TextInput.withInputAttrs
+                    [ Attrs.attribute "role" "combobox"
+
+                    --, Attrs.attribute "aria-controls" inputProps.uniqueId
+                    , Attrs.attribute "aria-expanded"
+                        (if dropdown.hasFocus then
+                            "true"
+
+                         else
+                            "false"
+                        )
+                    ]
+                |> TextInput.view
+                    [ css
+                        [ width (pct 100)
+                        , descendants
+                            [ typeSelector "input"
+                                [ paddingRight (rem 2.5) ]
+                            ]
+                        ]
+                    ]
+
+        currentInput =
+            dropdown.input |> Maybe.map .input |> Maybe.withDefault ""
+
+        viewSelectItems : Int -> OptionGroup msg -> Html msg
         viewSelectItems index optionGroup =
             let
-                viewOptionGroup =
-                    (case optionGroup.groupLabel of
+                maybeFilteredOptionGroup : Maybe (OptionGroup msg)
+                maybeFilteredOptionGroup =
+                    let
+                        isOk value =
+                            value.label
+                                |> String.toLower
+                                |> String.contains (String.toLower currentInput)
+
+                        matchingItems =
+                            optionGroup.options |> List.filter isOk
+                    in
+                    if List.isEmpty matchingItems then
+                        Nothing
+
+                    else
+                        Just { optionGroup | options = matchingItems }
+
+                viewOptionGroup g =
+                    (case g.groupLabel of
                         Nothing ->
                             []
 
@@ -93,7 +160,7 @@ view attrs dropdown =
                                 ]
                             ]
                     )
-                        ++ List.map viewOption optionGroup.options
+                        ++ (g.options |> List.map viewOption)
 
                 viewOption option =
                     Html.li
@@ -110,22 +177,63 @@ view attrs dropdown =
                                 ]
                         ]
             in
-            Html.ul
-                [ css
-                    [ left (rem 0)
-                    , margin (rem 0)
-                    , padding (rem 0)
-                    , listStyle none
-                    , if dropdown.hasFocus then
-                        displayFlex
+            case maybeFilteredOptionGroup of
+                Just filteredOptionGroup ->
+                    Html.ul
+                        [ css
+                            [ left (rem 0)
+                            , margin (rem 0)
+                            , padding (rem 0)
+                            , listStyle none
+                            , if dropdown.hasFocus then
+                                displayFlex
 
-                      else
-                        display none
-                    , flexDirection column
-                    , backgroundColor Colors.white
-                    ]
-                ]
-                viewOptionGroup
+                              else
+                                display none
+                            , flexDirection column
+                            , backgroundColor Colors.white
+                            ]
+                        ]
+                        (viewOptionGroup filteredOptionGroup)
+
+                Nothing ->
+                    Nordea.Html.nothing
+
+        iconRight =
+            case ( dropdown.input, String.isEmpty currentInput ) of
+                ( Just inputs, False ) ->
+                    Icon.cross
+                        [ css
+                            [ position absolute
+                            , right (rem 0.75)
+                            , top (rem 0)
+                            , bottom (rem 0)
+                            , width (rem 1)
+                            , height (rem 1)
+                            , cursor pointer
+                            , marginTop auto
+                            , marginBottom auto
+                            ]
+                        , tabindex 0
+                        , Attrs.attribute "role" "button"
+                        , onClick (inputs.onInput "")
+                        , Attrs.attribute "aria-label" "Clear input"
+                        ]
+
+                _ ->
+                    Icon.chevronDownFilled
+                        [ css
+                            [ position absolute
+                            , right (rem 0.3125)
+                            , if dropdown.hasFocus then
+                                transforms [ rotate (deg 180) ]
+
+                              else
+                                transforms []
+                            , pointerEvents none
+                            , color Colors.coolGray
+                            ]
+                        ]
     in
     Label.init
         dropdown.label
@@ -160,8 +268,14 @@ view attrs dropdown =
                     , alignItems center
                     , justifyContent spaceBetween
                     , backgroundColor Colors.white
-                    , padding4 (rem 0.25) (rem 0.25) (rem 0.25) (rem 0.75)
-                    , border3 (rem 0.0625) solid Colors.mediumGray
+                    , if Maybe.isNothing dropdown.input then
+                        Css.batch
+                            [ padding4 (rem 0.25) (rem 0.25) (rem 0.25) (rem 0.75)
+                            , border3 (rem 0.0625) solid Colors.mediumGray
+                            ]
+
+                      else
+                        Css.batch []
                     , if dropdown.hasFocus then
                         Css.batch
                             [ borderRadius4 (rem 0.25) (rem 0.25) (rem 0.0) (rem 0.0)
@@ -172,8 +286,8 @@ view attrs dropdown =
                         borderRadius4 (rem 0.25) (rem 0.25) (rem 0.25) (rem 0.25)
                     ]
                 ]
-                [ Html.text dropdown.placeholder
-                , Icon.chevronDownFilled []
+                [ dropdown.input |> Maybe.map textInput |> Maybe.withDefault (Html.text dropdown.placeholder)
+                , iconRight
                 ]
             , Html.ul
                 [ css
@@ -238,3 +352,8 @@ withRequirednessHint requirednessHint dropdown =
 withHasFocus : Bool -> MultiSelectDropdown msg -> MultiSelectDropdown msg
 withHasFocus hasFocus dropdown =
     { dropdown | hasFocus = hasFocus }
+
+
+withInput : String -> (String -> msg) -> MultiSelectDropdown msg -> MultiSelectDropdown msg
+withInput input onInput dropdown =
+    { dropdown | input = Just { input = input, onInput = onInput } }
