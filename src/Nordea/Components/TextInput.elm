@@ -15,6 +15,7 @@ module Nordea.Components.TextInput exposing
     , withPlaceholder
     , withSearchIcon
     , withSmallSize
+    , withoutBorder
     )
 
 import Css
@@ -94,6 +95,7 @@ type alias Config msg =
     , size : Size
     , id : Maybe String
     , inputAttrs : List (Attribute msg)
+    , withBorder : Bool
     }
 
 
@@ -123,6 +125,7 @@ init value =
         , size = Standard
         , id = Nothing
         , inputAttrs = []
+        , withBorder = True
         }
 
 
@@ -192,6 +195,11 @@ withId id (TextInput config) =
 withInputAttrs : List (Attribute msg) -> TextInput msg -> TextInput msg
 withInputAttrs attrs (TextInput config) =
     TextInput { config | inputAttrs = attrs }
+
+
+withoutBorder : TextInput msg -> TextInput msg
+withoutBorder (TextInput config) =
+    TextInput { config | withBorder = False }
 
 
 
@@ -351,7 +359,12 @@ getStyles config =
     in
     sizeSpecificStyling
         ++ [ borderRadius (rem 0.25)
-           , border3 (rem 0.0625) solid borderColorStyle
+           , if config.withBorder then
+                border3 (rem 0.0625) solid borderColorStyle
+
+             else
+                Css.batch []
+           , outline none
            , boxSizing borderBox
            , width (pct 100)
            , disabled [ backgroundColor Colors.grayWarm ]

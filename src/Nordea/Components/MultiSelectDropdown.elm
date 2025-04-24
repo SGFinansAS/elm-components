@@ -10,12 +10,13 @@ module Nordea.Components.MultiSelectDropdown exposing
     , withOptions
     , withPlaceholder
     , withRequirednessHint
+    , withSelected
     )
 
-import Css exposing (absolute, alignItems, auto, backgroundColor, border, border3, borderBottomLeftRadius, borderBottomRightRadius, borderBox, borderRadius4, bottom, boxSizing, center, color, column, cursor, deg, display, displayFlex, flexDirection, height, hover, int, justifyContent, left, listStyle, margin, marginBottom, marginLeft, marginTop, maxHeight, none, overflowY, padding, padding4, paddingRight, pct, pointer, pointerEvents, position, relative, rem, right, rotate, scroll, solid, spaceBetween, start, top, transforms, translateY, width, zIndex)
+import Css exposing (absolute, alignItems, auto, backgroundColor, border, border3, borderBottomLeftRadius, borderBottomRightRadius, borderBox, borderRadius, borderRadius4, bottom, boxSizing, center, color, column, cursor, deg, display, displayFlex, ellipsis, flexBasis, flexDirection, flexGrow, fontSize, height, hidden, hover, inlineFlex, int, justifyContent, left, listStyle, margin, marginBottom, marginLeft, marginRight, marginTop, maxHeight, minWidth, noWrap, none, num, overflow, overflowY, padding, padding2, padding4, paddingRight, pct, pointer, pointerEvents, position, relative, rem, right, rotate, scroll, solid, spaceBetween, start, textOverflow, top, transforms, translateY, whiteSpace, width, zIndex)
 import Css.Global exposing (descendants, typeSelector)
 import Html.Extra as Html
-import Html.Styled as Html exposing (Attribute, Html)
+import Html.Styled as Html exposing (Attribute, Html, div)
 import Html.Styled.Attributes as Attrs exposing (css, tabindex)
 import Html.Styled.Events as Events exposing (onClick)
 import Json.Decode as Decode
@@ -52,6 +53,7 @@ type alias MultiSelectDropdown msg =
     , requirednessHint : Maybe RequirednessHint
     , newOutsideClickListener : Bool
     , input : Maybe (InputProperties msg)
+    , selected : Maybe (List String)
     }
 
 
@@ -74,26 +76,41 @@ init { onFocus, newOutsideClickListener } =
     , requirednessHint = Nothing
     , newOutsideClickListener = newOutsideClickListener
     , input = Nothing
+    , selected = Nothing
     }
+
+
+viewTag : String -> Html msg
+viewTag label =
+    Html.div
+        [ css
+            [ displayFlex
+            , alignItems center
+            , padding2 (rem 0.25) (rem 0.75)
+            , backgroundColor Colors.lightBlue
+            , borderRadius (rem 6)
+            , fontSize (rem 0.875)
+
+            --, color (hex "374151")
+            , marginRight (rem 0.5)
+            , textOverflow ellipsis
+            , whiteSpace noWrap
+            ]
+        ]
+        [ Html.text label ]
 
 
 view : List (Attribute msg) -> MultiSelectDropdown msg -> Html msg
 view attrs dropdown =
     let
-        dropdownShowing =
-            dropdown.hasFocus
-
         textInput : InputProperties msg -> Html msg
         textInput inputProps =
             TextInput.init inputProps.input
-                --|> TextInput.withError (config.hasError || showHasNoMatch)
                 |> TextInput.withOnInput inputProps.onInput
-                --|> TextInput.withSearchIcon inputProps.hasSearchIcon
                 |> TextInput.withPlaceholder dropdown.placeholder
+                |> TextInput.withoutBorder
                 |> TextInput.withInputAttrs
                     [ Attrs.attribute "role" "combobox"
-
-                    --, Attrs.attribute "aria-controls" inputProps.uniqueId
                     , Attrs.attribute "aria-expanded"
                         (if dropdown.hasFocus then
                             "true"
@@ -109,6 +126,9 @@ view attrs dropdown =
                             [ typeSelector "input"
                                 [ paddingRight (rem 2.5) ]
                             ]
+                        , minWidth (rem 5)
+                        , flexGrow (num 1)
+                        , flexBasis (rem 10)
                         ]
                     ]
 
@@ -238,6 +258,12 @@ view attrs dropdown =
                             , color Colors.coolGray
                             ]
                         ]
+
+        tags =
+            (dropdown.selected |> Maybe.withDefault []) |> List.map viewTag
+
+        viewTagsAndInput =
+            div [ css [ displayFlex, width (pct 100) ] ] (tags ++ [ dropdown.input |> Maybe.map textInput |> Maybe.withDefault (Html.text dropdown.placeholder) ])
     in
     Label.init
         dropdown.label
@@ -273,14 +299,10 @@ view attrs dropdown =
                     , alignItems center
                     , justifyContent spaceBetween
                     , backgroundColor Colors.white
-                    , if Maybe.isNothing dropdown.input then
-                        Css.batch
-                            [ padding4 (rem 0.25) (rem 0.25) (rem 0.25) (rem 0.75)
-                            , border3 (rem 0.0625) solid Colors.mediumGray
-                            ]
-
-                      else
-                        Css.batch []
+                    , Css.batch
+                        [ padding4 (rem 0.25) (rem 0.25) (rem 0.25) (rem 0.75)
+                        , border3 (rem 0.0625) solid Colors.mediumGray
+                        ]
                     , if dropdown.hasFocus then
                         Css.batch
                             [ borderRadius4 (rem 0.25) (rem 0.25) (rem 0.0) (rem 0.0)
@@ -291,7 +313,7 @@ view attrs dropdown =
                         borderRadius4 (rem 0.25) (rem 0.25) (rem 0.25) (rem 0.25)
                     ]
                 ]
-                [ dropdown.input |> Maybe.map textInput |> Maybe.withDefault (Html.text dropdown.placeholder)
+                [ viewTagsAndInput
                 , iconRight
                 ]
             , Html.ul
@@ -362,3 +384,8 @@ withHasFocus hasFocus dropdown =
 withInput : String -> (String -> msg) -> MultiSelectDropdown msg -> MultiSelectDropdown msg
 withInput input onInput dropdown =
     { dropdown | input = Just { input = input, onInput = onInput } }
+
+
+withSelected : List String -> MultiSelectDropdown msg -> MultiSelectDropdown msg
+withSelected selected dropdown =
+    { dropdown | selected = Just selected }

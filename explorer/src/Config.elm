@@ -3,6 +3,7 @@ module Config exposing (Config, FinancingVariant(..), Msg(..), OrganizationInfo,
 import Date
 import File exposing (File)
 import Html.Styled as Html
+import List.Extra as List
 import Nordea.Components.Accordion as Accordion exposing (Accordion)
 import Nordea.Components.DatePicker as DatePicker exposing (DatePicker)
 import Nordea.Components.DropdownFilter exposing (Item)
@@ -37,6 +38,8 @@ type alias Config =
     , isChoice1 : Bool
     , isChoice2 : Bool
     , isChoice3 : Bool
+    , isChoice4 : Bool
+    , selectedOptions : List String
     , searchHasFocus : Bool
     , isFeatureBoxOpen : Bool
     , isProgressBarCompleted : Bool
@@ -75,6 +78,7 @@ type Msg
     | OnCheckChoice1
     | OnCheckChoice2
     | OnCheckChoice3
+    | OnCheckChoice4
     | ToggleModal
     | ToggleFeatureBox
     | ToggleProgressBarCompleted
@@ -124,6 +128,8 @@ init =
     , isChoice1 = False
     , isChoice2 = False
     , isChoice3 = False
+    , isChoice4 = False
+    , selectedOptions = []
     , searchHasFocus = False
     , isModalOpen = True
     , isFeatureBoxOpen = True
@@ -192,13 +198,16 @@ update msg config =
             { config | hasMultiSelectDropdownFocus = value }
 
         OnCheckChoice1 ->
-            { config | isChoice1 = not config.isChoice1 }
+            { config | isChoice1 = not config.isChoice1, selectedOptions = addLabelIfNotExists "Valg 1" config.selectedOptions }
 
         OnCheckChoice2 ->
-            { config | isChoice2 = not config.isChoice2 }
+            { config | isChoice2 = not config.isChoice2, selectedOptions = addLabelIfNotExists "Valg 2 asdfasdf" config.selectedOptions }
 
         OnCheckChoice3 ->
-            { config | isChoice3 = not config.isChoice3 }
+            { config | isChoice3 = not config.isChoice3, selectedOptions = addLabelIfNotExists "Valg 3 asdfasdfasdf" config.selectedOptions }
+
+        OnCheckChoice4 ->
+            { config | isChoice4 = not config.isChoice4, selectedOptions = addLabelIfNotExists "Valg 4-lengere tekst" config.selectedOptions }
 
         SearchComponentSelected item ->
             { config
@@ -305,3 +314,11 @@ update msg config =
 
         ToggleOpenCard ->
             { config | isCardOpen = not config.isCardOpen }
+
+
+addLabelIfNotExists label selectedOptions =
+    if List.member label selectedOptions then
+        List.remove label selectedOptions
+
+    else
+        selectedOptions ++ [ label ]

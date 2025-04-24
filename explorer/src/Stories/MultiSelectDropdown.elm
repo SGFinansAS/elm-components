@@ -59,6 +59,7 @@ stories =
                     --|> MultiSelectDropdown.withRequirednessHint (Just (Label.Mandatory .no))
                     --|> MultiSelectDropdown.withHintText (Just "Hint")
                     |> MultiSelectDropdown.withInput model.customModel.searchComponentInput SearchComponentInput
+                    |> MultiSelectDropdown.withSelected model.customModel.selectedOptions
                     |> MultiSelectDropdown.withOptionGroups
                         [ { options =
                                 [ { name = "1", label = "Valg 1", isChecked = model.customModel.isChoice1, onCheck = \_ -> OnCheckChoice1 }
@@ -68,6 +69,7 @@ stories =
                           }
                         , { options =
                                 [ { name = "3", label = "Valg 3", isChecked = model.customModel.isChoice3, onCheck = \_ -> OnCheckChoice3 }
+                                , { name = "4", label = "Valg 4-lengere tekst", isChecked = model.customModel.isChoice4, onCheck = \_ -> OnCheckChoice4 }
                                 ]
                           , groupLabel = Just "Group 2"
                           }
