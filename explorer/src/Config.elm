@@ -198,16 +198,16 @@ update msg config =
             { config | hasMultiSelectDropdownFocus = value }
 
         OnCheckChoice1 ->
-            { config | isChoice1 = not config.isChoice1, selectedOptions = addLabelIfNotExists "Valg 1" config.selectedOptions }
+            { config | isChoice1 = not config.isChoice1 }
 
         OnCheckChoice2 ->
-            { config | isChoice2 = not config.isChoice2, selectedOptions = addLabelIfNotExists "Valg 2 asdfasdf" config.selectedOptions }
+            { config | isChoice2 = not config.isChoice2 }
 
         OnCheckChoice3 ->
-            { config | isChoice3 = not config.isChoice3, selectedOptions = addLabelIfNotExists "Valg 3 asdfasdfasdf" config.selectedOptions }
+            { config | isChoice3 = not config.isChoice3 }
 
         OnCheckChoice4 ->
-            { config | isChoice4 = not config.isChoice4, selectedOptions = addLabelIfNotExists "Valg 4-lengere tekst" config.selectedOptions }
+            { config | isChoice4 = not config.isChoice4 }
 
         SearchComponentSelected item ->
             { config
@@ -314,11 +314,3 @@ update msg config =
 
         ToggleOpenCard ->
             { config | isCardOpen = not config.isCardOpen }
-
-
-addLabelIfNotExists label selectedOptions =
-    if List.member label selectedOptions then
-        List.remove label selectedOptions
-
-    else
-        selectedOptions ++ [ label ]

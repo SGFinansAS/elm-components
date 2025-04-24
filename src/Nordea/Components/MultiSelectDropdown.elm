@@ -80,26 +80,6 @@ init { onFocus, newOutsideClickListener } =
     }
 
 
-viewTag : String -> Html msg
-viewTag label =
-    Html.div
-        [ css
-            [ displayFlex
-            , alignItems center
-            , padding2 (rem 0.25) (rem 0.75)
-            , backgroundColor Colors.lightBlue
-            , borderRadius (rem 6)
-            , fontSize (rem 0.875)
-
-            --, color (hex "374151")
-            , marginRight (rem 0.5)
-            , textOverflow ellipsis
-            , whiteSpace noWrap
-            ]
-        ]
-        [ Html.text label ]
-
-
 view : List (Attribute msg) -> MultiSelectDropdown msg -> Html msg
 view attrs dropdown =
     let
@@ -259,11 +239,8 @@ view attrs dropdown =
                             ]
                         ]
 
-        tags =
-            (dropdown.selected |> Maybe.withDefault []) |> List.map viewTag
-
-        viewTagsAndInput =
-            div [ css [ displayFlex, width (pct 100) ] ] (tags ++ [ dropdown.input |> Maybe.map textInput |> Maybe.withDefault (Html.text dropdown.placeholder) ])
+        viewInputOrText =
+            dropdown.input |> Maybe.map textInput |> Maybe.withDefault (Html.text dropdown.placeholder)
     in
     Label.init
         dropdown.label
@@ -299,10 +276,14 @@ view attrs dropdown =
                     , alignItems center
                     , justifyContent spaceBetween
                     , backgroundColor Colors.white
-                    , Css.batch
-                        [ padding4 (rem 0.25) (rem 0.25) (rem 0.25) (rem 0.75)
-                        , border3 (rem 0.0625) solid Colors.mediumGray
-                        ]
+                    , if Maybe.isJust dropdown.input then
+                        Css.batch
+                            [ padding4 (rem 0.25) (rem 0.25) (rem 0.25) (rem 0.75)
+                            , border3 (rem 0.0625) solid Colors.mediumGray
+                            ]
+
+                      else
+                        Css.batch []
                     , if dropdown.hasFocus then
                         Css.batch
                             [ borderRadius4 (rem 0.25) (rem 0.25) (rem 0.0) (rem 0.0)
@@ -313,7 +294,7 @@ view attrs dropdown =
                         borderRadius4 (rem 0.25) (rem 0.25) (rem 0.25) (rem 0.25)
                     ]
                 ]
-                [ viewTagsAndInput
+                [ viewInputOrText
                 , iconRight
                 ]
             , Html.ul

@@ -53,11 +53,11 @@ stories =
         , ( "With filter"
           , \model ->
                 MultiSelectDropdown.init { onFocus = FocusMultiSelectDropdown, newOutsideClickListener = True }
-                    --|> MultiSelectDropdown.withLabel "Label"
+                    |> MultiSelectDropdown.withLabel "Label"
                     |> MultiSelectDropdown.withPlaceholder "Choose an option or type"
                     |> MultiSelectDropdown.withHasFocus model.customModel.hasMultiSelectDropdownFocus
-                    --|> MultiSelectDropdown.withRequirednessHint (Just (Label.Mandatory .no))
-                    --|> MultiSelectDropdown.withHintText (Just "Hint")
+                    |> MultiSelectDropdown.withRequirednessHint (Just (Label.Mandatory .no))
+                    |> MultiSelectDropdown.withHintText (Just "Hint")
                     |> MultiSelectDropdown.withInput model.customModel.searchComponentInput SearchComponentInput
                     |> MultiSelectDropdown.withSelected model.customModel.selectedOptions
                     |> MultiSelectDropdown.withOptionGroups
