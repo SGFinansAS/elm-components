@@ -116,7 +116,7 @@ view attrs dropdown =
             dropdown.input |> Maybe.map .input |> Maybe.withDefault ""
 
         viewSelectItems : Int -> OptionGroup msg -> Html msg
-        viewSelectItems index optionGroup =
+        viewSelectItems index orgOptionGroup =
             let
                 maybeFilteredOptionGroup : Maybe (OptionGroup msg)
                 maybeFilteredOptionGroup =
@@ -127,16 +127,16 @@ view attrs dropdown =
                                 |> String.contains (String.toLower currentInput)
 
                         matchingItems =
-                            optionGroup.options |> List.filter isOk
+                            orgOptionGroup.options |> List.filter isOk
                     in
                     if List.isEmpty matchingItems then
                         Nothing
 
                     else
-                        Just { optionGroup | options = matchingItems }
+                        Just { orgOptionGroup | options = matchingItems }
 
-                viewOptionGroup g =
-                    (case g.groupLabel of
+                viewOptionGroup optionGroup =
+                    (case optionGroup.groupLabel of
                         Nothing ->
                             []
 
@@ -160,7 +160,7 @@ view attrs dropdown =
                                 ]
                             ]
                     )
-                        ++ (g.options |> List.map viewOption)
+                        ++ (optionGroup.options |> List.map viewOption)
 
                 viewOption option =
                     Html.li
@@ -209,7 +209,7 @@ view attrs dropdown =
                             , top (rem 0)
                             , bottom (rem 0)
                             , width (rem 1)
-                            , height (rem 1)
+                            , height (rem 1.875)
                             , cursor pointer
                             , marginTop auto
                             , marginBottom auto
@@ -223,7 +223,11 @@ view attrs dropdown =
                 _ ->
                     Icon.chevronDownFilled
                         [ css
-                            [ position absolute
+                            [ if Maybe.isJust dropdown.input then
+                                position absolute
+
+                              else
+                                Css.batch []
                             , right (rem 0.3125)
                             , if dropdown.hasFocus then
                                 transforms [ rotate (deg 180) ]
@@ -255,8 +259,9 @@ view attrs dropdown =
                                 dropdown.onFocus (not dropdown.hasFocus)
 
                             Events.Space ->
-                                dropdown.onFocus (not dropdown.hasFocus)
+                                dropdown.onFocus dropdown.hasFocus
 
+                            -- Do nothing? need to avoid
                             Events.Esc ->
                                 dropdown.onFocus False
                     )
