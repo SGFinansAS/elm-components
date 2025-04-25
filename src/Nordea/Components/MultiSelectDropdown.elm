@@ -116,7 +116,6 @@ view attrs dropdown =
                 ]
                 []
 
-        -- todo add case
         icon =
             case dropdown.inputProperties of
                 Just _ ->
@@ -144,14 +143,12 @@ view attrs dropdown =
         |> Label.withHintText dropdown.hint
         |> Label.view
             ([ Events.on "focusin" (Decode.succeed (dropdown.onFocus True))
-             , Events.on "outsideclick" (Decode.succeed (dropdown.onFocus False))
-             , Events.on "outsidefocus" (Decode.succeed (dropdown.onFocus False))
              , css [ position relative ]
              ]
                 ++ attrs
             )
-            [ OutsideEventSupport.view { isActive = dropdown.hasFocus, eventType = OutsideEventSupport.OutsideClick }
-            , OutsideEventSupport.view { isActive = dropdown.hasFocus, eventType = OutsideEventSupport.OutsideFocus }
+            [ OutsideEventSupport.view { msg = dropdown.onFocus False, isActive = dropdown.hasFocus, eventType = OutsideEventSupport.OutsideClick }
+            , OutsideEventSupport.view { msg = dropdown.onFocus False, isActive = dropdown.hasFocus, eventType = OutsideEventSupport.OutsideFocus }
             , Html.span [ css [ display none ], class "outside-focus" ] []
             , Html.div
                 [ attrIf (not hasTextInput) (Events.onClick (dropdown.onFocus (not dropdown.hasFocus)))

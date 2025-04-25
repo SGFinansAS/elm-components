@@ -65,6 +65,7 @@ import Json.Decode as Decode
 import List.Extra exposing (groupsOf)
 import Maybe.Extra as Maybe exposing (toList)
 import Nordea.Components.OnClickOutsideSupport as OnClickOutsideSupport
+import Nordea.Components.OutsideEventSupport as OutsideEventSupport
 import Nordea.Components.Text as Text
 import Nordea.Css exposing (gap)
 import Nordea.Html as Html exposing (showIf)
@@ -105,7 +106,6 @@ type OptionalConfig msg
     | ShowError msg
     | Error Bool
     | SmallSize
-    | NewOutsideClickListener
 
 
 type DateResult
@@ -149,7 +149,7 @@ view attrs optional (DatePicker config) =
         internalState =
             internalStateValues config.internalState
 
-        { placeholder, parser, formatter, firstDayOfWeek, showError, error, smallSize, newOutsideClickListener } =
+        { placeholder, parser, formatter, firstDayOfWeek, showError, error, smallSize } =
             optional
                 |> List.foldl
                     (\e acc ->
@@ -174,9 +174,6 @@ view attrs optional (DatePicker config) =
 
                             SmallSize ->
                                 { acc | smallSize = True }
-
-                            NewOutsideClickListener ->
-                                { acc | newOutsideClickListener = True }
                     )
                     { placeholder = "dd.mm.yyyy"
                     , parser = defaultDateParser
@@ -185,7 +182,6 @@ view attrs optional (DatePicker config) =
                     , showError = Nothing
                     , error = False
                     , smallSize = False
-                    , newOutsideClickListener = False
                     }
 
         chosenDate =
@@ -202,16 +198,17 @@ view attrs optional (DatePicker config) =
                 )
     in
     Html.column
-        (({ internalState | hasFocus = False }
-            |> InternalState
-            |> config.onInternalStateChange
-            |> Decode.succeed
-            |> Events.on "outsideclick"
-         )
-            :: css [ position relative ]
+        (css [ position relative ]
             :: attrs
         )
-        [ OnClickOutsideSupport.view { isActive = internalState.hasFocus, useNewBehaviour = newOutsideClickListener }
+        [ OutsideEventSupport.view
+            { msg =
+                { internalState | hasFocus = False }
+                    |> InternalState
+                    |> config.onInternalStateChange
+            , isActive = internalState.hasFocus
+            , eventType = OutsideEventSupport.OutsideClick
+            }
         , dateInput config (InternalState internalState) parser placeholder showError error smallSize
         , Html.div
             [ css

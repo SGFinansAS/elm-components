@@ -1,7 +1,7 @@
 const outsideClickListener = e => {
   document.querySelectorAll('.outside-click').forEach(el => {
     if (!el.parentElement.contains(e.target)) {
-      el.parentElement.dispatchEvent(new CustomEvent('outsideclick'));
+      el.dispatchEvent(new CustomEvent('outside-click'));
     }
   });
 };
@@ -9,7 +9,7 @@ const outsideClickListener = e => {
 const outsideFocusListener = e => {
   document.querySelectorAll('.outside-focus').forEach(el => {
     if (!el.parentElement.contains(e.target)) {
-      el.parentElement.dispatchEvent(new CustomEvent('outsidefocus'));
+      el.dispatchEvent(new CustomEvent('outside-focus'));
     }
   });
 };
