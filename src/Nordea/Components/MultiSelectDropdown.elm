@@ -230,13 +230,12 @@ view attrs dropdown =
                                 dropdown.onFocus (not dropdown.hasFocus)
 
                             Events.Space ->
-                                -- Do nothing? need to avoid
                                 case dropdown.inputProperties of
-                                    Just inp ->
-                                        inp.onInput (inp.input ++ " ")
+                                    Just inputProperties ->
+                                        inputProperties.onInput (inputProperties.input ++ " ")
 
                                     Nothing ->
-                                        dropdown.onFocus dropdown.hasFocus
+                                        dropdown.onFocus (not dropdown.hasFocus)
 
                             Events.Esc ->
                                 dropdown.onFocus False
