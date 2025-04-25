@@ -3,7 +3,6 @@ module Config exposing (Config, FinancingVariant(..), Msg(..), OrganizationInfo,
 import Date
 import File exposing (File)
 import Html.Styled as Html
-import List.Extra as List
 import Nordea.Components.Accordion as Accordion exposing (Accordion)
 import Nordea.Components.DatePicker as DatePicker exposing (DatePicker)
 import Nordea.Components.DropdownFilter exposing (Item)

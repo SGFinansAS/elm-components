@@ -12,10 +12,10 @@ module Nordea.Components.MultiSelectDropdown exposing
     , withRequirednessHint
     )
 
-import Css exposing (absolute, alignItems, auto, backgroundColor, border3, borderBottomLeftRadius, borderBottomRightRadius, borderBox, borderRadius4, bottom, boxShadow, boxSizing, center, color, column, cursor, deg, display, displayFlex, flexBasis, flexDirection, flexGrow, flexWrap, fontSize, height, hover, important, int, justifyContent, left, listStyle, margin, marginBottom, marginLeft, marginTop, maxHeight, minWidth, none, num, outline, overflowY, padding, padding2, padding4, pct, pointer, pointerEvents, position, relative, rem, right, rotate, scroll, solid, spaceBetween, start, top, transforms, width, wrap, zIndex)
+import Css exposing (absolute, alignItems, backgroundColor, border3, borderBottomLeftRadius, borderBottomRightRadius, borderBox, borderRadius4, boxShadow, boxSizing, center, color, column, cursor, deg, display, displayFlex, flexBasis, flexDirection, flexGrow, flexWrap, fontSize, height, hover, important, int, justifyContent, left, listStyle, margin, marginLeft, marginTop, maxHeight, minWidth, none, num, outline, overflowY, padding, padding4, pct, pointer, pointerEvents, position, relative, rem, right, rotate, scroll, solid, spaceBetween, start, top, transforms, width, wrap, zIndex)
 import Html.Styled as Html exposing (Attribute, Html, div, input)
 import Html.Styled.Attributes as Attrs exposing (css, placeholder, tabindex, value)
-import Html.Styled.Events as Events exposing (onClick, onInput)
+import Html.Styled.Events as Events exposing (onInput)
 import Json.Decode as Decode
 import Maybe.Extra as Maybe
 import Nordea.Components.Checkbox as Checkbox
@@ -109,89 +109,6 @@ view attrs dropdown =
                 ]
                 []
 
-        viewSelectItems : Int -> OptionGroup msg -> Maybe (Html msg)
-        viewSelectItems index orgOptionGroup =
-            let
-                maybeFilteredOptionGroup : Maybe (OptionGroup msg)
-                maybeFilteredOptionGroup =
-                    let
-                        isOk value =
-                            value.label
-                                |> String.toLower
-                                |> String.contains (String.toLower currentInput)
-
-                        matchingItems =
-                            orgOptionGroup.options |> List.filter isOk
-                    in
-                    if List.isEmpty matchingItems then
-                        Nothing
-
-                    else
-                        Just { orgOptionGroup | options = matchingItems }
-
-                viewOptionGroup optionGroup =
-                    (case optionGroup.groupLabel of
-                        Nothing ->
-                            []
-
-                        Just groupLabel ->
-                            [ Html.li
-                                [ css
-                                    [ displayFlex
-                                    , height (rem 1.5)
-                                    , alignItems center
-                                    , justifyContent start
-                                    , marginLeft (rem 0.75)
-                                    , if index == 0 then
-                                        marginTop (rem 0.75)
-
-                                      else
-                                        marginTop (rem 0)
-                                    ]
-                                ]
-                                [ Text.textTinyLight
-                                    |> Text.view [ css [ color Colors.darkGray ] ] [ Html.text groupLabel ]
-                                ]
-                            ]
-                    )
-                        ++ (optionGroup.options |> List.map viewOption)
-
-                viewOption option =
-                    Html.li
-                        []
-                        [ Checkbox.init option.name (Html.text option.label) option.onCheck
-                            |> Checkbox.withIsChecked option.isChecked
-                            |> Checkbox.withAppearance Checkbox.Simple
-                            |> Checkbox.view
-                                [ css
-                                    [ width (pct 100)
-                                    , hover [ backgroundColor Colors.coolGray ]
-                                    , padding (rem 0.5)
-                                    ]
-                                ]
-                        ]
-            in
-            maybeFilteredOptionGroup
-                |> Maybe.map
-                    (\filteredOptionGroup ->
-                        Html.ul
-                            [ css
-                                [ left (rem 0)
-                                , margin (rem 0)
-                                , padding (rem 0)
-                                , listStyle none
-                                , if dropdown.hasFocus then
-                                    displayFlex
-
-                                  else
-                                    display none
-                                , flexDirection column
-                                , backgroundColor Colors.white
-                                ]
-                            ]
-                            (viewOptionGroup filteredOptionGroup)
-                    )
-
         iconRight =
             Icon.chevronDownFilled
                 [ css
@@ -208,7 +125,7 @@ view attrs dropdown =
                 [ dropdown.inputProperties |> Maybe.map viewInput |> Maybe.withDefault (Html.text dropdown.placeholder) ]
 
         selectItems =
-            dropdown.optionGroups |> List.indexedMap viewSelectItems |> List.filterMap identity
+            dropdown.optionGroups |> List.indexedMap (viewSelectItems dropdown) |> List.filterMap identity
     in
     Label.init
         dropdown.label
@@ -305,6 +222,95 @@ view attrs dropdown =
                 ]
                 selectItems
             ]
+
+
+viewSelectItems : MultiSelectDropdown msg -> Int -> OptionGroup msg -> Maybe (Html msg)
+viewSelectItems dropdown index orgOptionGroup =
+    let
+        maybeFilteredOptionGroup : Maybe (OptionGroup msg)
+        maybeFilteredOptionGroup =
+            let
+                isOk value =
+                    case dropdown.inputProperties of
+                        Nothing ->
+                            True
+
+                        Just inputProperties ->
+                            value.label
+                                |> String.toLower
+                                |> String.contains (String.toLower inputProperties.input)
+
+                matchingItems =
+                    orgOptionGroup.options |> List.filter isOk
+            in
+            if List.isEmpty matchingItems then
+                Nothing
+
+            else
+                Just { orgOptionGroup | options = matchingItems }
+
+        viewOptionGroup optionGroup =
+            (case optionGroup.groupLabel of
+                Nothing ->
+                    []
+
+                Just groupLabel ->
+                    [ Html.li
+                        [ css
+                            [ displayFlex
+                            , height (rem 1.5)
+                            , alignItems center
+                            , justifyContent start
+                            , marginLeft (rem 0.75)
+                            , if index == 0 then
+                                marginTop (rem 0.75)
+
+                              else
+                                marginTop (rem 0)
+                            ]
+                        ]
+                        [ Text.textTinyLight
+                            |> Text.view [ css [ color Colors.darkGray ] ] [ Html.text groupLabel ]
+                        ]
+                    ]
+            )
+                ++ (optionGroup.options |> List.map viewOption)
+
+        viewOption option =
+            Html.li
+                []
+                [ Checkbox.init option.name (Html.text option.label) option.onCheck
+                    |> Checkbox.withIsChecked option.isChecked
+                    |> Checkbox.withAppearance Checkbox.Simple
+                    |> Checkbox.view
+                        [ css
+                            [ width (pct 100)
+                            , hover [ backgroundColor Colors.coolGray ]
+                            , padding (rem 0.5)
+                            ]
+                        ]
+                ]
+    in
+    maybeFilteredOptionGroup
+        |> Maybe.map
+            (\filteredOptionGroup ->
+                Html.ul
+                    [ css
+                        [ left (rem 0)
+                        , margin (rem 0)
+                        , padding (rem 0)
+                        , listStyle none
+                        , if dropdown.hasFocus then
+                            displayFlex
+
+                          else
+                            display none
+                        , flexDirection column
+                        , backgroundColor Colors.white
+                        ]
+                    ]
+                    (viewOptionGroup filteredOptionGroup)
+            )
 
 
 withLabel : String -> MultiSelectDropdown msg -> MultiSelectDropdown msg
