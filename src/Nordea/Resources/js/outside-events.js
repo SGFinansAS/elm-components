@@ -8,9 +8,7 @@ const outsideClickListener = e => {
 
 const outsideFocusListener = e => {
   document.querySelectorAll('.outside-focus').forEach(el => {
-    console.log(e,el)
     if (!el.parentElement.contains(e.target)) {
-      console.log("true",e, el)
       el.parentElement.dispatchEvent(new CustomEvent('outsidefocus'));
     }
   });
