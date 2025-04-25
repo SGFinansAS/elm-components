@@ -21,6 +21,7 @@ import Maybe.Extra as Maybe
 import Nordea.Components.Checkbox as Checkbox
 import Nordea.Components.Label as Label exposing (RequirednessHint)
 import Nordea.Components.OnClickOutsideSupport as OnClickOutsideSupport
+import Nordea.Components.OutsideEventSupport as OutsideEventSupport
 import Nordea.Components.Text as Text
 import Nordea.Css exposing (gap)
 import Nordea.Html exposing (attrEmpty, attrIf, styleIf)
@@ -83,6 +84,9 @@ view attrs dropdown =
         currentInput =
             dropdown.inputProperties |> Maybe.map .input |> Maybe.withDefault ""
 
+        hasTextInput =
+            dropdown.inputProperties |> Maybe.isJust
+
         viewInput inputProps =
             input
                 [ css
@@ -100,6 +104,7 @@ view attrs dropdown =
                 , placeholder dropdown.placeholder
                 , value currentInput
                 , onInput inputProps.onInput
+                , Attrs.attribute "aria-controls" inputProps.uniqueId
                 , Attrs.attribute "role" "combobox"
                 , Attrs.attribute "aria-expanded"
                     (if dropdown.hasFocus then
@@ -113,16 +118,21 @@ view attrs dropdown =
 
         -- todo add case
         icon =
-            Icon.search
-                [ css
-                    [ styleIf (Maybe.isJust dropdown.inputProperties) (position absolute)
-                    , left (rem 0.5)
-                    , pointerEvents none
-                    , color Colors.gray
-                    , width (rem 1)
-                    , height (rem 1)
-                    ]
-                ]
+            case dropdown.inputProperties of
+                Just _ ->
+                    Icon.search
+                        [ css
+                            [ styleIf (Maybe.isJust dropdown.inputProperties) (position absolute)
+                            , left (rem 0.5)
+                            , pointerEvents none
+                            , color Colors.gray
+                            , width (rem 1)
+                            , height (rem 1)
+                            ]
+                        ]
+
+                Nothing ->
+                    Icon.chevronDownFilled []
 
         selectItems =
             dropdown.optionGroups |> List.indexedMap (viewSelectItems dropdown) |> List.filterMap identity
@@ -140,11 +150,12 @@ view attrs dropdown =
              ]
                 ++ attrs
             )
-            [ OnClickOutsideSupport.view { isActive = dropdown.hasFocus, useNewBehaviour = dropdown.newOutsideClickListener }
+            [ OutsideEventSupport.view { isActive = dropdown.hasFocus, eventType = OutsideEventSupport.OutsideClick }
+            , OutsideEventSupport.view { isActive = dropdown.hasFocus, eventType = OutsideEventSupport.OutsideFocus }
             , Html.span [ css [ display none ], class "outside-focus" ] []
             , Html.div
-                [ attrIf (Maybe.isNothing dropdown.inputProperties) (Events.onClick (dropdown.onFocus (not dropdown.hasFocus)))
-                , attrIf (Maybe.isNothing dropdown.inputProperties)
+                [ attrIf (not hasTextInput) (Events.onClick (dropdown.onFocus (not dropdown.hasFocus)))
+                , attrIf (not hasTextInput)
                     (Events.onKeyDown
                         (\key ->
                             case key of
@@ -158,7 +169,7 @@ view attrs dropdown =
                                     dropdown.onFocus False
                         )
                     )
-                , attrIf (Maybe.isNothing dropdown.inputProperties) (tabindex 0)
+                , attrIf (not hasTextInput) (tabindex 0)
                 , css
                     [ width (pct 100)
                     , displayFlex
