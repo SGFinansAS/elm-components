@@ -12,9 +12,9 @@ module Nordea.Components.MultiSelectDropdown exposing
     , withRequirednessHint
     )
 
-import Css exposing (absolute, alignItems, backgroundColor, border3, borderBottomLeftRadius, borderBottomRightRadius, borderBox, borderRadius4, boxShadow, boxSizing, center, color, column, cursor, deg, display, displayFlex, flexBasis, flexDirection, flexGrow, flexWrap, fontSize, height, hover, important, int, justifyContent, left, listStyle, margin, marginLeft, marginTop, maxHeight, minWidth, none, num, outline, overflowY, padding, padding4, pct, pointer, pointerEvents, position, relative, rem, right, rotate, scroll, solid, spaceBetween, start, top, transforms, width, wrap, zIndex)
+import Css exposing (absolute, alignItems, backgroundColor, border3, borderBottomLeftRadius, borderBottomRightRadius, borderBox, borderRadius4, boxShadow, boxSizing, center, color, column, cursor, deg, display, displayFlex, flexBasis, flexDirection, flexGrow, flexWrap, fontSize, height, hover, important, int, justifyContent, left, listStyle, margin, marginLeft, marginTop, maxHeight, minWidth, none, num, outline, overflowY, padding, padding4, paddingLeft, pct, pointer, pointerEvents, position, relative, rem, right, rotate, scroll, solid, spaceBetween, start, top, transforms, width, wrap, zIndex)
 import Html.Styled as Html exposing (Attribute, Html, div, input)
-import Html.Styled.Attributes as Attrs exposing (css, placeholder, tabindex, value)
+import Html.Styled.Attributes as Attrs exposing (class, css, placeholder, tabindex, value)
 import Html.Styled.Events as Events exposing (onInput)
 import Json.Decode as Decode
 import Maybe.Extra as Maybe
@@ -23,7 +23,7 @@ import Nordea.Components.Label as Label exposing (RequirednessHint)
 import Nordea.Components.OnClickOutsideSupport as OnClickOutsideSupport
 import Nordea.Components.Text as Text
 import Nordea.Css exposing (gap)
-import Nordea.Html exposing (attrEmpty, styleIf)
+import Nordea.Html exposing (attrEmpty, attrIf, styleIf)
 import Nordea.Html.Events as Events
 import Nordea.Resources.Colors as Colors
 import Nordea.Resources.Icons as Icon
@@ -94,6 +94,7 @@ view attrs dropdown =
                     , minWidth (pct 70)
                     , flexGrow (num 1)
                     , flexBasis (rem 10)
+                    , paddingLeft (rem 1)
                     ]
                 , placeholder dropdown.placeholder
                 , value currentInput
@@ -109,20 +110,18 @@ view attrs dropdown =
                 ]
                 []
 
-        iconRight =
-            Icon.chevronDownFilled
+        -- todo add case
+        icon =
+            Icon.search
                 [ css
                     [ styleIf (Maybe.isJust dropdown.inputProperties) (position absolute)
-                    , right (rem 0.3125)
-                    , styleIf dropdown.hasFocus (transforms [ rotate (deg 180) ])
+                    , left (rem 0.5)
                     , pointerEvents none
-                    , color Colors.coolGray
+                    , color Colors.gray
+                    , width (rem 1)
+                    , height (rem 1)
                     ]
                 ]
-
-        viewInputOrPlaceholder =
-            div [ css [ displayFlex, width (pct 100), flexWrap wrap, gap (rem 0.25) ] ]
-                [ dropdown.inputProperties |> Maybe.map viewInput |> Maybe.withDefault (Html.text dropdown.placeholder) ]
 
         selectItems =
             dropdown.optionGroups |> List.indexedMap (viewSelectItems dropdown) |> List.filterMap identity
@@ -133,31 +132,32 @@ view attrs dropdown =
         |> Label.withRequirednessHint dropdown.requirednessHint
         |> Label.withHintText dropdown.hint
         |> Label.view
-            (Events.on "outsideclick" (Decode.succeed (dropdown.onFocus False))
-                :: css [ position relative ]
-                :: attrs
+            ([ Events.on "focusin" (Decode.succeed (dropdown.onFocus True))
+             , Events.on "outsideclick" (Decode.succeed (dropdown.onFocus False))
+             , Events.on "outsidefocus" (Decode.succeed (dropdown.onFocus False))
+             , css [ position relative ]
+             ]
+                ++ attrs
             )
             [ OnClickOutsideSupport.view { isActive = dropdown.hasFocus, useNewBehaviour = dropdown.newOutsideClickListener }
+            , Html.span [ css [ display none ], class "outside-focus" ] []
             , Html.div
-                [ Events.onClick (dropdown.onFocus (not dropdown.hasFocus))
-                , Events.onKeyDown
-                    (\key ->
-                        case key of
-                            Events.Enter ->
-                                dropdown.onFocus (not dropdown.hasFocus)
+                [ attrIf (Maybe.isNothing dropdown.inputProperties) (Events.onClick (dropdown.onFocus (not dropdown.hasFocus)))
+                , attrIf (Maybe.isNothing dropdown.inputProperties)
+                    (Events.onKeyDown
+                        (\key ->
+                            case key of
+                                Events.Enter ->
+                                    dropdown.onFocus (not dropdown.hasFocus)
 
-                            Events.Space ->
-                                case dropdown.inputProperties of
-                                    Just inputProperties ->
-                                        inputProperties.onInput (inputProperties.input ++ " ")
+                                Events.Space ->
+                                    dropdown.onFocus (not dropdown.hasFocus)
 
-                                    Nothing ->
-                                        dropdown.onFocus (not dropdown.hasFocus)
-
-                            Events.Esc ->
-                                dropdown.onFocus False
+                                Events.Esc ->
+                                    dropdown.onFocus False
+                        )
                     )
-                , tabindex 0
+                , attrIf (Maybe.isNothing dropdown.inputProperties) (tabindex 0)
                 , css
                     [ width (pct 100)
                     , displayFlex
@@ -177,8 +177,8 @@ view attrs dropdown =
                         borderRadius4 (rem 0.25) (rem 0.25) (rem 0.25) (rem 0.25)
                     ]
                 ]
-                [ viewInputOrPlaceholder
-                , iconRight
+                [ dropdown.inputProperties |> Maybe.map viewInput |> Maybe.withDefault (Html.text dropdown.placeholder)
+                , icon
                 ]
             , Html.ul
                 [ case dropdown.inputProperties of
@@ -294,22 +294,24 @@ viewSelectItems dropdown index orgOptionGroup =
     maybeFilteredOptionGroup
         |> Maybe.map
             (\filteredOptionGroup ->
-                Html.ul
-                    [ css
-                        [ left (rem 0)
-                        , margin (rem 0)
-                        , padding (rem 0)
-                        , listStyle none
-                        , if dropdown.hasFocus then
-                            displayFlex
+                Html.li []
+                    [ Html.ul
+                        [ css
+                            [ left (rem 0)
+                            , margin (rem 0)
+                            , padding (rem 0)
+                            , listStyle none
+                            , if dropdown.hasFocus then
+                                displayFlex
 
-                          else
-                            display none
-                        , flexDirection column
-                        , backgroundColor Colors.white
+                              else
+                                display none
+                            , flexDirection column
+                            , backgroundColor Colors.white
+                            ]
                         ]
+                        (viewOptionGroup filteredOptionGroup)
                     ]
-                    (viewOptionGroup filteredOptionGroup)
             )
 
 
