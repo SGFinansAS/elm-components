@@ -216,7 +216,7 @@ stateStyles { hasError } =
 
         outlineStyle =
             Css.batch
-                [ Css.property "box-shadow" ("0rem 0rem 0rem 0.0625rem " ++ color) |> Css.important
+                [ Css.property "box-shadow" ("0rem 0rem 0rem 0.0625rem " ++ color)
                 , outline none
                 ]
 

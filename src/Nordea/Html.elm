@@ -1,5 +1,6 @@
 module Nordea.Html exposing
-    ( attrIf
+    ( attrEmpty
+    , attrIf
     , column
     , nothing
     , row
@@ -94,4 +95,9 @@ attrIf condition attr =
         attr
 
     else
-        Attributes.empty |> Attributes.fromUnstyled
+        attrEmpty
+
+
+attrEmpty : Attribute msg
+attrEmpty =
+    Attributes.empty |> Attributes.fromUnstyled
