@@ -12,7 +12,7 @@ module Nordea.Components.MultiSelectDropdown exposing
     , withRequirednessHint
     )
 
-import Css exposing (absolute, alignItems, backgroundColor, border3, borderBottomLeftRadius, borderBottomRightRadius, borderBox, borderRadius4, boxShadow, boxSizing, center, color, column, cursor, deg, display, displayFlex, flexBasis, flexDirection, flexGrow, flexWrap, fontSize, height, hover, important, int, justifyContent, left, listStyle, margin, marginLeft, marginTop, maxHeight, minWidth, none, num, outline, overflowY, padding, padding4, paddingLeft, pct, pointer, pointerEvents, position, relative, rem, right, rotate, scroll, solid, spaceBetween, start, top, transforms, width, wrap, zIndex)
+import Css exposing (absolute, alignItems, backgroundColor, border, border3, borderBottomLeftRadius, borderBottomRightRadius, borderBox, borderRadius4, borderStyle, boxShadow, boxSizing, center, color, column, cursor, deg, display, displayFlex, flexBasis, flexDirection, flexGrow, flexWrap, fontSize, height, hover, important, int, justifyContent, left, listStyle, margin, marginLeft, marginTop, maxHeight, minWidth, none, num, outline, overflowY, padding, padding4, paddingLeft, pct, pointer, pointerEvents, position, relative, rem, right, rotate, scroll, solid, spaceBetween, start, top, transforms, width, wrap, zIndex)
 import Html.Styled as Html exposing (Attribute, Html, div, input)
 import Html.Styled.Attributes as Attrs exposing (class, css, placeholder, tabindex, value)
 import Html.Styled.Events as Events exposing (onInput)
@@ -88,6 +88,7 @@ view attrs dropdown =
                 [ css
                     [ outline none
                     , important (boxShadow none)
+                    , borderStyle none
                     , fontSize (rem 1)
                     , height (rem 1.75)
                     , width (pct 100)
