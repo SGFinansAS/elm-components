@@ -12,18 +12,16 @@ module Nordea.Components.MultiSelectDropdown exposing
     , withRequirednessHint
     )
 
-import Css exposing (absolute, alignItems, backgroundColor, border, border3, borderBottomLeftRadius, borderBottomRightRadius, borderBox, borderRadius4, borderStyle, boxShadow, boxSizing, center, color, column, cursor, deg, display, displayFlex, flexBasis, flexDirection, flexGrow, flexWrap, fontSize, height, hover, important, int, justifyContent, left, listStyle, margin, marginLeft, marginTop, maxHeight, minWidth, none, num, outline, overflowY, padding, padding4, paddingLeft, pct, pointer, pointerEvents, position, relative, rem, right, rotate, scroll, solid, spaceBetween, start, top, transforms, width, wrap, zIndex)
-import Html.Styled as Html exposing (Attribute, Html, div, input)
+import Css exposing (absolute, alignItems, backgroundColor, border3, borderBottomLeftRadius, borderBottomRightRadius, borderBox, borderRadius4, borderStyle, boxShadow, boxSizing, center, color, column, cursor, display, displayFlex, flexBasis, flexDirection, flexGrow, fontSize, height, hover, important, int, justifyContent, left, listStyle, margin, marginLeft, marginTop, maxHeight, minWidth, none, num, outline, overflowY, padding, padding4, paddingLeft, pct, pointer, pointerEvents, position, relative, rem, right, scroll, solid, spaceBetween, start, top, width, zIndex)
+import Html.Styled as Html exposing (Attribute, Html, input)
 import Html.Styled.Attributes as Attrs exposing (class, css, placeholder, tabindex, value)
 import Html.Styled.Events as Events exposing (onInput)
 import Json.Decode as Decode
 import Maybe.Extra as Maybe
 import Nordea.Components.Checkbox as Checkbox
 import Nordea.Components.Label as Label exposing (RequirednessHint)
-import Nordea.Components.OnClickOutsideSupport as OnClickOutsideSupport
 import Nordea.Components.OutsideEventSupport as OutsideEventSupport
 import Nordea.Components.Text as Text
-import Nordea.Css exposing (gap)
 import Nordea.Html exposing (attrEmpty, attrIf, styleIf)
 import Nordea.Html.Events as Events
 import Nordea.Resources.Colors as Colors

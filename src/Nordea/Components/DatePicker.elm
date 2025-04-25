@@ -64,7 +64,6 @@ import Html.Styled.Events as Events exposing (custom, onBlur, onClick, onInput)
 import Json.Decode as Decode
 import List.Extra exposing (groupsOf)
 import Maybe.Extra as Maybe exposing (toList)
-import Nordea.Components.OnClickOutsideSupport as OnClickOutsideSupport
 import Nordea.Components.OutsideEventSupport as OutsideEventSupport
 import Nordea.Components.Text as Text
 import Nordea.Css exposing (gap)
