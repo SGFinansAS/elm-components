@@ -9,6 +9,7 @@ module Nordea.Components.Dropdown exposing
     , view
     , withHasError
     , withPlaceholder
+    , withSelectedValue
     , withSmallSize
     )
 
@@ -281,6 +282,11 @@ view attrs (Dropdown config) =
 withSmallSize : Dropdown a msg -> Dropdown a msg
 withSmallSize (Dropdown config) =
     Dropdown { config | size = SmallSize }
+
+
+withSelectedValue : Maybe a -> Dropdown a msg -> Dropdown a msg
+withSelectedValue selectedValue (Dropdown config) =
+    Dropdown { config | selectedValue = selectedValue }
 
 
 withPlaceholder : String -> Dropdown a msg -> Dropdown a msg
