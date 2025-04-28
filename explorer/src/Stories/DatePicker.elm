@@ -13,13 +13,13 @@ stories =
         [ ( "Standard"
           , \model ->
                 model.customModel.datePicker
-                    |> DatePicker.view [] [ DatePicker.NewOutsideClickListener ]
+                    |> DatePicker.view [] []
           , {}
           )
         , ( "Small"
           , \model ->
                 model.customModel.datePicker
-                    |> DatePicker.view [] [ DatePicker.SmallSize, DatePicker.NewOutsideClickListener ]
+                    |> DatePicker.view [] [ DatePicker.SmallSize ]
           , {}
           )
         ]
