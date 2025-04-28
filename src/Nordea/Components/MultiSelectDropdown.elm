@@ -14,7 +14,7 @@ module Nordea.Components.MultiSelectDropdown exposing
 
 import Css exposing (absolute, alignItems, backgroundColor, border3, borderBottomLeftRadius, borderBottomRightRadius, borderBox, borderRadius4, borderStyle, boxShadow, boxSizing, center, color, column, cursor, display, displayFlex, flexBasis, flexDirection, flexGrow, fontSize, height, hover, important, int, justifyContent, left, listStyle, margin, marginLeft, marginTop, maxHeight, minWidth, none, num, outline, overflowY, padding, padding4, paddingLeft, pct, pointer, pointerEvents, position, relative, rem, right, scroll, solid, spaceBetween, start, top, width, zIndex)
 import Html.Styled as Html exposing (Attribute, Html, input)
-import Html.Styled.Attributes as Attrs exposing (class, css, placeholder, tabindex, value)
+import Html.Styled.Attributes as Attrs exposing (css, placeholder, tabindex, value)
 import Html.Styled.Events as Events exposing (onInput)
 import Json.Decode as Decode
 import Maybe.Extra as Maybe

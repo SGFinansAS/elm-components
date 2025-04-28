@@ -23,7 +23,7 @@ view { msg, isActive, eventTypes } =
                         [ Events.on (eventTypeToClassName eventType) (Decode.succeed msg), class (eventTypeToClassName eventType) ]
                     )
     in
-    Html.span ([ css [ display none ] ] ++ eventAttrs) []
+    Html.span (css [ display none ] :: eventAttrs) []
         |> showIf isActive
 
 
