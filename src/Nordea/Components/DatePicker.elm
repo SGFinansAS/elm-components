@@ -206,7 +206,7 @@ view attrs optional (DatePicker config) =
                     |> InternalState
                     |> config.onInternalStateChange
             , isActive = internalState.hasFocus
-            , eventType = OutsideEventSupport.OutsideClick
+            , eventTypes = [ OutsideEventSupport.OutsideClick ]
             }
         , dateInput config (InternalState internalState) parser placeholder showError error smallSize
         , Html.div

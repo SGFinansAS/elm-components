@@ -13,9 +13,17 @@ type OutsideEventType
     | OutsideFocus
 
 
-view : { msg : msg, isActive : Bool, eventType : OutsideEventType } -> Html msg
-view { msg, isActive, eventType } =
-    Html.span [ css [ display none ], Events.on (eventTypeToClassName eventType) (Decode.succeed msg), class (eventTypeToClassName eventType) ] []
+view : { msg : msg, isActive : Bool, eventTypes : List OutsideEventType } -> Html msg
+view { msg, isActive, eventTypes } =
+    let
+        eventAttrs =
+            eventTypes
+                |> List.concatMap
+                    (\eventType ->
+                        [ Events.on (eventTypeToClassName eventType) (Decode.succeed msg), class (eventTypeToClassName eventType) ]
+                    )
+    in
+    Html.span ([ css [ display none ] ] ++ eventAttrs) []
         |> showIf isActive
 
 
