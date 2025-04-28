@@ -141,6 +141,7 @@ view attrs dropdown =
         |> Label.withHintText dropdown.hint
         |> Label.view
             ([ Events.on "focusin" (Decode.succeed (dropdown.onFocus True))
+                |> attrIf hasTextInput
              , css [ position relative ]
              ]
                 ++ attrs
