@@ -146,7 +146,6 @@ view attrs dropdown =
                 ++ attrs
             )
             [ OutsideEventSupport.view { msg = dropdown.onFocus False, isActive = dropdown.hasFocus, eventTypes = [ OutsideEventSupport.OutsideClick, OutsideEventSupport.OutsideFocus ] }
-            , Html.span [ css [ display none ], class "outside-focus" ] []
             , Html.div
                 [ attrIf (not hasTextInput) (Events.onClick (dropdown.onFocus (not dropdown.hasFocus)))
                 , attrIf (not hasTextInput)
