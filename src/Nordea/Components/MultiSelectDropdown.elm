@@ -49,7 +49,6 @@ type alias MultiSelectDropdown msg =
     , onFocus : Bool -> msg
     , hasFocus : Bool
     , requirednessHint : Maybe RequirednessHint
-    , newOutsideClickListener : Bool
     , inputProperties : Maybe (InputProperties msg)
     }
 
@@ -62,8 +61,8 @@ type alias Option msg =
     }
 
 
-init : { onFocus : Bool -> msg, newOutsideClickListener : Bool } -> MultiSelectDropdown msg
-init { onFocus, newOutsideClickListener } =
+init : { onFocus : Bool -> msg } -> MultiSelectDropdown msg
+init { onFocus } =
     { label = ""
     , placeholder = ""
     , hint = Nothing
@@ -71,7 +70,6 @@ init { onFocus, newOutsideClickListener } =
     , onFocus = onFocus
     , hasFocus = True
     , requirednessHint = Nothing
-    , newOutsideClickListener = newOutsideClickListener
     , inputProperties = Nothing
     }
 
