@@ -2,6 +2,7 @@ module Nordea.Components.MultiSelectDropdown exposing
     ( MultiSelectDropdown
     , init
     , view
+    , withError
     , withHasFocus
     , withHintText
     , withInput
@@ -50,6 +51,7 @@ type alias MultiSelectDropdown msg =
     , hasFocus : Bool
     , requirednessHint : Maybe RequirednessHint
     , inputProperties : Maybe (InputProperties msg)
+    , errorMessage : Maybe String
     }
 
 
@@ -71,6 +73,7 @@ init { onFocus } =
     , hasFocus = True
     , requirednessHint = Nothing
     , inputProperties = Nothing
+    , errorMessage = Nothing
     }
 
 
@@ -137,6 +140,7 @@ view attrs dropdown =
         Label.GroupLabel
         |> Label.withRequirednessHint dropdown.requirednessHint
         |> Label.withHintText dropdown.hint
+        |> Label.withErrorMessage dropdown.errorMessage
         |> Label.view
             ([ Events.on "focusin" (Decode.succeed (dropdown.onFocus True))
                 |> attrIf hasTextInput
@@ -174,7 +178,11 @@ view attrs dropdown =
                     , if dropdown.hasFocus then
                         Css.batch
                             [ borderRadius4 (rem 0.25) (rem 0.25) (rem 0.0) (rem 0.0)
-                            , Themes.borderColor Colors.nordeaBlue
+                            , if Maybe.isJust dropdown.errorMessage then
+                                Themes.borderColor Colors.darkRed
+
+                              else
+                                Themes.borderColor Colors.nordeaBlue
                             ]
 
                       else
@@ -357,3 +365,8 @@ withHasFocus hasFocus dropdown =
 withInput : String -> (String -> msg) -> String -> MultiSelectDropdown msg -> MultiSelectDropdown msg
 withInput input onInput uniqueId dropdown =
     { dropdown | inputProperties = Just { input = input, onInput = onInput, uniqueId = uniqueId } }
+
+
+withError : Maybe String -> MultiSelectDropdown msg -> MultiSelectDropdown msg
+withError error dropdown =
+    { dropdown | errorMessage = error }
