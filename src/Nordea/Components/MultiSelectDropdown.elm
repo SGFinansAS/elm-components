@@ -14,7 +14,7 @@ module Nordea.Components.MultiSelectDropdown exposing
     , withSelected
     )
 
-import Css exposing (absolute, alignItems, auto, backgroundColor, border3, borderBottomLeftRadius, borderBottomRightRadius, borderBox, borderRadius, borderRadius4, borderStyle, boxShadow, boxSizing, center, color, column, cursor, display, displayFlex, flexBasis, flexDirection, flexGrow, flexWrap, fontSize, height, hover, important, int, justifyContent, left, listStyle, margin, marginLeft, marginTop, maxHeight, minWidth, noWrap, none, num, outline, overflowY, padding, padding2, padding4, paddingLeft, pct, pointer, pointerEvents, position, relative, rem, right, scroll, solid, spaceBetween, start, top, whiteSpace, width, wrap, zIndex)
+import Css exposing (absolute, alignItems, backgroundColor, border3, borderBottomLeftRadius, borderBottomRightRadius, borderBox, borderRadius, borderRadius4, borderStyle, boxShadow, boxSizing, center, color, column, cursor, display, displayFlex, flexBasis, flexDirection, flexGrow, flexWrap, fontSize, height, hover, important, int, justifyContent, left, listStyle, margin, marginLeft, marginTop, maxHeight, minWidth, noWrap, none, num, outline, overflowY, padding, padding2, padding4, paddingLeft, pct, pointer, pointerEvents, position, relative, rem, right, scroll, solid, spaceBetween, start, top, whiteSpace, width, wrap, zIndex)
 import Html.Styled as Html exposing (Attribute, Html, div, input, span, text)
 import Html.Styled.Attributes as Attrs exposing (css, placeholder, tabindex, value)
 import Html.Styled.Events as Events exposing (onClick, onInput)
@@ -25,7 +25,7 @@ import Nordea.Components.Label as Label exposing (RequirednessHint)
 import Nordea.Components.OutsideEventSupport as OutsideEventSupport
 import Nordea.Components.Text as Text
 import Nordea.Css exposing (gap)
-import Nordea.Html as Html exposing (attrEmpty, attrIf, styleIf)
+import Nordea.Html as Html exposing (attrEmpty, attrIf)
 import Nordea.Html.Events as Events
 import Nordea.Resources.Colors as Colors
 import Nordea.Resources.Icons as Icon
