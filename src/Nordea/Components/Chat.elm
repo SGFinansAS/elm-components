@@ -17,14 +17,17 @@ import Css
         , ellipsis
         , flexDirection
         , flexEnd
+        , flexGrow
         , hidden
         , inlineBlock
         , justifyContent
         , marginBottom
         , marginLeft
         , marginRight
+        , marginTop
         , maxHeight
         , noWrap
+        , num
         , overflow
         , overflowWrap
         , padding
@@ -40,6 +43,7 @@ import Css
 import Html.Styled as Html exposing (Attribute, Html)
 import Html.Styled.Attributes exposing (class, css)
 import List
+import Maybe.Extra as Maybe
 import Nordea.Components.Card as Card
 import Nordea.Components.Tag as Tag
 import Nordea.Components.Text as Text
@@ -74,10 +78,15 @@ type Appearance
     | Standard
 
 
+type alias CollapsibleConfig msg =
+    { emphasisedText : Maybe (Html msg), isOpen : Bool, onClick : msg }
+
+
 type OptionalConfig msg
     = Appearance Appearance
     | BetaTag
     | HeaderText (Html msg)
+    | Collapsible (CollapsibleConfig msg)
 
 
 type Chat
@@ -95,7 +104,7 @@ init translate =
 view : List (OptionalConfig msg) -> List (Attribute msg) -> List (Html msg) -> List (Html msg) -> Chat -> Html msg
 view optionals attrs history content (Chat config) =
     let
-        { appearance, showBetaTag, headerText } =
+        { appearance, showBetaTag, headerText, collapsibleProps } =
             optionals
                 |> List.foldl
                     (\e acc ->
@@ -108,50 +117,40 @@ view optionals attrs history content (Chat config) =
 
                             HeaderText headerText_ ->
                                 { acc | headerText = headerText_ }
+
+                            Collapsible props ->
+                                { acc | collapsibleProps = Just props }
                     )
                     { appearance = Standard
                     , showBetaTag = False
                     , headerText = strings.title |> config.translate |> Html.text
+                    , collapsibleProps = Nothing
                     }
 
-        appearanceSpecificStyles =
-            case appearance of
-                Standard ->
-                    [ gap (rem 1) ]
-
-                Small ->
-                    [ gap (rem 0.5)
-                    , padding (rem 1) |> Css.important
-                    , border3 (rem 0.094) solid Colors.mediumGray
-                    ]
+        smallAppearanceSpecificStyles =
+            Css.batch
+                [ padding (rem 1) |> Css.important
+                , border3 (rem 0.094) solid Colors.mediumGray
+                ]
 
         headerView =
             case appearance of
                 Standard ->
-                    Html.row [ css [ marginBottom (rem 1) ] ]
+                    Html.row [ css [ flexGrow (num 1) ] ]
                         [ Illustrations.messageInstructionalStar [ css [ width (rem 2), marginRight (rem 0.5) ] ]
                         , Text.bodyTextHeavy
                             |> Text.view [ css [ Themes.color Colors.deepBlue, alignSelf flexEnd ] ] [ headerText ]
                         ]
 
                 Small ->
-                    Html.row [ css [ marginBottom (rem 0.5) ] ]
+                    Html.row [ css [ marginBottom (rem 1) |> Css.important |> Html.styleIf (Maybe.isNothing collapsibleProps), flexGrow (num 1) ] ]
                         [ Illustrations.messageInstructionalStar [ css [ width (rem 1.5), marginRight (rem 0.5) ] ]
-                        , Text.textTinyHeavy
+                        , Text.textHeavy
                             |> Text.view [ css [ Themes.color Colors.deepBlue, alignSelf flexEnd ] ] [ headerText ]
                         , Tag.beta [ css [ marginLeft auto ] ] |> showIf showBetaTag
                         ]
 
         messageHistoryView =
-            let
-                gapStyle =
-                    case appearance of
-                        Standard ->
-                            gap (rem 1)
-
-                        Small ->
-                            gap (rem 0.5)
-            in
             Html.column
                 [ css
                     [ maxHeight (rem 15)
@@ -159,19 +158,22 @@ view optionals attrs history content (Chat config) =
                     , Css.property "scrollbar-width" "thin"
                     , paddingRight (rem 0.3125)
                     , flexDirection columnReverse |> Css.important
+                    , marginTop (rem -0.5) |> Html.styleIf (Maybe.isJust collapsibleProps && appearance == Small)
                     ]
                 ]
                 [ Html.column
-                    [ css [ gapStyle ] ]
+                    [ css [ gap (rem 1) ] ]
                     history
                 ]
                 |> showIf (List.isNotEmpty history)
     in
     Card.init
-        |> Card.view (css appearanceSpecificStyles :: attrs)
-            [ headerView
-            , messageHistoryView
-            , Html.column [ css [ gap (rem 0.5) ] ] content
+        |> Card.withHtmlTitle headerView
+        |> Card.isCollapsible collapsibleProps
+        |> Card.view
+            (css [ smallAppearanceSpecificStyles |> Html.styleIf (appearance == Small) ] :: attrs)
+            [ messageHistoryView
+            , Html.column [ css [ gap (rem 0.5), marginTop (rem 1) ] ] content
                 |> showIf (List.isNotEmpty content)
             ]
 
