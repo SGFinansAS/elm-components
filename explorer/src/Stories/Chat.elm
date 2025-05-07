@@ -1,5 +1,6 @@
 module Stories.Chat exposing (stories)
 
+import Config exposing (Config, Msg(..))
 import Css exposing (maxWidth, rem)
 import Html.Styled as Html
 import Html.Styled.Attributes exposing (css)
@@ -9,7 +10,7 @@ import UIExplorer exposing (UI)
 import UIExplorer.Styled exposing (styledStoriesOf)
 
 
-stories : UI a b {}
+stories : UI Config Msg {}
 stories =
     styledStoriesOf
         "Chat"
@@ -49,10 +50,17 @@ stories =
           , {}
           )
         , ( "Small"
-          , \_ ->
+          , \model ->
                 Html.div [ css [ maxWidth (rem 25) ] ]
                     [ Chat.init .no
-                        |> Chat.view [ Chat.Appearance Chat.Small ]
+                        |> Chat.view
+                            [ Chat.Appearance Chat.Small
+                            , Chat.Collapsible
+                                { emphasisedText = Nothing
+                                , isOpen = model.customModel.isCardOpen
+                                , onClick = ToggleOpenCard
+                                }
+                            ]
                             []
                             (List.range 0 100
                                 |> List.concatMap
