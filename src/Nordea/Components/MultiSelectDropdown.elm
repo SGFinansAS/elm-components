@@ -11,19 +11,21 @@ module Nordea.Components.MultiSelectDropdown exposing
     , withOptions
     , withPlaceholder
     , withRequirednessHint
+    , withSelected
     )
 
-import Css exposing (absolute, alignItems, backgroundColor, border3, borderBottomLeftRadius, borderBottomRightRadius, borderBox, borderRadius4, borderStyle, boxShadow, boxSizing, center, color, column, cursor, display, displayFlex, flexBasis, flexDirection, flexGrow, fontSize, height, hover, important, int, justifyContent, left, listStyle, margin, marginLeft, marginTop, maxHeight, minWidth, none, num, outline, overflowY, padding, padding4, paddingLeft, pct, pointer, pointerEvents, position, relative, rem, right, scroll, solid, spaceBetween, start, top, width, zIndex)
-import Html.Styled as Html exposing (Attribute, Html, input)
+import Css exposing (absolute, alignItems, auto, backgroundColor, border3, borderBottomLeftRadius, borderBottomRightRadius, borderBox, borderRadius, borderRadius4, borderStyle, boxShadow, boxSizing, center, color, column, cursor, display, displayFlex, flexBasis, flexDirection, flexGrow, flexWrap, fontSize, height, hover, important, int, justifyContent, left, listStyle, margin, marginLeft, marginTop, maxHeight, minWidth, noWrap, none, num, outline, overflowY, padding, padding2, padding4, paddingLeft, pct, pointer, pointerEvents, position, relative, rem, right, scroll, solid, spaceBetween, start, top, whiteSpace, width, wrap, zIndex)
+import Html.Styled as Html exposing (Attribute, Html, div, input, span, text)
 import Html.Styled.Attributes as Attrs exposing (css, placeholder, tabindex, value)
-import Html.Styled.Events as Events exposing (onInput)
+import Html.Styled.Events as Events exposing (onClick, onInput)
 import Json.Decode as Decode
 import Maybe.Extra as Maybe
 import Nordea.Components.Checkbox as Checkbox
 import Nordea.Components.Label as Label exposing (RequirednessHint)
 import Nordea.Components.OutsideEventSupport as OutsideEventSupport
 import Nordea.Components.Text as Text
-import Nordea.Html exposing (attrEmpty, attrIf, styleIf)
+import Nordea.Css exposing (gap)
+import Nordea.Html as Html exposing (attrEmpty, attrIf, styleIf)
 import Nordea.Html.Events as Events
 import Nordea.Resources.Colors as Colors
 import Nordea.Resources.Icons as Icon
@@ -52,6 +54,7 @@ type alias MultiSelectDropdown msg =
     , requirednessHint : Maybe RequirednessHint
     , inputProperties : Maybe (InputProperties msg)
     , errorMessage : Maybe String
+    , showSelected : Bool
     }
 
 
@@ -74,6 +77,7 @@ init { onFocus } =
     , requirednessHint = Nothing
     , inputProperties = Nothing
     , errorMessage = Nothing
+    , showSelected = False
     }
 
 
@@ -95,7 +99,7 @@ view attrs dropdown =
                     , fontSize (rem 1)
                     , height (rem 1.75)
                     , width (pct 100)
-                    , minWidth (pct 70)
+                    , minWidth (pct 97)
                     , flexGrow (num 1)
                     , flexBasis (rem 10)
                     , paddingLeft (rem 1)
@@ -115,22 +119,46 @@ view attrs dropdown =
                 ]
                 []
 
-        icon =
-            case dropdown.inputProperties of
-                Just _ ->
-                    Icon.search
-                        [ css
-                            [ styleIf (Maybe.isJust dropdown.inputProperties) (position absolute)
-                            , left (rem 0.5)
-                            , pointerEvents none
-                            , color Colors.gray
-                            , width (rem 1)
-                            , height (rem 1)
+        viewSelectedAndInput inputProperties =
+            div
+                [ css
+                    [ displayFlex
+                    , flexWrap wrap
+                    , alignItems center
+                    , gap (rem 0.5)
+                    , width (pct 100)
+                    ]
+                ]
+                (List.concat
+                    [ dropdown.optionGroups
+                        |> List.concatMap .options
+                        |> List.filter .isChecked
+                        |> List.map
+                            (\option ->
+                                div [ css [ color Colors.nordeaBlue, displayFlex, alignItems center, gap (rem 0.5), backgroundColor Colors.lightBlue, borderRadius (rem 2), padding2 (rem 0.25) (rem 0.75) ] ]
+                                    [ span [ css [ whiteSpace noWrap ] ] [ Text.textLight |> Text.view [] [ text option.label ] ]
+                                    , Icon.cross [ onClick (option.onCheck False), css [ width (rem 1), height (rem 1), cursor pointer ] ]
+                                    ]
+                            )
+                    , [ Html.row [ css [ width (pct 100) ] ]
+                            [ searchIcon
+                            , viewInput inputProperties
                             ]
-                        ]
+                      ]
+                    ]
+                )
 
-                Nothing ->
-                    Icon.chevronDownFilled []
+        searchIcon =
+            Icon.search
+                [ css
+                    [ position absolute
+                    , left (rem 0.5)
+                    , pointerEvents none
+                    , color Colors.gray
+                    , width (rem 1)
+                    , height (rem 1)
+                    ]
+                ]
 
         selectItems =
             dropdown.optionGroups |> List.indexedMap (viewSelectItems dropdown) |> List.filterMap identity
@@ -189,9 +217,15 @@ view attrs dropdown =
                         borderRadius4 (rem 0.25) (rem 0.25) (rem 0.25) (rem 0.25)
                     ]
                 ]
-                [ dropdown.inputProperties |> Maybe.map viewInput |> Maybe.withDefault (Html.text dropdown.placeholder)
-                , icon
-                ]
+                (case dropdown.inputProperties of
+                    Just inputProperties ->
+                        [ viewSelectedAndInput inputProperties ]
+
+                    Nothing ->
+                        [ Html.text dropdown.placeholder
+                        , Icon.chevronDownFilled []
+                        ]
+                )
             , Html.ul
                 [ case dropdown.inputProperties of
                     Just inputProps ->
@@ -370,3 +404,8 @@ withInput input onInput uniqueId dropdown =
 withError : Maybe String -> MultiSelectDropdown msg -> MultiSelectDropdown msg
 withError error dropdown =
     { dropdown | errorMessage = error }
+
+
+withSelected : MultiSelectDropdown msg -> MultiSelectDropdown msg
+withSelected dropdown =
+    { dropdown | showSelected = True }

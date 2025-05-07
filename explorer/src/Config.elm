@@ -37,6 +37,7 @@ type alias Config =
     , isChoice1 : Bool
     , isChoice2 : Bool
     , isChoice3 : Bool
+    , selectedItems : List String
     , searchHasFocus : Bool
     , isFeatureBoxOpen : Bool
     , isProgressBarCompleted : Bool
@@ -144,6 +145,7 @@ init =
     , currentDatePickerValue = Nothing
     , isCardOpen = True
     , fiveStarRating = 0
+    , selectedItems = []
     }
 
 
@@ -192,13 +194,13 @@ update msg config =
             { config | hasMultiSelectDropdownFocus = value }
 
         OnCheckChoice1 ->
-            { config | isChoice1 = not config.isChoice1 }
+            { config | isChoice1 = not config.isChoice1, selectedItems = "Valg 1" :: config.selectedItems }
 
         OnCheckChoice2 ->
-            { config | isChoice2 = not config.isChoice2 }
+            { config | isChoice2 = not config.isChoice2, selectedItems = "Valg 2" :: config.selectedItems }
 
         OnCheckChoice3 ->
-            { config | isChoice3 = not config.isChoice3 }
+            { config | isChoice3 = not config.isChoice3, selectedItems = "Valg 3" :: config.selectedItems }
 
         SearchComponentSelected item ->
             { config

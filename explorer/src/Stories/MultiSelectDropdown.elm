@@ -1,6 +1,8 @@
 module Stories.MultiSelectDropdown exposing (stories)
 
 import Config exposing (Msg(..))
+import Css exposing (rem, width)
+import Html.Styled.Attributes exposing (css)
 import Maybe.Extra as Maybe
 import Nordea.Components.Label as Label
 import Nordea.Components.MultiSelectDropdown as MultiSelectDropdown
@@ -73,7 +75,7 @@ stories =
                           , groupLabel = Just "Group 2"
                           }
                         ]
-                    |> MultiSelectDropdown.view []
+                    |> MultiSelectDropdown.view [ css [ width (rem 40) ] ]
           , {}
           )
         , ( "With error (if input is non-empty)"
