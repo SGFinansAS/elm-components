@@ -84,15 +84,6 @@ init { onFocus } =
     }
 
 
-focusInput : String -> msg -> Cmd msg
-focusInput id noOp =
-    Task.attempt (\_ -> noOp) (Browser.focus (makeId id))
-
-
-makeId s =
-    "multiselectinput" ++ s
-
-
 view : List (Attribute msg) -> MultiSelectDropdown msg -> Html msg
 view attrs dropdown =
     let
@@ -104,7 +95,7 @@ view attrs dropdown =
 
         viewInput inputProps =
             input
-                [ id (makeId inputProps.uniqueId)
+                [ id (makeId inputProps)
                 , css
                     [ outline none
                     , important (boxShadow none)
@@ -142,7 +133,7 @@ view attrs dropdown =
                     , gap (rem 0.5)
                     , width (pct 100)
                     ]
-                , onClick (inputProperties.onInput inputProperties.input (focusInput inputProperties.uniqueId inputProperties.noOp))
+                , onClick (inputProperties.onInput inputProperties.input (focusInput inputProperties))
                 ]
                 (List.concat
                     [ dropdown.optionGroups
@@ -394,6 +385,16 @@ viewSelectItems dropdown index orgOptionGroup =
                         (viewOptionGroup filteredOptionGroup)
                     ]
             )
+
+
+focusInput : InputProperties msg -> Cmd msg
+focusInput inputProperties =
+    Task.attempt (\_ -> inputProperties.noOp) (Browser.focus (makeId inputProperties))
+
+
+makeId : InputProperties msg -> String
+makeId inputProperties =
+    "multiselectinput" ++ inputProperties.uniqueId
 
 
 withLabel : String -> MultiSelectDropdown msg -> MultiSelectDropdown msg
