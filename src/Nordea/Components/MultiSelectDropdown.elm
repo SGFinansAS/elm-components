@@ -11,24 +11,28 @@ module Nordea.Components.MultiSelectDropdown exposing
     , withOptions
     , withPlaceholder
     , withRequirednessHint
+    , withSelected
     )
 
-import Css exposing (absolute, alignItems, backgroundColor, border3, borderBottomLeftRadius, borderBottomRightRadius, borderBox, borderRadius4, borderStyle, boxShadow, boxSizing, center, color, column, cursor, display, displayFlex, flexBasis, flexDirection, flexGrow, fontSize, height, hover, important, int, justifyContent, left, listStyle, margin, marginLeft, marginTop, maxHeight, minWidth, none, num, outline, overflowY, padding, padding4, paddingLeft, pct, pointer, pointerEvents, position, relative, rem, right, scroll, solid, spaceBetween, start, top, width, zIndex)
-import Html.Styled as Html exposing (Attribute, Html, input)
-import Html.Styled.Attributes as Attrs exposing (css, placeholder, tabindex, value)
-import Html.Styled.Events as Events exposing (onInput)
+import Browser.Dom as Browser
+import Css exposing (absolute, alignItems, backgroundColor, border3, borderBottomLeftRadius, borderBottomRightRadius, borderBox, borderRadius, borderRadius4, borderStyle, boxShadow, boxSizing, center, color, column, cursor, display, displayFlex, flexBasis, flexDirection, flexGrow, flexWrap, fontSize, height, hover, important, int, justifyContent, left, listStyle, margin, marginLeft, marginTop, maxHeight, minWidth, noWrap, none, num, outline, overflowY, padding, padding2, padding4, paddingLeft, pct, pointer, pointerEvents, position, relative, rem, right, scroll, solid, spaceBetween, start, top, whiteSpace, width, wrap, zIndex)
+import Html.Styled as Html exposing (Attribute, Html, div, input, span, text)
+import Html.Styled.Attributes as Attrs exposing (css, id, placeholder, tabindex, value)
+import Html.Styled.Events as Events exposing (onClick, onInput)
 import Json.Decode as Decode
 import Maybe.Extra as Maybe
 import Nordea.Components.Checkbox as Checkbox
 import Nordea.Components.Label as Label exposing (RequirednessHint)
 import Nordea.Components.OutsideEventSupport as OutsideEventSupport
 import Nordea.Components.Text as Text
-import Nordea.Html exposing (attrEmpty, attrIf, styleIf)
+import Nordea.Css exposing (gap)
+import Nordea.Html as Html exposing (attrEmpty, attrIf, styleIf)
 import Nordea.Html.Events as Events
 import Nordea.Resources.Colors as Colors
 import Nordea.Resources.Icons as Icon
 import Nordea.Themes as Themes
 import Nordea.Utils.List as List
+import Task
 
 
 type alias OptionGroup msg =
@@ -36,9 +40,10 @@ type alias OptionGroup msg =
 
 
 type alias InputProperties msg =
-    { onInput : String -> msg
+    { onInput : String -> Cmd msg -> msg
     , input : String
     , uniqueId : String
+    , noOp : msg
     }
 
 
@@ -52,6 +57,7 @@ type alias MultiSelectDropdown msg =
     , requirednessHint : Maybe RequirednessHint
     , inputProperties : Maybe (InputProperties msg)
     , errorMessage : Maybe String
+    , showSelected : Bool
     }
 
 
@@ -74,6 +80,7 @@ init { onFocus } =
     , requirednessHint = Nothing
     , inputProperties = Nothing
     , errorMessage = Nothing
+    , showSelected = False
     }
 
 
@@ -88,21 +95,22 @@ view attrs dropdown =
 
         viewInput inputProps =
             input
-                [ css
+                [ id (makeId inputProps)
+                , css
                     [ outline none
                     , important (boxShadow none)
                     , borderStyle none
                     , fontSize (rem 1)
                     , height (rem 1.75)
                     , width (pct 100)
-                    , minWidth (pct 70)
+                    , minWidth (pct 97)
                     , flexGrow (num 1)
                     , flexBasis (rem 10)
                     , paddingLeft (rem 1)
                     ]
                 , placeholder dropdown.placeholder
                 , value currentInput
-                , onInput inputProps.onInput
+                , onInput (\str -> inputProps.onInput str Cmd.none)
                 , Attrs.attribute "aria-controls" inputProps.uniqueId
                 , Attrs.attribute "role" "combobox"
                 , Attrs.attribute "aria-expanded"
@@ -115,22 +123,68 @@ view attrs dropdown =
                 ]
                 []
 
-        icon =
-            case dropdown.inputProperties of
-                Just _ ->
-                    Icon.search
-                        [ css
-                            [ styleIf (Maybe.isJust dropdown.inputProperties) (position absolute)
-                            , left (rem 0.5)
-                            , pointerEvents none
-                            , color Colors.gray
-                            , width (rem 1)
-                            , height (rem 1)
-                            ]
-                        ]
+        viewSelectedAndInput : InputProperties msg -> Html msg
+        viewSelectedAndInput inputProperties =
+            div
+                [ css
+                    [ displayFlex
+                    , flexWrap wrap
+                    , alignItems center
+                    , gap (rem 0.5)
+                    , width (pct 100)
+                    ]
+                , onClick (inputProperties.onInput inputProperties.input (focusInput inputProperties))
+                ]
+                (List.concat
+                    [ dropdown.optionGroups
+                        |> List.concatMap .options
+                        |> List.filter .isChecked
+                        |> List.map
+                            (\option ->
+                                div
+                                    [ tabindex 0
+                                    , Events.onKeyDownMaybe
+                                        (\key ->
+                                            case key of
+                                                Events.Space ->
+                                                    Just (option.onCheck False)
 
-                Nothing ->
-                    Icon.chevronDownFilled []
+                                                _ ->
+                                                    Nothing
+                                        )
+                                    , css
+                                        [ color Colors.nordeaBlue
+                                        , displayFlex
+                                        , alignItems center
+                                        , gap (rem 0.5)
+                                        , backgroundColor Colors.lightBlue
+                                        , borderRadius (rem 2)
+                                        , padding2 (rem 0.25) (rem 0.75)
+                                        ]
+                                    ]
+                                    [ span [ css [ whiteSpace noWrap ] ] [ Text.textLight |> Text.view [] [ text option.label ] ]
+                                    , Icon.cross [ onClick (option.onCheck False), css [ width (rem 1), height (rem 1), cursor pointer ] ]
+                                    ]
+                            )
+                    , [ Html.row [ css [ width (pct 100) ] ]
+                            [ searchIcon
+                            , viewInput inputProperties
+                            ]
+                      ]
+                    ]
+                )
+
+        searchIcon =
+            Icon.search
+                [ css
+                    [ position absolute
+                    , left (rem 0.5)
+                    , pointerEvents none
+                    , color Colors.gray
+                    , width (rem 1)
+                    , height (rem 1)
+                    ]
+                ]
 
         selectItems =
             dropdown.optionGroups |> List.indexedMap (viewSelectItems dropdown) |> List.filterMap identity
@@ -169,7 +223,7 @@ view attrs dropdown =
                 , css
                     [ width (pct 100)
                     , displayFlex
-                    , cursor pointer
+                    , styleIf (not hasTextInput) (cursor pointer)
                     , alignItems center
                     , justifyContent spaceBetween
                     , backgroundColor Colors.white
@@ -189,9 +243,15 @@ view attrs dropdown =
                         borderRadius4 (rem 0.25) (rem 0.25) (rem 0.25) (rem 0.25)
                     ]
                 ]
-                [ dropdown.inputProperties |> Maybe.map viewInput |> Maybe.withDefault (Html.text dropdown.placeholder)
-                , icon
-                ]
+                (case dropdown.inputProperties of
+                    Just inputProperties ->
+                        [ viewSelectedAndInput inputProperties ]
+
+                    Nothing ->
+                        [ Html.text dropdown.placeholder
+                        , Icon.chevronDownFilled []
+                        ]
+                )
             , Html.ul
                 [ case dropdown.inputProperties of
                     Just inputProps ->
@@ -327,6 +387,16 @@ viewSelectItems dropdown index orgOptionGroup =
             )
 
 
+focusInput : InputProperties msg -> Cmd msg
+focusInput inputProperties =
+    Task.attempt (\_ -> inputProperties.noOp) (Browser.focus (makeId inputProperties))
+
+
+makeId : InputProperties msg -> String
+makeId inputProperties =
+    "multiselectinput" ++ inputProperties.uniqueId
+
+
 withLabel : String -> MultiSelectDropdown msg -> MultiSelectDropdown msg
 withLabel label dropdown =
     { dropdown | label = label }
@@ -362,11 +432,16 @@ withHasFocus hasFocus dropdown =
     { dropdown | hasFocus = hasFocus }
 
 
-withInput : String -> (String -> msg) -> String -> MultiSelectDropdown msg -> MultiSelectDropdown msg
-withInput input onInput uniqueId dropdown =
-    { dropdown | inputProperties = Just { input = input, onInput = onInput, uniqueId = uniqueId } }
+withInput : String -> (String -> Cmd msg -> msg) -> msg -> String -> MultiSelectDropdown msg -> MultiSelectDropdown msg
+withInput input onInput noOp uniqueId dropdown =
+    { dropdown | inputProperties = Just { input = input, onInput = onInput, uniqueId = uniqueId, noOp = noOp } }
 
 
 withError : Maybe String -> MultiSelectDropdown msg -> MultiSelectDropdown msg
 withError error dropdown =
     { dropdown | errorMessage = error }
+
+
+withSelected : MultiSelectDropdown msg -> MultiSelectDropdown msg
+withSelected dropdown =
+    { dropdown | showSelected = True }

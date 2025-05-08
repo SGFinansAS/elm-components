@@ -65,7 +65,11 @@ type alias Model =
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
-    ( { model | customModel = Config.update msg model.customModel }, Cmd.none )
+    let
+        ( customModel, cmd ) =
+            Config.update msg model.customModel
+    in
+    ( { model | customModel = customModel }, cmd )
 
 
 viewEnhancer : a -> Html msg -> Html msg

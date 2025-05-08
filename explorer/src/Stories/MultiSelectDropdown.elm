@@ -1,6 +1,8 @@
 module Stories.MultiSelectDropdown exposing (stories)
 
 import Config exposing (Msg(..))
+import Css exposing (rem, width)
+import Html.Styled.Attributes exposing (css)
 import Maybe.Extra as Maybe
 import Nordea.Components.Label as Label
 import Nordea.Components.MultiSelectDropdown as MultiSelectDropdown
@@ -59,7 +61,7 @@ stories =
                     |> MultiSelectDropdown.withHasFocus model.customModel.hasMultiSelectDropdownFocus
                     |> MultiSelectDropdown.withRequirednessHint (Just (Label.Mandatory .no))
                     |> MultiSelectDropdown.withHintText (Just "Hint")
-                    |> MultiSelectDropdown.withInput model.customModel.searchComponentInput SearchComponentInput "inputId"
+                    |> MultiSelectDropdown.withInput model.customModel.searchComponentInput SearchComponentInputWithCmd NoOp "inputId"
                     |> MultiSelectDropdown.withOptionGroups
                         [ { options =
                                 [ { name = "1", label = "Valg 1", isChecked = model.customModel.isChoice1, onCheck = \_ -> OnCheckChoice1 }
@@ -73,7 +75,7 @@ stories =
                           , groupLabel = Just "Group 2"
                           }
                         ]
-                    |> MultiSelectDropdown.view []
+                    |> MultiSelectDropdown.view [ css [ width (rem 40) ] ]
           , {}
           )
         , ( "With error (if input is non-empty)"
@@ -83,7 +85,7 @@ stories =
                     |> MultiSelectDropdown.withPlaceholder "Choose an option or type"
                     |> MultiSelectDropdown.withHasFocus model.customModel.hasMultiSelectDropdownFocus
                     |> MultiSelectDropdown.withRequirednessHint (Just (Label.Mandatory .no))
-                    |> MultiSelectDropdown.withInput model.customModel.searchComponentInput SearchComponentInput "inputId"
+                    |> MultiSelectDropdown.withInput model.customModel.searchComponentInput SearchComponentInputWithCmd NoOp "inputId"
                     |> MultiSelectDropdown.withError (Just model.customModel.searchComponentInput |> Maybe.filter (String.isEmpty >> not))
                     |> MultiSelectDropdown.withOptionGroups
                         [ { options =
