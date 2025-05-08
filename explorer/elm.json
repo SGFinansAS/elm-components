@@ -7,6 +7,7 @@
     "elm-version": "0.19.1",
     "dependencies": {
         "direct": {
+            "elm/browser": "1.0.2",
             "elm/core": "1.0.5",
             "elm/file": "1.0.5",
             "elm/html": "1.0.0",
@@ -26,7 +27,6 @@
             "1602/elm-feather": "2.3.4",
             "NoRedInk/datetimepicker-legacy": "1.0.4",
             "avh4/elm-debug-controls": "2.2.1",
-            "elm/browser": "1.0.2",
             "elm/bytes": "1.0.8",
             "elm/http": "2.0.0",
             "elm/parser": "1.1.0",
