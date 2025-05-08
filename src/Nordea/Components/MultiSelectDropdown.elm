@@ -43,7 +43,6 @@ type alias InputProperties msg =
     { onInput : String -> Cmd msg -> msg
     , input : String
     , uniqueId : String
-    , noOp : msg
     }
 
 
@@ -389,7 +388,7 @@ viewSelectItems dropdown index orgOptionGroup =
 
 focusInput : InputProperties msg -> Cmd msg
 focusInput inputProperties =
-    Task.attempt (\_ -> inputProperties.noOp) (Browser.focus (makeId inputProperties))
+    Task.attempt (\_ -> inputProperties.onInput inputProperties.input Cmd.none) (Browser.focus (makeId inputProperties))
 
 
 makeId : InputProperties msg -> String
@@ -432,9 +431,9 @@ withHasFocus hasFocus dropdown =
     { dropdown | hasFocus = hasFocus }
 
 
-withInput : String -> (String -> Cmd msg -> msg) -> msg -> String -> MultiSelectDropdown msg -> MultiSelectDropdown msg
-withInput input onInput noOp uniqueId dropdown =
-    { dropdown | inputProperties = Just { input = input, onInput = onInput, uniqueId = uniqueId, noOp = noOp } }
+withInput : String -> (String -> Cmd msg -> msg) -> String -> MultiSelectDropdown msg -> MultiSelectDropdown msg
+withInput input onInput uniqueId dropdown =
+    { dropdown | inputProperties = Just { input = input, onInput = onInput, uniqueId = uniqueId } }
 
 
 withError : Maybe String -> MultiSelectDropdown msg -> MultiSelectDropdown msg

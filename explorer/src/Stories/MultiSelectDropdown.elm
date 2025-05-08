@@ -61,7 +61,7 @@ stories =
                     |> MultiSelectDropdown.withHasFocus model.customModel.hasMultiSelectDropdownFocus
                     |> MultiSelectDropdown.withRequirednessHint (Just (Label.Mandatory .no))
                     |> MultiSelectDropdown.withHintText (Just "Hint")
-                    |> MultiSelectDropdown.withInput model.customModel.searchComponentInput SearchComponentInputWithCmd NoOp "inputId"
+                    |> MultiSelectDropdown.withInput model.customModel.searchComponentInput SearchComponentInputWithCmd "inputId"
                     |> MultiSelectDropdown.withOptionGroups
                         [ { options =
                                 [ { name = "1", label = "Valg 1", isChecked = model.customModel.isChoice1, onCheck = \_ -> OnCheckChoice1 }
@@ -85,7 +85,7 @@ stories =
                     |> MultiSelectDropdown.withPlaceholder "Choose an option or type"
                     |> MultiSelectDropdown.withHasFocus model.customModel.hasMultiSelectDropdownFocus
                     |> MultiSelectDropdown.withRequirednessHint (Just (Label.Mandatory .no))
-                    |> MultiSelectDropdown.withInput model.customModel.searchComponentInput SearchComponentInputWithCmd NoOp "inputId"
+                    |> MultiSelectDropdown.withInput model.customModel.searchComponentInput SearchComponentInputWithCmd "inputId"
                     |> MultiSelectDropdown.withError (Just model.customModel.searchComponentInput |> Maybe.filter (String.isEmpty >> not))
                     |> MultiSelectDropdown.withOptionGroups
                         [ { options =
