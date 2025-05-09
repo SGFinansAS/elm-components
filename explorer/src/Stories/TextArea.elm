@@ -50,6 +50,13 @@ stories =
                     |> TextArea.view []
           , {}
           )
+        , ( "Small"
+          , \_ ->
+                TextArea.init ""
+                    |> TextArea.withSmallSize
+                    |> TextArea.view []
+          , {}
+          )
         ]
 
 
