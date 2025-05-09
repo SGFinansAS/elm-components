@@ -173,4 +173,3 @@ getStyles config =
                 , Themes.borderColor Colors.nordeaBlue
                 ]
            ]
-
