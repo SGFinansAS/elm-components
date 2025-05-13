@@ -105,8 +105,6 @@ view attrs dropdown =
                     , minWidth (pct 97)
                     , flexGrow (num 1)
                     , flexBasis (rem 10)
-
-                    --, paddingLeft (rem 1)
                     ]
                 , placeholder dropdown.placeholder
                 , value currentInput
