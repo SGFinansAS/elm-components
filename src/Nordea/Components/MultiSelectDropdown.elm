@@ -15,7 +15,7 @@ module Nordea.Components.MultiSelectDropdown exposing
     )
 
 import Browser.Dom as Browser
-import Css exposing (absolute, alignItems, backgroundColor, border3, borderBottomLeftRadius, borderBottomRightRadius, borderBox, borderRadius, borderRadius4, borderStyle, boxShadow, boxSizing, center, color, column, cursor, display, displayFlex, flexBasis, flexDirection, flexGrow, flexWrap, fontSize, height, hover, important, int, justifyContent, left, listStyle, margin, marginLeft, marginTop, maxHeight, minWidth, noWrap, none, num, outline, overflowY, padding, padding2, padding4, paddingLeft, pct, pointer, pointerEvents, position, relative, rem, right, scroll, solid, spaceBetween, start, top, whiteSpace, width, wrap, zIndex)
+import Css exposing (absolute, alignItems, backgroundColor, border3, borderBottomLeftRadius, borderBottomRightRadius, borderBox, borderRadius, borderRadius4, borderStyle, boxShadow, boxSizing, center, color, column, cursor, display, displayFlex, flexBasis, flexDirection, flexGrow, flexWrap, fontSize, height, hover, important, int, justifyContent, left, listStyle, margin, margin4, marginLeft, marginTop, maxHeight, minWidth, noWrap, none, num, outline, overflowY, padding, padding2, padding4, pct, pointer, pointerEvents, position, relative, rem, right, scroll, solid, spaceBetween, start, top, whiteSpace, width, wrap, zIndex)
 import Html.Styled as Html exposing (Attribute, Html, div, input, span, text)
 import Html.Styled.Attributes as Attrs exposing (css, id, placeholder, tabindex, value)
 import Html.Styled.Events as Events exposing (onClick, onInput)
@@ -105,7 +105,8 @@ view attrs dropdown =
                     , minWidth (pct 97)
                     , flexGrow (num 1)
                     , flexBasis (rem 10)
-                    , paddingLeft (rem 1)
+
+                    --, paddingLeft (rem 1)
                     ]
                 , placeholder dropdown.placeholder
                 , value currentInput
@@ -176,12 +177,11 @@ view attrs dropdown =
         searchIcon =
             Icon.search
                 [ css
-                    [ position absolute
-                    , left (rem 0.5)
-                    , pointerEvents none
+                    [ pointerEvents none
                     , color Colors.gray
                     , width (rem 1)
                     , height (rem 1)
+                    , margin4 (rem 0.4) (rem 0.4) (rem 0.4) (rem 0)
                     ]
                 ]
 
@@ -226,7 +226,7 @@ view attrs dropdown =
                     , alignItems center
                     , justifyContent spaceBetween
                     , backgroundColor Colors.white
-                    , padding4 (rem 0.25) (rem 0.25) (rem 0.25) (rem 0.75)
+                    , padding4 (rem 0.25) (rem 0.25) (rem 0.25) (rem 0.5)
                     , border3 (rem 0.0625) solid Colors.mediumGray
                     , if dropdown.hasFocus then
                         Css.batch
