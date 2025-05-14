@@ -55,7 +55,7 @@ import Html.Styled as Html exposing (Attribute, Html, div, option)
 import Html.Styled.Attributes as Attrs exposing (css, disabled, selected, value)
 import Html.Styled.Events as Events exposing (targetValue)
 import Json.Decode as Decode
-import Nordea.Html exposing (styleIf, viewMaybe)
+import Nordea.Html exposing (attrEmpty, styleIf, viewMaybe)
 import Nordea.Resources.Colors as Colors
 import Nordea.Resources.Icons as Icon
 import Nordea.Themes as Themes
@@ -257,7 +257,7 @@ view attrs (Dropdown config) =
                     Attrs.attribute "aria-label" l
 
                 Nothing ->
-                    Attrs.attribute " " ""
+                    attrEmpty
             , css
                 ([ width (pct 100)
                  , property "appearance" "none"
