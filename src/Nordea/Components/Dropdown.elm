@@ -7,6 +7,7 @@ module Nordea.Components.Dropdown exposing
     , simple
     , standard
     , view
+    , withAriaLabel
     , withHasError
     , withPlaceholder
     , withSelectedValue
@@ -97,6 +98,7 @@ type alias DropdownProperties a msg =
     , optionToString : a -> String
     , selectedValue : Maybe a
     , hasError : Bool
+    , ariaLabel : Maybe String
     , variant : Variant
     , size : Size
     }
@@ -140,6 +142,7 @@ initWithOptionProperties options optionToString onInput =
         , hasError = False
         , variant = Standard
         , size = StandardSize
+        , ariaLabel = Nothing
         }
 
 
@@ -249,6 +252,12 @@ view attrs (Dropdown config) =
         [ Html.select
             [ Events.on "change" decoder
             , Attrs.disabled isDisabled
+            , case config.ariaLabel of
+                Just l ->
+                    Attrs.attribute "aria-label" l
+
+                Nothing ->
+                    Attrs.attribute " " ""
             , css
                 ([ width (pct 100)
                  , property "appearance" "none"
@@ -297,3 +306,8 @@ withPlaceholder placeholder (Dropdown config) =
 withHasError : Bool -> Dropdown a msg -> Dropdown a msg
 withHasError hasError (Dropdown config) =
     Dropdown { config | hasError = hasError }
+
+
+withAriaLabel : String -> Dropdown a msg -> Dropdown a msg
+withAriaLabel label (Dropdown config) =
+    Dropdown { config | ariaLabel = Just label }
