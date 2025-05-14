@@ -203,7 +203,8 @@ view attrs (Dropdown config) =
             case ( config.variant, config.size ) of
                 ( Standard, StandardSize ) ->
                     Icon.chevronDownFilled
-                        [ css
+                        [ Attrs.attribute "aria-hidden" "true"
+                        , css
                             [ position absolute
                             , top (pct 50)
                             , transform (translateY (pct -50))
@@ -215,7 +216,8 @@ view attrs (Dropdown config) =
 
                 ( Standard, SmallSize ) ->
                     Icon.chevronDownFilledSmall
-                        [ css
+                        [ Attrs.attribute "aria-hidden" "true"
+                        , css
                             [ position absolute
                             , top (pct 50)
                             , transform (translateY (pct -50))
@@ -227,7 +229,8 @@ view attrs (Dropdown config) =
 
                 ( Simple, _ ) ->
                     Icon.chevronDownBolded
-                        [ css
+                        [ Attrs.attribute "aria-hidden" "true"
+                        , css
                             [ position absolute
                             , top (pct 50)
                             , transform (translateY (pct -50))
