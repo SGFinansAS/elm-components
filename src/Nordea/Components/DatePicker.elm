@@ -64,7 +64,7 @@ import Html.Styled.Events as Events exposing (custom, onBlur, onClick, onInput)
 import Json.Decode as Decode
 import List.Extra exposing (groupsOf)
 import Maybe.Extra as Maybe exposing (toList)
-import Nordea.Components.OnClickOutsideSupport as OnClickOutsideSupport
+import Nordea.Components.OutsideEventSupport as OutsideEventSupport
 import Nordea.Components.Text as Text
 import Nordea.Css exposing (gap)
 import Nordea.Html as Html exposing (showIf)
@@ -197,16 +197,17 @@ view attrs optional (DatePicker config) =
                 )
     in
     Html.column
-        (({ internalState | hasFocus = False }
-            |> InternalState
-            |> config.onInternalStateChange
-            |> Decode.succeed
-            |> Events.on "outsideclick"
-         )
-            :: css [ position relative ]
+        (css [ position relative ]
             :: attrs
         )
-        [ OnClickOutsideSupport.view { isActive = internalState.hasFocus }
+        [ OutsideEventSupport.view
+            { msg =
+                { internalState | hasFocus = False }
+                    |> InternalState
+                    |> config.onInternalStateChange
+            , isActive = internalState.hasFocus
+            , eventTypes = [ OutsideEventSupport.OutsideClick ]
+            }
         , dateInput config (InternalState internalState) parser placeholder showError error smallSize
         , Html.div
             [ css

@@ -37,6 +37,7 @@ type alias Config =
     , isChoice1 : Bool
     , isChoice2 : Bool
     , isChoice3 : Bool
+    , selectedItems : List String
     , searchHasFocus : Bool
     , isFeatureBoxOpen : Bool
     , isProgressBarCompleted : Bool
@@ -67,6 +68,7 @@ type Msg
     | AccordionTableAllRowsChecked Bool
     | AccordionTableRowChecked Int Bool
     | SearchComponentInput String
+    | SearchComponentInputWithCmd String (Cmd Msg)
     | SearchComponentSelected (Maybe (Item FinancingVariant))
     | SearchComponentSelectedOrgInfo (Maybe (Item OrganizationInfo))
     | SearchComponentFocus Bool
@@ -144,14 +146,20 @@ init =
     , currentDatePickerValue = Nothing
     , isCardOpen = True
     , fiveStarRating = 0
+    , selectedItems = []
     }
 
 
-update : Msg -> Config -> Config
+addCmdNone m =
+    ( m, Cmd.none )
+
+
+update : Msg -> Config -> ( Config, Cmd Msg )
 update msg config =
     case msg of
         AccordionMsg m ->
             { config | accordion = Accordion.update m config.accordion }
+                |> addCmdNone
 
         AccordionTableRowToggled index isOpen ->
             let
@@ -163,6 +171,7 @@ update msg config =
                         Set.remove
             in
             { config | openAccordionTableRows = operation index config.openAccordionTableRows }
+                |> addCmdNone
 
         AccordionTableAllRowsChecked areChecked ->
             { config
@@ -173,6 +182,7 @@ update msg config =
                     else
                         Set.empty
             }
+                |> addCmdNone
 
         AccordionTableRowChecked index isChecked ->
             let
@@ -184,21 +194,30 @@ update msg config =
                         Set.remove
             in
             { config | selectedAccordionTableRows = operation index config.selectedAccordionTableRows }
+                |> addCmdNone
 
         SearchComponentInput input ->
             { config | searchComponentInput = input }
+                |> addCmdNone
+
+        SearchComponentInputWithCmd input cmd ->
+            ( { config | searchComponentInput = input }, cmd )
 
         FocusMultiSelectDropdown value ->
             { config | hasMultiSelectDropdownFocus = value }
+                |> addCmdNone
 
         OnCheckChoice1 ->
-            { config | isChoice1 = not config.isChoice1 }
+            { config | isChoice1 = not config.isChoice1, selectedItems = "Valg 1" :: config.selectedItems }
+                |> addCmdNone
 
         OnCheckChoice2 ->
-            { config | isChoice2 = not config.isChoice2 }
+            { config | isChoice2 = not config.isChoice2, selectedItems = "Valg 2" :: config.selectedItems }
+                |> addCmdNone
 
         OnCheckChoice3 ->
-            { config | isChoice3 = not config.isChoice3 }
+            { config | isChoice3 = not config.isChoice3, selectedItems = "Valg 3" :: config.selectedItems }
+                |> addCmdNone
 
         SearchComponentSelected item ->
             { config
@@ -206,6 +225,7 @@ update msg config =
                 , selectedSearchComponent = item
                 , searchHasFocus = False
             }
+                |> addCmdNone
 
         SearchComponentSelectedOrgInfo item ->
             { config
@@ -213,60 +233,79 @@ update msg config =
                 , selectedSearchComponentOrgInfo = item |> Maybe.map .value
                 , searchHasFocus = False
             }
+                |> addCmdNone
 
         SearchComponentFocus value ->
             { config | searchHasFocus = value }
+                |> addCmdNone
 
         NoOp ->
             config
+                |> addCmdNone
 
         ToggleModal ->
             { config | isModalOpen = not config.isModalOpen }
+                |> addCmdNone
 
         ToggleFeatureBox ->
             { config | isFeatureBoxOpen = not config.isFeatureBoxOpen }
+                |> addCmdNone
 
         ToggleProgressBarCompleted ->
             { config | isProgressBarCompleted = not config.isProgressBarCompleted }
+                |> addCmdNone
 
         OnDragEnterFileUpload ->
             { config | isHoveringFileUpload = True }
+                |> addCmdNone
 
         OnDragLeaveFileUpload ->
             { config | isHoveringFileUpload = False }
+                |> addCmdNone
 
         OnFilesSelected files ->
             { config | selectedFiles = files ++ config.selectedFiles, isHoveringFileUpload = False }
+                |> addCmdNone
 
         RemoveFile file ->
             { config | selectedFiles = config.selectedFiles |> List.filter ((/=) file) }
+                |> addCmdNone
 
         SliderMsg value ->
             { config | sliderInputValue = value }
+                |> addCmdNone
 
         RangeMsg value ->
             { config | rangeInputValue = value }
+                |> addCmdNone
 
         ToggleToggle ->
             { config | isToggled = not config.isToggled }
+                |> addCmdNone
 
         ToggleHamburger ->
             { config | hamburgerIsActive = not config.hamburgerIsActive }
+                |> addCmdNone
 
         UpdateCoachmarkStep p ->
             { config | showCoachMarkStep = p }
+                |> addCmdNone
 
         UpdateActiveRadioButton s ->
             { config | activeRadioButton = s }
+                |> addCmdNone
 
         TextInputContentChange string ->
             { config | textInputContent = string }
+                |> addCmdNone
 
         LabelInputContentChange string ->
             { config | labelInputContent = string }
+                |> addCmdNone
 
         OnClickCollapsible ->
             config
+                |> addCmdNone
 
         SortableTableMsg tableMsg ->
             case tableMsg of
@@ -284,24 +323,31 @@ update msg config =
                                     { column = column, order = Stories.SortableTableSharedTypes.Desc }
                     in
                     { config | sortableTable = updatedModel }
+                        |> addCmdNone
 
         SnackbarMsg ->
             config
+                |> addCmdNone
 
         PaginationClickedAt i ->
             { config | paginationCurrentPage = i }
+                |> addCmdNone
 
         DateSelected result datePickerState ->
             { config
                 | currentDatePickerValue = Just result
                 , datePicker = DatePicker.updateInternalState datePickerState config.datePicker
             }
+                |> addCmdNone
 
         UpdateDatePickerInternalState datePickerState ->
             { config | datePicker = DatePicker.updateInternalState datePickerState config.datePicker }
+                |> addCmdNone
 
         SetRating value ->
             { config | fiveStarRating = value }
+                |> addCmdNone
 
         ToggleOpenCard ->
             { config | isCardOpen = not config.isCardOpen }
+                |> addCmdNone

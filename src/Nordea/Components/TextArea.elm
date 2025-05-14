@@ -7,6 +7,7 @@ module Nordea.Components.TextArea exposing
     , withOnBlur
     , withOnInput
     , withPlaceholder
+    , withSmallSize
     )
 
 import Css
@@ -49,7 +50,13 @@ type alias Config msg =
     , showError : Bool
     , onBlur : Maybe msg
     , maxLength : Maybe Int
+    , size : Size
     }
+
+
+type Size
+    = Small
+    | Standard
 
 
 type TextArea msg
@@ -65,6 +72,7 @@ init value =
         , showError = False
         , onBlur = Nothing
         , maxLength = Nothing
+        , size = Standard
         }
 
 
@@ -91,6 +99,11 @@ withOnBlur onBlur (TextArea config) =
 withMaxLength : Int -> TextArea msg -> TextArea msg
 withMaxLength maxLength (TextArea config) =
     TextArea { config | maxLength = Just maxLength }
+
+
+withSmallSize : TextArea msg -> TextArea msg
+withSmallSize (TextArea config) =
+    TextArea { config | size = Small }
 
 
 
@@ -134,18 +147,29 @@ getStyles config =
 
             else
                 Colors.mediumGray
+
+        sizeSpecificStyling =
+            case config.size of
+                Small ->
+                    [ Fonts.fromSize 0.75
+                    , padding2 (rem 0.5) (rem 0.5)
+                    ]
+
+                Standard ->
+                    [ Fonts.fromSize 1
+                    , padding2 (rem 0.5) (rem 0.75)
+                    , lineHeight (rem 1.5)
+                    ]
     in
-    [ Fonts.fromSize 1
-    , padding2 (rem 0.5) (rem 0.75)
-    , borderRadius (rem 0.25)
-    , border3 (rem 0.0625) solid borderColorStyle
-    , boxSizing borderBox
-    , disabled [ backgroundColor Colors.grayWarm ]
-    , lineHeight (rem 1.5)
-    , resize none
-    , overflow auto
-    , focus
-        [ outline none
-        , Themes.borderColor Colors.nordeaBlue
-        ]
-    ]
+    sizeSpecificStyling
+        ++ [ borderRadius (rem 0.25)
+           , border3 (rem 0.0625) solid borderColorStyle
+           , boxSizing borderBox
+           , disabled [ backgroundColor Colors.grayWarm ]
+           , resize none
+           , overflow auto
+           , focus
+                [ outline none
+                , Themes.borderColor Colors.nordeaBlue
+                ]
+           ]
