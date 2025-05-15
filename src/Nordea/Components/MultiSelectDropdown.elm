@@ -7,6 +7,7 @@ module Nordea.Components.MultiSelectDropdown exposing
     , withHintText
     , withInput
     , withLabel
+    , withNoReservedErrorSpace
     , withOptionGroups
     , withOptions
     , withPlaceholder
