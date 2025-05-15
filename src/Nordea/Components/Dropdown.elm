@@ -242,16 +242,16 @@ view attrs (Dropdown config) =
                             ]
                         ]
 
-        sizeSpecificStyling =
+        ( sizeSpecificHeight, sizeSpecificStyling ) =
             case config.size of
                 StandardSize ->
-                    [ height (rem 2.5), fontSize (rem 1), padding4 (rem 0.25) (rem 2.5) (rem 0.25) (rem 0.75), lineHeight (rem 1.4) ]
+                    ( height (rem 2.5), [ fontSize (rem 1), padding4 (rem 0.25) (rem 2.5) (rem 0.25) (rem 0.75), lineHeight (rem 1.4) ] )
 
                 SmallSize ->
-                    [ height (rem 1.6), fontSize (rem 0.75), padding4 (rem 0.25) (rem 0.25) (rem 0.25) (rem 0.5), lineHeight (rem 1) ]
+                    ( height (rem 1.6), [ fontSize (rem 0.75), padding4 (rem 0.25) (rem 0.25) (rem 0.25) (rem 0.5), lineHeight (rem 1) ] )
     in
     div
-        (css [ position relative ] :: attrs)
+        (css [ position relative, sizeSpecificHeight ] :: attrs)
         [ Html.select
             [ Events.on "change" decoder
             , Attrs.disabled isDisabled
