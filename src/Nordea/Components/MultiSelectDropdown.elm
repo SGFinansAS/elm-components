@@ -15,10 +15,10 @@ module Nordea.Components.MultiSelectDropdown exposing
     )
 
 import Browser.Dom as Browser
-import Css exposing (absolute, alignItems, backgroundColor, border3, borderBottomLeftRadius, borderBottomRightRadius, borderBox, borderRadius, borderRadius4, borderStyle, boxShadow, boxSizing, center, color, column, cursor, display, displayFlex, flexBasis, flexDirection, flexGrow, flexWrap, fontSize, height, hover, important, int, justifyContent, left, listStyle, margin, margin4, marginLeft, marginTop, maxHeight, minWidth, noWrap, none, num, outline, overflowY, padding, padding2, padding4, pct, pointer, pointerEvents, position, relative, rem, right, scroll, solid, spaceBetween, start, top, whiteSpace, width, wrap, zIndex)
+import Css exposing (absolute, alignItems, backgroundColor, border3, borderBottomLeftRadius, borderBottomRightRadius, borderBox, borderRadius, borderRadius4, borderStyle, boxShadow, boxSizing, center, color, column, cursor, deg, display, displayFlex, flexBasis, flexDirection, flexGrow, flexWrap, fontSize, height, hover, important, int, justifyContent, left, listStyle, margin, margin4, marginLeft, marginTop, maxHeight, minWidth, noWrap, none, num, outline, overflowY, padding, padding2, padding4, pct, pointer, pointerEvents, position, relative, rem, right, rotate, scroll, solid, spaceBetween, start, top, transforms, translateY, whiteSpace, width, wrap, zIndex)
 import Html.Styled as Html exposing (Attribute, Html, div, input, span, text)
 import Html.Styled.Attributes as Attrs exposing (css, id, placeholder, tabindex, value)
-import Html.Styled.Events as Events exposing (onClick, onInput)
+import Html.Styled.Events as Events exposing (custom, on, onClick, onInput, preventDefaultOn)
 import Json.Decode as Decode
 import Maybe.Extra as Maybe
 import Nordea.Components.Checkbox as Checkbox
@@ -29,7 +29,7 @@ import Nordea.Css exposing (gap)
 import Nordea.Html as Html exposing (attrEmpty, attrIf, styleIf)
 import Nordea.Html.Events as Events
 import Nordea.Resources.Colors as Colors
-import Nordea.Resources.Icons as Icon
+import Nordea.Resources.Icons as Icons
 import Nordea.Themes as Themes
 import Nordea.Utils.List as List
 import Task
@@ -102,13 +102,14 @@ view attrs dropdown =
                     , fontSize (rem 1)
                     , height (rem 1.75)
                     , width (pct 100)
-                    , minWidth (pct 97)
+
+                    --, minWidth (pct 97)
                     , flexGrow (num 1)
                     , flexBasis (rem 10)
                     ]
                 , placeholder dropdown.placeholder
                 , value currentInput
-                , onInput (\str -> inputProps.onInput str Cmd.none)
+                , onInput (\str -> inputProps.onInput str (Task.succeed (dropdown.onFocus True) |> Task.perform identity))
                 , Attrs.attribute "aria-controls" inputProps.uniqueId
                 , Attrs.attribute "role" "combobox"
                 , Attrs.attribute "aria-expanded"
@@ -161,19 +162,49 @@ view attrs dropdown =
                                         ]
                                     ]
                                     [ span [ css [ whiteSpace noWrap ] ] [ Text.textLight |> Text.view [] [ text option.label ] ]
-                                    , Icon.cross [ onClick (option.onCheck False), css [ width (rem 1), height (rem 1), cursor pointer ] ]
+                                    , Icons.cross [ onClick (option.onCheck False), css [ width (rem 1), height (rem 1), cursor pointer ] ]
                                     ]
                             )
-                    , [ Html.row [ css [ width (pct 100) ] ]
+                    , [ Html.row [ css [ width (pct 100), alignItems center ] ]
                             [ searchIcon
                             , viewInput inputProperties
+                            , if inputProperties.input /= "" then
+                                Icons.cross
+                                    [ tabindex 0
+                                    , custom "click"
+                                        (Decode.succeed
+                                            { message = inputProperties.onInput "" (Task.attempt (\_ -> dropdown.onFocus False) (Task.succeed ()))
+                                            , preventDefault = True
+                                            , stopPropagation = True
+                                            }
+                                        )
+                                    , css [ width (rem 1.1), height (rem 1), cursor pointer ]
+                                    ]
+
+                              else
+                                Html.nothing
+
+                            --Icons.chevronDownFilled
+                            --    [ tabindex 0
+                            --    , custom "click" (Decode.succeed { message = dropdown.onFocus (not dropdown.hasFocus), preventDefault = True, stopPropagation = True })
+                            --    , css
+                            --        [ cursor pointer
+                            --        , if dropdown.hasFocus then
+                            --            transforms [ rotate (deg 180) ]
+                            --
+                            --          else
+                            --            transforms []
+                            --        , pointerEvents none
+                            --        , color Colors.coolGray
+                            --        ]
+                            --    ]
                             ]
                       ]
                     ]
                 )
 
         searchIcon =
-            Icon.search
+            Icons.search
                 [ css
                     [ pointerEvents none
                     , color Colors.gray
@@ -202,19 +233,17 @@ view attrs dropdown =
             [ OutsideEventSupport.view { msg = dropdown.onFocus False, isActive = dropdown.hasFocus, eventTypes = [ OutsideEventSupport.OutsideClick, OutsideEventSupport.OutsideFocus ] }
             , Html.div
                 [ attrIf (not hasTextInput) (Events.onClick (dropdown.onFocus (not dropdown.hasFocus)))
-                , attrIf (not hasTextInput)
-                    (Events.onKeyDown
-                        (\key ->
-                            case key of
-                                Events.Enter ->
-                                    dropdown.onFocus (not dropdown.hasFocus)
+                , Events.onKeyDownMaybe
+                    (\key ->
+                        case key of
+                            Events.Enter ->
+                                dropdown.onFocus (not dropdown.hasFocus) |> Just
 
-                                Events.Space ->
-                                    dropdown.onFocus (not dropdown.hasFocus)
+                            Events.Space ->
+                                dropdown.onFocus (not dropdown.hasFocus) |> Just |> Maybe.filter (always (not hasTextInput))
 
-                                Events.Esc ->
-                                    dropdown.onFocus False
-                        )
+                            Events.Esc ->
+                                dropdown.onFocus False |> Just
                     )
                 , attrIf (not hasTextInput) (tabindex 0)
                 , css
@@ -246,7 +275,7 @@ view attrs dropdown =
 
                     Nothing ->
                         [ Html.text dropdown.placeholder
-                        , Icon.chevronDownFilled []
+                        , Icons.chevronDownFilled []
                         ]
                 )
             , Html.ul
