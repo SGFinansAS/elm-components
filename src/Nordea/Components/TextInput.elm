@@ -263,7 +263,8 @@ view attributes (TextInput config) =
             case config.size of
                 Small ->
                     ( height (rem 1.5)
-                    , [ fontSize (rem 0.75)
+                    , [ height (pct 100)
+                      , fontSize (rem 0.75)
                       , padding2 (rem 0.25) (rem 0.5)
                       , paddingRight (rem 1.5)
                             |> styleIf
@@ -275,7 +276,8 @@ view attributes (TextInput config) =
 
                 Standard ->
                     ( height (rem 2.5)
-                    , [ fontSize (rem 1)
+                    , [ height (pct 100)
+                      , fontSize (rem 1)
                       , padding2 (rem 0) (rem 0.75)
                       , paddingRight (rem 3)
                             |> styleIf
