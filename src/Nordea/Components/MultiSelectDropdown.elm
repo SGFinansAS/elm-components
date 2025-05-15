@@ -15,7 +15,69 @@ module Nordea.Components.MultiSelectDropdown exposing
     )
 
 import Browser.Dom as Browser
-import Css exposing (absolute, alignItems, backgroundColor, border3, borderBottomLeftRadius, borderBottomRightRadius, borderBox, borderRadius, borderRadius4, borderStyle, boxShadow, boxSizing, center, color, column, cursor, display, displayFlex, flexBasis, flexDirection, flexGrow, flexWrap, fontSize, height, hover, important, int, justifyContent, left, listStyle, margin, margin4, marginLeft, marginTop, maxHeight, minWidth, noWrap, none, num, outline, overflowY, padding, padding2, padding4, pct, pointer, pointerEvents, position, relative, rem, right, scroll, solid, spaceBetween, start, top, whiteSpace, width, wrap, zIndex)
+import Css
+    exposing
+        ( absolute
+        , alignItems
+        , backgroundColor
+        , border3
+        , borderBottomLeftRadius
+        , borderBottomRightRadius
+        , borderBox
+        , borderRadius
+        , borderRadius4
+        , borderStyle
+        , boxShadow
+        , boxSizing
+        , center
+        , color
+        , column
+        , cursor
+        , display
+        , displayFlex
+        , flexBasis
+        , flexDirection
+        , flexGrow
+        , flexWrap
+        , fontSize
+        , height
+        , hover
+        , important
+        , int
+        , justifyContent
+        , left
+        , listStyle
+        , margin
+        , margin4
+        , marginLeft
+        , marginTop
+        , maxHeight
+        , minWidth
+        , noWrap
+        , none
+        , num
+        , outline
+        , overflowY
+        , padding
+        , padding2
+        , padding4
+        , pct
+        , pointer
+        , pointerEvents
+        , position
+        , relative
+        , rem
+        , right
+        , scroll
+        , solid
+        , spaceBetween
+        , start
+        , top
+        , whiteSpace
+        , width
+        , wrap
+        , zIndex
+        )
 import Html.Styled as Html exposing (Attribute, Html, div, input, span, text)
 import Html.Styled.Attributes as Attrs exposing (css, id, placeholder, tabindex, value)
 import Html.Styled.Events as Events exposing (onClick, onInput)
@@ -57,6 +119,7 @@ type alias MultiSelectDropdown msg =
     , inputProperties : Maybe (InputProperties msg)
     , errorMessage : Maybe String
     , showSelected : Bool
+    , reserveSpaceForError : Bool
     }
 
 
@@ -80,6 +143,7 @@ init { onFocus } =
     , inputProperties = Nothing
     , errorMessage = Nothing
     , showSelected = False
+    , reserveSpaceForError = True
     }
 
 
@@ -192,6 +256,12 @@ view attrs dropdown =
         |> Label.withRequirednessHint dropdown.requirednessHint
         |> Label.withHintText dropdown.hint
         |> Label.withErrorMessage dropdown.errorMessage
+        |> (if dropdown.reserveSpaceForError then
+                identity
+
+            else
+                Label.withNoReservedErrorSpace
+           )
         |> Label.view
             ([ Events.on "focusin" (Decode.succeed (dropdown.onFocus True))
                 |> attrIf hasTextInput
@@ -442,3 +512,8 @@ withError error dropdown =
 withSelected : MultiSelectDropdown msg -> MultiSelectDropdown msg
 withSelected dropdown =
     { dropdown | showSelected = True }
+
+
+withNoReservedErrorSpace : MultiSelectDropdown msg -> MultiSelectDropdown msg
+withNoReservedErrorSpace config =
+    { config | reserveSpaceForError = False }
