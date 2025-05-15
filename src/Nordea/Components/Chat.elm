@@ -22,7 +22,6 @@ import Css
         , inlineBlock
         , justifyContent
         , marginBottom
-        , marginLeft
         , marginRight
         , marginTop
         , maxHeight
@@ -45,7 +44,6 @@ import Html.Styled.Attributes exposing (class, css)
 import List
 import Maybe.Extra as Maybe
 import Nordea.Components.Card as Card
-import Nordea.Components.Tag as Tag
 import Nordea.Components.Text as Text
 import Nordea.Css exposing (gap)
 import Nordea.Html as Html exposing (showIf)
@@ -84,8 +82,7 @@ type alias CollapsibleConfig msg =
 
 type OptionalConfig msg
     = Appearance Appearance
-    | BetaTag
-    | HeaderText (Html msg)
+    | Title (Html msg)
     | Collapsible (CollapsibleConfig msg)
 
 
@@ -104,7 +101,7 @@ init translate =
 view : List (OptionalConfig msg) -> List (Attribute msg) -> List (Html msg) -> List (Html msg) -> Chat -> Html msg
 view optionals attrs history content (Chat config) =
     let
-        { appearance, showBetaTag, headerText, collapsibleProps } =
+        { appearance, title, collapsibleProps } =
             optionals
                 |> List.foldl
                     (\e acc ->
@@ -112,18 +109,17 @@ view optionals attrs history content (Chat config) =
                             Appearance app ->
                                 { acc | appearance = app }
 
-                            BetaTag ->
-                                { acc | showBetaTag = True }
-
-                            HeaderText headerText_ ->
-                                { acc | headerText = headerText_ }
+                            Title title_ ->
+                                { acc | title = title_ }
 
                             Collapsible props ->
                                 { acc | collapsibleProps = Just props }
                     )
                     { appearance = Standard
-                    , showBetaTag = False
-                    , headerText = strings.title |> config.translate |> Html.text
+                    , title =
+                        Text.textHeavy
+                            |> Text.view [ css [ Themes.color Colors.deepBlue, alignSelf flexEnd ] ]
+                                [ strings.title |> config.translate |> Html.text ]
                     , collapsibleProps = Nothing
                     }
 
@@ -138,16 +134,13 @@ view optionals attrs history content (Chat config) =
                 Standard ->
                     Html.row [ css [ flexGrow (num 1) ] ]
                         [ Illustrations.messageInstructionalStar [ css [ width (rem 2), marginRight (rem 0.5) ] ]
-                        , Text.bodyTextHeavy
-                            |> Text.view [ css [ Themes.color Colors.deepBlue, alignSelf flexEnd ] ] [ headerText ]
+                        , title
                         ]
 
                 Small ->
                     Html.row [ css [ marginBottom (rem 1) |> Css.important |> Html.styleIf (Maybe.isNothing collapsibleProps), flexGrow (num 1) ] ]
                         [ Illustrations.messageInstructionalStar [ css [ width (rem 1.5), marginRight (rem 0.5) ] ]
-                        , Text.textHeavy
-                            |> Text.view [ css [ Themes.color Colors.deepBlue, alignSelf flexEnd ] ] [ headerText ]
-                        , Tag.beta [ css [ marginLeft auto ] ] |> showIf showBetaTag
+                        , title
                         ]
 
         messageHistoryView =
