@@ -7,6 +7,7 @@ module Nordea.Components.MultiSelectDropdown exposing
     , withHintText
     , withInput
     , withLabel
+    , withNoReservedErrorSpace
     , withOptionGroups
     , withOptions
     , withPlaceholder
@@ -15,10 +16,10 @@ module Nordea.Components.MultiSelectDropdown exposing
     )
 
 import Browser.Dom as Browser
-import Css exposing (absolute, alignItems, backgroundColor, border3, borderBottomLeftRadius, borderBottomRightRadius, borderBox, borderRadius, borderRadius4, borderStyle, boxShadow, boxSizing, center, color, column, cursor, deg, display, displayFlex, flexBasis, flexDirection, flexGrow, flexWrap, fontSize, height, hover, important, int, justifyContent, left, listStyle, margin, margin4, marginLeft, marginTop, maxHeight, minWidth, noWrap, none, num, outline, overflowY, padding, padding2, padding4, pct, pointer, pointerEvents, position, relative, rem, right, rotate, scroll, solid, spaceBetween, start, top, transforms, translateY, transparent, whiteSpace, width, wrap, zIndex)
+import Css exposing (absolute, alignItems, backgroundColor, border3, borderBottomLeftRadius, borderBottomRightRadius, borderBox, borderRadius, borderRadius4, borderStyle, boxShadow, boxSizing, center, color, column, cursor, deg, display, displayFlex, flexBasis, flexDirection, flexGrow, flexWrap, fontSize, height, hover, important, int, justifyContent, left, listStyle, margin, margin4, marginLeft, marginRight, marginTop, maxHeight, noWrap, none, num, outline, overflowY, padding, padding2, padding4, pct, pointer, pointerEvents, position, relative, rem, right, rotate, scroll, solid, spaceBetween, start, top, transforms, transparent, whiteSpace, width, wrap, zIndex)
 import Html.Styled as Html exposing (Attribute, Html, div, input, span, text)
 import Html.Styled.Attributes as Attrs exposing (attribute, css, id, placeholder, tabindex, value)
-import Html.Styled.Events as Events exposing (custom, on, onClick, onInput, preventDefaultOn)
+import Html.Styled.Events as Events exposing (custom, onClick, onInput)
 import Json.Decode as Decode
 import Maybe.Extra as Maybe
 import Nordea.Components.Checkbox as Checkbox
@@ -57,6 +58,7 @@ type alias MultiSelectDropdown msg =
     , inputProperties : Maybe (InputProperties msg)
     , errorMessage : Maybe String
     , showSelected : Bool
+    , reserveSpaceForError : Bool
     }
 
 
@@ -80,6 +82,7 @@ init { onFocus } =
     , inputProperties = Nothing
     , errorMessage = Nothing
     , showSelected = False
+    , reserveSpaceForError = True
     }
 
 
@@ -100,10 +103,9 @@ view attrs dropdown =
                     , important (boxShadow none)
                     , borderStyle none
                     , fontSize (rem 1)
-                    , height (rem 1.75)
                     , width (pct 100)
-
-                    --, minWidth (pct 97)
+                    , height (pct 100)
+                    , fontSize (rem 1)
                     , flexGrow (num 1)
                     , flexBasis (rem 10)
                     ]
@@ -131,6 +133,7 @@ view attrs dropdown =
                     , alignItems center
                     , gap (rem 0.5)
                     , width (pct 100)
+                    , height (pct 100)
                     ]
                 , onClick
                     (inputProperties.onInput inputProperties.input
@@ -173,7 +176,7 @@ view attrs dropdown =
                                     , Icons.cross [ onClick (option.onCheck False), css [ width (rem 1), height (rem 1), cursor pointer ] ]
                                     ]
                             )
-                    , [ Html.row [ css [ width (pct 100), alignItems center ] ]
+                    , [ Html.row [ css [ width (pct 100), alignItems center, height (pct 100) ] ]
                             [ searchIcon
                             , viewInput inputProperties
                             , if inputProperties.input /= "" then
@@ -188,8 +191,8 @@ view attrs dropdown =
                                     , attribute "aria-hidden" "true"
                                     , css [ displayFlex, borderStyle none, backgroundColor transparent, cursor pointer ]
                                     ]
-                                    [ Icons.cross
-                                        [ css [ width (rem 1.1), height (rem 1) ]
+                                    [ Icons.roundedCross
+                                        [ css [ width (rem 1.75), color Colors.mediumGray ]
                                         ]
                                     ]
 
@@ -247,6 +250,12 @@ view attrs dropdown =
         |> Label.withRequirednessHint dropdown.requirednessHint
         |> Label.withHintText dropdown.hint
         |> Label.withErrorMessage dropdown.errorMessage
+        |> (if dropdown.reserveSpaceForError then
+                identity
+
+            else
+                Label.withNoReservedErrorSpace
+           )
         |> Label.view
             ([ Events.on "focusin" (Decode.succeed (dropdown.onFocus True))
                 |> attrIf hasTextInput
@@ -279,6 +288,8 @@ view attrs dropdown =
                     , backgroundColor Colors.white
                     , padding4 (rem 0.25) (rem 0.25) (rem 0.25) (rem 0.5)
                     , border3 (rem 0.0625) solid Colors.mediumGray
+                    , boxSizing borderBox
+                    , height (rem 2.5)
                     , if dropdown.hasFocus then
                         Css.batch
                             [ borderRadius4 (rem 0.25) (rem 0.25) (rem 0.0) (rem 0.0)
@@ -495,3 +506,8 @@ withError error dropdown =
 withSelected : MultiSelectDropdown msg -> MultiSelectDropdown msg
 withSelected dropdown =
     { dropdown | showSelected = True }
+
+
+withNoReservedErrorSpace : MultiSelectDropdown msg -> MultiSelectDropdown msg
+withNoReservedErrorSpace config =
+    { config | reserveSpaceForError = False }
