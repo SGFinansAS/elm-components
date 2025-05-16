@@ -15,9 +15,9 @@ module Nordea.Components.MultiSelectDropdown exposing
     )
 
 import Browser.Dom as Browser
-import Css exposing (absolute, alignItems, backgroundColor, border3, borderBottomLeftRadius, borderBottomRightRadius, borderBox, borderRadius, borderRadius4, borderStyle, boxShadow, boxSizing, center, color, column, cursor, deg, display, displayFlex, flexBasis, flexDirection, flexGrow, flexWrap, fontSize, height, hover, important, int, justifyContent, left, listStyle, margin, margin4, marginLeft, marginTop, maxHeight, minWidth, noWrap, none, num, outline, overflowY, padding, padding2, padding4, pct, pointer, pointerEvents, position, relative, rem, right, rotate, scroll, solid, spaceBetween, start, top, transforms, translateY, whiteSpace, width, wrap, zIndex)
+import Css exposing (absolute, alignItems, backgroundColor, border3, borderBottomLeftRadius, borderBottomRightRadius, borderBox, borderRadius, borderRadius4, borderStyle, boxShadow, boxSizing, center, color, column, cursor, deg, display, displayFlex, flexBasis, flexDirection, flexGrow, flexWrap, fontSize, height, hover, important, int, justifyContent, left, listStyle, margin, margin4, marginLeft, marginTop, maxHeight, minWidth, noWrap, none, num, outline, overflowY, padding, padding2, padding4, pct, pointer, pointerEvents, position, relative, rem, right, rotate, scroll, solid, spaceBetween, start, top, transforms, translateY, transparent, whiteSpace, width, wrap, zIndex)
 import Html.Styled as Html exposing (Attribute, Html, div, input, span, text)
-import Html.Styled.Attributes as Attrs exposing (css, id, placeholder, tabindex, value)
+import Html.Styled.Attributes as Attrs exposing (attribute, css, id, placeholder, tabindex, value)
 import Html.Styled.Events as Events exposing (custom, on, onClick, onInput, preventDefaultOn)
 import Json.Decode as Decode
 import Maybe.Extra as Maybe
@@ -132,7 +132,15 @@ view attrs dropdown =
                     , gap (rem 0.5)
                     , width (pct 100)
                     ]
-                , onClick (inputProperties.onInput inputProperties.input (focusInput inputProperties))
+                , onClick
+                    (inputProperties.onInput inputProperties.input
+                        (if not dropdown.hasFocus then
+                            focusInput inputProperties
+
+                         else
+                            Cmd.none
+                        )
+                    )
                 ]
                 (List.concat
                     [ dropdown.optionGroups
@@ -169,35 +177,51 @@ view attrs dropdown =
                             [ searchIcon
                             , viewInput inputProperties
                             , if inputProperties.input /= "" then
-                                Icons.cross
-                                    [ tabindex 0
-                                    , custom "click"
+                                Html.button
+                                    [ custom "click"
                                         (Decode.succeed
                                             { message = inputProperties.onInput "" (Task.attempt (\_ -> dropdown.onFocus False) (Task.succeed ()))
                                             , preventDefault = True
                                             , stopPropagation = True
                                             }
                                         )
-                                    , css [ width (rem 1.1), height (rem 1), cursor pointer ]
+                                    , attribute "aria-hidden" "true"
+                                    , css [ displayFlex, borderStyle none, backgroundColor transparent, cursor pointer ]
+                                    ]
+                                    [ Icons.cross
+                                        [ css [ width (rem 1.1), height (rem 1) ]
+                                        ]
                                     ]
 
                               else
-                                Html.nothing
+                                Html.button
+                                    [ custom "click"
+                                        (Decode.succeed
+                                            { message = dropdown.onFocus (not dropdown.hasFocus)
+                                            , preventDefault = True
+                                            , stopPropagation = True
+                                            }
+                                        )
+                                    , css
+                                        [ displayFlex
+                                        , borderStyle none
+                                        , backgroundColor transparent
+                                        , cursor pointer
+                                        ]
+                                    , attribute "aria-hidden" "true"
+                                    ]
+                                    [ Icons.chevronDownFilled
+                                        [ css
+                                            [ cursor pointer
+                                            , if dropdown.hasFocus then
+                                                transforms [ rotate (deg 180) ]
 
-                            --Icons.chevronDownFilled
-                            --    [ tabindex 0
-                            --    , custom "click" (Decode.succeed { message = dropdown.onFocus (not dropdown.hasFocus), preventDefault = True, stopPropagation = True })
-                            --    , css
-                            --        [ cursor pointer
-                            --        , if dropdown.hasFocus then
-                            --            transforms [ rotate (deg 180) ]
-                            --
-                            --          else
-                            --            transforms []
-                            --        , pointerEvents none
-                            --        , color Colors.coolGray
-                            --        ]
-                            --    ]
+                                              else
+                                                transforms []
+                                            , color Colors.coolGray
+                                            ]
+                                        ]
+                                    ]
                             ]
                       ]
                     ]
