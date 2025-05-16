@@ -201,7 +201,7 @@ update msg config =
                 |> addCmdNone
 
         SearchComponentInputWithCmd input cmd ->
-            ( { config | searchComponentInput = Debug.log "input" input }, cmd )
+            ( { config | searchComponentInput = input }, cmd )
 
         FocusMultiSelectDropdown value ->
             { config | hasMultiSelectDropdownFocus = value }
