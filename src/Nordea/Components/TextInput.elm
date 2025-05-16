@@ -19,8 +19,7 @@ module Nordea.Components.TextInput exposing
 
 import Css
     exposing
-        ( Style
-        , absolute
+        ( absolute
         , backgroundColor
         , border3
         , borderBox
@@ -55,10 +54,11 @@ import Css
         , translateY
         , width
         )
-import Html.Styled as Html exposing (Attribute, Html, input, styled)
+import Html.Styled as Html exposing (Attribute, Html)
 import Html.Styled.Attributes as Html
     exposing
-        ( css
+        ( attribute
+        , css
         , maxlength
         , pattern
         , placeholder
@@ -203,7 +203,8 @@ view attributes (TextInput config) =
     let
         viewSearchIcon =
             Icons.search
-                [ css
+                [ attribute "aria-hidden" "true"
+                , css
                     [ width (rem 1)
                     , height (rem 1)
                     , opacity (num 0.5)
@@ -225,7 +226,7 @@ view attributes (TextInput config) =
 
         viewClearIcon =
             let
-                sizeSpecificStyling =
+                sizeSpecificStyling_ =
                     if config.size == Small then
                         [ width (rem 1.5), padding4 (rem 0.2) (rem 0.125) (rem 0.125) (rem 0.125) ]
 
@@ -236,7 +237,7 @@ view attributes (TextInput config) =
                 (Maybe.values
                     [ Just
                         (css
-                            (sizeSpecificStyling
+                            (sizeSpecificStyling_
                                 ++ [ color Colors.mediumGray
                                    , position absolute
                                    , right (rem 0)
@@ -245,17 +246,67 @@ view attributes (TextInput config) =
                             )
                         )
                     , config.onInput |> Maybe.map (\onInput -> onClick (onInput ""))
-                    , Just (tabindex 0)
+                    , Just (tabindex -1)
+                    , Just (attribute "aria-hidden" "true")
                     ]
                 )
                 |> showIf ((config.value |> String.isEmpty |> not) && config.hasClearIcon)
+
+        borderColorStyle =
+            if config.showError then
+                Colors.darkRed
+
+            else
+                Colors.mediumGray
+
+        ( sizeSpecificHeight, sizeSpecificStyling ) =
+            case config.size of
+                Small ->
+                    ( height (rem 1.5)
+                    , [ height (pct 100)
+                      , fontSize (rem 0.75)
+                      , padding2 (rem 0.25) (rem 0.5)
+                      , paddingRight (rem 1.5)
+                            |> styleIf
+                                ((config.value |> String.isEmpty |> not)
+                                    && config.hasClearIcon
+                                )
+                      ]
+                    )
+
+                Standard ->
+                    ( height (rem 2.5)
+                    , [ height (pct 100)
+                      , fontSize (rem 1)
+                      , padding2 (rem 0) (rem 0.75)
+                      , paddingRight (rem 3)
+                            |> styleIf
+                                ((config.value |> String.isEmpty |> not)
+                                    && config.hasClearIcon
+                                )
+                      ]
+                    )
     in
     Html.div
-        (css [ displayFlex, position relative ] :: attributes)
+        (css [ displayFlex, position relative, sizeSpecificHeight ] :: attributes)
         [ viewSearchIcon
-        , styled input
-            (getStyles config)
-            (getAttributes config)
+        , Html.input
+            (css
+                (sizeSpecificStyling
+                    ++ [ borderRadius (rem 0.25)
+                       , border3 (rem 0.0625) solid borderColorStyle
+                       , boxSizing borderBox
+                       , width (pct 100)
+                       , disabled [ backgroundColor Colors.grayWarm ]
+                       , paddingLeft (rem 2) |> styleIf config.hasSearchIcon
+                       , focus
+                            [ outline none
+                            , Themes.borderColor Colors.nordeaBlue
+                            ]
+                       ]
+                )
+                :: getAttributes config
+            )
             []
         , viewCurrency config
         , viewClearIcon
@@ -309,55 +360,3 @@ getAttributes config =
         , config.id |> Maybe.map Html.id
         ]
         ++ config.inputAttrs
-
-
-
--- STYLES
-
-
-getStyles : Config msg -> List Style
-getStyles config =
-    let
-        borderColorStyle =
-            if config.showError then
-                Colors.darkRed
-
-            else
-                Colors.mediumGray
-
-        sizeSpecificStyling =
-            case config.size of
-                Small ->
-                    [ fontSize (rem 0.75)
-                    , height (rem 1.5)
-                    , padding2 (rem 0.25) (rem 0.5)
-                    , paddingRight (rem 1.5)
-                        |> styleIf
-                            ((config.value |> String.isEmpty |> not)
-                                && config.hasClearIcon
-                            )
-                    ]
-
-                Standard ->
-                    [ fontSize (rem 1)
-                    , height (rem 2.5)
-                    , padding2 (rem 0) (rem 0.75)
-                    , paddingRight (rem 3)
-                        |> styleIf
-                            ((config.value |> String.isEmpty |> not)
-                                && config.hasClearIcon
-                            )
-                    ]
-    in
-    sizeSpecificStyling
-        ++ [ borderRadius (rem 0.25)
-           , border3 (rem 0.0625) solid borderColorStyle
-           , boxSizing borderBox
-           , width (pct 100)
-           , disabled [ backgroundColor Colors.grayWarm ]
-           , paddingLeft (rem 2) |> styleIf config.hasSearchIcon
-           , focus
-                [ outline none
-                , Themes.borderColor Colors.nordeaBlue
-                ]
-           ]
