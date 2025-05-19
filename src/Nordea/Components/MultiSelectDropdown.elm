@@ -16,7 +16,7 @@ module Nordea.Components.MultiSelectDropdown exposing
     )
 
 import Browser.Dom as Browser
-import Css exposing (absolute, alignItems, backgroundColor, border3, borderBottomLeftRadius, borderBottomRightRadius, borderBox, borderRadius, borderRadius4, borderStyle, boxShadow, boxSizing, center, color, column, cursor, deg, display, displayFlex, flexBasis, flexDirection, flexGrow, flexWrap, fontSize, height, hover, important, int, justifyContent, left, listStyle, margin, margin4, marginLeft, marginTop, maxHeight, noWrap, none, num, outline, overflowY, padding, padding2, padding4, pct, pointer, pointerEvents, position, relative, rem, right, rotate, scroll, solid, spaceBetween, start, top, transforms, transparent, whiteSpace, width, wrap, zIndex)
+import Css exposing (absolute, alignItems, backgroundColor, border3, borderBottomLeftRadius, borderBottomRightRadius, borderBox, borderRadius, borderRadius4, borderStyle, boxShadow, boxSizing, center, color, column, cursor, deg, display, displayFlex, flexBasis, flexDirection, flexGrow, flexWrap, fontSize, height, hover, important, int, justifyContent, left, listStyle, margin, margin4, marginLeft, marginTop, maxHeight, minHeight, noWrap, none, num, outline, overflowY, padding, padding2, padding4, pct, pointer, pointerEvents, position, relative, rem, right, rotate, scroll, solid, spaceBetween, start, top, transforms, transparent, whiteSpace, width, wrap, zIndex)
 import Html.Styled as Html exposing (Attribute, Html, div, input, span, text)
 import Html.Styled.Attributes as Attrs exposing (attribute, css, id, placeholder, tabindex, value)
 import Html.Styled.Events as Events exposing (custom, onClick, onInput)
@@ -176,7 +176,7 @@ view attrs dropdown =
                                     , Icons.cross [ onClick (option.onCheck False), css [ width (rem 1), height (rem 1), cursor pointer ] ]
                                     ]
                             )
-                    , [ Html.row [ css [ width (pct 100), alignItems center, height (pct 100) ] ]
+                    , [ Html.row [ css [ width (pct 100), alignItems center, height (rem 2.5) ] ]
                             [ searchIcon
                             , viewInput inputProperties
                             , if inputProperties.input /= "" then
@@ -289,7 +289,7 @@ view attrs dropdown =
                     , padding4 (rem 0.25) (rem 0.25) (rem 0.25) (rem 0.5)
                     , border3 (rem 0.0625) solid Colors.mediumGray
                     , boxSizing borderBox
-                    , height (rem 2.5)
+                    , minHeight (rem 2.5)
                     , if dropdown.hasFocus then
                         Css.batch
                             [ borderRadius4 (rem 0.25) (rem 0.25) (rem 0.0) (rem 0.0)
