@@ -7,6 +7,7 @@ module Nordea.Components.Dropdown exposing
     , simple
     , standard
     , view
+    , withAriaLabel
     , withHasError
     , withPlaceholder
     , withSelectedValue
@@ -54,7 +55,7 @@ import Html.Styled as Html exposing (Attribute, Html, div, option)
 import Html.Styled.Attributes as Attrs exposing (css, disabled, selected, value)
 import Html.Styled.Events as Events exposing (targetValue)
 import Json.Decode as Decode
-import Nordea.Html exposing (styleIf, viewMaybe)
+import Nordea.Html exposing (attrEmpty, styleIf, viewMaybe)
 import Nordea.Resources.Colors as Colors
 import Nordea.Resources.Icons as Icon
 import Nordea.Themes as Themes
@@ -97,6 +98,7 @@ type alias DropdownProperties a msg =
     , optionToString : a -> String
     , selectedValue : Maybe a
     , hasError : Bool
+    , ariaLabel : Maybe String
     , variant : Variant
     , size : Size
     }
@@ -140,6 +142,7 @@ initWithOptionProperties options optionToString onInput =
         , hasError = False
         , variant = Standard
         , size = StandardSize
+        , ariaLabel = Nothing
         }
 
 
@@ -200,7 +203,8 @@ view attrs (Dropdown config) =
             case ( config.variant, config.size ) of
                 ( Standard, StandardSize ) ->
                     Icon.chevronDownFilled
-                        [ css
+                        [ Attrs.attribute "aria-hidden" "true"
+                        , css
                             [ position absolute
                             , top (pct 50)
                             , transform (translateY (pct -50))
@@ -212,7 +216,8 @@ view attrs (Dropdown config) =
 
                 ( Standard, SmallSize ) ->
                     Icon.chevronDownFilledSmall
-                        [ css
+                        [ Attrs.attribute "aria-hidden" "true"
+                        , css
                             [ position absolute
                             , top (pct 50)
                             , transform (translateY (pct -50))
@@ -224,7 +229,8 @@ view attrs (Dropdown config) =
 
                 ( Simple, _ ) ->
                     Icon.chevronDownBolded
-                        [ css
+                        [ Attrs.attribute "aria-hidden" "true"
+                        , css
                             [ position absolute
                             , top (pct 50)
                             , transform (translateY (pct -50))
@@ -236,19 +242,25 @@ view attrs (Dropdown config) =
                             ]
                         ]
 
-        sizeSpecificStyling =
+        ( sizeSpecificHeight, sizeSpecificStyling ) =
             case config.size of
                 StandardSize ->
-                    [ height (rem 2.5), fontSize (rem 1), padding4 (rem 0.25) (rem 2.5) (rem 0.25) (rem 0.75), lineHeight (rem 1.4) ]
+                    ( height (rem 2.5), [ height (pct 100), fontSize (rem 1), padding4 (rem 0.25) (rem 2.5) (rem 0.25) (rem 0.75), lineHeight (rem 1.4) ] )
 
                 SmallSize ->
-                    [ height (rem 1.6), fontSize (rem 0.75), padding4 (rem 0.25) (rem 0.25) (rem 0.25) (rem 0.5), lineHeight (rem 1) ]
+                    ( height (rem 1.6), [ height (pct 100), fontSize (rem 0.75), padding4 (rem 0.25) (rem 0.25) (rem 0.25) (rem 0.5), lineHeight (rem 1) ] )
     in
     div
-        (css [ position relative ] :: attrs)
+        (css [ position relative, sizeSpecificHeight ] :: attrs)
         [ Html.select
             [ Events.on "change" decoder
             , Attrs.disabled isDisabled
+            , case config.ariaLabel of
+                Just l ->
+                    Attrs.attribute "aria-label" l
+
+                Nothing ->
+                    attrEmpty
             , css
                 ([ width (pct 100)
                  , property "appearance" "none"
@@ -297,3 +309,8 @@ withPlaceholder placeholder (Dropdown config) =
 withHasError : Bool -> Dropdown a msg -> Dropdown a msg
 withHasError hasError (Dropdown config) =
     Dropdown { config | hasError = hasError }
+
+
+withAriaLabel : String -> Dropdown a msg -> Dropdown a msg
+withAriaLabel label (Dropdown config) =
+    Dropdown { config | ariaLabel = Just label }
