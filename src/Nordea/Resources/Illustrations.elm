@@ -991,9 +991,7 @@ instructionalWarning : List (Attribute msg) -> Html msg
 instructionalWarning attrs =
     illustrationsContainer attrs
         [ Svg.svg
-            [ SvgAttr.width "100"
-            , SvgAttr.height "100"
-            , SvgAttr.viewBox "0 0 100 100"
+            [ SvgAttr.viewBox "0 0 100 100"
             , SvgAttr.fill "none"
             ]
             [ Svg.path

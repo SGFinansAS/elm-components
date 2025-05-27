@@ -21,4 +21,9 @@ stories =
                 Illustrations.instructionalInfo [ css [ width (rem 5) ] ]
           , {}
           )
+        , ( "InstructionalWarning"
+          , \_ ->
+                Illustrations.instructionalWarning [ css [ width (rem 5) ] ]
+          , {}
+          )
         ]
