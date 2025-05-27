@@ -26,7 +26,7 @@ import Css
         , transparent
         )
 import Html.Styled as Html exposing (Attribute, Html)
-import Html.Styled.Attributes exposing (css, tabindex)
+import Html.Styled.Attributes exposing (attribute, css, tabindex)
 import Nordea.Html exposing (styleIf)
 import Nordea.Resources.Colors as Color
 import Nordea.Themes as Themes
@@ -56,6 +56,14 @@ view attrs tab (Tab config) =
         (css
             [ commonTabStyle config.isActive ]
             :: tabindex 0
+            :: attribute "role" "tab"
+            :: attribute "aria-selected"
+                (if config.isActive then
+                    "true"
+
+                 else
+                    "false"
+                )
             :: attrs
         )
         tab
