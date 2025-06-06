@@ -5,6 +5,7 @@ module Nordea.Components.Checkbox exposing
     , view
     , withAppearance
     , withHasError
+    , withInputAttrs
     , withIsChecked
     , withOnBlur
     )
@@ -76,6 +77,7 @@ type alias CheckboxProperties msg =
     , isChecked : Bool
     , appearance : Appearance
     , hasError : Bool
+    , inputAttrs : List (Attribute msg)
     }
 
 
@@ -100,6 +102,7 @@ init name label onCheck =
         , isChecked = False
         , appearance = Standard
         , hasError = False
+        , inputAttrs = []
         }
 
 
@@ -274,12 +277,12 @@ view attrs (Checkbox config) =
             :: attrs
         )
         [ Html.input
-            [ type_ "checkbox"
-            , name config.name
-            , Attrs.checked config.isChecked
-            , onCheck config.onCheck
-            , disabled isDisabled
-            , css
+            ([ type_ "checkbox"
+             , name config.name
+             , Attrs.checked config.isChecked
+             , onCheck config.onCheck
+             , disabled isDisabled
+             , css
                 [ position absolute
                 , opacity (num 0)
                 , width (rem 0)
@@ -295,7 +298,9 @@ view attrs (Checkbox config) =
                         Themes.backgroundColor Colors.nordeaBlue
                     ]
                 ]
-            ]
+             ]
+                ++ config.inputAttrs
+            )
             []
         , checkbox
         , label
@@ -320,3 +325,8 @@ withAppearance appearance (Checkbox config) =
 withHasError : Bool -> Checkbox msg -> Checkbox msg
 withHasError hasError (Checkbox config) =
     Checkbox { config | hasError = hasError }
+
+
+withInputAttrs : List (Attribute msg) -> Checkbox msg -> Checkbox msg
+withInputAttrs attrs (Checkbox config) =
+    Checkbox { config | inputAttrs = attrs }
