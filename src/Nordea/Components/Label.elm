@@ -39,7 +39,6 @@ import Css
         , rem
         , spaceBetween
         , visibility
-        , width
         , wrap
         )
 import Css.Global exposing (descendants, everything, selector, typeSelector)
