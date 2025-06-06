@@ -79,7 +79,7 @@ import Css
 import Css.Global exposing (children, descendants, everything, withClass)
 import Css.Transitions exposing (easeOut, transition)
 import Html.Styled as Html exposing (Attribute, Html)
-import Html.Styled.Attributes exposing (class, css)
+import Html.Styled.Attributes exposing (attribute, class, css)
 import Nordea.Resources.Colors as Colors
 import Nordea.Resources.Icons as Icons
 import Nordea.Themes as Themes
@@ -166,7 +166,12 @@ view attributes children (Button config) =
         variantSpecificChildren =
             case config.variant of
                 Card ->
-                    [ Icons.arrowRight [ class "arrowicon", css [ width (rem 1) ] ] ]
+                    [ Icons.arrowRight
+                        [ attribute "aria-hidden" "true"
+                        , class "arrowicon"
+                        , css [ width (rem 1) ]
+                        ]
+                    ]
 
                 _ ->
                     []
