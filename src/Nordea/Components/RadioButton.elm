@@ -5,6 +5,7 @@ module Nordea.Components.RadioButton exposing
     , view
     , withAppearance
     , withHasError
+    , withInputAttrs
     , withIsSelected
     , withOnBlur
     )
@@ -68,6 +69,7 @@ type alias InputProperties msg =
     , isSelected : Bool
     , appearance : Appearance
     , showError : Bool
+    , inputAttrs : List (Attribute msg)
     }
 
 
@@ -91,6 +93,7 @@ init name label onCheck =
         , isSelected = False
         , appearance = Standard
         , showError = False
+        , inputAttrs = []
         }
 
 
@@ -248,12 +251,12 @@ view attrs (RadioButton config) =
             :: attrs
         )
         [ Html.input
-            [ type_ "radio"
-            , name config.name
-            , Attrs.checked config.isSelected
-            , Events.onCheck (\_ -> config.onCheck)
-            , disabled isDisabled
-            , css
+            ([ type_ "radio"
+             , name config.name
+             , Attrs.checked config.isSelected
+             , Events.onCheck (\_ -> config.onCheck)
+             , disabled isDisabled
+             , css
                 [ position absolute
                 , opacity (num 0)
                 , height (rem 0)
@@ -262,7 +265,9 @@ view attrs (RadioButton config) =
                 -- when <input> is checked, show radiomark
                 , pseudoClass "checked ~ .nfe-radiomark::after" [ display block ]
                 ]
-            ]
+             ]
+                ++ config.inputAttrs
+            )
             []
         , radiomark |> showIf (config.appearance == Simple)
         , label
@@ -287,3 +292,8 @@ withAppearance appearance (RadioButton config) =
 withHasError : Bool -> RadioButton msg -> RadioButton msg
 withHasError showError (RadioButton config) =
     RadioButton { config | showError = showError }
+
+
+withInputAttrs : List (Attribute msg) -> RadioButton msg -> RadioButton msg
+withInputAttrs attrs (RadioButton config) =
+    RadioButton { config | inputAttrs = attrs }

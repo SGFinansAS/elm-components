@@ -12,7 +12,35 @@ module Nordea.Components.Label exposing
     , withSmallSize
     )
 
-import Css exposing (Style, border, borderColor, color, column, displayFlex, flex, flexBasis, flexDirection, flexWrap, hidden, justifyContent, marginBottom, marginInlineEnd, marginInlineStart, marginRight, marginTop, none, outline, padding, pct, pseudoClass, rem, spaceBetween, visibility, width, wrap)
+import Css
+    exposing
+        ( Style
+        , border
+        , borderColor
+        , color
+        , column
+        , displayFlex
+        , flex
+        , flexBasis
+        , flexDirection
+        , flexWrap
+        , hidden
+        , justifyContent
+        , marginBottom
+        , marginInlineEnd
+        , marginInlineStart
+        , marginRight
+        , marginTop
+        , none
+        , outline
+        , padding
+        , pct
+        , pseudoClass
+        , rem
+        , spaceBetween
+        , visibility
+        , wrap
+        )
 import Css.Global exposing (descendants, everything, selector, typeSelector)
 import Html.Styled as Html exposing (Attribute, Html)
 import Html.Styled.Attributes exposing (class, css)
@@ -186,9 +214,8 @@ view attrs children (Label config) =
                 )
                 ((Html.legend
                     [ css
-                        [ padding (rem 0)
-                        , width (pct 100)
-                        , Css.Global.children [ everything [ flexBasis (pct 100) ] ]
+                        [ Css.property "display" "contents"
+                        , Css.Global.children [ everything [ marginBottom (rem -0.05) |> Css.important, flexBasis (pct 100) ] ]
                         ]
                     ]
                     [ topInfo ]
