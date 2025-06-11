@@ -1,8 +1,5 @@
 module Nordea.Components.Modal exposing
-    ( default
-    , newsModal
-    , view
-    , withSmallSize
+    ( view
     , withSubtitle
     , withTitle
     )
@@ -55,6 +52,7 @@ import Html.Styled.Events as Events
 import Nordea.Components.Button as NordeaButton
 import Nordea.Components.Text as Text
 import Nordea.Html exposing (viewMaybe)
+import Nordea.Html.Attributes exposing (attrMaybe)
 import Nordea.Html.Events exposing (onEscPress)
 import Nordea.Resources.Colors as Colors
 import Nordea.Resources.Icons as Icons
@@ -69,34 +67,28 @@ type Variant
 
 type alias Config msg =
     { variant : Variant
-    , onClickClose : msg
     , title : Maybe String
     , subtitle : Maybe String
+    , closeConfig : Maybe (CloseConfig msg)
     }
+
+
+type alias CloseConfig msg =
+    { onClickClose : msg, closeButtonLabel : String }
 
 
 type Modal msg
     = Modal (Config msg)
 
 
-init : msg -> Variant -> Modal msg
-init onClickClose variant =
+init : msg -> Variant -> Maybe (CloseConfig msg) -> Modal msg
+init onClickClose variant closeConfig =
     Modal
         { variant = variant
-        , onClickClose = onClickClose
         , title = Nothing
         , subtitle = Nothing
+        , closeConfig = closeConfig
         }
-
-
-default : msg -> Modal msg
-default onClickClose =
-    init onClickClose DefaultModal
-
-
-newsModal : msg -> Modal msg
-newsModal onClickClose =
-    init onClickClose NewsModal
 
 
 view : List (Attribute msg) -> List (Html msg) -> Modal msg -> Html msg
@@ -118,12 +110,12 @@ view attrs children (Modal config) =
                         ]
                     :: attrs
                 )
-                [ header config.variant config.title config.onClickClose
+                [ header config.variant config.title config.closeConfig
                 , contentContainer config.variant config.title config.subtitle [] children
                 ]
     in
     Html.div
-        [ onEscPress config.onClickClose
+        [ config.closeConfig |> attrMaybe (\c -> onEscPress c.onClickClose)
         , tabindex 0
         , css
             [ position fixed
@@ -147,26 +139,45 @@ view attrs children (Modal config) =
         [ card, disableScrollOnBody ]
 
 
-header : Variant -> Maybe String -> msg -> Html msg
-header variant title onClickMsg =
+header : Variant -> Maybe String -> Maybe (CloseConfig msg) -> Html msg
+header variant title closeConfig =
     let
-        cross onClick =
-            if variant == SmallModal then
-                NordeaButton.tertiary
-                    |> NordeaButton.withSmallSize
-                    |> NordeaButton.view
-                        [ Events.onClick onClick, css [ alignItems center, marginLeft auto, marginRight (rem -0.5) ] ]
-                        [ Icons.cross [ css [ Themes.color Colors.white, width (rem 1) ] ] ]
+        cross =
+            case closeConfig of
+                Just closeConfig_ ->
+                    if variant == SmallModal then
+                        NordeaButton.tertiary
+                            |> NordeaButton.withSmallSize
+                            |> NordeaButton.view
+                                [ Events.onClick closeConfig_.onClickClose
+                                , Html.Styled.Attributes.title closeConfig_.closeButtonLabel
+                                , css [ alignItems center, marginLeft auto, marginRight (rem -0.5) ]
+                                ]
+                                [ Icons.cross
+                                    [ attribute "aria-hidden" "true"
+                                    , css [ Themes.color Colors.white, width (rem 1) ]
+                                    ]
+                                ]
 
-            else
-                NordeaButton.tertiary
-                    |> NordeaButton.view
-                        [ Events.onClick onClick, css [ alignItems center, marginLeft auto ] ]
-                        [ Icons.cross [ css [ Themes.color Colors.deepBlue, width (rem 1.385) ] ] ]
+                    else
+                        NordeaButton.tertiary
+                            |> NordeaButton.view
+                                [ Events.onClick closeConfig_.onClickClose
+                                , Html.Styled.Attributes.title closeConfig_.closeButtonLabel
+                                , css [ alignItems center, marginLeft auto ]
+                                ]
+                                [ Icons.cross
+                                    [ attribute "aria-hidden" "true"
+                                    , css [ Themes.color Colors.deepBlue, width (rem 1.385) ]
+                                    ]
+                                ]
+
+                _ ->
+                    Html.text ""
     in
     case variant of
         DefaultModal ->
-            Html.div
+            Html.header
                 [ css
                     [ padding4 (rem 1.5) (rem 1.5) (rem 1.5) (rem 2.5)
                     , alignItems center
@@ -178,24 +189,24 @@ header variant title onClickMsg =
                     |> viewMaybe
                         (\text ->
                             Text.titleHeavy
+                                |> Text.withHtmlTag Html.h1
                                 |> Text.view [] [ Html.text text ]
                         )
-                , cross onClickMsg
+                , cross
                 ]
 
         NewsModal ->
-            Html.div
+            Html.header
                 [ css
                     [ padding4 (rem 1) (rem 1.5) (rem 0) (rem 2.5)
                     , alignItems center
                     , displayFlex
                     ]
                 ]
-                [ cross onClickMsg
-                ]
+                [ cross ]
 
         SmallModal ->
-            Html.div
+            Html.header
                 [ css
                     [ padding (rem 1)
                     , alignItems center
@@ -208,9 +219,10 @@ header variant title onClickMsg =
                     |> viewMaybe
                         (\text ->
                             Text.textHeavy
+                                |> Text.withHtmlTag Html.h1
                                 |> Text.view [] [ Html.text text ]
                         )
-                , cross onClickMsg
+                , cross
                 ]
 
 
@@ -271,8 +283,3 @@ withTitle title (Modal config) =
 withSubtitle : String -> Modal msg -> Modal msg
 withSubtitle subtitle (Modal config) =
     Modal { config | subtitle = Just subtitle }
-
-
-withSmallSize : Modal msg -> Modal msg
-withSmallSize (Modal config) =
-    Modal { config | variant = SmallModal }
