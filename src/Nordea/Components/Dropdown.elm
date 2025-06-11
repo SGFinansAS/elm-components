@@ -251,7 +251,7 @@ view attrs (Dropdown config) =
                     ( height (rem 1.6), [ height (pct 100), fontSize (rem 0.75), padding4 (rem 0.25) (rem 0.25) (rem 0.25) (rem 0.5), lineHeight (rem 1) ] )
     in
     div
-        (css [ position relative, sizeSpecificHeight ] :: attrs)
+        (Attrs.attribute "role" "none" :: css [ position relative, sizeSpecificHeight ] :: attrs)
         [ Html.select
             [ Events.on "change" decoder
             , Attrs.disabled isDisabled
