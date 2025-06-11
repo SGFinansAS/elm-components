@@ -1,5 +1,7 @@
 module Nordea.Components.Modal exposing
-    ( view
+    ( Variant(..)
+    , init
+    , view
     , withSubtitle
     , withTitle
     )
@@ -81,8 +83,8 @@ type Modal msg
     = Modal (Config msg)
 
 
-init : msg -> Variant -> Maybe (CloseConfig msg) -> Modal msg
-init onClickClose variant closeConfig =
+init : Variant -> Maybe (CloseConfig msg) -> Modal msg
+init variant closeConfig =
     Modal
         { variant = variant
         , title = Nothing

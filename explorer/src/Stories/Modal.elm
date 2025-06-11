@@ -21,7 +21,7 @@ stories =
                     [ Button.primary
                         |> Button.view [ onClick ToggleModal ] [ Html.text "Show modal" ]
                     , if model.customModel.isModalOpen then
-                        Modal.default ToggleModal
+                        Modal.init Modal.DefaultModal (Just { onClickClose = ToggleModal, closeButtonLabel = "Close" })
                             |> Modal.withTitle "Title"
                             |> Modal.view
                                 [ css [ width (rem 35) ] ]
@@ -38,7 +38,7 @@ stories =
                     [ Button.primary
                         |> Button.view [ onClick ToggleModal ] [ Html.text "Show modal" ]
                     , if model.customModel.isModalOpen then
-                        Modal.newsModal ToggleModal
+                        Modal.init Modal.NewsModal (Just { onClickClose = ToggleModal, closeButtonLabel = "Close" })
                             |> Modal.withTitle "Title"
                             |> Modal.withSubtitle "Subtitle | Subtitle"
                             |> Modal.view
@@ -56,7 +56,7 @@ stories =
                     [ Button.primary
                         |> Button.view [ onClick ToggleModal ] [ Html.text "Show modal" ]
                     , if model.customModel.isModalOpen then
-                        Modal.default ToggleModal
+                        Modal.init Modal.DefaultModal (Just { onClickClose = ToggleModal, closeButtonLabel = "Close" })
                             |> Modal.withTitle "Title"
                             |> Modal.view
                                 [ css [ maxWidth (rem 35), width (pct 100) ] ]
@@ -73,9 +73,8 @@ stories =
                     [ Button.primary
                         |> Button.view [ onClick ToggleModal ] [ Html.text "Show modal" ]
                     , if model.customModel.isModalOpen then
-                        Modal.default ToggleModal
+                        Modal.init Modal.SmallModal (Just { onClickClose = ToggleModal, closeButtonLabel = "Close" })
                             |> Modal.withTitle "Title"
-                            |> Modal.withSmallSize
                             |> Modal.view
                                 [ css [ width (rem 35) ] ]
                                 [ Html.text "Suggested width is 560px (35rem)" ]
