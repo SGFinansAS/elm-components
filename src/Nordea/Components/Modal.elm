@@ -28,6 +28,7 @@ import Css
         , justifyContent
         , left
         , margin
+        , marginBottom
         , marginLeft
         , marginRight
         , minWidth
@@ -112,8 +113,8 @@ view attrs children (Modal config) =
                         ]
                     :: attrs
                 )
-                [ header config.variant config.title config.closeConfig
-                , contentContainer config.variant config.title config.subtitle [] children
+                [ header config.variant config.title config.subtitle config.closeConfig
+                , contentContainer config.variant [] children
                 ]
     in
     Html.div
@@ -141,8 +142,8 @@ view attrs children (Modal config) =
         [ card, disableScrollOnBody ]
 
 
-header : Variant -> Maybe String -> Maybe (CloseConfig msg) -> Html msg
-header variant title closeConfig =
+header : Variant -> Maybe String -> Maybe String -> Maybe (CloseConfig msg) -> Html msg
+header variant title subtitle closeConfig =
     let
         cross =
             case closeConfig of
@@ -203,9 +204,28 @@ header variant title closeConfig =
                     [ padding4 (rem 1) (rem 1.5) (rem 0) (rem 2.5)
                     , alignItems center
                     , displayFlex
+                    , flexDirection column
+                    , marginBottom (rem 2)
                     ]
                 ]
-                [ cross ]
+                [ cross
+                , Html.div
+                    []
+                    [ subtitle
+                        |> viewMaybe
+                            (\text ->
+                                Text.textTinyLight
+                                    |> Text.view [ css [ color Colors.nordeaGray ] ] [ Html.text text ]
+                            )
+                    , title
+                        |> viewMaybe
+                            (\text ->
+                                Text.titleHeavy
+                                    |> Text.withHtmlTag Html.h1
+                                    |> Text.view [ css [ padding3 (rem 0.5) (rem 0) (rem 0) ] ] [ Html.text text ]
+                            )
+                    ]
+                ]
 
         SmallModal ->
             Html.header
@@ -228,34 +248,31 @@ header variant title closeConfig =
                 ]
 
 
-contentContainer : Variant -> Maybe String -> Maybe String -> List (Attribute msg) -> List (Html msg) -> Html msg
-contentContainer variant title subTitle attrs children =
-    let
-        newsTitle =
-            Html.div []
-                [ subTitle
-                    |> viewMaybe
-                        (\text ->
-                            Text.textTinyLight
-                                |> Text.view [ css [ color Colors.nordeaGray ] ] [ Html.text text ]
-                        )
-                , title
-                    |> viewMaybe
-                        (\text ->
-                            Text.titleHeavy
-                                |> Text.view [ css [ padding3 (rem 0.5) (rem 0) (rem 2) ] ] [ Html.text text ]
-                        )
-                ]
-    in
+contentContainer : Variant -> List (Attribute msg) -> List (Html msg) -> Html msg
+contentContainer variant attrs children =
     case variant of
         NewsModal ->
-            Html.div (css [ padding4 (rem 0) (rem 2.5) (rem 3.5) (rem 2.5), displayFlex, flexDirection column, textAlign center ] :: attrs)
-                (newsTitle
-                    :: children
+            Html.div
+                (css
+                    [ padding4 (rem 0) (rem 2.5) (rem 3.5) (rem 2.5)
+                    , displayFlex
+                    , flexDirection column
+                    , textAlign center
+                    ]
+                    :: attrs
                 )
+                children
 
         DefaultModal ->
-            Html.div (css [ padding (rem 2.5), displayFlex, flexDirection column ] :: attrs) children
+            Html.div
+                (css
+                    [ padding (rem 2.5)
+                    , displayFlex
+                    , flexDirection column
+                    ]
+                    :: attrs
+                )
+                children
 
         SmallModal ->
             Html.div
