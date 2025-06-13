@@ -41,7 +41,6 @@ import Css
         , opacity
         , outline
         , padding2
-        , padding4
         , paddingLeft
         , paddingRight
         , pct
