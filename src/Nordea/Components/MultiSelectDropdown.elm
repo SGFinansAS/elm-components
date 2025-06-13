@@ -94,6 +94,7 @@ import Nordea.Components.OutsideEventSupport as OutsideEventSupport
 import Nordea.Components.Text as Text
 import Nordea.Css exposing (gap)
 import Nordea.Html as Html exposing (attrIf)
+import Nordea.Html.Events as Events
 import Nordea.Resources.Colors as Colors
 import Nordea.Resources.Icons as Icons
 import Nordea.Themes as Themes
@@ -352,6 +353,20 @@ view attrs dropdown =
            )
         |> Label.view
             ((Events.on "focusin" (Decode.succeed (dropdown.onFocus True)) |> attrIf hasTextInput)
+                :: Events.onKeyDownMaybe
+                    (\key ->
+                        case key of
+                            Events.Enter ->
+                                -- already handled
+                                Nothing
+
+                            Events.Space ->
+                                -- already handled
+                                Nothing
+
+                            Events.Esc ->
+                                dropdown.onFocus False |> Just
+                    )
                 :: attrs
             )
             [ OutsideEventSupport.view
