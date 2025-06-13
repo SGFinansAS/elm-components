@@ -25,6 +25,9 @@ import Css
         , flexWrap
         , hidden
         , justifyContent
+        , margin
+        , marginBlockEnd
+        , marginBlockStart
         , marginBottom
         , marginInlineEnd
         , marginInlineStart
@@ -43,7 +46,7 @@ import Css
         )
 import Css.Global exposing (descendants, everything, selector, typeSelector)
 import Html.Styled as Html exposing (Attribute, Html)
-import Html.Styled.Attributes exposing (class, css)
+import Html.Styled.Attributes exposing (attribute, class, css)
 import Maybe.Extra as Maybe
 import Nordea.Components.Text as Text
 import Nordea.Css as Css exposing (alignContent, columnGap)
@@ -129,13 +132,23 @@ view attrs children (Label config) =
                                     Custom string ->
                                         string
                             ]
+
+                tagType =
+                    case config.labelType of
+                        TextLabel ->
+                            Html.dt
+
+                        _ ->
+                            Html.div
             in
-            Html.row
+            tagType
                 [ css
-                    [ justifyContent spaceBetween
+                    [ displayFlex
+                    , justifyContent spaceBetween
                     , marginBottom (rem 0.2)
                     , columnGap (rem 1)
                     ]
+                , attribute "role" "none"
                 ]
                 [ initText config.size
                     |> Text.view
@@ -159,7 +172,7 @@ view attrs children (Label config) =
                                 , visibility hidden |> Css.cssIf (Maybe.isNothing maybeError)
                                 ]
                             ]
-                            [ Icons.error [ css [ marginRight (rem 0.5), flex none ] ]
+                            [ Icons.error [ attribute "aria-hidden" "true", css [ marginRight (rem 0.5), flex none ] ]
                             , maybeError |> Maybe.withDefault "No errors" |> Html.text
                             ]
 
@@ -227,9 +240,9 @@ view attrs children (Label config) =
                 )
 
         TextLabel ->
-            Html.column
+            Html.dl
                 (css [ stateStyles { hasError = config.errorMessage /= Nothing } ] :: attrs)
-                (topInfo :: children ++ [ bottomInfo [] ])
+                [ topInfo, Html.dd [ css [ margin (rem 0) ] ] children ]
 
 
 stateStyles : { hasError : Bool } -> Style
@@ -262,6 +275,8 @@ stateStyles { hasError } =
 
           else
             pseudoClass "focus-within" [ styles ]
+        , marginBlockStart (rem 0)
+        , marginBlockEnd (rem 0)
         ]
 
 
