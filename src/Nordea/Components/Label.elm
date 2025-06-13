@@ -273,6 +273,7 @@ stateStyles { hasError } =
 
           else
             pseudoClass "focus-within" [ styles ]
+        , margin (rem 0)
         ]
 
 
