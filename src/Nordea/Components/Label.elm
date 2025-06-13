@@ -39,6 +39,7 @@ import Css
         , rem
         , spaceBetween
         , visibility
+        , width
         , wrap
         )
 import Css.Global exposing (descendants, everything, selector, typeSelector)
@@ -180,8 +181,8 @@ view attrs children (Label config) =
                     :: attrs_
                 )
                 [ Html.column []
-                    [ viewError config.errorMessage |> Html.showIf showErrorRow
-                    , config.hintText |> Html.viewMaybe viewHintText
+                    [ config.hintText |> Html.viewMaybe viewHintText
+                    , viewError config.errorMessage |> Html.showIf showErrorRow
                     ]
                 , config.charCounter |> Html.viewMaybe viewCharCounter
                 ]
@@ -215,7 +216,7 @@ view attrs children (Label config) =
                 ((Html.legend
                     [ css
                         [ Css.property "display" "contents"
-                        , Css.Global.children [ everything [ marginBottom (rem -0.05) |> Css.important, flexBasis (pct 100) ] ]
+                        , Css.Global.children [ everything [ marginBottom (rem -0.05) |> Css.important, width (pct 100) ] ]
                         ]
                     ]
                     [ topInfo ]
