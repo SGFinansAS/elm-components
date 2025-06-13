@@ -21,7 +21,6 @@ import Css
         , column
         , displayFlex
         , flex
-        , flexBasis
         , flexDirection
         , flexWrap
         , hidden
@@ -47,7 +46,7 @@ import Html.Styled as Html exposing (Attribute, Html)
 import Html.Styled.Attributes exposing (class, css)
 import Maybe.Extra as Maybe
 import Nordea.Components.Text as Text
-import Nordea.Css as Css exposing (columnGap)
+import Nordea.Css as Css exposing (alignContent, columnGap)
 import Nordea.Html as Html exposing (showIf)
 import Nordea.Resources.Colors as Colors
 import Nordea.Resources.I18N exposing (Translation)
@@ -205,6 +204,7 @@ view attrs children (Label config) =
                 (css
                     [ displayFlex
                     , flexWrap wrap
+                    , alignContent "flex-start"
                     , stateStyles { hasError = config.errorMessage /= Nothing }
                     , marginInlineStart (rem 0)
                     , marginInlineEnd (rem 0)
@@ -223,7 +223,7 @@ view attrs children (Label config) =
                     |> showIf (config.labelText /= "" || config.requirednessHint /= Nothing)
                  )
                     :: children
-                    ++ [ bottomInfo [ css [ flexBasis (pct 100) ] ] ]
+                    ++ [ bottomInfo [ css [ width (pct 100) ] ] ]
                 )
 
         TextLabel ->
