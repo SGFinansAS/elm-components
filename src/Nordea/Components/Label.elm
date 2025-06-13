@@ -21,7 +21,6 @@ import Css
         , column
         , displayFlex
         , flex
-        , flexBasis
         , flexDirection
         , flexWrap
         , hidden
@@ -39,6 +38,7 @@ import Css
         , rem
         , spaceBetween
         , visibility
+        , width
         , wrap
         )
 import Css.Global exposing (descendants, everything, selector, typeSelector)
@@ -46,7 +46,7 @@ import Html.Styled as Html exposing (Attribute, Html)
 import Html.Styled.Attributes exposing (class, css)
 import Maybe.Extra as Maybe
 import Nordea.Components.Text as Text
-import Nordea.Css as Css exposing (columnGap)
+import Nordea.Css as Css exposing (alignContent, columnGap)
 import Nordea.Html as Html exposing (showIf)
 import Nordea.Resources.Colors as Colors
 import Nordea.Resources.I18N exposing (Translation)
@@ -180,8 +180,8 @@ view attrs children (Label config) =
                     :: attrs_
                 )
                 [ Html.column []
-                    [ viewError config.errorMessage |> Html.showIf showErrorRow
-                    , config.hintText |> Html.viewMaybe viewHintText
+                    [ config.hintText |> Html.viewMaybe viewHintText
+                    , viewError config.errorMessage |> Html.showIf showErrorRow
                     ]
                 , config.charCounter |> Html.viewMaybe viewCharCounter
                 ]
@@ -204,6 +204,7 @@ view attrs children (Label config) =
                 (css
                     [ displayFlex
                     , flexWrap wrap
+                    , alignContent "flex-start"
                     , stateStyles { hasError = config.errorMessage /= Nothing }
                     , marginInlineStart (rem 0)
                     , marginInlineEnd (rem 0)
@@ -215,14 +216,14 @@ view attrs children (Label config) =
                 ((Html.legend
                     [ css
                         [ Css.property "display" "contents"
-                        , Css.Global.children [ everything [ marginBottom (rem -0.05) |> Css.important, flexBasis (pct 100) ] ]
+                        , Css.Global.children [ everything [ marginBottom (rem -0.05) |> Css.important, width (pct 100) ] ]
                         ]
                     ]
                     [ topInfo ]
                     |> showIf (config.labelText /= "" || config.requirednessHint /= Nothing)
                  )
                     :: children
-                    ++ [ bottomInfo [ css [ flexBasis (pct 100) ] ] ]
+                    ++ [ bottomInfo [ css [ width (pct 100) ] ] ]
                 )
 
         TextLabel ->

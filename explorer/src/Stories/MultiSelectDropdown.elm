@@ -16,7 +16,7 @@ stories =
         "MultiSelectDropdown"
         [ ( "Standard"
           , \model ->
-                MultiSelectDropdown.init { onFocus = FocusMultiSelectDropdown }
+                MultiSelectDropdown.init { onFocus = FocusMultiSelectDropdown, uniqueId = "MultiSelectDropdown1" }
                     |> MultiSelectDropdown.withLabel "Label"
                     |> MultiSelectDropdown.withPlaceholder "Choose an option"
                     |> MultiSelectDropdown.withHasFocus model.customModel.hasMultiSelectDropdownFocus
@@ -32,7 +32,7 @@ stories =
           )
         , ( "With groups"
           , \model ->
-                MultiSelectDropdown.init { onFocus = FocusMultiSelectDropdown }
+                MultiSelectDropdown.init { onFocus = FocusMultiSelectDropdown, uniqueId = "MultiSelectDropdown2" }
                     |> MultiSelectDropdown.withLabel "Label"
                     |> MultiSelectDropdown.withPlaceholder "Choose an option"
                     |> MultiSelectDropdown.withHasFocus model.customModel.hasMultiSelectDropdownFocus
@@ -55,13 +55,13 @@ stories =
           )
         , ( "With filter"
           , \model ->
-                MultiSelectDropdown.init { onFocus = FocusMultiSelectDropdown }
+                MultiSelectDropdown.init { onFocus = FocusMultiSelectDropdown, uniqueId = "MultiSelectDropdown3" }
                     |> MultiSelectDropdown.withLabel "Label"
                     |> MultiSelectDropdown.withPlaceholder "Choose an option or type"
                     |> MultiSelectDropdown.withHasFocus model.customModel.hasMultiSelectDropdownFocus
                     |> MultiSelectDropdown.withRequirednessHint (Just (Label.Mandatory .no))
                     |> MultiSelectDropdown.withHintText (Just "Hint")
-                    |> MultiSelectDropdown.withInput model.customModel.searchComponentInput SearchComponentInputWithCmd "inputId"
+                    |> MultiSelectDropdown.withInput model.customModel.searchComponentInput SearchComponentInputWithCmd
                     |> MultiSelectDropdown.withOptionGroups
                         [ { options =
                                 [ { name = "1", label = "Valg 1", isChecked = model.customModel.isChoice1, onCheck = \_ -> OnCheckChoice1 }
@@ -80,12 +80,12 @@ stories =
           )
         , ( "With error (if input is non-empty)"
           , \model ->
-                MultiSelectDropdown.init { onFocus = FocusMultiSelectDropdown }
+                MultiSelectDropdown.init { onFocus = FocusMultiSelectDropdown, uniqueId = "MultiSelectDropdown4" }
                     |> MultiSelectDropdown.withLabel "Label"
                     |> MultiSelectDropdown.withPlaceholder "Choose an option or type"
                     |> MultiSelectDropdown.withHasFocus model.customModel.hasMultiSelectDropdownFocus
                     |> MultiSelectDropdown.withRequirednessHint (Just (Label.Mandatory .no))
-                    |> MultiSelectDropdown.withInput model.customModel.searchComponentInput SearchComponentInputWithCmd "inputId"
+                    |> MultiSelectDropdown.withInput model.customModel.searchComponentInput SearchComponentInputWithCmd
                     |> MultiSelectDropdown.withError (Just model.customModel.searchComponentInput |> Maybe.filter (String.isEmpty >> not))
                     |> MultiSelectDropdown.withOptionGroups
                         [ { options =

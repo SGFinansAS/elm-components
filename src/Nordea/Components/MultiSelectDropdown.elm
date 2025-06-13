@@ -15,19 +15,85 @@ module Nordea.Components.MultiSelectDropdown exposing
     , withSelected
     )
 
-import Browser.Dom as Browser
-import Css exposing (absolute, alignItems, backgroundColor, border3, borderBottomLeftRadius, borderBottomRightRadius, borderBox, borderRadius, borderRadius4, borderStyle, boxShadow, boxSizing, center, color, column, cursor, deg, display, displayFlex, flexBasis, flexDirection, flexGrow, flexWrap, fontSize, height, hover, important, int, justifyContent, left, listStyle, margin, margin4, marginLeft, marginTop, maxHeight, minHeight, noWrap, none, num, outline, overflowY, padding, padding2, padding4, pct, pointer, pointerEvents, position, relative, rem, right, rotate, scroll, solid, spaceBetween, start, top, transforms, transparent, whiteSpace, width, wrap, zIndex)
-import Html.Styled as Html exposing (Attribute, Html, div, input, span, text)
-import Html.Styled.Attributes as Attrs exposing (attribute, css, id, placeholder, tabindex, value)
-import Html.Styled.Events as Events exposing (custom, onClick, onInput)
+import Css
+    exposing
+        ( absolute
+        , alignItems
+        , backgroundColor
+        , border3
+        , borderBottomLeftRadius
+        , borderBottomRightRadius
+        , borderBox
+        , borderRadius
+        , borderRadius4
+        , borderStyle
+        , boxShadow
+        , boxSizing
+        , center
+        , color
+        , column
+        , cursor
+        , deg
+        , display
+        , displayFlex
+        , flexBasis
+        , flexDirection
+        , flexGrow
+        , flexWrap
+        , fontSize
+        , height
+        , hover
+        , important
+        , int
+        , justifyContent
+        , left
+        , listStyle
+        , margin
+        , margin4
+        , marginLeft
+        , marginRight
+        , marginTop
+        , maxHeight
+        , minHeight
+        , noWrap
+        , none
+        , num
+        , outline
+        , overflowY
+        , padding
+        , padding2
+        , padding4
+        , pct
+        , pointer
+        , pointerEvents
+        , position
+        , relative
+        , rem
+        , right
+        , rotate
+        , scroll
+        , solid
+        , spaceBetween
+        , top
+        , transforms
+        , transparent
+        , whiteSpace
+        , width
+        , wrap
+        , zIndex
+        )
+import Html.Styled as Html exposing (Attribute, Html, input, span, text)
+import Html.Styled.Attributes as Attrs exposing (attribute, css, id, placeholder, tabindex, type_, value)
+import Html.Styled.Events as Events exposing (onClick, onInput)
 import Json.Decode as Decode
+import List.Extra as List
 import Maybe.Extra as Maybe
 import Nordea.Components.Checkbox as Checkbox
 import Nordea.Components.Label as Label exposing (RequirednessHint)
 import Nordea.Components.OutsideEventSupport as OutsideEventSupport
 import Nordea.Components.Text as Text
 import Nordea.Css exposing (gap)
-import Nordea.Html as Html exposing (attrEmpty, attrIf, styleIf)
+import Nordea.Html as Html exposing (attrIf)
 import Nordea.Html.Events as Events
 import Nordea.Resources.Colors as Colors
 import Nordea.Resources.Icons as Icons
@@ -43,12 +109,12 @@ type alias OptionGroup msg =
 type alias InputProperties msg =
     { onInput : String -> Cmd msg -> msg
     , input : String
-    , uniqueId : String
     }
 
 
 type alias MultiSelectDropdown msg =
     { label : String
+    , uniqueId : String
     , placeholder : String
     , hint : Maybe String
     , optionGroups : List (OptionGroup msg)
@@ -70,9 +136,10 @@ type alias Option msg =
     }
 
 
-init : { onFocus : Bool -> msg } -> MultiSelectDropdown msg
-init { onFocus } =
+init : { onFocus : Bool -> msg, uniqueId : String } -> MultiSelectDropdown msg
+init { onFocus, uniqueId } =
     { label = ""
+    , uniqueId = uniqueId
     , placeholder = ""
     , hint = Nothing
     , optionGroups = []
@@ -95,9 +162,21 @@ view attrs dropdown =
         hasTextInput =
             dropdown.inputProperties |> Maybe.isJust
 
+        toggleButtonAttrs =
+            [ Attrs.attribute "aria-controls" dropdown.uniqueId
+            , Attrs.attribute "aria-haspopup" "true"
+            , Attrs.attribute "aria-expanded"
+                (if dropdown.hasFocus then
+                    "true"
+
+                 else
+                    "false"
+                )
+            ]
+
         viewInput inputProps =
             input
-                [ id (makeId inputProps)
+                [ id ("multiselectinput-" ++ dropdown.uniqueId)
                 , css
                     [ outline none
                     , important (boxShadow none)
@@ -112,214 +191,119 @@ view attrs dropdown =
                 , placeholder dropdown.placeholder
                 , value currentInput
                 , onInput (\str -> inputProps.onInput str (Task.succeed (dropdown.onFocus True) |> Task.perform identity))
-                , Attrs.attribute "aria-controls" inputProps.uniqueId
-                , Attrs.attribute "role" "combobox"
-                , Attrs.attribute "aria-expanded"
-                    (if dropdown.hasFocus then
-                        "true"
-
-                     else
-                        "false"
-                    )
+                , Attrs.attribute "aria-controls" dropdown.uniqueId
                 ]
                 []
 
-        viewSelectedAndInput : InputProperties msg -> Html msg
         viewSelectedAndInput inputProperties =
-            div
-                [ css
-                    [ displayFlex
-                    , flexWrap wrap
-                    , alignItems center
-                    , gap (rem 0.5)
-                    , width (pct 100)
-                    , height (pct 100)
-                    ]
-                , onClick
-                    (inputProperties.onInput inputProperties.input
-                        (if not dropdown.hasFocus then
-                            focusInput inputProperties
-
-                         else
-                            Cmd.none
+            List.concat
+                [ dropdown.optionGroups
+                    |> List.concatMap .options
+                    |> List.filter .isChecked
+                    |> List.map
+                        (\option ->
+                            Html.div
+                                [ attribute "aria-hidden" "true"
+                                , tabindex -1
+                                , css
+                                    [ color Colors.nordeaBlue
+                                    , displayFlex
+                                    , alignItems center
+                                    , gap (rem 0.5)
+                                    , backgroundColor Colors.lightBlue
+                                    , borderRadius (rem 2)
+                                    , padding2 (rem 0.25) (rem 0.75)
+                                    ]
+                                ]
+                                [ span [ css [ whiteSpace noWrap ] ] [ Text.textLight |> Text.view [] [ text option.label ] ]
+                                , Icons.cross [ onClick (option.onCheck False), css [ width (rem 1), height (rem 1), cursor pointer ] ]
+                                ]
                         )
-                    )
-                ]
-                (List.concat
-                    [ dropdown.optionGroups
-                        |> List.concatMap .options
-                        |> List.filter .isChecked
-                        |> List.map
-                            (\option ->
-                                div
-                                    [ tabindex 0
-                                    , Events.onKeyDownMaybe
-                                        (\key ->
-                                            case key of
-                                                Events.Space ->
-                                                    Just (option.onCheck False)
+                , [ Html.row [ css [ width (pct 100), height (rem 1.875), alignItems center ] ]
+                        [ Icons.search
+                            [ css
+                                [ pointerEvents none
+                                , color Colors.gray
+                                , width (rem 1)
+                                , height (rem 1)
+                                , margin4 (rem 0) (rem 0.4) (rem 0) (rem 0)
+                                ]
+                            , attribute "aria-hidden" "true"
+                            ]
+                        , viewInput inputProperties
+                        , if inputProperties.input /= "" then
+                            Html.button
+                                (Events.onClick (inputProperties.onInput "" (Task.attempt (\_ -> dropdown.onFocus False) (Task.succeed ())))
+                                    :: css [ displayFlex, borderStyle none, backgroundColor transparent, marginRight (rem 0.25) ]
+                                    :: type_ "button"
+                                    :: toggleButtonAttrs
+                                )
+                                [ Icons.roundedCross
+                                    [ attribute "aria-hidden" "true"
+                                    , css [ width (rem 1.3), color Colors.mediumGray ]
+                                    ]
+                                ]
 
-                                                _ ->
-                                                    Nothing
-                                        )
-                                    , css
-                                        [ color Colors.nordeaBlue
-                                        , displayFlex
-                                        , alignItems center
-                                        , gap (rem 0.5)
-                                        , backgroundColor Colors.lightBlue
-                                        , borderRadius (rem 2)
-                                        , padding2 (rem 0.25) (rem 0.75)
-                                        ]
-                                    ]
-                                    [ span [ css [ whiteSpace noWrap ] ] [ Text.textLight |> Text.view [] [ text option.label ] ]
-                                    , Icons.cross [ onClick (option.onCheck False), css [ width (rem 1), height (rem 1), cursor pointer ] ]
-                                    ]
-                            )
-                    , [ Html.row [ css [ width (pct 100), alignItems center, height (rem 2.5) ] ]
-                            [ searchIcon
-                            , viewInput inputProperties
-                            , if inputProperties.input /= "" then
-                                Html.button
-                                    [ custom "click"
-                                        (Decode.succeed
-                                            { message = inputProperties.onInput "" (Task.attempt (\_ -> dropdown.onFocus False) (Task.succeed ()))
-                                            , preventDefault = True
-                                            , stopPropagation = True
-                                            }
-                                        )
-                                    , attribute "aria-hidden" "true"
-                                    , css [ displayFlex, borderStyle none, backgroundColor transparent, cursor pointer ]
-                                    ]
-                                    [ Icons.roundedCross
-                                        [ css [ width (rem 1.75), color Colors.mediumGray ]
-                                        ]
-                                    ]
-
-                              else
-                                Html.button
-                                    [ custom "click"
-                                        (Decode.succeed
-                                            { message = dropdown.onFocus (not dropdown.hasFocus)
-                                            , preventDefault = True
-                                            , stopPropagation = True
-                                            }
-                                        )
-                                    , css
+                          else
+                            Html.button
+                                (Events.onClick (dropdown.onFocus (not dropdown.hasFocus))
+                                    :: css
                                         [ displayFlex
                                         , borderStyle none
                                         , backgroundColor transparent
-                                        , cursor pointer
                                         ]
-                                    , attribute "aria-hidden" "true"
-                                    ]
-                                    [ Icons.chevronDownFilled
-                                        [ css
-                                            [ cursor pointer
-                                            , if dropdown.hasFocus then
-                                                transforms [ rotate (deg 180) ]
+                                    :: attribute "aria-label" dropdown.placeholder
+                                    :: type_ "button"
+                                    :: toggleButtonAttrs
+                                )
+                                [ Icons.chevronDownFilled
+                                    [ attribute "aria-hidden" "true"
+                                    , css
+                                        [ cursor pointer
+                                        , color Colors.coolGray
+                                        , if dropdown.hasFocus then
+                                            transforms [ rotate (deg 180) ]
 
-                                              else
-                                                transforms []
-                                            , color Colors.coolGray
-                                            ]
+                                          else
+                                            Css.batch []
                                         ]
                                     ]
-                            ]
-                      ]
-                    ]
-                )
+                                ]
+                        ]
+                  ]
+                ]
 
-        searchIcon =
-            Icons.search
-                [ css
-                    [ pointerEvents none
-                    , color Colors.gray
-                    , width (rem 1)
-                    , height (rem 1)
-                    , margin4 (rem 0.4) (rem 0.4) (rem 0.4) (rem 0)
-                    ]
+        controlElementStyle =
+            css
+                [ width (pct 100)
+                , displayFlex
+                , alignItems center
+                , backgroundColor Colors.white
+                , borderStyle none
+                , padding4 (rem 0.25) (rem 0.25) (rem 0.25) (rem 0.5)
+                , border3 (rem 0.0625) solid Colors.mediumGray
+                , boxSizing borderBox
+                , minHeight (rem 2.5)
+                , if dropdown.hasFocus then
+                    Css.batch
+                        [ borderRadius4 (rem 0.25) (rem 0.25) (rem 0.0) (rem 0.0)
+                        , if Maybe.isJust dropdown.errorMessage then
+                            Themes.borderColor Colors.darkRed
+
+                          else
+                            Themes.borderColor Colors.nordeaBlue
+                        ]
+
+                  else
+                    borderRadius4 (rem 0.25) (rem 0.25) (rem 0.25) (rem 0.25)
                 ]
 
         selectItems =
-            dropdown.optionGroups |> List.indexedMap (viewSelectItems dropdown) |> List.filterMap identity
-    in
-    Label.init
-        dropdown.label
-        Label.GroupLabel
-        |> Label.withRequirednessHint dropdown.requirednessHint
-        |> Label.withHintText dropdown.hint
-        |> Label.withErrorMessage dropdown.errorMessage
-        |> (if dropdown.reserveSpaceForError then
-                identity
+            viewSelectItems dropdown
 
-            else
-                Label.withNoReservedErrorSpace
-           )
-        |> Label.view
-            ([ Events.on "focusin" (Decode.succeed (dropdown.onFocus True))
-                |> attrIf hasTextInput
-             , css [ position relative ]
-             ]
-                ++ attrs
-            )
-            [ OutsideEventSupport.view { msg = dropdown.onFocus False, isActive = dropdown.hasFocus, eventTypes = [ OutsideEventSupport.OutsideClick, OutsideEventSupport.OutsideFocus ] }
-            , Html.div
-                [ attrIf (not hasTextInput) (Events.onClick (dropdown.onFocus (not dropdown.hasFocus)))
-                , Events.onKeyDownMaybe
-                    (\key ->
-                        case key of
-                            Events.Enter ->
-                                dropdown.onFocus (not dropdown.hasFocus) |> Just
-
-                            Events.Space ->
-                                dropdown.onFocus (not dropdown.hasFocus) |> Just |> Maybe.filter (always (not hasTextInput))
-
-                            Events.Esc ->
-                                dropdown.onFocus False |> Just
-                    )
-                , attrIf (not hasTextInput) (tabindex 0)
-                , css
-                    [ width (pct 100)
-                    , displayFlex
-                    , styleIf (not hasTextInput) (cursor pointer)
-                    , alignItems center
-                    , justifyContent spaceBetween
-                    , backgroundColor Colors.white
-                    , padding4 (rem 0.25) (rem 0.25) (rem 0.25) (rem 0.5)
-                    , border3 (rem 0.0625) solid Colors.mediumGray
-                    , boxSizing borderBox
-                    , minHeight (rem 2.5)
-                    , if dropdown.hasFocus then
-                        Css.batch
-                            [ borderRadius4 (rem 0.25) (rem 0.25) (rem 0.0) (rem 0.0)
-                            , if Maybe.isJust dropdown.errorMessage then
-                                Themes.borderColor Colors.darkRed
-
-                              else
-                                Themes.borderColor Colors.nordeaBlue
-                            ]
-
-                      else
-                        borderRadius4 (rem 0.25) (rem 0.25) (rem 0.25) (rem 0.25)
-                    ]
-                ]
-                (case dropdown.inputProperties of
-                    Just inputProperties ->
-                        [ viewSelectedAndInput inputProperties ]
-
-                    Nothing ->
-                        [ Html.text dropdown.placeholder
-                        , Icons.chevronDownFilled []
-                        ]
-                )
-            , Html.ul
-                [ case dropdown.inputProperties of
-                    Just inputProps ->
-                        Attrs.id inputProps.uniqueId
-
-                    Nothing ->
-                        attrEmpty
+        dropdownListView =
+            Html.ul
+                [ Attrs.id dropdown.uniqueId
                 , css
                     [ position absolute
                     , top (pct 100)
@@ -354,14 +338,74 @@ view attrs dropdown =
                     ]
                 ]
                 selectItems
+    in
+    Label.init
+        dropdown.label
+        Label.GroupLabel
+        |> Label.withRequirednessHint dropdown.requirednessHint
+        |> Label.withHintText dropdown.hint
+        |> Label.withErrorMessage dropdown.errorMessage
+        |> (if dropdown.reserveSpaceForError then
+                identity
+
+            else
+                Label.withNoReservedErrorSpace
+           )
+        |> Label.view
+            ((Events.on "focusin" (Decode.succeed (dropdown.onFocus True)) |> attrIf hasTextInput)
+                :: Events.onKeyDownMaybe
+                    (\key ->
+                        case key of
+                            Events.Enter ->
+                                -- already handled
+                                Nothing
+
+                            Events.Space ->
+                                -- already handled
+                                Nothing
+
+                            Events.Esc ->
+                                dropdown.onFocus False |> Just
+                    )
+                :: attrs
+            )
+            [ OutsideEventSupport.view
+                { msg = dropdown.onFocus False
+                , isActive = dropdown.hasFocus
+                , eventTypes = [ OutsideEventSupport.OutsideClick, OutsideEventSupport.OutsideFocus ]
+                }
+            , Html.div [ css [ position relative, width (pct 100) ] ]
+                [ case dropdown.inputProperties of
+                    Just inputProperties ->
+                        Html.div
+                            [ controlElementStyle
+                            , css
+                                [ flexWrap wrap
+                                , gap (rem 0.5)
+                                ]
+                            ]
+                            (viewSelectedAndInput inputProperties)
+
+                    Nothing ->
+                        Html.button
+                            (controlElementStyle
+                                :: css [ justifyContent spaceBetween ]
+                                :: Events.onClick (dropdown.onFocus (not dropdown.hasFocus))
+                                :: type_ "button"
+                                :: toggleButtonAttrs
+                            )
+                            [ Text.bodyTextSmall |> Text.view [] [ Html.text dropdown.placeholder ]
+                            , Icons.chevronDownFilled [ attribute "aria-hidden" "true" ]
+                            ]
+                , dropdownListView
+                ]
             ]
 
 
-viewSelectItems : MultiSelectDropdown msg -> Int -> OptionGroup msg -> Maybe (Html msg)
-viewSelectItems dropdown index orgOptionGroup =
+viewSelectItems : MultiSelectDropdown msg -> List (Html msg)
+viewSelectItems dropdown =
     let
-        maybeFilteredOptionGroup : Maybe (OptionGroup msg)
-        maybeFilteredOptionGroup =
+        maybeFilteredOptionGroup group =
             let
                 isOk value =
                     case dropdown.inputProperties of
@@ -374,40 +418,13 @@ viewSelectItems dropdown index orgOptionGroup =
                                 |> String.contains (String.toLower inputProperties.input)
 
                 matchingItems =
-                    orgOptionGroup.options |> List.filter isOk
+                    group.options |> List.filter isOk
             in
             if List.isEmpty matchingItems then
                 Nothing
 
             else
-                Just { orgOptionGroup | options = matchingItems }
-
-        viewOptionGroup optionGroup =
-            (case optionGroup.groupLabel of
-                Nothing ->
-                    []
-
-                Just groupLabel ->
-                    [ Html.li
-                        [ css
-                            [ displayFlex
-                            , height (rem 1.5)
-                            , alignItems center
-                            , justifyContent start
-                            , marginLeft (rem 0.75)
-                            , if index == 0 then
-                                marginTop (rem 0.75)
-
-                              else
-                                marginTop (rem 0)
-                            ]
-                        ]
-                        [ Text.textTinyLight
-                            |> Text.view [ css [ color Colors.darkGray ] ] [ Html.text groupLabel ]
-                        ]
-                    ]
-            )
-                ++ (optionGroup.options |> List.map viewOption)
+                Just { group | options = matchingItems }
 
         viewOption option =
             Html.li
@@ -423,39 +440,56 @@ viewSelectItems dropdown index orgOptionGroup =
                             ]
                         ]
                 ]
+
+        groups =
+            dropdown.optionGroups
+                |> List.groupWhile (\g1 g2 -> g1.groupLabel == g2.groupLabel)
+                |> List.map
+                    (\( first, rest ) ->
+                        { groupLabel = first.groupLabel
+                        , options = first.options ++ (rest |> List.concatMap .options)
+                        }
+                    )
     in
-    maybeFilteredOptionGroup
-        |> Maybe.map
-            (\filteredOptionGroup ->
-                Html.li []
-                    [ Html.ul
-                        [ css
-                            [ left (rem 0)
-                            , margin (rem 0)
-                            , padding (rem 0)
-                            , listStyle none
-                            , if dropdown.hasFocus then
-                                displayFlex
+    case groups of
+        [] ->
+            []
 
-                              else
-                                display none
-                            , flexDirection column
-                            , backgroundColor Colors.white
+        [ one ] ->
+            one
+                |> maybeFilteredOptionGroup
+                |> Maybe.map (.options >> List.map viewOption)
+                |> Maybe.withDefault []
+
+        multiple ->
+            multiple
+                |> List.filterMap maybeFilteredOptionGroup
+                |> List.map
+                    (\group ->
+                        Html.li
+                            []
+                            [ Text.textTinyLight
+                                |> Text.withHtmlTag Html.h3
+                                |> Text.view
+                                    [ css
+                                        [ marginTop (rem 0.75)
+                                        , marginLeft (rem 0.75)
+                                        , color Colors.darkGray
+                                        , Css.property "text-align" "initial"
+                                        ]
+                                    ]
+                                    [ group.groupLabel |> Maybe.withDefault "-" |> Html.text ]
+                            , Html.ul
+                                [ css
+                                    [ margin (rem 0)
+                                    , padding (rem 0)
+                                    , listStyle none
+                                    , flexDirection column
+                                    ]
+                                ]
+                                (group.options |> List.map viewOption)
                             ]
-                        ]
-                        (viewOptionGroup filteredOptionGroup)
-                    ]
-            )
-
-
-focusInput : InputProperties msg -> Cmd msg
-focusInput inputProperties =
-    Task.attempt (\_ -> inputProperties.onInput inputProperties.input Cmd.none) (Browser.focus (makeId inputProperties))
-
-
-makeId : InputProperties msg -> String
-makeId inputProperties =
-    "multiselectinput" ++ inputProperties.uniqueId
+                    )
 
 
 withLabel : String -> MultiSelectDropdown msg -> MultiSelectDropdown msg
@@ -493,9 +527,9 @@ withHasFocus hasFocus dropdown =
     { dropdown | hasFocus = hasFocus }
 
 
-withInput : String -> (String -> Cmd msg -> msg) -> String -> MultiSelectDropdown msg -> MultiSelectDropdown msg
-withInput input onInput uniqueId dropdown =
-    { dropdown | inputProperties = Just { input = input, onInput = onInput, uniqueId = uniqueId } }
+withInput : String -> (String -> Cmd msg -> msg) -> MultiSelectDropdown msg -> MultiSelectDropdown msg
+withInput input onInput dropdown =
+    { dropdown | inputProperties = Just { input = input, onInput = onInput } }
 
 
 withError : Maybe String -> MultiSelectDropdown msg -> MultiSelectDropdown msg

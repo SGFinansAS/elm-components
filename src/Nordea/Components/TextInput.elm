@@ -20,11 +20,13 @@ module Nordea.Components.TextInput exposing
 import Css
     exposing
         ( absolute
+        , alignItems
         , backgroundColor
         , border3
         , borderBox
         , borderRadius
         , boxSizing
+        , center
         , color
         , cursor
         , disabled
@@ -33,12 +35,12 @@ import Css
         , fontSize
         , height
         , left
+        , marginRight
         , none
         , num
         , opacity
         , outline
         , padding2
-        , padding4
         , paddingLeft
         , paddingRight
         , pct
@@ -228,10 +230,10 @@ view attributes (TextInput config) =
             let
                 sizeSpecificStyling_ =
                     if config.size == Small then
-                        [ width (rem 1.5), padding4 (rem 0.2) (rem 0.125) (rem 0.125) (rem 0.125) ]
+                        [ width (rem 1), marginRight (rem 0.25) ]
 
                     else
-                        [ width (rem 2.5), padding4 (rem 0.35) (rem 0.25) (rem 0.25) (rem 0.25) ]
+                        [ width (rem 1.3), marginRight (rem 0.5) ]
             in
             Icons.roundedCross
                 (Maybe.values
@@ -288,7 +290,7 @@ view attributes (TextInput config) =
                     )
     in
     Html.div
-        (css [ displayFlex, position relative, sizeSpecificHeight ] :: attributes)
+        (css [ displayFlex, position relative, sizeSpecificHeight, alignItems center ] :: attributes)
         [ viewSearchIcon
         , Html.input
             (css
