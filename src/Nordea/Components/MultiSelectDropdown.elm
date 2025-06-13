@@ -83,7 +83,7 @@ import Css
         , zIndex
         )
 import Html.Styled as Html exposing (Attribute, Html, input, span, text)
-import Html.Styled.Attributes as Attrs exposing (attribute, css, id, placeholder, tabindex, value)
+import Html.Styled.Attributes as Attrs exposing (attribute, css, id, placeholder, tabindex, type_, value)
 import Html.Styled.Events as Events exposing (onClick, onInput)
 import Json.Decode as Decode
 import List.Extra as List
@@ -234,6 +234,7 @@ view attrs dropdown =
                             Html.button
                                 (Events.onClick (inputProperties.onInput "" (Task.attempt (\_ -> dropdown.onFocus False) (Task.succeed ())))
                                     :: css [ displayFlex, borderStyle none, backgroundColor transparent, marginRight (rem 0.25) ]
+                                    :: type_ "button"
                                     :: toggleButtonAttrs
                                 )
                                 [ Icons.roundedCross
@@ -251,6 +252,7 @@ view attrs dropdown =
                                         , backgroundColor transparent
                                         ]
                                     :: attribute "aria-label" dropdown.placeholder
+                                    :: type_ "button"
                                     :: toggleButtonAttrs
                                 )
                                 [ Icons.chevronDownFilled
@@ -374,9 +376,10 @@ view attrs dropdown =
                             (controlElementStyle
                                 :: css [ justifyContent spaceBetween ]
                                 :: Events.onClick (dropdown.onFocus (not dropdown.hasFocus))
+                                :: type_ "button"
                                 :: toggleButtonAttrs
                             )
-                            [ Html.text dropdown.placeholder
+                            [ Text.bodyTextSmall |> Text.view [] [ Html.text dropdown.placeholder ]
                             , Icons.chevronDownFilled [ attribute "aria-hidden" "true" ]
                             ]
                 , dropdownListView
