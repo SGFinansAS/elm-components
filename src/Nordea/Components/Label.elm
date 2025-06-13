@@ -26,6 +26,8 @@ import Css
         , hidden
         , justifyContent
         , margin
+        , marginBlockEnd
+        , marginBlockStart
         , marginBottom
         , marginInlineEnd
         , marginInlineStart
@@ -273,7 +275,8 @@ stateStyles { hasError } =
 
           else
             pseudoClass "focus-within" [ styles ]
-        , margin (rem 0)
+        , marginBlockStart (rem 0)
+        , marginBlockEnd (rem 0)
         ]
 
 
