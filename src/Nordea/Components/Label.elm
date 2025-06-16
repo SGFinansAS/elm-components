@@ -129,23 +129,23 @@ view attrs children (Label config) =
                                         string
                             ]
 
-                tagType =
+                ( tagType, attrs_ ) =
                     case config.labelType of
                         TextLabel ->
-                            Html.dt
+                            ( Html.dt, [] )
 
                         _ ->
-                            Html.div
+                            ( Html.div, [ attribute "role" "none" ] )
             in
             tagType
-                [ css
+                (css
                     [ displayFlex
                     , justifyContent spaceBetween
                     , marginBottom (rem 0.2)
                     , columnGap (rem 1)
                     ]
-                , attribute "role" "none"
-                ]
+                    :: attrs_
+                )
                 [ initText config.size
                     |> Text.view
                         [ class "input-focus-color" ]
@@ -236,7 +236,7 @@ view attrs children (Label config) =
 
         TextLabel ->
             Html.dl
-                (css [ stateStyles { hasError = config.errorMessage /= Nothing } ]
+                (css [ stateStyles { hasError = False } ]
                     :: overridableCss "no-marg" [ margin (rem 0) ]
                     ++ attrs
                 )
