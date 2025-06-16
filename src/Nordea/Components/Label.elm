@@ -49,7 +49,7 @@ import Html.Styled as Html exposing (Attribute, Html)
 import Html.Styled.Attributes exposing (attribute, class, css)
 import Maybe.Extra as Maybe
 import Nordea.Components.Text as Text
-import Nordea.Css as Css exposing (alignContent, columnGap)
+import Nordea.Css as Css exposing (alignContent, columnGap, overridableCss)
 import Nordea.Html as Html exposing (showIf)
 import Nordea.Resources.Colors as Colors
 import Nordea.Resources.I18N exposing (Translation)
@@ -219,12 +219,11 @@ view attrs children (Label config) =
                     , flexWrap wrap
                     , alignContent "flex-start"
                     , stateStyles { hasError = config.errorMessage /= Nothing }
-                    , marginInlineStart (rem 0)
-                    , marginInlineEnd (rem 0)
                     , padding (rem 0)
                     , border (rem 0)
                     ]
-                    :: attrs
+                    :: overridableCss "no-marg" [ margin (rem 0) ]
+                    ++ attrs
                 )
                 ((Html.legend
                     [ css
@@ -241,7 +240,10 @@ view attrs children (Label config) =
 
         TextLabel ->
             Html.dl
-                (css [ stateStyles { hasError = config.errorMessage /= Nothing } ] :: attrs)
+                (css [ stateStyles { hasError = config.errorMessage /= Nothing } ]
+                    :: overridableCss "no-marg" [ margin (rem 0) ]
+                    ++ attrs
+                )
                 [ topInfo, Html.dd [ css [ margin (rem 0) ] ] children ]
 
 
@@ -275,8 +277,6 @@ stateStyles { hasError } =
 
           else
             pseudoClass "focus-within" [ styles ]
-        , marginBlockStart (rem 0)
-        , marginBlockEnd (rem 0)
         ]
 
 
