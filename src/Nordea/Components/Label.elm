@@ -25,9 +25,8 @@ import Css
         , flexWrap
         , hidden
         , justifyContent
+        , margin
         , marginBottom
-        , marginInlineEnd
-        , marginInlineStart
         , marginRight
         , marginTop
         , none
@@ -43,10 +42,10 @@ import Css
         )
 import Css.Global exposing (descendants, everything, selector, typeSelector)
 import Html.Styled as Html exposing (Attribute, Html)
-import Html.Styled.Attributes exposing (class, css)
+import Html.Styled.Attributes exposing (attribute, class, css)
 import Maybe.Extra as Maybe
 import Nordea.Components.Text as Text
-import Nordea.Css as Css exposing (alignContent, columnGap)
+import Nordea.Css as Css exposing (alignContent, columnGap, overridableCss)
 import Nordea.Html as Html exposing (showIf)
 import Nordea.Resources.Colors as Colors
 import Nordea.Resources.I18N exposing (Translation)
@@ -129,13 +128,23 @@ view attrs children (Label config) =
                                     Custom string ->
                                         string
                             ]
+
+                tagType =
+                    case config.labelType of
+                        TextLabel ->
+                            Html.dt
+
+                        _ ->
+                            Html.div
             in
-            Html.row
+            tagType
                 [ css
-                    [ justifyContent spaceBetween
+                    [ displayFlex
+                    , justifyContent spaceBetween
                     , marginBottom (rem 0.2)
                     , columnGap (rem 1)
                     ]
+                , attribute "role" "none"
                 ]
                 [ initText config.size
                     |> Text.view
@@ -159,7 +168,7 @@ view attrs children (Label config) =
                                 , visibility hidden |> Css.cssIf (Maybe.isNothing maybeError)
                                 ]
                             ]
-                            [ Icons.error [ css [ marginRight (rem 0.5), flex none ] ]
+                            [ Icons.error [ attribute "aria-hidden" "true", css [ marginRight (rem 0.5), flex none ] ]
                             , maybeError |> Maybe.withDefault "No errors" |> Html.text
                             ]
 
@@ -206,12 +215,11 @@ view attrs children (Label config) =
                     , flexWrap wrap
                     , alignContent "flex-start"
                     , stateStyles { hasError = config.errorMessage /= Nothing }
-                    , marginInlineStart (rem 0)
-                    , marginInlineEnd (rem 0)
                     , padding (rem 0)
                     , border (rem 0)
                     ]
-                    :: attrs
+                    :: overridableCss "no-marg" [ margin (rem 0) ]
+                    ++ attrs
                 )
                 ((Html.legend
                     [ css
@@ -227,9 +235,12 @@ view attrs children (Label config) =
                 )
 
         TextLabel ->
-            Html.column
-                (css [ stateStyles { hasError = config.errorMessage /= Nothing } ] :: attrs)
-                (topInfo :: children ++ [ bottomInfo [] ])
+            Html.dl
+                (css [ stateStyles { hasError = config.errorMessage /= Nothing } ]
+                    :: overridableCss "no-marg" [ margin (rem 0) ]
+                    ++ attrs
+                )
+                [ topInfo, Html.dd [ css [ margin (rem 0) ] ] children ]
 
 
 stateStyles : { hasError : Bool } -> Style
