@@ -26,11 +26,7 @@ import Css
         , hidden
         , justifyContent
         , margin
-        , marginBlockEnd
-        , marginBlockStart
         , marginBottom
-        , marginInlineEnd
-        , marginInlineStart
         , marginRight
         , marginTop
         , none
