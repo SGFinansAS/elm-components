@@ -16,11 +16,46 @@ module Nordea.Components.NumberInput exposing
     , withStep
     )
 
-import Css exposing (Style, absolute, alignItems, backgroundColor, border3, borderBox, borderRadius, boxSizing, center, color, cursor, default, disabled, display, displayFlex, focus, fontSize, height, left, none, outline, padding4, pct, position, property, pseudoElement, relative, rem, right, solid, textAlign, width)
+import Css
+    exposing
+        ( Style
+        , absolute
+        , alignItems
+        , backgroundColor
+        , border3
+        , borderBox
+        , borderRadius
+        , boxSizing
+        , center
+        , color
+        , cursor
+        , default
+        , disabled
+        , display
+        , displayFlex
+        , focus
+        , fontSize
+        , height
+        , left
+        , none
+        , outline
+        , padding4
+        , pct
+        , position
+        , property
+        , pseudoElement
+        , relative
+        , rem
+        , right
+        , solid
+        , textAlign
+        , width
+        )
 import Html.Styled as Html exposing (Attribute, Html, input, styled)
-import Html.Styled.Attributes as Attributes exposing (css, placeholder, step, type_, value)
+import Html.Styled.Attributes as Attributes exposing (attribute, css, placeholder, step, type_, value)
 import Html.Styled.Events exposing (onBlur, onInput)
 import Maybe.Extra as Maybe
+import Nordea.Html exposing (viewMaybe)
 import Nordea.Resources.Colors as Colors exposing (nordeaGray)
 import Nordea.Themes as Themes
 
@@ -163,17 +198,22 @@ view attributes (NumberInput config) =
             (getStyles config)
             (getAttributes config ++ attributes)
             []
-        , Html.div
-            [ css
-                ([ position absolute
-                 , right (rem 0.5)
-                 , cursor default
-                 , color nordeaGray
-                 ]
-                    ++ getFontSize config.size
+        , config.suffix
+            |> viewMaybe
+                (\suffix ->
+                    Html.div
+                        [ attribute "aria-hidden" "true"
+                        , css
+                            ([ position absolute
+                             , right (rem 0.5)
+                             , cursor default
+                             , color nordeaGray
+                             ]
+                                ++ getFontSize config.size
+                            )
+                        ]
+                        [ Html.text (toString suffix) ]
                 )
-            ]
-            [ Html.text (config.suffix |> Maybe.map toString |> Maybe.withDefault "") ]
         ]
 
 
