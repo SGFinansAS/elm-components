@@ -45,7 +45,7 @@ import Html.Styled as Html exposing (Attribute, Html)
 import Html.Styled.Attributes exposing (attribute, class, css)
 import Maybe.Extra as Maybe
 import Nordea.Components.Text as Text
-import Nordea.Css as Css exposing (alignContent, columnGap, overridableCss)
+import Nordea.Css as Css exposing (alignContent, columnGap, gap, overridableCss)
 import Nordea.Html as Html exposing (showIf)
 import Nordea.Resources.Colors as Colors
 import Nordea.Resources.I18N exposing (Translation)
@@ -217,6 +217,7 @@ view attrs children (Label config) =
                     , stateStyles { hasError = config.errorMessage /= Nothing }
                     , padding (rem 0)
                     , border (rem 0)
+                    , gap (rem 0.25)
                     ]
                     :: overridableCss "no-marg" [ margin (rem 0) ]
                     ++ attrs
