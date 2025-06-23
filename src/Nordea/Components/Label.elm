@@ -7,6 +7,7 @@ module Nordea.Components.Label exposing
     , withCharCounter
     , withErrorMessage
     , withHintText
+    , withLargeSize
     , withNoReservedErrorSpace
     , withRequirednessHint
     , withSmallSize
@@ -86,6 +87,7 @@ type alias InputProperties =
 type Size
     = Small
     | Standard
+    | Large
 
 
 type Label
@@ -284,6 +286,9 @@ initText size =
         Small ->
             Text.textTinyLight
 
+        Large ->
+            Text.bodyTextSmall
+
 
 withRequirednessHint : Maybe RequirednessHint -> Label -> Label
 withRequirednessHint requirednessHint (Label config) =
@@ -313,6 +318,11 @@ withCharCounter charCounter (Label config) =
 withSmallSize : Label -> Label
 withSmallSize (Label config) =
     Label { config | size = Small }
+
+
+withLargeSize : Label -> Label
+withLargeSize (Label config) =
+    Label { config | size = Large }
 
 
 strings =

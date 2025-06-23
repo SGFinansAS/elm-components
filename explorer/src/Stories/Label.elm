@@ -329,6 +329,48 @@ stories =
                     ]
           , {}
           )
+        , ( "Large label with checkboxes"
+          , \_ ->
+                Html.div [ css [ displayFlex, flexDirection column, maxWidth (rem 30), gap (rem 2) ] ]
+                    [ Label.init "State of object" Label.GroupLabel
+                        |> Label.withLargeSize
+                        |> Label.view []
+                            [ Checkbox.init
+                                "simple"
+                                (text "New")
+                                (\_ -> NoOp)
+                                |> Checkbox.withAppearance Checkbox.Standard
+                                |> Checkbox.view [ css [ marginRight (rem 1) ] ]
+                            , Checkbox.init
+                                "simple"
+                                (text "Used")
+                                (\_ -> NoOp)
+                                |> Checkbox.withAppearance Checkbox.Standard
+                                |> Checkbox.withIsChecked True
+                                |> Checkbox.view []
+                            ]
+                    , Label.init "State of object" Label.GroupLabel
+                        |> Label.withLargeSize
+                        |> Label.withErrorMessage (Just "State of object is required")
+                        |> Label.view []
+                            [ Checkbox.init
+                                "simple"
+                                (text "Click me")
+                                (\_ -> NoOp)
+                                |> Checkbox.withAppearance Checkbox.Standard
+                                |> Checkbox.withHasError True
+                                |> Checkbox.view [ css [ marginRight (rem 1) ] ]
+                            , Checkbox.init
+                                "simple"
+                                (text "Click me")
+                                (\_ -> NoOp)
+                                |> Checkbox.withAppearance Checkbox.Standard
+                                |> Checkbox.withHasError True
+                                |> Checkbox.view []
+                            ]
+                    ]
+          , {}
+          )
         ]
 
 
