@@ -234,7 +234,13 @@ view attrs dropdown =
                         , if inputProperties.input /= "" then
                             Html.button
                                 (Events.onClick (inputProperties.onInput "" (Task.attempt (\_ -> dropdown.onFocus False) (Task.succeed ())))
-                                    :: css [ displayFlex, borderStyle none, backgroundColor transparent, marginRight (rem 0.25) ]
+                                    :: css
+                                        [ displayFlex
+                                        , borderStyle none
+                                        , backgroundColor transparent
+                                        , marginRight (rem 0.25)
+                                        , cursor pointer
+                                        ]
                                     :: type_ "button"
                                     :: toggleButtonAttrs
                                 )
@@ -251,6 +257,7 @@ view attrs dropdown =
                                         [ displayFlex
                                         , borderStyle none
                                         , backgroundColor transparent
+                                        , cursor pointer
                                         ]
                                     :: attribute "aria-label" dropdown.placeholder
                                     :: type_ "button"
@@ -389,7 +396,7 @@ view attrs dropdown =
                     Nothing ->
                         Html.button
                             (controlElementStyle
-                                :: css [ justifyContent spaceBetween ]
+                                :: css [ justifyContent spaceBetween, cursor pointer ]
                                 :: Events.onClick (dropdown.onFocus (not dropdown.hasFocus))
                                 :: type_ "button"
                                 :: toggleButtonAttrs
