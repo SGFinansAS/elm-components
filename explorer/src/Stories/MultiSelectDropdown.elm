@@ -34,9 +34,10 @@ stories =
           , \model ->
                 MultiSelectDropdown.init { onFocus = FocusMultiSelectDropdown, uniqueId = "MultiSelectDropdown2" }
                     |> MultiSelectDropdown.withLabel "Label"
-                    |> MultiSelectDropdown.withPlaceholder "Choose an option"
+                    --|> MultiSelectDropdown.withPlaceholder "Choose an option"
                     |> MultiSelectDropdown.withHasFocus model.customModel.hasMultiSelectDropdownFocus
                     |> MultiSelectDropdown.withRequirednessHint (Just (Label.Mandatory .no))
+                    |> MultiSelectDropdown.withSelected
                     |> MultiSelectDropdown.withOptionGroups
                         [ { options =
                                 [ { name = "1", label = "Valg 1", isChecked = model.customModel.isChoice1, onCheck = \_ -> OnCheckChoice1 }
