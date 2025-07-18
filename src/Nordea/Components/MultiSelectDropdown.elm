@@ -195,89 +195,88 @@ view attrs dropdown =
                 ]
                 []
 
-        viewSelectedAndInput inputProperties =
-            List.concat
-                [ dropdown.optionGroups
-                    |> List.concatMap .options
-                    |> List.filter .isChecked
-                    |> List.map
-                        (\option ->
-                            Html.div
-                                [ attribute "aria-hidden" "true"
-                                , tabindex -1
-                                , css
-                                    [ color Colors.nordeaBlue
-                                    , displayFlex
-                                    , alignItems center
-                                    , gap (rem 0.5)
-                                    , backgroundColor Colors.lightBlue
-                                    , borderRadius (rem 2)
-                                    , padding2 (rem 0.25) (rem 0.75)
-                                    ]
+        viewSelected =
+            dropdown.optionGroups
+                |> List.concatMap .options
+                |> List.filter .isChecked
+                |> List.map
+                    (\option ->
+                        Html.div
+                            [ attribute "aria-hidden" "true"
+                            , tabindex -1
+                            , css
+                                [ color Colors.nordeaBlue
+                                , displayFlex
+                                , alignItems center
+                                , gap (rem 0.5)
+                                , backgroundColor Colors.lightBlue
+                                , borderRadius (rem 2)
+                                , padding2 (rem 0.25) (rem 0.75)
                                 ]
-                                [ span [ css [ whiteSpace noWrap ] ] [ Text.textLight |> Text.view [] [ text option.label ] ]
-                                , Icons.cross [ onClick (option.onCheck False), css [ width (rem 1), height (rem 1), cursor pointer ] ]
-                                ]
-                        )
-                , [ Html.row [ css [ width (pct 100), height (rem 1.875), alignItems center ] ]
-                        [ Icons.search
-                            [ css
-                                [ pointerEvents none
-                                , color Colors.gray
-                                , width (rem 1)
-                                , height (rem 1)
-                                , margin4 (rem 0) (rem 0.4) (rem 0) (rem 0)
-                                ]
-                            , attribute "aria-hidden" "true"
                             ]
-                        , viewInput inputProperties
-                        , if inputProperties.input /= "" then
-                            Html.button
-                                (Events.onClick (inputProperties.onInput "" (Task.attempt (\_ -> dropdown.onFocus False) (Task.succeed ())))
-                                    :: css
-                                        [ displayFlex
-                                        , borderStyle none
-                                        , backgroundColor transparent
-                                        , marginRight (rem 0.25)
-                                        , cursor pointer
-                                        ]
-                                    :: type_ "button"
-                                    :: toggleButtonAttrs
-                                )
-                                [ Icons.roundedCross
-                                    [ attribute "aria-hidden" "true"
-                                    , css [ width (rem 1.3), color Colors.mediumGray ]
-                                    ]
-                                ]
+                            [ span [ css [ whiteSpace noWrap ] ] [ Text.textLight |> Text.view [] [ text option.label ] ]
+                            , Icons.cross [ onClick (option.onCheck False), css [ width (rem 1), height (rem 1), cursor pointer ] ]
+                            ]
+                    )
 
-                          else
-                            Html.button
-                                (Events.onClick (dropdown.onFocus (not dropdown.hasFocus))
-                                    :: css
-                                        [ displayFlex
-                                        , borderStyle none
-                                        , backgroundColor transparent
-                                        , cursor pointer
-                                        ]
-                                    :: attribute "aria-label" dropdown.placeholder
-                                    :: type_ "button"
-                                    :: toggleButtonAttrs
-                                )
-                                [ Icons.chevronDownFilled
-                                    [ attribute "aria-hidden" "true"
-                                    , css
-                                        [ cursor pointer
-                                        , color Colors.coolGray
-                                        , if dropdown.hasFocus then
-                                            transforms [ rotate (deg 180) ]
-
-                                          else
-                                            Css.batch []
-                                        ]
-                                    ]
-                                ]
+        viewSelectedAndInput inputProperties =
+            Html.row [ css [ width (pct 100), height (rem 1.875), alignItems center ] ]
+                [ Icons.search
+                    [ css
+                        [ pointerEvents none
+                        , color Colors.gray
+                        , width (rem 1)
+                        , height (rem 1)
+                        , margin4 (rem 0) (rem 0.4) (rem 0) (rem 0)
                         ]
-                  ]
+                    , attribute "aria-hidden" "true"
+                    ]
+                , viewInput inputProperties
+                , if inputProperties.input /= "" then
+                    Html.button
+                        (Events.onClick (inputProperties.onInput "" (Task.attempt (\_ -> dropdown.onFocus False) (Task.succeed ())))
+                            :: css
+                                [ displayFlex
+                                , borderStyle none
+                                , backgroundColor transparent
+                                , marginRight (rem 0.25)
+                                , cursor pointer
+                                ]
+                            :: type_ "button"
+                            :: toggleButtonAttrs
+                        )
+                        [ Icons.roundedCross
+                            [ attribute "aria-hidden" "true"
+                            , css [ width (rem 1.3), color Colors.mediumGray ]
+                            ]
+                        ]
+
+                  else
+                    Html.button
+                        (Events.onClick (dropdown.onFocus (not dropdown.hasFocus))
+                            :: css
+                                [ displayFlex
+                                , borderStyle none
+                                , backgroundColor transparent
+                                , cursor pointer
+                                ]
+                            :: attribute "aria-label" dropdown.placeholder
+                            :: type_ "button"
+                            :: toggleButtonAttrs
+                        )
+                        [ Icons.chevronDownFilled
+                            [ attribute "aria-hidden" "true"
+                            , css
+                                [ cursor pointer
+                                , color Colors.coolGray
+                                , if dropdown.hasFocus then
+                                    transforms [ rotate (deg 180) ]
+
+                                  else
+                                    Css.batch []
+                                ]
+                            ]
+                        ]
                 ]
 
         controlElementStyle =
@@ -391,19 +390,29 @@ view attrs dropdown =
                                 , gap (rem 0.5)
                                 ]
                             ]
-                            (viewSelectedAndInput inputProperties)
+                            (viewSelected ++ [ viewSelectedAndInput inputProperties ])
 
                     Nothing ->
-                        Html.button
-                            (controlElementStyle
-                                :: css [ justifyContent spaceBetween, cursor pointer ]
-                                :: Events.onClick (dropdown.onFocus (not dropdown.hasFocus))
-                                :: type_ "button"
-                                :: toggleButtonAttrs
-                            )
-                            [ Text.bodyTextSmall |> Text.view [] [ Html.text dropdown.placeholder ]
-                            , Icons.chevronDownFilled [ attribute "aria-hidden" "true" ]
+                        Html.div
+                            [ controlElementStyle
+                            , css
+                                [ flexWrap wrap
+                                , gap (rem 0.5)
+                                ]
                             ]
+                            (viewSelected
+                                ++ [ Html.button
+                                        (controlElementStyle
+                                            :: css [ justifyContent spaceBetween, cursor pointer, borderStyle none, outline none, width (pct 10) ]
+                                            :: Events.onClick (dropdown.onFocus (not dropdown.hasFocus))
+                                            :: type_ "button"
+                                            :: toggleButtonAttrs
+                                        )
+                                        [ Text.bodyTextSmall |> Text.view [] [ Html.text dropdown.placeholder ]
+                                        , Icons.chevronDownFilled [ attribute "aria-hidden" "true" ]
+                                        ]
+                                   ]
+                            )
                 , dropdownListView
                 ]
             ]
