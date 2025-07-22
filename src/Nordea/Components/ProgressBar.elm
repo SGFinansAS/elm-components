@@ -2,6 +2,7 @@ module Nordea.Components.ProgressBar exposing
     ( init
     , view
     , withAnimationDurationMs
+    , withAriaLabel
     , withCheckmarkColor
     , withCustomCenterLabel
     , withStrokeColor
@@ -46,7 +47,7 @@ import Css.Animations as Animations exposing (keyframes)
 import Html.Styled as Html exposing (Attribute, Html)
 import Html.Styled.Attributes as Attrs
 import Nordea.Css exposing (propertyWithVariable)
-import Nordea.Html exposing (showIf)
+import Nordea.Html exposing (attrEmpty, showIf)
 import Nordea.Resources.Colors as Colors
 import Nordea.Themes as Themes
 import Svg.Styled as Svg
@@ -62,6 +63,7 @@ type alias ViewConfig msg =
     , progress : Float
     , isCompleted : Bool
     , customCenterLabel : Maybe (Html msg)
+    , ariaLabel : Maybe String
     }
 
 
@@ -75,6 +77,7 @@ init { progress, isCompleted } =
     , progress = progress
     , isCompleted = isCompleted
     , customCenterLabel = Nothing
+    , ariaLabel = Nothing
     }
 
 
@@ -236,10 +239,22 @@ view attrs config =
                 propertyWithVariable "stroke" (Themes.toString Themes.PrimaryColor) (Colors.toString config.strokeColor)
     in
     Html.div
-        (Attrs.css [ position relative, width (rem 4), height (rem 4) ] :: attrs)
+        ([ Attrs.css [ position relative, width (rem 4), height (rem 4) ]
+         , Attrs.attribute "role" "progressbar"
+         , Attrs.attribute "aria-valuenow" (config.progress |> round |> String.fromInt)
+         , case config.ariaLabel of
+            Just label ->
+                Attrs.attribute "aria-label" label
+
+            Nothing ->
+                attrEmpty
+         ]
+            ++ attrs
+        )
         [ Svg.svg
             [ SvgAttrs.viewBox "0 0 100 100"
             , Attrs.style "transform" "rotate(-90deg)"
+            , Attrs.attribute "aria-hidden" "true"
             ]
             [ svgCircle (Css.property "stroke" (Colors.toString config.unfilledStrokeColor)) 100
             , svgCircle circleStrokeColor config.progress
@@ -283,6 +298,11 @@ withAnimationDurationMs animDurationMs viewConfig =
 withCustomCenterLabel : Html msg -> ViewConfig msg -> ViewConfig msg
 withCustomCenterLabel centerLabel viewConfig =
     { viewConfig | customCenterLabel = Just centerLabel }
+
+
+withAriaLabel : String -> ViewConfig msg -> ViewConfig msg
+withAriaLabel ariaLabel viewConfig =
+    { viewConfig | ariaLabel = Just ariaLabel }
 
 
 
