@@ -22,6 +22,7 @@ stories =
                     [ Button.primary
                         |> Button.view [ onClick ToggleProgressBarCompleted ] [ Html.text "Toggle completed state" ]
                     , ProgressBar.init { progress = 30, isCompleted = model.customModel.isProgressBarCompleted }
+                        |> ProgressBar.withAriaLabel "Loading"
                         |> ProgressBar.view []
                     ]
           , {}
