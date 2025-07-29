@@ -15,73 +15,7 @@ module Nordea.Components.MultiSelectDropdown exposing
     , withSelected
     )
 
-import Css
-    exposing
-        ( absolute
-        , alignItems
-        , backgroundColor
-        , border3
-        , borderBottomLeftRadius
-        , borderBottomRightRadius
-        , borderBox
-        , borderRadius
-        , borderRadius4
-        , borderStyle
-        , boxShadow
-        , boxSizing
-        , center
-        , color
-        , column
-        , cursor
-        , deg
-        , display
-        , displayFlex
-        , flexBasis
-        , flexDirection
-        , flexGrow
-        , flexWrap
-        , fontSize
-        , height
-        , hover
-        , important
-        , int
-        , justifyContent
-        , left
-        , listStyle
-        , margin
-        , margin4
-        , marginLeft
-        , marginRight
-        , marginTop
-        , maxHeight
-        , minHeight
-        , noWrap
-        , none
-        , num
-        , outline
-        , overflowY
-        , padding
-        , padding2
-        , padding4
-        , pct
-        , pointer
-        , pointerEvents
-        , position
-        , relative
-        , rem
-        , right
-        , rotate
-        , scroll
-        , solid
-        , spaceBetween
-        , top
-        , transforms
-        , transparent
-        , whiteSpace
-        , width
-        , wrap
-        , zIndex
-        )
+import Css exposing (absolute, alignItems, backgroundColor, border3, borderBottomLeftRadius, borderBottomRightRadius, borderBox, borderRadius, borderRadius4, borderStyle, boxShadow, boxSizing, center, color, column, cursor, deg, display, displayFlex, flex, flexBasis, flexDirection, flexGrow, flexWrap, fontSize, height, hover, important, int, justifyContent, left, listStyle, margin, margin4, marginLeft, marginRight, marginTop, maxHeight, minHeight, minWidth, noWrap, none, num, outline, overflowY, padding, padding2, padding4, pct, pointer, pointerEvents, position, relative, rem, right, rotate, row, scroll, solid, spaceBetween, top, transforms, transparent, whiteSpace, width, wrap, zIndex)
 import Html.Styled as Html exposing (Attribute, Html, input, span, text)
 import Html.Styled.Attributes as Attrs exposing (attribute, css, id, placeholder, tabindex, type_, value)
 import Html.Styled.Events as Events exposing (onClick, onInput)
@@ -195,32 +129,8 @@ view attrs dropdown =
                 ]
                 []
 
-        viewSelected =
-            dropdown.optionGroups
-                |> List.concatMap .options
-                |> List.filter .isChecked
-                |> List.map
-                    (\option ->
-                        Html.div
-                            [ attribute "aria-hidden" "true"
-                            , tabindex -1
-                            , css
-                                [ color Colors.nordeaBlue
-                                , displayFlex
-                                , alignItems center
-                                , gap (rem 0.5)
-                                , backgroundColor Colors.lightBlue
-                                , borderRadius (rem 2)
-                                , padding2 (rem 0.25) (rem 0.75)
-                                ]
-                            ]
-                            [ span [ css [ whiteSpace noWrap ] ] [ Text.textLight |> Text.view [] [ text option.label ] ]
-                            , Icons.cross [ onClick (option.onCheck False), css [ width (rem 1), height (rem 1), cursor pointer ] ]
-                            ]
-                    )
-
-        viewSelectedAndInput inputProperties =
-            Html.row [ css [ width (pct 100), height (rem 1.875), alignItems center ] ]
+        viewInputBar inputProperties =
+            Html.row [ css [ flex (int 1), height (rem 1.875), alignItems center, minWidth (rem 15) ] ]
                 [ Icons.search
                     [ css
                         [ pointerEvents none
@@ -344,6 +254,34 @@ view attrs dropdown =
                     ]
                 ]
                 selectItems
+
+        selectedBubbles =
+            if dropdown.showSelected then
+                dropdown.optionGroups
+                    |> List.concatMap .options
+                    |> List.filter .isChecked
+                    |> List.map
+                        (\option ->
+                            Html.div
+                                [ attribute "aria-hidden" "true"
+                                , tabindex -1
+                                , css
+                                    [ color Colors.nordeaBlue
+                                    , displayFlex
+                                    , alignItems center
+                                    , gap (rem 0.5)
+                                    , backgroundColor Colors.lightBlue
+                                    , borderRadius (rem 2)
+                                    , padding2 (rem 0.25) (rem 0.75)
+                                    ]
+                                ]
+                                [ span [ css [ whiteSpace noWrap ] ] [ Text.textLight |> Text.view [] [ text option.label ] ]
+                                , Icons.cross [ onClick (option.onCheck False), css [ width (rem 1), height (rem 1), cursor pointer ] ]
+                                ]
+                        )
+
+            else
+                []
     in
     Label.init
         dropdown.label
@@ -380,41 +318,25 @@ view attrs dropdown =
                 , isActive = dropdown.hasFocus
                 , eventTypes = [ OutsideEventSupport.OutsideClick, OutsideEventSupport.OutsideFocus ]
                 }
-            , Html.div [ css [ position relative, width (pct 100) ] ]
-                [ case dropdown.inputProperties of
-                    Just inputProperties ->
-                        Html.div
-                            [ controlElementStyle
-                            , css
-                                [ flexWrap wrap
-                                , gap (rem 0.5)
-                                ]
-                            ]
-                            (viewSelected ++ [ viewSelectedAndInput inputProperties ])
+            , Html.div [ controlElementStyle, css [ position relative, width (pct 100), gap (rem 0.5), flexWrap wrap ] ]
+                (selectedBubbles
+                    ++ [ case dropdown.inputProperties of
+                            Just inputProperties ->
+                                viewInputBar inputProperties
 
-                    Nothing ->
-                        Html.div
-                            [ controlElementStyle
-                            , css
-                                [ flexWrap wrap
-                                , gap (rem 0.5)
-                                ]
-                            ]
-                            (viewSelected
-                                ++ [ Html.button
-                                        (controlElementStyle
-                                            :: css [ justifyContent spaceBetween, cursor pointer, borderStyle none, outline none, width (pct 10) ]
-                                            :: Events.onClick (dropdown.onFocus (not dropdown.hasFocus))
-                                            :: type_ "button"
-                                            :: toggleButtonAttrs
-                                        )
-                                        [ Text.bodyTextSmall |> Text.view [] [ Html.text dropdown.placeholder ]
-                                        , Icons.chevronDownFilled [ attribute "aria-hidden" "true" ]
-                                        ]
-                                   ]
-                            )
-                , dropdownListView
-                ]
+                            Nothing ->
+                                Html.button
+                                    (css [ justifyContent spaceBetween, alignItems center, cursor pointer, displayFlex, flex (int 1), minWidth (rem 15), padding4 (rem 0.25) (rem 0.25) (rem 0.25) (rem 0.5), margin4 (rem -0.25) (rem -0.25) (rem -0.25) (rem -0.5) ]
+                                        :: Events.onClick (dropdown.onFocus (not dropdown.hasFocus))
+                                        :: type_ "button"
+                                        :: toggleButtonAttrs
+                                    )
+                                    [ Text.bodyTextSmall |> Text.view [] [ Html.text dropdown.placeholder ]
+                                    , Icons.chevronDownFilled [ attribute "aria-hidden" "true" ]
+                                    ]
+                       , dropdownListView
+                       ]
+                )
             ]
 
 
