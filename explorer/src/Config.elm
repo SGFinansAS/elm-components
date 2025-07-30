@@ -37,6 +37,7 @@ type alias Config =
     , isChoice1 : Bool
     , isChoice2 : Bool
     , isChoice3 : Bool
+    , isChoice4 : Bool
     , selectedItems : List String
     , searchHasFocus : Bool
     , isFeatureBoxOpen : Bool
@@ -77,6 +78,7 @@ type Msg
     | OnCheckChoice1
     | OnCheckChoice2
     | OnCheckChoice3
+    | OnCheckChoice4
     | ToggleModal
     | ToggleFeatureBox
     | ToggleProgressBarCompleted
@@ -126,6 +128,7 @@ init =
     , isChoice1 = False
     , isChoice2 = False
     , isChoice3 = False
+    , isChoice4 = False
     , searchHasFocus = False
     , isModalOpen = True
     , isFeatureBoxOpen = True
@@ -217,6 +220,10 @@ update msg config =
 
         OnCheckChoice3 ->
             { config | isChoice3 = not config.isChoice3, selectedItems = "Valg 3" :: config.selectedItems }
+                |> addCmdNone
+
+        OnCheckChoice4 ->
+            { config | isChoice4 = not config.isChoice4, selectedItems = "Valg 4 - Ekstra tekst heihei 12345" :: config.selectedItems }
                 |> addCmdNone
 
         SearchComponentSelected item ->
