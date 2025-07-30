@@ -326,7 +326,7 @@ view attrs dropdown =
 
                             Nothing ->
                                 Html.button
-                                    (css [ justifyContent spaceBetween, alignItems center, cursor pointer, displayFlex, flex (int 1), minWidth (rem 15), padding4 (rem 0.25) (rem 0.25) (rem 0.25) (rem 0.5), margin4 (rem -0.25) (rem -0.25) (rem -0.25) (rem -0.5) ]
+                                    (css [ borderStyle none, justifyContent spaceBetween, alignItems center, cursor pointer, displayFlex, flex (int 1), minWidth (rem 15), padding4 (rem 0.25) (rem 0.25) (rem 0.25) (rem 0.5), margin4 (rem -0.25) (rem -0.25) (rem -0.25) (rem -0.5) ]
                                         :: Events.onClick (dropdown.onFocus (not dropdown.hasFocus))
                                         :: type_ "button"
                                         :: toggleButtonAttrs
