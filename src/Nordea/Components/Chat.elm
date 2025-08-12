@@ -12,8 +12,10 @@ import Css
         , breakWord
         , center
         , color
+        , column
         , columnReverse
         , display
+        , displayFlex
         , ellipsis
         , flexDirection
         , flexEnd
@@ -21,11 +23,14 @@ import Css
         , hidden
         , inlineBlock
         , justifyContent
+        , listStyleType
+        , margin
         , marginBottom
         , marginRight
         , marginTop
         , maxHeight
         , noWrap
+        , none
         , num
         , overflow
         , overflowWrap
@@ -40,7 +45,7 @@ import Css
         , width
         )
 import Html.Styled as Html exposing (Attribute, Html)
-import Html.Styled.Attributes exposing (attribute, class, css, id)
+import Html.Styled.Attributes exposing (attribute, css, id)
 import List
 import Maybe.Extra as Maybe
 import Nordea.Components.Card as Card
@@ -148,7 +153,8 @@ view optionals attrs history content (Chat config) =
 
         messageHistoryView =
             Html.column
-                [ css
+                [ attribute "role" "none"
+                , css
                     [ maxHeight (rem 15)
                     , overflow auto
                     , Css.property "scrollbar-width" "thin"
@@ -157,7 +163,18 @@ view optionals attrs history content (Chat config) =
                     , marginTop (rem -0.5) |> Html.styleIf (Maybe.isJust collapsibleProps && appearance == Small)
                     ]
                 ]
-                [ Html.column [ css [ gap (rem 1) ] ] history ]
+                [ Html.ol
+                    [ css
+                        [ listStyleType none
+                        , displayFlex
+                        , flexDirection column
+                        , padding (rem 0)
+                        , margin (rem 0)
+                        , gap (rem 1)
+                        ]
+                    ]
+                    history
+                ]
                 |> showIf (List.isNotEmpty history)
     in
     Card.init
@@ -194,49 +211,52 @@ chatHistoryView attrs { sentFrom, sentAt, sender, message, isIncomingMessage, re
             Text.textTinyLight
                 |> Text.view (css [ color Colors.darkGray, whiteSpace noWrap ] :: attr) [ Html.text text ]
     in
-    Html.column (css [ gap (rem 0.25) ] :: attrs)
-        [ Html.row [ css [ justifyContent spaceBetween ] ]
-            [ messageLabel [ css [ marginRight (rem 0.25), textOverflow ellipsis, overflow hidden ] ] sentFrom
-            , messageLabel [] sentAt
-            ]
-        , Html.row [ css [ alignItems center, justifyContent spaceBetween ] ]
-            [ sender
-                |> Html.viewMaybe
-                    (\sender_ ->
-                        Text.textTinyHeavy |> Text.view [] [ Html.text sender_ ]
-                    )
-            , messageChipText
-                |> Html.viewMaybe
-                    (\messageChipText_ ->
-                        Text.textTinyLight
-                            |> Text.view
-                                [ css
-                                    [ display inlineBlock
-                                    , borderRadius (rem 1.25)
-                                    , padding2 (rem 0.125) (rem 0.5)
-                                    , backgroundColor Colors.lightBlue
-                                    , textOverflow ellipsis
-                                    , overflow hidden
-                                    , whiteSpace noWrap
-                                    ]
-                                ]
-                                [ Html.text messageChipText_ ]
-                    )
-            ]
-        , Html.column [ class "chat-message", css [ padding (rem 0.625), gap (rem 0.625), messageStyles ] ]
-            [ Text.textSmallLight
-                |> Text.view
-                    [ css
-                        [ overflow hidden
-                        , overflowWrap breakWord
-                        , Css.property "hyphens" "auto"
-                        ]
+    Html.li attrs
+        [ Html.article [ css [ displayFlex, flexDirection column, gap (rem 0.25) ] ]
+            [ Html.header [ css [ displayFlex, flexDirection column, gap (rem 0.25) ] ]
+                [ Html.row [ css [ justifyContent spaceBetween ] ]
+                    [ messageLabel [ css [ marginRight (rem 0.25), textOverflow ellipsis, overflow hidden ] ] sentFrom
+                    , messageLabel [] sentAt
                     ]
-                    [ Html.text message ]
-            , readReceipt
-                |> Maybe.map (messageLabel [])
-                |> Maybe.withDefault Html.nothing
-                |> showIf (not isIncomingMessage)
+                , Html.row [ css [ alignItems center, justifyContent spaceBetween ] ]
+                    [ sender
+                        |> Html.viewMaybe
+                            (\sender_ -> Text.textTinyHeavy |> Text.view [] [ Html.text sender_ ])
+                    , messageChipText
+                        |> Html.viewMaybe
+                            (\messageChipText_ ->
+                                Text.textTinyLight
+                                    |> Text.view
+                                        [ css
+                                            [ display inlineBlock
+                                            , borderRadius (rem 1.25)
+                                            , padding2 (rem 0.125) (rem 0.5)
+                                            , backgroundColor Colors.lightBlue
+                                            , textOverflow ellipsis
+                                            , overflow hidden
+                                            , whiteSpace noWrap
+                                            ]
+                                        ]
+                                        [ Html.text messageChipText_ ]
+                            )
+                    ]
+                ]
+            , Html.column [ css [ padding (rem 0.625), gap (rem 0.625), messageStyles ] ]
+                [ Text.textSmallLight
+                    |> Text.withHtmlTag Html.p
+                    |> Text.view
+                        [ css
+                            [ overflow hidden
+                            , overflowWrap breakWord
+                            , Css.property "hyphens" "auto"
+                            ]
+                        ]
+                        [ Html.text message ]
+                , readReceipt
+                    |> Maybe.map (\r -> Html.footer [] [ messageLabel [ css [ marginTop (rem 0.625) ] ] r ])
+                    |> Maybe.withDefault Html.nothing
+                    |> showIf (not isIncomingMessage)
+                ]
             ]
         ]
 
