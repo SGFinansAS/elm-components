@@ -17,7 +17,7 @@ stories =
         [ ( "Standard"
           , \_ ->
                 Html.div [ css [ maxWidth (rem 30) ] ]
-                    [ Chat.init .no
+                    [ Chat.init { translate = .no, uniqueId = "chat" }
                         |> Chat.view []
                             []
                             (List.range 0 100
@@ -52,7 +52,7 @@ stories =
         , ( "Small"
           , \model ->
                 Html.div [ css [ maxWidth (rem 25) ] ]
-                    [ Chat.init .no
+                    [ Chat.init { translate = .no, uniqueId = "chat" }
                         |> Chat.view
                             [ Chat.Appearance Chat.Small
                             , Chat.Collapsible

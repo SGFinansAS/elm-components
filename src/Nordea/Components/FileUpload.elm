@@ -15,11 +15,55 @@ module Nordea.Components.FileUpload exposing
     , withIsHovering
     )
 
-import Css exposing (absolute, alignItems, backgroundColor, border3, borderRadius, borderStyle, borderWidth, center, color, column, cursor, dashed, default, displayFlex, flex, flexDirection, height, hover, inherit, justifyContent, left, listStyle, listStyleType, margin2, marginBottom, marginRight, marginTop, none, num, opacity, padding, padding2, pct, pointer, position, pseudoClass, px, relative, rem, row, top, width)
+import Css
+    exposing
+        ( absolute
+        , alignItems
+        , backgroundColor
+        , border3
+        , borderRadius
+        , borderStyle
+        , borderWidth
+        , center
+        , color
+        , column
+        , cursor
+        , dashed
+        , default
+        , displayFlex
+        , flex
+        , flexDirection
+        , height
+        , hover
+        , inherit
+        , justifyContent
+        , left
+        , listStyle
+        , listStyleType
+        , margin2
+        , marginBottom
+        , marginRight
+        , marginTop
+        , none
+        , num
+        , opacity
+        , padding
+        , padding2
+        , pct
+        , pointer
+        , position
+        , pseudoClass
+        , px
+        , relative
+        , rem
+        , row
+        , top
+        , width
+        )
 import Css.Global as Global
 import File exposing (File)
 import Html.Styled as Html exposing (Attribute, Html)
-import Html.Styled.Attributes as Attributes exposing (accept, css, multiple, type_, value)
+import Html.Styled.Attributes as Attributes exposing (accept, attribute, css, multiple, type_, value)
 import Html.Styled.Events as Events
 import Json.Decode as Decode
 import Maybe.Extra as Maybe
@@ -149,7 +193,8 @@ view (FileUpload config) =
 
         iconUpload =
             Icon.upload
-                [ css
+                [ attribute "aria-hidden" "true"
+                , css
                     ([ Themes.color Colors.nordeaBlue
                      , case config.appearance of
                         Large ->
@@ -179,7 +224,10 @@ view (FileUpload config) =
 
         description =
             textType
-                |> Text.view [ css [ color Colors.darkGray ] ]
+                |> Text.view
+                    [ attribute "aria-hidden" "true"
+                    , css [ color Colors.darkGray ]
+                    ]
                     [ Html.text (config.translate strings.uploadDescription1)
                     , Html.span
                         [ css [ Themes.color Colors.nordeaBlue ] ]
@@ -192,7 +240,10 @@ view (FileUpload config) =
                 |> Html.viewMaybe
                     (\supportedFileTypes ->
                         Text.textTinyLight
-                            |> Text.view [ css [ color Colors.darkGray, marginTop (rem 0.5) ] ]
+                            |> Text.view
+                                [ attribute "aria-hidden" "true"
+                                , css [ color Colors.darkGray, marginTop (rem 0.5) ]
+                                ]
                                 [ Html.text supportedFileTypes ]
                     )
 
@@ -353,7 +404,10 @@ fileList files onClickRemove translate attrs =
                             , pseudoClass "not(:last-child)" [ marginBottom (rem 1) ]
                             ]
                         ]
-                        [ Html.div [ css [ position relative ] ]
+                        [ Html.div
+                            [ attribute "aria-hidden" "true"
+                            , css [ position relative ]
+                            ]
                             [ Html.div [ css [ position absolute, top (rem -0.4), left (rem -0.45) ] ]
                                 (statusOverlay status)
                             , Icon.pdf [ css [ color Colors.black, marginRight (rem 1) ] ]

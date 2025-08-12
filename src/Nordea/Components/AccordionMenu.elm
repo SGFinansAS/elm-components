@@ -60,11 +60,13 @@ header attrs children =
         (css [ displayFlex, alignItems center ] :: attrs)
         (children
             ++ [ Icons.chevronDown
-                    [ Html.class "accordion-open-icon"
+                    [ attribute "aria-hidden" "true"
+                    , Html.class "accordion-open-icon"
                     , css [ marginLeft auto, width (rem 1.5) ]
                     ]
                , Icons.chevronUp
-                    [ Html.class "accordion-closed-icon"
+                    [ attribute "aria-hidden" "true"
+                    , Html.class "accordion-closed-icon"
                     , css [ marginLeft auto, width (rem 1.5) ]
                     ]
                ]

@@ -40,7 +40,7 @@ import Css
         , width
         )
 import Html.Styled as Html exposing (Attribute, Html)
-import Html.Styled.Attributes exposing (class, css)
+import Html.Styled.Attributes exposing (attribute, class, css, id)
 import List
 import Maybe.Extra as Maybe
 import Nordea.Components.Card as Card
@@ -57,6 +57,7 @@ import Nordea.Utils.List as List
 type alias Config =
     { translate : Translation -> String
     , appearance : Appearance
+    , uniqueId : String
     }
 
 
@@ -90,11 +91,12 @@ type Chat
     = Chat Config
 
 
-init : (Translation -> String) -> Chat
-init translate =
+init : { uniqueId : String, translate : Translation -> String } -> Chat
+init { uniqueId, translate } =
     Chat
         { translate = translate
         , appearance = Standard
+        , uniqueId = uniqueId
         }
 
 
@@ -118,6 +120,7 @@ view optionals attrs history content (Chat config) =
                     { appearance = Standard
                     , title =
                         Text.textHeavy
+                            |> Text.withHtmlTag Html.h2
                             |> Text.view [ css [ Themes.color Colors.deepBlue, alignSelf flexEnd ] ]
                                 [ strings.title |> config.translate |> Html.text ]
                     , collapsibleProps = Nothing
@@ -132,14 +135,14 @@ view optionals attrs history content (Chat config) =
         headerView =
             case appearance of
                 Standard ->
-                    Html.row [ css [ flexGrow (num 1) ] ]
-                        [ Illustrations.messageInstructionalStar [ css [ width (rem 2), marginRight (rem 0.5) ] ]
+                    Html.row [ id config.uniqueId, css [ flexGrow (num 1) ] ]
+                        [ Illustrations.messageInstructionalStar [ attribute "aria-hidden" "true", css [ width (rem 2), marginRight (rem 0.5) ] ]
                         , title
                         ]
 
                 Small ->
-                    Html.row [ css [ marginBottom (rem 1) |> Css.important |> Html.styleIf (Maybe.isNothing collapsibleProps), flexGrow (num 1) ] ]
-                        [ Illustrations.messageInstructionalStar [ css [ width (rem 1.5), marginRight (rem 0.5) ] ]
+                    Html.row [ id config.uniqueId, css [ marginBottom (rem 1) |> Css.important |> Html.styleIf (Maybe.isNothing collapsibleProps), flexGrow (num 1) ] ]
+                        [ Illustrations.messageInstructionalStar [ attribute "aria-hidden" "true", css [ width (rem 1.5), marginRight (rem 0.5) ] ]
                         , title
                         ]
 
@@ -154,17 +157,17 @@ view optionals attrs history content (Chat config) =
                     , marginTop (rem -0.5) |> Html.styleIf (Maybe.isJust collapsibleProps && appearance == Small)
                     ]
                 ]
-                [ Html.column
-                    [ css [ gap (rem 1) ] ]
-                    history
-                ]
+                [ Html.column [ css [ gap (rem 1) ] ] history ]
                 |> showIf (List.isNotEmpty history)
     in
     Card.init
         |> Card.withHtmlTitle headerView
         |> Card.isCollapsible collapsibleProps
         |> Card.view
-            (css [ smallAppearanceSpecificStyles |> Html.styleIf (appearance == Small) ] :: attrs)
+            (attribute "aria-labelledby" config.uniqueId
+                :: css [ smallAppearanceSpecificStyles |> Html.styleIf (appearance == Small) ]
+                :: attrs
+            )
             [ messageHistoryView
             , Html.column [ css [ gap (rem 0.5), marginTop (rem 1) ] ] content
                 |> showIf (List.isNotEmpty content)

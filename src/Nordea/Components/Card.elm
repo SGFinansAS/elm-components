@@ -44,7 +44,7 @@ import Css
 import Css.Global as Css
 import Css.Transitions as Transitions exposing (transition)
 import Html.Styled as Html exposing (Attribute, Html)
-import Html.Styled.Attributes as Html exposing (css)
+import Html.Styled.Attributes as Html exposing (attribute, css)
 import Html.Styled.Events exposing (onClick)
 import Maybe.Extra as Maybe
 import Nordea.Components.AccordionMenu as AccordionMenu
@@ -130,10 +130,12 @@ headerCollapsible attrs children =
         (children
             ++ [ Icons.chevronDown
                     [ Html.class "accordion-open-icon"
+                    , attribute "aria-hidden" "true"
                     , css [ width (rem 1.25), color Colors.deepBlue ]
                     ]
                , Icons.chevronUp
                     [ Html.class "accordion-closed-icon"
+                    , attribute "aria-hidden" "true"
                     , css [ width (rem 1.25), color Colors.deepBlue ]
                     ]
                ]
