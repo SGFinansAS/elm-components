@@ -253,7 +253,7 @@ chatHistoryView attrs { sentFrom, sentAt, sender, message, isIncomingMessage, re
                         ]
                         [ Html.text message ]
                 , readReceipt
-                    |> Maybe.map (\r -> Html.footer [] [ messageLabel [ css [ marginTop (rem 0.625) ] ] r ])
+                    |> Maybe.map (\r -> Html.footer [] [ messageLabel [] r ])
                     |> Maybe.withDefault Html.nothing
                     |> showIf (not isIncomingMessage)
                 ]
