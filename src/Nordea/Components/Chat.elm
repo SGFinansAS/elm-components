@@ -45,7 +45,7 @@ import Css
         , width
         )
 import Html.Styled as Html exposing (Attribute, Html)
-import Html.Styled.Attributes exposing (attribute, css, id)
+import Html.Styled.Attributes exposing (attribute, class, css, id)
 import List
 import Maybe.Extra as Maybe
 import Nordea.Components.Card as Card
@@ -241,7 +241,7 @@ chatHistoryView attrs { sentFrom, sentAt, sender, message, isIncomingMessage, re
                             )
                     ]
                 ]
-            , Html.column [ css [ padding (rem 0.625), gap (rem 0.625), messageStyles ] ]
+            , Html.column [ class "chat-message", css [ padding (rem 0.625), gap (rem 0.625), messageStyles ] ]
                 [ Text.textSmallLight
                     |> Text.withHtmlTag Html.p
                     |> Text.view
