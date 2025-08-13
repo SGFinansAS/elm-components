@@ -36,7 +36,7 @@ import Css
         )
 import Css.Global exposing (children, everything)
 import Html.Styled as Html exposing (Attribute, Html)
-import Html.Styled.Attributes exposing (css)
+import Html.Styled.Attributes exposing (attribute, css)
 import Nordea.Components.Spinner as Spinner
 import Nordea.Components.Text as Text
 import Nordea.Html as Layout
@@ -87,13 +87,13 @@ view attrs (FileDownload config) =
         downloadIconStatus =
             case config.downloadStatus of
                 Success ->
-                    Icon.downloaded [ css [ flexShrink (num 0), width (rem 1.1), marginLeft (rem 0.5) ] ]
+                    Icon.downloaded [ attribute "aria-hidden" "true", css [ flexShrink (num 0), width (rem 1.1), marginLeft (rem 0.5) ] ]
 
                 Loading ->
-                    Spinner.custom [ css [ flexShrink (num 0), width (rem 0.875), marginLeft (rem 0.5) ] ]
+                    Spinner.custom [ attribute "aria-hidden" "true", css [ flexShrink (num 0), width (rem 0.875), marginLeft (rem 0.5) ] ]
 
                 NotAsked ->
-                    Icon.download [ css [ flexShrink (num 0), width (rem 0.875), marginLeft (rem 0.5) ] ]
+                    Icon.download [ attribute "aria-hidden" "true", css [ flexShrink (num 0), width (rem 0.875), marginLeft (rem 0.5) ] ]
     in
     Html.a
         (css
