@@ -20,8 +20,10 @@ import Css
         , flexDirection
         , flexEnd
         , flexGrow
+        , fontStyle
         , hidden
         , inlineBlock
+        , italic
         , justifyContent
         , listStyleType
         , margin
@@ -67,13 +69,15 @@ type alias Config =
 
 
 type alias MessageViewConfig =
-    { sentFrom : String
+    { translate : Translation -> String
+    , sentFrom : String
     , sentAt : String
     , sender : Maybe String
     , message : String
     , isIncomingMessage : Bool
     , readReceipt : Maybe String
     , messageChipText : Maybe String
+    , deletedAt : Maybe String
     }
 
 
@@ -192,7 +196,7 @@ view optionals attrs history content (Chat config) =
 
 
 chatHistoryView : List (Attribute msg) -> MessageViewConfig -> Html msg
-chatHistoryView attrs { sentFrom, sentAt, sender, message, isIncomingMessage, readReceipt, messageChipText } =
+chatHistoryView attrs { translate, sentFrom, sentAt, sender, message, isIncomingMessage, readReceipt, messageChipText, deletedAt } =
     let
         messageStyles =
             if isIncomingMessage then
@@ -211,54 +215,72 @@ chatHistoryView attrs { sentFrom, sentAt, sender, message, isIncomingMessage, re
             Text.textTinyLight
                 |> Text.view (css [ color Colors.darkGray, whiteSpace noWrap ] :: attr) [ Html.text text ]
     in
-    Html.li attrs
-        [ Html.article [ css [ displayFlex, flexDirection column, gap (rem 0.25) ] ]
-            [ Html.header [ css [ displayFlex, flexDirection column, gap (rem 0.25) ] ]
-                [ Html.row [ css [ justifyContent spaceBetween ] ]
-                    [ messageLabel [ css [ marginRight (rem 0.25), textOverflow ellipsis, overflow hidden ] ] sentFrom
-                    , messageLabel [] sentAt
-                    ]
-                , Html.row [ css [ alignItems center, justifyContent spaceBetween ] ]
-                    [ sender
-                        |> Html.viewMaybe
-                            (\sender_ -> Text.textTinyHeavy |> Text.view [] [ Html.text sender_ ])
-                    , messageChipText
-                        |> Html.viewMaybe
-                            (\messageChipText_ ->
-                                Text.textTinyLight
-                                    |> Text.view
-                                        [ css
-                                            [ display inlineBlock
-                                            , borderRadius (rem 1.25)
-                                            , padding2 (rem 0.125) (rem 0.5)
-                                            , backgroundColor Colors.lightBlue
-                                            , textOverflow ellipsis
-                                            , overflow hidden
-                                            , whiteSpace noWrap
-                                            ]
-                                        ]
-                                        [ Html.text messageChipText_ ]
-                            )
-                    ]
-                ]
-            , Html.column [ class "chat-message", css [ padding (rem 0.625), gap (rem 0.625), messageStyles ] ]
+    if deletedAt /= Nothing then
+        Html.li attrs
+            [ Html.article [ css [ displayFlex, flexDirection column, gap (rem 0.25) ] ]
                 [ Text.textSmallLight
                     |> Text.withHtmlTag Html.p
                     |> Text.view
                         [ css
                             [ overflow hidden
                             , overflowWrap breakWord
+                            , fontStyle italic
                             , Css.property "hyphens" "auto"
                             ]
                         ]
-                        [ Html.text message ]
-                , readReceipt
-                    |> Maybe.map (\r -> Html.footer [] [ messageLabel [] r ])
-                    |> Maybe.withDefault Html.nothing
-                    |> showIf (not isIncomingMessage)
+                        [ Html.text (sentFrom ++ " " ++ translate strings.deletedAMessage) ]
                 ]
             ]
-        ]
+
+    else
+        Html.li attrs
+            [ Html.article [ css [ displayFlex, flexDirection column, gap (rem 0.25) ] ]
+                [ Html.header [ css [ displayFlex, flexDirection column, gap (rem 0.25) ] ]
+                    [ Html.row [ css [ justifyContent spaceBetween ] ]
+                        [ messageLabel [ css [ marginRight (rem 0.25), textOverflow ellipsis, overflow hidden ] ] sentFrom
+                        , messageLabel [] sentAt
+                        ]
+                    , Html.row [ css [ alignItems center, justifyContent spaceBetween ] ]
+                        [ sender
+                            |> Html.viewMaybe
+                                (\sender_ -> Text.textTinyHeavy |> Text.view [] [ Html.text sender_ ])
+                        , messageChipText
+                            |> Html.viewMaybe
+                                (\messageChipText_ ->
+                                    Text.textTinyLight
+                                        |> Text.view
+                                            [ css
+                                                [ display inlineBlock
+                                                , borderRadius (rem 1.25)
+                                                , padding2 (rem 0.125) (rem 0.5)
+                                                , backgroundColor Colors.lightBlue
+                                                , textOverflow ellipsis
+                                                , overflow hidden
+                                                , whiteSpace noWrap
+                                                ]
+                                            ]
+                                            [ Html.text messageChipText_ ]
+                                )
+                        ]
+                    ]
+                , Html.column [ class "chat-message", css [ padding (rem 0.625), gap (rem 0.625), messageStyles ] ]
+                    [ Text.textSmallLight
+                        |> Text.withHtmlTag Html.p
+                        |> Text.view
+                            [ css
+                                [ overflow hidden
+                                , overflowWrap breakWord
+                                , Css.property "hyphens" "auto"
+                                ]
+                            ]
+                            [ Html.text message ]
+                    , readReceipt
+                        |> Maybe.map (\r -> Html.footer [] [ messageLabel [] r ])
+                        |> Maybe.withDefault Html.nothing
+                        |> showIf (not isIncomingMessage)
+                    ]
+                ]
+            ]
 
 
 
@@ -267,9 +289,15 @@ chatHistoryView attrs { sentFrom, sentAt, sender, message, isIncomingMessage, re
 
 strings =
     { title =
-        { no = "Melding"
+        { en = "Message"
+        , no = "Melding"
         , se = "Meddelande"
         , dk = "Message"
-        , en = "Message"
+        }
+    , deletedAMessage =
+        { en = "deleted a message"
+        , no = "slettet en melding"
+        , se = "raderat ett meddelande"
+        , dk = "slettet en besked"
         }
     }
