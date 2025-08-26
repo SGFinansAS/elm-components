@@ -77,6 +77,7 @@ stories =
                         , ( Icons.logout, "logout" )
                         , ( Icons.copy, "copy" )
                         , ( Icons.filter, "filter" )
+                        , ( Icons.refresh, "refresh" )
                         ]
                     , iconCategoryHeader "Add, remove, accept and cancel"
                     , iconsRowWithDescription
