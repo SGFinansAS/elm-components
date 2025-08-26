@@ -2,6 +2,7 @@ module Nordea.Components.Modal exposing
     ( Variant(..)
     , init
     , view
+    , withHtmlTitle
     , withSubtitle
     , withTitle
     )
@@ -54,7 +55,7 @@ import Html.Styled.Attributes exposing (attribute, css, tabindex)
 import Html.Styled.Events as Events
 import Nordea.Components.Button as NordeaButton
 import Nordea.Components.Text as Text
-import Nordea.Html exposing (viewMaybe)
+import Nordea.Html exposing (nothing, viewMaybe)
 import Nordea.Html.Attributes exposing (attrMaybe)
 import Nordea.Html.Events exposing (onEscPress)
 import Nordea.Resources.Colors as Colors
@@ -70,7 +71,7 @@ type Variant
 
 type alias Config msg =
     { variant : Variant
-    , title : Maybe String
+    , title : Maybe (Html msg)
     , subtitle : Maybe String
     , closeConfig : Maybe (CloseConfig msg)
     }
@@ -142,7 +143,7 @@ view attrs children (Modal config) =
         [ card, disableScrollOnBody ]
 
 
-header : Variant -> Maybe String -> Maybe String -> Maybe (CloseConfig msg) -> Html msg
+header : Variant -> Maybe (Html msg) -> Maybe String -> Maybe (CloseConfig msg) -> Html msg
 header variant title subtitle closeConfig =
     let
         cross =
@@ -188,13 +189,7 @@ header variant title subtitle closeConfig =
                     , displayFlex
                     ]
                 ]
-                [ title
-                    |> viewMaybe
-                        (\text ->
-                            Text.titleHeavy
-                                |> Text.withHtmlTag Html.h1
-                                |> Text.view [] [ Html.text text ]
-                        )
+                [ title |> Maybe.withDefault nothing
                 , cross
                 ]
 
@@ -217,13 +212,7 @@ header variant title subtitle closeConfig =
                                 Text.textTinyLight
                                     |> Text.view [ css [ color Colors.nordeaGray ] ] [ Html.text text ]
                             )
-                    , title
-                        |> viewMaybe
-                            (\text ->
-                                Text.titleHeavy
-                                    |> Text.withHtmlTag Html.h1
-                                    |> Text.view [ css [ padding3 (rem 0.5) (rem 0) (rem 0) ] ] [ Html.text text ]
-                            )
+                    , title |> Maybe.withDefault nothing
                     ]
                 ]
 
@@ -237,13 +226,7 @@ header variant title subtitle closeConfig =
                     , displayFlex
                     ]
                 ]
-                [ title
-                    |> viewMaybe
-                        (\text ->
-                            Text.textHeavy
-                                |> Text.withHtmlTag Html.h1
-                                |> Text.view [] [ Html.text text ]
-                        )
+                [ title |> Maybe.withDefault nothing
                 , cross
                 ]
 
@@ -294,9 +277,34 @@ disableScrollOnBody =
     Global.global [ Global.body [ overflow hidden ] ]
 
 
+titleStyle : String -> Modal msg -> Html msg
+titleStyle title (Modal config) =
+    case config.variant of
+        DefaultModal ->
+            Text.titleHeavy
+                |> Text.withHtmlTag Html.h1
+                |> Text.view [] [ title |> Html.text ]
+
+        SmallModal ->
+            Text.textHeavy
+                |> Text.withHtmlTag Html.h1
+                |> Text.view [] [ title |> Html.text ]
+
+        NewsModal ->
+            Text.titleHeavy
+                |> Text.withHtmlTag Html.h1
+                |> Text.view [ css [ padding3 (rem 0.5) (rem 0) (rem 0) ] ]
+                    [ title |> Html.text ]
+
+
 withTitle : String -> Modal msg -> Modal msg
-withTitle title (Modal config) =
-    Modal { config | title = Just title }
+withTitle title ((Modal config) as model) =
+    Modal { config | title = titleStyle title model |> Just }
+
+
+withHtmlTitle : Html msg -> Modal msg -> Modal msg
+withHtmlTitle title (Modal config) =
+    Modal { config | title = title |> Just }
 
 
 withSubtitle : String -> Modal msg -> Modal msg
