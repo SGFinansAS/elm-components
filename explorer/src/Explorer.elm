@@ -1,9 +1,6 @@
 module Explorer exposing (main)
 
 import Config exposing (Config, Msg)
-import Html exposing (Html)
-import Html.Styled exposing (toUnstyled)
-import Nordea.Resources.Fonts.Fonts as Fonts
 import Stories.Accordion as Accordion
 import Stories.AccordionMenu as AccordionMenu
 import Stories.AccordionTable as AccordionTable
@@ -72,14 +69,6 @@ update msg model =
     ( { model | customModel = customModel }, cmd )
 
 
-viewEnhancer : a -> Html msg -> Html msg
-viewEnhancer _ stories =
-    Html.div []
-        [ Fonts.globalStyle "/fonts" |> toUnstyled
-        , stories
-        ]
-
-
 main : UIExplorerProgram Config Msg {} ()
 main =
     UIExplorer.exploreWithCategories
@@ -87,9 +76,9 @@ main =
         , customHeader = Nothing
         , update = update
         , init = \() a -> a
-        , enableDarkMode = False
+        , enableDarkMode = True
         , subscriptions = \_ -> Sub.none
-        , viewEnhancer = viewEnhancer
+        , viewEnhancer = \_ stories -> stories
         , menuViewEnhancer = \_ v -> v
         , onModeChanged = Nothing
         , documentTitle = Nothing
