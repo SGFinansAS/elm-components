@@ -1,0 +1,39 @@
+@font-face {
+  font-family: Nordea Sans Large;
+  src: url("NordeaSansLarge-Regular.4cd66760.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: Nordea Sans Large;
+  src: url("NordeaSansLarge-Medium.fc2ff358.woff2") format("woff2");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: Nordea Sans Small;
+  src: url("NordeaSansSmall-Regular.be28a459.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: Nordea Sans Small;
+  src: url("NordeaSansSmall-Italic.a55eba2c.woff2") format("woff2");
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: Nordea Sans Small;
+  src: url("NordeaSansSmall-Medium.699f7866.woff2") format("woff2");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}

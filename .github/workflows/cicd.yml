@@ -45,13 +45,13 @@ jobs:
       - name: Elm review (explorer)
         run: cd explorer && npm run verify-lint
       - name: Build (explorer)
-        run: cd explorer && npm run build
+        run: cd explorer && npx parcel build
 
       - name: Upload explorer project artifacts
         if: github.ref == 'refs/heads/master'
         uses: actions/upload-pages-artifact@v3
         with:
-          path: './explorer/public'
+          path: "./explorer/dist"
 
   deploy:
     needs: build

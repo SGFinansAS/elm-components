@@ -1,18 +1,26 @@
 {
   "name": "explorer",
   "scripts": {
-    "start": "npm run link-fonts && npm run link-js && elm-live src/Explorer.elm --open --dir=public --start-page=index.html -- --output=public/explorer.js --debug",
-    "build": "elm make src/Explorer.elm --output=public/explorer.js && shx cp -r ../static/fonts ./public && shx cp ../src/Nordea/Resources/Fonts/fonts.css ./public/fonts.css && shx cp -r ../src/Nordea/Resources/js ./public",
-    "link-fonts": "ln -sfn ../../static/fonts ./public/fonts",
-    "link-js": "ln -sfn ../../src/Nordea/Resources/js ./public/js",
+    "start": "parcel --target app -p 3009",
     "lint": "elm-review --fix",
     "verify-lint": "elm-review"
   },
+  "targets": {
+    "app": {
+      "source": [
+        "public/index.html"
+      ],
+      "context": "browser",
+      "sourceMap": false
+    }
+  },
   "devDependencies": {
+    "@parcel/transformer-elm": "^2.15.4",
     "elm": "^0.19.1-6",
     "elm-format": "^0.8.8",
     "elm-live": "^4.0.2",
     "elm-review": "^2.13.4",
+    "parcel": "^2.15.4",
     "shx": "^0.4.0"
   }
 }
