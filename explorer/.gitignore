@@ -2,3 +2,5 @@ public/explorer.js
 public/fonts
 public/fonts.css
 public/js
+.parcel-cache
+dist/
