@@ -45,7 +45,7 @@ jobs:
       - name: Elm review (explorer)
         run: cd explorer && npm run verify-lint
       - name: Build (explorer)
-        run: cd explorer && npx parcel build
+        run: cd explorer && npx parcel build --public-url /elm-components
 
       - name: Upload explorer project artifacts
         if: github.ref == 'refs/heads/master'
