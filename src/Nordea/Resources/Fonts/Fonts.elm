@@ -1,8 +1,6 @@
 module Nordea.Resources.Fonts.Fonts exposing (fromSize)
 
-import Css exposing (FontStyle, Style)
-import Css.Global as Css exposing (Snippet)
-import Html.Styled exposing (Html)
+import Css exposing (Style)
 
 
 fromSize : Float -> Style
