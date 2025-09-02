@@ -73,7 +73,7 @@ type alias Config msg =
     , onInput : Maybe (String -> msg)
     , showError : Bool
     , onBlur : Maybe msg
-    , formatter : Maybe (Float -> String)
+    , formatter : Maybe (String -> String)
     , size : Size
     , alignment : Alignment
     , suffix : Maybe Suffix
@@ -162,7 +162,7 @@ withOnBlur msg (NumberInput config) =
     NumberInput { config | onBlur = Just msg }
 
 
-withFormatter : Maybe (Float -> String) -> NumberInput msg -> NumberInput msg
+withFormatter : Maybe (String -> String) -> NumberInput msg -> NumberInput msg
 withFormatter formatter (NumberInput config) =
     NumberInput { config | formatter = formatter }
 
@@ -222,18 +222,9 @@ getAttributes config =
     let
         format : String -> String
         format value =
-            if String.endsWith "." value || String.endsWith "," value then
-                value
-
-            else
-                Maybe.map2 (\formatter val -> val |> formatter)
-                    config.formatter
-                    (value
-                        |> String.replace "," "."
-                        |> String.replace " " ""
-                        |> String.toFloat
-                    )
-                    |> Maybe.withDefault value
+            config.formatter
+                |> Maybe.map (\formatter -> formatter value)
+                |> Maybe.withDefault value
     in
     Maybe.values
         [ "text" |> type_ |> Just
