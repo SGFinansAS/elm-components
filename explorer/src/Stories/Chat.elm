@@ -25,42 +25,41 @@ stories =
                                     (\_ ->
                                         [ Chat.chatHistoryView []
                                             { translate = .no
-                                            , sentFrom = "Nordea Finance"
+                                            , sentFrom = Just "Nordea Finance"
+                                            , sentTo = Just "Intern melding"
                                             , sentAt = "30.05.2024, kl. 12:26"
-                                            , sender = Just "Line"
+                                            , sender = "Line"
                                             , message = "[REDACTED]"
                                             , isIncomingMessage = False
-                                            , readReceipt = Just "Lest i går kl. 14:36"
-                                            , messageChipText = Just "Intern melding"
+                                            , readReceipt = Just "i går kl. 14:36"
                                             , deletedAt = Just "i går kl. 14:36"
                                             }
                                         , Chat.chatHistoryView []
                                             { translate = .no
-                                            , sentFrom = "Nordea Finance"
+                                            , sentFrom = Nothing
+                                            , sentTo = Nothing
                                             , sentAt = "30.05.2024, kl. 12:26"
-                                            , sender = Nothing
+                                            , sender = "Nordea Finance"
                                             , message = "I forbindelse med deres søknad om finansiering gjennom oss ønsker vi innsikt i deres 2023-tall. Kan du oversende disse? Resultat- og balanserapport."
                                             , isIncomingMessage = False
-                                            , readReceipt = Just "Lest i går kl. 14:36"
-                                            , messageChipText = Nothing
+                                            , readReceipt = Just "i går kl. 14:36"
                                             , deletedAt = Nothing
                                             }
                                         , Chat.chatHistoryView []
                                             { translate = .no
-                                            , sentFrom = "PartnerHub"
+                                            , sentFrom = Just "PartnerHub"
+                                            , sentTo = Nothing
                                             , sentAt = "30.05.2024, kl. 13:54"
-                                            , sender = Just "Thomas Olsen"
+                                            , sender = "Thomas Olsen"
                                             , message = "Har lagt ved resultatrapport og balanserepport pr. 31.11.2023. Vi har ikke fått tilbake rapportene for des. 2023 fra regnskap firma."
                                             , isIncomingMessage = True
                                             , readReceipt = Nothing
-                                            , messageChipText = Nothing
                                             , deletedAt = Nothing
                                             }
                                         ]
                                     )
                             )
-                            [ Text.textSmallLight |> Text.view [] [ Html.text "Some chat content" ]
-                            ]
+                            [ Text.textSmallLight |> Text.view [] [ Html.text "Some chat content" ] ]
                     ]
           , {}
           )
@@ -82,42 +81,41 @@ stories =
                                     (\_ ->
                                         [ Chat.chatHistoryView []
                                             { translate = .no
-                                            , sentFrom = "Nordea Finance"
+                                            , sentFrom = Just "Nordea Finance"
+                                            , sentTo = Just "Intern melding"
                                             , sentAt = "30.05.2024, kl. 12:26"
-                                            , sender = Just "Line"
+                                            , sender = "Line"
                                             , message = "[REDACTED]"
                                             , isIncomingMessage = False
-                                            , readReceipt = Just "Lest i går kl. 14:36"
-                                            , messageChipText = Just "Intern melding"
+                                            , readReceipt = Just "i går kl. 14:36"
                                             , deletedAt = Just "i går kl. 14:36"
                                             }
                                         , Chat.chatHistoryView []
                                             { translate = .no
-                                            , sentFrom = "Nordea Finance"
+                                            , sentFrom = Nothing
+                                            , sentTo = Nothing
                                             , sentAt = "30.05.2024, kl. 12:26"
-                                            , sender = Just "Line"
+                                            , sender = "Nordea Finance"
                                             , message = "I forbindelse med deres søknad om finansiering gjennom oss ønsker vi innsikt i deres 2023-tall. Kan du oversende disse? Resultat- og balanserapport."
                                             , isIncomingMessage = False
-                                            , readReceipt = Just "Lest i går kl. 14:36"
-                                            , messageChipText = Just "Intern melding"
+                                            , readReceipt = Just "i går kl. 14:36"
                                             , deletedAt = Nothing
                                             }
                                         , Chat.chatHistoryView []
                                             { translate = .no
-                                            , sentFrom = "Nordea Finance Equipment AS - Long company name"
+                                            , sentFrom = Just "PartnerHub"
+                                            , sentTo = Nothing
                                             , sentAt = "30.05.2024, kl. 13:54"
-                                            , sender = Just "Thomas Olsen"
+                                            , sender = "Thomas Olsen"
                                             , message = "Har lagt ved resultatrapport og balanserepport pr. 31.11.2023. Vi har ikke fått tilbake rapportene for des. 2023 fra regnskap firma."
                                             , isIncomingMessage = True
                                             , readReceipt = Nothing
-                                            , messageChipText = Nothing
                                             , deletedAt = Nothing
                                             }
                                         ]
                                     )
                             )
-                            [ Text.textSmallLight |> Text.view [] [ Html.text "Some chat content" ]
-                            ]
+                            [ Text.textSmallLight |> Text.view [] [ Html.text "Some chat content" ] ]
                     ]
           , {}
           )

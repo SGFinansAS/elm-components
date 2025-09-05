@@ -28,6 +28,7 @@ import Css
         , listStyleType
         , margin
         , marginBottom
+        , marginLeft
         , marginRight
         , marginTop
         , maxHeight
@@ -40,6 +41,7 @@ import Css
         , padding2
         , paddingRight
         , rem
+        , row
         , solid
         , spaceBetween
         , textOverflow
@@ -70,13 +72,13 @@ type alias Config =
 
 type alias MessageViewConfig =
     { translate : Translation -> String
-    , sentFrom : String
+    , sentFrom : Maybe String
+    , sentTo : Maybe String
     , sentAt : String
-    , sender : Maybe String
+    , sender : String
     , message : String
     , isIncomingMessage : Bool
     , readReceipt : Maybe String
-    , messageChipText : Maybe String
     , deletedAt : Maybe String
     }
 
@@ -196,28 +198,28 @@ view optionals attrs history content (Chat config) =
 
 
 chatHistoryView : List (Attribute msg) -> MessageViewConfig -> Html msg
-chatHistoryView attrs { translate, sentFrom, sentAt, sender, message, isIncomingMessage, readReceipt, messageChipText, deletedAt } =
+chatHistoryView attrs { translate, sentFrom, sentTo, sentAt, sender, message, isIncomingMessage, readReceipt, deletedAt } =
     let
         messageStyles =
             if isIncomingMessage then
                 Css.batch
-                    [ borderRadius4 (rem 0.5) (rem 0.5) (rem 0.5) (rem 0)
-                    , Themes.backgroundColor Colors.coolGray
+                    [ borderRadius4 (rem 1) (rem 1) (rem 1) (rem 0)
+                    , Themes.backgroundColor Colors.cloudBlue
                     ]
 
             else
                 Css.batch
-                    [ borderRadius4 (rem 0.5) (rem 0.5) (rem 0) (rem 0.5)
-                    , Themes.backgroundColor Colors.cloudBlue
+                    [ borderRadius4 (rem 1) (rem 1) (rem 0) (rem 1)
+                    , Themes.backgroundColor Colors.coolGray
                     ]
 
-        messageLabel attr text =
+        messageLabel text =
             Text.textTinyLight
-                |> Text.view (css [ color Colors.darkGray, whiteSpace noWrap ] :: attr) [ Html.text text ]
+                |> Text.view [ css [ color Colors.darkGray, whiteSpace noWrap ] ] [ Html.text text ]
     in
     if deletedAt /= Nothing then
         Html.li attrs
-            [ Html.article [ css [ displayFlex, flexDirection column, gap (rem 0.25) ] ]
+            [ Html.article [ css [ displayFlex, alignItems center, justifyContent center ] ]
                 [ Text.textSmallLight
                     |> Text.withHtmlTag Html.p
                     |> Text.view
@@ -228,55 +230,51 @@ chatHistoryView attrs { translate, sentFrom, sentAt, sender, message, isIncoming
                             , Css.property "hyphens" "auto"
                             ]
                         ]
-                        [ Html.text (sentFrom ++ " " ++ translate strings.deletedAMessage) ]
+                        [ Html.text (sender ++ " " ++ translate strings.deletedAMessage) ]
                 ]
             ]
 
     else
         Html.li attrs
-            [ Html.article [ css [ displayFlex, flexDirection column, gap (rem 0.25) ] ]
-                [ Html.header [ css [ displayFlex, flexDirection column, gap (rem 0.25) ] ]
-                    [ Html.row [ css [ justifyContent spaceBetween ] ]
-                        [ messageLabel [ css [ marginRight (rem 0.25), textOverflow ellipsis, overflow hidden ] ] sentFrom
-                        , messageLabel [] sentAt
-                        ]
-                    , Html.row [ css [ alignItems center, justifyContent spaceBetween ] ]
-                        [ sender
-                            |> Html.viewMaybe
-                                (\sender_ -> Text.textTinyHeavy |> Text.view [] [ Html.text sender_ ])
-                        , messageChipText
-                            |> Html.viewMaybe
-                                (\messageChipText_ ->
-                                    Text.textTinyLight
-                                        |> Text.view
-                                            [ css
-                                                [ display inlineBlock
-                                                , borderRadius (rem 1.25)
-                                                , padding2 (rem 0.125) (rem 0.5)
-                                                , backgroundColor Colors.lightBlue
-                                                , textOverflow ellipsis
-                                                , overflow hidden
-                                                , whiteSpace noWrap
-                                                ]
+            [ Html.article [ css [ displayFlex, flexDirection column, messageStyles, padding (rem 0.625), gap (rem 0.625) ] ]
+                [ Html.header [ css [ displayFlex, flexDirection row, alignItems center ] ]
+                    [ Text.textTinyHeavy |> Text.view [] [ Html.text sender ]
+                    , sentFrom
+                        |> Html.viewMaybe
+                            (\sentFrom_ -> Text.textTinyLight |> Text.view [ css [ color Colors.darkGray, marginLeft (rem 0.25) ] ] [ Html.text ("(" ++ sentFrom_ ++ ")") ])
+                    , sentTo
+                        |> Html.viewMaybe
+                            (\sentTo_ ->
+                                Text.textTinyLight
+                                    |> Text.view
+                                        [ css
+                                            [ display inlineBlock
+                                            , borderRadius (rem 1.25)
+                                            , padding2 (rem 0.125) (rem 0.5)
+                                            , backgroundColor Colors.lightBlue
+                                            , textOverflow ellipsis
+                                            , overflow hidden
+                                            , whiteSpace noWrap
+                                            , marginLeft auto
                                             ]
-                                            [ Html.text messageChipText_ ]
-                                )
-                        ]
+                                        ]
+                                        [ Html.text sentTo_ ]
+                            )
                     ]
-                , Html.column [ class "chat-message", css [ padding (rem 0.625), gap (rem 0.625), messageStyles ] ]
-                    [ Text.textSmallLight
-                        |> Text.withHtmlTag Html.p
-                        |> Text.view
-                            [ css
-                                [ overflow hidden
-                                , overflowWrap breakWord
-                                , Css.property "hyphens" "auto"
-                                ]
+                , Text.textSmallLight
+                    |> Text.withHtmlTag Html.p
+                    |> Text.view
+                        [ css
+                            [ overflow hidden
+                            , overflowWrap breakWord
+                            , Css.property "hyphens" "auto"
                             ]
-                            [ Html.text message ]
+                        ]
+                        [ Html.text message ]
+                , Html.footer []
+                    [ messageLabel (translate strings.sent ++ " " ++ sentAt)
                     , readReceipt
-                        |> Maybe.map (\r -> Html.footer [] [ messageLabel [] r ])
-                        |> Maybe.withDefault Html.nothing
+                        |> Html.viewMaybe (\r -> messageLabel (translate strings.read ++ " " ++ r))
                         |> showIf (not isIncomingMessage)
                     ]
                 ]
@@ -299,5 +297,17 @@ strings =
         , no = "slettet en melding"
         , se = "raderat ett meddelande"
         , dk = "slettet en besked"
+        }
+    , sent =
+        { en = "Sent:"
+        , no = "Sendt:"
+        , se = "Skickat:"
+        , dk = "Sendt:"
+        }
+    , read =
+        { en = "Read:"
+        , no = "Lest:"
+        , se = "Läst:"
+        , dk = "Læst:"
         }
     }
