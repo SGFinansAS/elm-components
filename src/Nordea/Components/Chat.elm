@@ -1,4 +1,13 @@
-module Nordea.Components.Chat exposing (Appearance(..), OptionalConfig(..), chatHistoryView, init, view)
+module Nordea.Components.Chat exposing
+    ( Appearance(..)
+    , OptionalConfig(..)
+    , chatHistoryView
+    , darkPinkBubbleTag
+    , init
+    , lightBlueBubbleTag
+    , sakuraBubbleTag
+    , view
+    )
 
 import Css
     exposing
@@ -43,13 +52,12 @@ import Css
         , rem
         , row
         , solid
-        , spaceBetween
         , textOverflow
         , whiteSpace
         , width
         )
 import Html.Styled as Html exposing (Attribute, Html)
-import Html.Styled.Attributes exposing (attribute, class, css, id)
+import Html.Styled.Attributes exposing (attribute, css, id)
 import List
 import Maybe.Extra as Maybe
 import Nordea.Components.Card as Card
@@ -70,10 +78,10 @@ type alias Config =
     }
 
 
-type alias MessageViewConfig =
+type alias MessageViewConfig msg =
     { translate : Translation -> String
     , sentFrom : Maybe String
-    , sentTo : Maybe String
+    , sentTo : Maybe (Html msg)
     , sentAt : String
     , sender : String
     , message : String
@@ -197,7 +205,7 @@ view optionals attrs history content (Chat config) =
             ]
 
 
-chatHistoryView : List (Attribute msg) -> MessageViewConfig -> Html msg
+chatHistoryView : List (Attribute msg) -> MessageViewConfig msg -> Html msg
 chatHistoryView attrs { translate, sentFrom, sentTo, sentAt, sender, message, isIncomingMessage, readReceipt, deletedAt } =
     let
         messageStyles =
@@ -243,23 +251,7 @@ chatHistoryView attrs { translate, sentFrom, sentTo, sentAt, sender, message, is
                         |> Html.viewMaybe
                             (\sentFrom_ -> Text.textTinyLight |> Text.view [ css [ color Colors.darkGray, marginLeft (rem 0.25) ] ] [ Html.text ("(" ++ sentFrom_ ++ ")") ])
                     , sentTo
-                        |> Html.viewMaybe
-                            (\sentTo_ ->
-                                Text.textTinyLight
-                                    |> Text.view
-                                        [ css
-                                            [ display inlineBlock
-                                            , borderRadius (rem 1.25)
-                                            , padding2 (rem 0.125) (rem 0.5)
-                                            , backgroundColor Colors.lightBlue
-                                            , textOverflow ellipsis
-                                            , overflow hidden
-                                            , whiteSpace noWrap
-                                            , marginLeft auto
-                                            ]
-                                        ]
-                                        [ Html.text sentTo_ ]
-                            )
+                        |> Maybe.withDefault Html.nothing
                     ]
                 , Text.textSmallLight
                     |> Text.withHtmlTag Html.p
@@ -272,13 +264,42 @@ chatHistoryView attrs { translate, sentFrom, sentTo, sentAt, sender, message, is
                         ]
                         [ Html.text message ]
                 , Html.footer []
-                    [ messageLabel (translate strings.sent ++ " " ++ sentAt)
+                    [ messageLabel sentAt
                     , readReceipt
-                        |> Html.viewMaybe (\r -> messageLabel (translate strings.read ++ " " ++ r))
+                        |> Html.viewMaybe (\r -> messageLabel r)
                         |> showIf (not isIncomingMessage)
                     ]
                 ]
             ]
+
+
+bubbleTag attrs body =
+    Text.textTinyLight
+        |> Text.view
+            (css
+                [ display inlineBlock
+                , borderRadius (rem 1.25)
+                , padding2 (rem 0.125) (rem 0.5)
+                , textOverflow ellipsis
+                , overflow hidden
+                , whiteSpace noWrap
+                , marginLeft auto
+                ]
+                :: attrs
+            )
+            body
+
+
+lightBlueBubbleTag attrs body =
+    bubbleTag (css [ backgroundColor Colors.lightBlue ] :: attrs) body
+
+
+sakuraBubbleTag attrs body =
+    bubbleTag (css [ backgroundColor Colors.sakura ] :: attrs) body
+
+
+darkPinkBubbleTag attrs body =
+    bubbleTag (css [ backgroundColor Colors.yellow ] :: attrs) body
 
 
 
@@ -297,17 +318,5 @@ strings =
         , no = "slettet en melding"
         , se = "raderat ett meddelande"
         , dk = "slettet en besked"
-        }
-    , sent =
-        { en = "Sent:"
-        , no = "Sendt:"
-        , se = "Skickat:"
-        , dk = "Sendt:"
-        }
-    , read =
-        { en = "Read:"
-        , no = "Lest:"
-        , se = "Läst:"
-        , dk = "Læst:"
         }
     }
