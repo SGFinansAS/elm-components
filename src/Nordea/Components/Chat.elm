@@ -220,10 +220,6 @@ chatHistoryView attrs { translate, sentFrom, sentTo, sentAt, sender, message, is
                     [ borderRadius4 (rem 1) (rem 1) (rem 0) (rem 1)
                     , Themes.backgroundColor Colors.coolGray
                     ]
-
-        messageLabel text =
-            Text.textTinyLight
-                |> Text.view [ css [ color Colors.darkGray, whiteSpace noWrap ] ] [ Html.text text ]
     in
     if deletedAt /= Nothing then
         Html.li attrs
@@ -246,10 +242,10 @@ chatHistoryView attrs { translate, sentFrom, sentTo, sentAt, sender, message, is
         Html.li attrs
             [ Html.article [ css [ displayFlex, flexDirection column, messageStyles, padding (rem 0.625), gap (rem 0.625) ] ]
                 [ Html.header [ css [ displayFlex, flexDirection row, alignItems center ] ]
-                    [ Text.textTinyHeavy |> Text.view [] [ Html.text sender ]
+                    [ Text.textTinyHeavy |> Text.view [ css [ color Colors.darkestGray ] ] [ Html.text sender ]
                     , sentFrom
                         |> Html.viewMaybe
-                            (\sentFrom_ -> Text.textTinyLight |> Text.view [ css [ color Colors.darkGray, marginLeft (rem 0.25) ] ] [ Html.text ("(" ++ sentFrom_ ++ ")") ])
+                            (\sentFrom_ -> Text.textTinyLight |> Text.view [ css [ color Colors.darkestGray, marginLeft (rem 0.25) ] ] [ Html.text ("(" ++ sentFrom_ ++ ")") ])
                     , sentTo
                         |> Maybe.withDefault Html.nothing
                     ]
@@ -264,9 +260,14 @@ chatHistoryView attrs { translate, sentFrom, sentTo, sentAt, sender, message, is
                         ]
                         [ Html.text message ]
                 , Html.footer []
-                    [ messageLabel sentAt
+                    [ Text.textTinyLight
+                        |> Text.view [ css [ color Colors.nordeaGray, whiteSpace noWrap ] ] [ Html.text sentAt ]
                     , readReceipt
-                        |> Html.viewMaybe (\r -> messageLabel r)
+                        |> Html.viewMaybe
+                            (\r ->
+                                Text.textTinyLight
+                                    |> Text.view [ css [ color Colors.nordeaGray, whiteSpace noWrap ] ] [ Html.text r ]
+                            )
                         |> showIf (not isIncomingMessage)
                     ]
                 ]
