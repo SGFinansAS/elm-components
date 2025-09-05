@@ -1,4 +1,13 @@
-module Nordea.Components.Chat exposing (Appearance(..), OptionalConfig(..), chatHistoryView, init, view)
+module Nordea.Components.Chat exposing
+    ( Appearance(..)
+    , OptionalConfig(..)
+    , chatHistoryView
+    , darkPinkBubbleTag
+    , init
+    , lightBlueBubbleTag
+    , sakuraBubbleTag
+    , view
+    )
 
 import Css
     exposing
@@ -28,6 +37,7 @@ import Css
         , listStyleType
         , margin
         , marginBottom
+        , marginLeft
         , marginRight
         , marginTop
         , maxHeight
@@ -40,14 +50,14 @@ import Css
         , padding2
         , paddingRight
         , rem
+        , row
         , solid
-        , spaceBetween
         , textOverflow
         , whiteSpace
         , width
         )
 import Html.Styled as Html exposing (Attribute, Html)
-import Html.Styled.Attributes exposing (attribute, class, css, id)
+import Html.Styled.Attributes exposing (attribute, css, id)
 import List
 import Maybe.Extra as Maybe
 import Nordea.Components.Card as Card
@@ -68,15 +78,15 @@ type alias Config =
     }
 
 
-type alias MessageViewConfig =
+type alias MessageViewConfig msg =
     { translate : Translation -> String
-    , sentFrom : String
+    , sentFrom : Maybe String
+    , sentTo : Maybe (Html msg)
     , sentAt : String
-    , sender : Maybe String
+    , sender : String
     , message : String
     , isIncomingMessage : Bool
     , readReceipt : Maybe String
-    , messageChipText : Maybe String
     , deletedAt : Maybe String
     }
 
@@ -195,29 +205,25 @@ view optionals attrs history content (Chat config) =
             ]
 
 
-chatHistoryView : List (Attribute msg) -> MessageViewConfig -> Html msg
-chatHistoryView attrs { translate, sentFrom, sentAt, sender, message, isIncomingMessage, readReceipt, messageChipText, deletedAt } =
+chatHistoryView : List (Attribute msg) -> MessageViewConfig msg -> Html msg
+chatHistoryView attrs { translate, sentFrom, sentTo, sentAt, sender, message, isIncomingMessage, readReceipt, deletedAt } =
     let
         messageStyles =
             if isIncomingMessage then
                 Css.batch
-                    [ borderRadius4 (rem 0.5) (rem 0.5) (rem 0.5) (rem 0)
-                    , Themes.backgroundColor Colors.coolGray
+                    [ borderRadius4 (rem 1) (rem 1) (rem 1) (rem 0)
+                    , Themes.backgroundColor Colors.cloudBlue
                     ]
 
             else
                 Css.batch
-                    [ borderRadius4 (rem 0.5) (rem 0.5) (rem 0) (rem 0.5)
-                    , Themes.backgroundColor Colors.cloudBlue
+                    [ borderRadius4 (rem 1) (rem 1) (rem 0) (rem 1)
+                    , Themes.backgroundColor Colors.coolGray
                     ]
-
-        messageLabel attr text =
-            Text.textTinyLight
-                |> Text.view (css [ color Colors.darkGray, whiteSpace noWrap ] :: attr) [ Html.text text ]
     in
     if deletedAt /= Nothing then
         Html.li attrs
-            [ Html.article [ css [ displayFlex, flexDirection column, gap (rem 0.25) ] ]
+            [ Html.article [ css [ displayFlex, alignItems center, justifyContent center ] ]
                 [ Text.textSmallLight
                     |> Text.withHtmlTag Html.p
                     |> Text.view
@@ -228,59 +234,73 @@ chatHistoryView attrs { translate, sentFrom, sentAt, sender, message, isIncoming
                             , Css.property "hyphens" "auto"
                             ]
                         ]
-                        [ Html.text (sentFrom ++ " " ++ translate strings.deletedAMessage) ]
+                        [ Html.text (sender ++ " " ++ translate strings.deletedAMessage) ]
                 ]
             ]
 
     else
         Html.li attrs
-            [ Html.article [ css [ displayFlex, flexDirection column, gap (rem 0.25) ] ]
-                [ Html.header [ css [ displayFlex, flexDirection column, gap (rem 0.25) ] ]
-                    [ Html.row [ css [ justifyContent spaceBetween ] ]
-                        [ messageLabel [ css [ marginRight (rem 0.25), textOverflow ellipsis, overflow hidden ] ] sentFrom
-                        , messageLabel [] sentAt
-                        ]
-                    , Html.row [ css [ alignItems center, justifyContent spaceBetween ] ]
-                        [ sender
-                            |> Html.viewMaybe
-                                (\sender_ -> Text.textTinyHeavy |> Text.view [] [ Html.text sender_ ])
-                        , messageChipText
-                            |> Html.viewMaybe
-                                (\messageChipText_ ->
-                                    Text.textTinyLight
-                                        |> Text.view
-                                            [ css
-                                                [ display inlineBlock
-                                                , borderRadius (rem 1.25)
-                                                , padding2 (rem 0.125) (rem 0.5)
-                                                , backgroundColor Colors.lightBlue
-                                                , textOverflow ellipsis
-                                                , overflow hidden
-                                                , whiteSpace noWrap
-                                                ]
-                                            ]
-                                            [ Html.text messageChipText_ ]
-                                )
-                        ]
-                    ]
-                , Html.column [ class "chat-message", css [ padding (rem 0.625), gap (rem 0.625), messageStyles ] ]
-                    [ Text.textSmallLight
-                        |> Text.withHtmlTag Html.p
-                        |> Text.view
-                            [ css
-                                [ overflow hidden
-                                , overflowWrap breakWord
-                                , Css.property "hyphens" "auto"
-                                ]
-                            ]
-                            [ Html.text message ]
-                    , readReceipt
-                        |> Maybe.map (\r -> Html.footer [] [ messageLabel [] r ])
+            [ Html.article [ css [ displayFlex, flexDirection column, messageStyles, padding (rem 0.625), gap (rem 0.625) ] ]
+                [ Html.header [ css [ displayFlex, flexDirection row, alignItems center ] ]
+                    [ Text.textTinyHeavy |> Text.view [ css [ color Colors.darkestGray ] ] [ Html.text sender ]
+                    , sentFrom
+                        |> Html.viewMaybe
+                            (\sentFrom_ -> Text.textTinyLight |> Text.view [ css [ color Colors.darkestGray, marginLeft (rem 0.25) ] ] [ Html.text ("(" ++ sentFrom_ ++ ")") ])
+                    , sentTo
                         |> Maybe.withDefault Html.nothing
+                    ]
+                , Text.textSmallLight
+                    |> Text.withHtmlTag Html.p
+                    |> Text.view
+                        [ css
+                            [ overflow hidden
+                            , overflowWrap breakWord
+                            , Css.property "hyphens" "auto"
+                            ]
+                        ]
+                        [ Html.text message ]
+                , Html.footer []
+                    [ Text.textTinyLight
+                        |> Text.view [ css [ color Colors.nordeaGray, whiteSpace noWrap ] ] [ Html.text sentAt ]
+                    , readReceipt
+                        |> Html.viewMaybe
+                            (\r ->
+                                Text.textTinyLight
+                                    |> Text.view [ css [ color Colors.nordeaGray, whiteSpace noWrap ] ] [ Html.text r ]
+                            )
                         |> showIf (not isIncomingMessage)
                     ]
                 ]
             ]
+
+
+bubbleTag attrs body =
+    Text.textTinyLight
+        |> Text.view
+            (css
+                [ display inlineBlock
+                , borderRadius (rem 1.25)
+                , padding2 (rem 0.125) (rem 0.5)
+                , textOverflow ellipsis
+                , overflow hidden
+                , whiteSpace noWrap
+                , marginLeft auto
+                ]
+                :: attrs
+            )
+            body
+
+
+lightBlueBubbleTag attrs body =
+    bubbleTag (css [ backgroundColor Colors.lightBlue ] :: attrs) body
+
+
+sakuraBubbleTag attrs body =
+    bubbleTag (css [ backgroundColor Colors.sakura ] :: attrs) body
+
+
+darkPinkBubbleTag attrs body =
+    bubbleTag (css [ backgroundColor Colors.yellow ] :: attrs) body
 
 
 

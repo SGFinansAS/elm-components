@@ -6,6 +6,7 @@ module Nordea.Resources.Colors exposing
     , coolGray
     , darkGray
     , darkGreen
+    , darkPink
     , darkRed
     , darkYellow
     , darkestGray
@@ -29,6 +30,7 @@ module Nordea.Resources.Colors exposing
     , purple
     , red
     , redStatus
+    , sakura
     , toString
     , transparent
     , white
@@ -122,6 +124,16 @@ white =
 darkRed : Color
 darkRed =
     hex "#E70404"
+
+
+sakura : Color
+sakura =
+    hex "#DEA2CD"
+
+
+darkPink : Color
+darkPink =
+    hex "#F0C1AE"
 
 
 darkGreen : Color
