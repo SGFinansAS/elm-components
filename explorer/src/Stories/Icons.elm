@@ -75,6 +75,7 @@ stories =
                         , ( Icons.envelope, "envelope" )
                         , ( Icons.openEnvelope, "openEnvelope" )
                         , ( Icons.logout, "logout" )
+                        , ( Icons.logout2, "logout2" )
                         , ( Icons.copy, "copy" )
                         , ( Icons.filter, "filter" )
                         , ( Icons.refresh, "refresh" )
