@@ -18,9 +18,7 @@
     "@parcel/transformer-elm": "^2.15.4",
     "elm": "^0.19.1-6",
     "elm-format": "^0.8.8",
-    "elm-live": "^4.0.2",
     "elm-review": "^2.13.4",
-    "parcel": "^2.15.4",
-    "shx": "^0.4.0"
+    "parcel": "^2.15.4"
   }
 }
