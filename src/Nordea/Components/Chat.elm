@@ -84,7 +84,7 @@ type alias MessageViewConfig msg =
     , sentTo : Maybe (Html msg)
     , sentAt : String
     , sender : String
-    , message : String
+    , message : Html msg
     , isIncomingMessage : Bool
     , readReceipt : Maybe String
     , deletedAt : Maybe String
@@ -258,7 +258,7 @@ chatHistoryView attrs { translate, sentFrom, sentTo, sentAt, sender, message, is
                             , Css.property "hyphens" "auto"
                             ]
                         ]
-                        [ Html.text message ]
+                        [ message ]
                 , Html.footer []
                     [ Text.textTinyLight
                         |> Text.view [ css [ color Colors.nordeaGray, whiteSpace noWrap ] ] [ Html.text sentAt ]
