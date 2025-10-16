@@ -30,6 +30,8 @@ stories =
                                 , isIncomingMessage = False
                                 , readReceipt = Just "i går kl. 14:36"
                                 , deletedAt = Just "i går kl. 14:36"
+                                , editView = Nothing
+                                , contextMenu = Nothing
                                 }
                             , Chat.chatHistoryView []
                                 { translate = .no
@@ -41,6 +43,8 @@ stories =
                                 , isIncomingMessage = False
                                 , readReceipt = Just "i går kl. 14:36"
                                 , deletedAt = Nothing
+                                , editView = Nothing
+                                , contextMenu = Nothing
                                 }
                             , Chat.chatHistoryView []
                                 { translate = .no
@@ -52,6 +56,8 @@ stories =
                                 , isIncomingMessage = True
                                 , readReceipt = Nothing
                                 , deletedAt = Nothing
+                                , editView = Nothing
+                                , contextMenu = Nothing
                                 }
                             ]
                             [ Text.textSmallLight |> Text.view [] [ Html.text "Some chat content" ] ]
@@ -81,6 +87,8 @@ stories =
                                 , isIncomingMessage = False
                                 , readReceipt = Just "i går kl. 14:36"
                                 , deletedAt = Just "i går kl. 14:36"
+                                , editView = Nothing
+                                , contextMenu = Nothing
                                 }
                             , Chat.chatHistoryView []
                                 { translate = .no
@@ -92,6 +100,8 @@ stories =
                                 , isIncomingMessage = False
                                 , readReceipt = Just "i går kl. 14:36"
                                 , deletedAt = Nothing
+                                , editView = Nothing
+                                , contextMenu = Nothing
                                 }
                             , Chat.chatHistoryView []
                                 { translate = .no
@@ -103,6 +113,8 @@ stories =
                                 , isIncomingMessage = True
                                 , readReceipt = Nothing
                                 , deletedAt = Nothing
+                                , editView = Nothing
+                                , contextMenu = Nothing
                                 }
                             ]
                             [ Text.textSmallLight |> Text.view [] [ Html.text "Some chat content" ] ]

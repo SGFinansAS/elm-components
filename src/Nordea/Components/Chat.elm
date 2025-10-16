@@ -16,13 +16,18 @@ import Css
         , auto
         , backgroundColor
         , border3
+        , borderBottom3
+        , borderColor
         , borderRadius
         , borderRadius4
+        , borderTop3
+        , borderWidth
         , breakWord
         , center
         , color
         , column
         , columnReverse
+        , cursor
         , display
         , displayFlex
         , ellipsis
@@ -30,10 +35,13 @@ import Css
         , flexEnd
         , flexGrow
         , fontStyle
+        , height
         , hidden
+        , hover
         , inlineBlock
         , italic
         , justifyContent
+        , listStyle
         , listStyleType
         , margin
         , marginBottom
@@ -41,14 +49,21 @@ import Css
         , marginRight
         , marginTop
         , maxHeight
+        , minWidth
         , noWrap
         , none
         , num
+        , outline
         , overflow
         , overflowWrap
         , padding
         , padding2
+        , padding4
         , paddingRight
+        , pointer
+        , position
+        , pseudoClass
+        , relative
         , rem
         , row
         , solid
@@ -57,15 +72,19 @@ import Css
         , width
         )
 import Html.Styled as Html exposing (Attribute, Html)
-import Html.Styled.Attributes exposing (attribute, css, id)
+import Html.Styled.Attributes as Attrs exposing (attribute, css, id, tabindex)
+import Html.Styled.Events exposing (onClick)
 import List
 import Maybe.Extra as Maybe
+import Nordea.Components.Button as Button
 import Nordea.Components.Card as Card
 import Nordea.Components.Text as Text
+import Nordea.Components.Tooltip as Tooltip
 import Nordea.Css exposing (gap)
-import Nordea.Html as Html exposing (showIf)
+import Nordea.Html as Html exposing (showIf, viewMaybe)
 import Nordea.Resources.Colors as Colors
 import Nordea.Resources.I18N exposing (Translation)
+import Nordea.Resources.Icons as Icons
 import Nordea.Resources.Illustrations as Illustrations
 import Nordea.Themes as Themes
 import Nordea.Utils.List as List
@@ -88,6 +107,13 @@ type alias MessageViewConfig msg =
     , isIncomingMessage : Bool
     , readReceipt : Maybe String
     , deletedAt : Maybe String
+    , editView : Maybe (Html msg)
+    , contextMenu :
+        Maybe
+            { onClickOpen : msg
+            , isOpen : Bool
+            , items : List { onClick : msg, label : String }
+            }
     }
 
 
@@ -206,7 +232,7 @@ view optionals attrs history content (Chat config) =
 
 
 chatHistoryView : List (Attribute msg) -> MessageViewConfig msg -> Html msg
-chatHistoryView attrs { translate, sentFrom, sentTo, sentAt, sender, message, isIncomingMessage, readReceipt, deletedAt } =
+chatHistoryView attrs { translate, sentFrom, sentTo, sentAt, sender, message, isIncomingMessage, readReceipt, deletedAt, editView, contextMenu } =
     let
         messageStyles =
             if isIncomingMessage then
@@ -249,26 +275,61 @@ chatHistoryView attrs { translate, sentFrom, sentTo, sentAt, sender, message, is
                     , sentTo
                         |> Maybe.withDefault Html.nothing
                     ]
-                , Text.textSmallLight
-                    |> Text.withHtmlTag Html.p
-                    |> Text.view
-                        [ css
-                            [ overflow hidden
-                            , overflowWrap breakWord
-                            , Css.property "hyphens" "auto"
-                            ]
+                , case editView of
+                    Just editView_ ->
+                        editView_
+
+                    Nothing ->
+                        Text.textSmallLight
+                            |> Text.withHtmlTag Html.p
+                            |> Text.view
+                                [ css
+                                    [ overflow hidden
+                                    , overflowWrap breakWord
+                                    , Css.property "hyphens" "auto"
+                                    ]
+                                ]
+                                message
+                , Html.footer [ css [ displayFlex ] ]
+                    [ Html.div []
+                        [ Text.textTinyLight
+                            |> Text.view [ css [ color Colors.nordeaGray, whiteSpace noWrap ] ] [ Html.text sentAt ]
+                        , readReceipt
+                            |> Html.viewMaybe
+                                (\r ->
+                                    Text.textTinyLight
+                                        |> Text.view [ css [ color Colors.nordeaGray, whiteSpace noWrap ] ] [ Html.text r ]
+                                )
+                            |> showIf (not isIncomingMessage)
                         ]
-                        message
-                , Html.footer []
-                    [ Text.textTinyLight
-                        |> Text.view [ css [ color Colors.nordeaGray, whiteSpace noWrap ] ] [ Html.text sentAt ]
-                    , readReceipt
-                        |> Html.viewMaybe
-                            (\r ->
-                                Text.textTinyLight
-                                    |> Text.view [ css [ color Colors.nordeaGray, whiteSpace noWrap ] ] [ Html.text r ]
+                    , contextMenu
+                        |> viewMaybe
+                            (\{ onClickOpen, isOpen, items } ->
+                                Tooltip.init
+                                    |> Tooltip.withPlacement Tooltip.LeftTop
+                                    |> Tooltip.withVisibility
+                                        (if isOpen then
+                                            Tooltip.Show
+
+                                         else
+                                            Tooltip.Hidden
+                                        )
+                                    |> Tooltip.withContent (\_ -> contextMenuView [ css [ marginBottom (rem 0.25) ] ] items)
+                                    |> Tooltip.view [ css [ position relative, marginLeft auto ] ]
+                                        [ Button.circular
+                                            |> Button.withSmallSize
+                                            |> Button.view
+                                                [ onClick onClickOpen
+                                                , css
+                                                    [ alignSelf flexEnd
+                                                    , backgroundColor Colors.transparent
+                                                    , borderWidth (rem 0) |> Css.important
+                                                    , hover [ backgroundColor Colors.mediumGray |> Css.important ]
+                                                    ]
+                                                ]
+                                                [ Icons.kebab [ css [ minWidth (rem 0.2125) ] ] ]
+                                        ]
                             )
-                        |> showIf (not isIncomingMessage)
                     ]
                 ]
             ]
@@ -301,6 +362,51 @@ sakuraBubbleTag attrs body =
 
 darkPinkBubbleTag attrs body =
     bubbleTag (css [ backgroundColor Colors.yellow ] :: attrs) body
+
+
+contextMenuView attrs menuItems =
+    Html.ul
+        (Attrs.attribute "role" "menu"
+            :: css
+                [ listStyle none
+                , backgroundColor Colors.white
+                , border3 (rem 0.0625) solid Colors.mediumGray
+                , borderRadius (rem 0.25)
+                , marginTop (rem 0.5)
+                , width (rem 13)
+                , padding (rem 0) |> Css.important
+                ]
+            :: attrs
+        )
+        (menuItems |> List.map contextMenuItem)
+
+
+contextMenuItem item =
+    Html.li
+        [ css
+            [ displayFlex
+            , flexDirection row
+            , listStyleType none
+            , cursor pointer
+            , alignItems center
+            , height (rem 2)
+            , padding4 (rem 0) (rem 0.5) (rem 0) (rem 0.5)
+            , pseudoClass "focus-within"
+                [ Themes.backgroundColor Colors.cloudBlue
+                , borderBottom3 (rem 0.1) solid Colors.mediumGray
+                , borderTop3 (rem 0.1) solid Colors.mediumGray
+                , outline none
+                , borderColor Colors.mediumGray
+                ]
+            , hover [ backgroundColor Colors.coolGray ]
+            ]
+        , tabindex 0
+        , Attrs.attribute "role" "menuitem"
+        , onClick item.onClick
+        ]
+        [ Text.textSmallLight
+            |> Text.view [] [ Html.text item.label ]
+        ]
 
 
 
