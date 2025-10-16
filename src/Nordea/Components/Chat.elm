@@ -9,55 +9,11 @@ module Nordea.Components.Chat exposing
     , view
     )
 
-import Css
-    exposing
-        ( alignItems
-        , alignSelf
-        , auto
-        , backgroundColor
-        , border3
-        , borderRadius
-        , borderRadius4
-        , breakWord
-        , center
-        , color
-        , column
-        , columnReverse
-        , display
-        , displayFlex
-        , ellipsis
-        , flexDirection
-        , flexEnd
-        , flexGrow
-        , fontStyle
-        , hidden
-        , inlineBlock
-        , italic
-        , justifyContent
-        , listStyleType
-        , margin
-        , marginBottom
-        , marginLeft
-        , marginRight
-        , marginTop
-        , maxHeight
-        , noWrap
-        , none
-        , num
-        , overflow
-        , overflowWrap
-        , padding
-        , padding2
-        , paddingRight
-        , rem
-        , row
-        , solid
-        , textOverflow
-        , whiteSpace
-        , width
-        )
+import Common.Css exposing (styleIf)
+import Css exposing (alignItems, alignSelf, auto, backgroundColor, border3, borderBottom3, borderColor, borderRadius, borderRadius4, borderTop3, breakWord, center, color, column, columnReverse, cursor, display, displayFlex, ellipsis, flexDirection, flexEnd, flexGrow, fontStyle, height, hidden, hover, inlineBlock, italic, justifyContent, listStyle, listStyleType, margin, marginBottom, marginLeft, marginRight, marginTop, maxHeight, noWrap, none, num, outline, overflow, overflowWrap, padding, padding2, padding4, paddingRight, pointer, pseudoClass, rem, row, solid, textOverflow, whiteSpace, width)
 import Html.Styled as Html exposing (Attribute, Html)
-import Html.Styled.Attributes exposing (attribute, css, id)
+import Html.Styled.Attributes as Attrs exposing (attribute, css, id, tabindex)
+import Html.Styled.Events exposing (onClick)
 import List
 import Maybe.Extra as Maybe
 import Nordea.Components.Card as Card
@@ -88,6 +44,8 @@ type alias MessageViewConfig msg =
     , isIncomingMessage : Bool
     , readReceipt : Maybe String
     , deletedAt : Maybe String
+    , editView : Maybe (Html msg)
+    , contextMenuItems : List { selected : Bool, onClick : msg, label : String }
     }
 
 
@@ -206,7 +164,7 @@ view optionals attrs history content (Chat config) =
 
 
 chatHistoryView : List (Attribute msg) -> MessageViewConfig msg -> Html msg
-chatHistoryView attrs { translate, sentFrom, sentTo, sentAt, sender, message, isIncomingMessage, readReceipt, deletedAt } =
+chatHistoryView attrs { translate, sentFrom, sentTo, sentAt, sender, message, isIncomingMessage, readReceipt, deletedAt, editView, contextMenuItems } =
     let
         messageStyles =
             if isIncomingMessage then
@@ -249,26 +207,35 @@ chatHistoryView attrs { translate, sentFrom, sentTo, sentAt, sender, message, is
                     , sentTo
                         |> Maybe.withDefault Html.nothing
                     ]
-                , Text.textSmallLight
-                    |> Text.withHtmlTag Html.p
-                    |> Text.view
-                        [ css
-                            [ overflow hidden
-                            , overflowWrap breakWord
-                            , Css.property "hyphens" "auto"
-                            ]
+                , case editView of
+                    Just editView_ ->
+                        editView_
+
+                    Nothing ->
+                        Text.textSmallLight
+                            |> Text.withHtmlTag Html.p
+                            |> Text.view
+                                [ css
+                                    [ overflow hidden
+                                    , overflowWrap breakWord
+                                    , Css.property "hyphens" "auto"
+                                    ]
+                                ]
+                                message
+                , Html.footer [ css [ displayFlex ] ]
+                    [ Html.div []
+                        [ Text.textTinyLight
+                            |> Text.view [ css [ color Colors.nordeaGray, whiteSpace noWrap ] ] [ Html.text sentAt ]
+                        , readReceipt
+                            |> Html.viewMaybe
+                                (\r ->
+                                    Text.textTinyLight
+                                        |> Text.view [ css [ color Colors.nordeaGray, whiteSpace noWrap ] ] [ Html.text r ]
+                                )
+                            |> showIf (not isIncomingMessage)
                         ]
-                        message
-                , Html.footer []
-                    [ Text.textTinyLight
-                        |> Text.view [ css [ color Colors.nordeaGray, whiteSpace noWrap ] ] [ Html.text sentAt ]
-                    , readReceipt
-                        |> Html.viewMaybe
-                            (\r ->
-                                Text.textTinyLight
-                                    |> Text.view [ css [ color Colors.nordeaGray, whiteSpace noWrap ] ] [ Html.text r ]
-                            )
-                        |> showIf (not isIncomingMessage)
+                    , contextMenu [] contextMenuItems
+                        |> showIf (contextMenuItems /= [])
                     ]
                 ]
             ]
@@ -301,6 +268,59 @@ sakuraBubbleTag attrs body =
 
 darkPinkBubbleTag attrs body =
     bubbleTag (css [ backgroundColor Colors.yellow ] :: attrs) body
+
+
+contextMenu attrs menuItems =
+    Html.ul
+        (Attrs.attribute "role" "listbox"
+            :: css
+                [ listStyle none
+                , backgroundColor Colors.white
+                , border3 (rem 0.0625) solid Colors.mediumGray
+                , borderRadius (rem 0.25)
+                , marginTop (rem 0.5)
+                , width (rem 13)
+                ]
+            :: attrs
+        )
+        (menuItems |> List.map contextMenuItem)
+
+
+contextMenuItem item =
+    Html.li
+        [ css
+            [ displayFlex
+            , flexDirection row
+            , listStyleType none
+            , cursor pointer
+            , alignItems center
+            , height (rem 2)
+            , padding4 (rem 0) (rem 0.5) (rem 0) (rem 0.5)
+            , Themes.backgroundColor Colors.cloudBlue |> styleIf item.selected
+            , pseudoClass "focus-within"
+                [ Themes.backgroundColor Colors.cloudBlue
+                , borderBottom3 (rem 0.1) solid Colors.mediumGray
+                , borderTop3 (rem 0.1) solid Colors.mediumGray
+                , outline none
+                , borderColor Colors.mediumGray
+                ]
+            , hover [ backgroundColor Colors.coolGray ]
+            ]
+        , tabindex 0
+        , Attrs.disabled item.selected
+        , Attrs.attribute "role" "option"
+        , Attrs.attribute "aria-selected"
+            (if item.selected then
+                "true"
+
+             else
+                "false"
+            )
+        , onClick item.onClick
+        ]
+        [ Text.textSmallLight
+            |> Text.view [] [ Html.text item.label ]
+        ]
 
 
 
