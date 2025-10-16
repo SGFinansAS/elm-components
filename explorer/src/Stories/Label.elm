@@ -87,10 +87,10 @@ stories =
                     [ Label.init "Choose financingVariant" Label.InputLabel
                         |> Label.view []
                             [ Dropdown.init
-                                [ { value = Leasing, text = financingVariantToString Leasing }
-                                , { value = Rent, text = financingVariantToString Rent }
-                                , { value = Loan, text = financingVariantToString Loan }
-                                , { value = HirePurchase, text = financingVariantToString HirePurchase }
+                                [ { value = Leasing, text = financingVariantToString Leasing, group = Nothing, isDisabled = False }
+                                , { value = Rent, text = financingVariantToString Rent, group = Nothing, isDisabled = False }
+                                , { value = Loan, text = financingVariantToString Loan, group = Nothing, isDisabled = False }
+                                , { value = HirePurchase, text = financingVariantToString HirePurchase, group = Nothing, isDisabled = False }
                                 ]
                                 financingVariantToString
                                 (\_ -> NoOp)
@@ -100,10 +100,10 @@ stories =
                         |> Label.withErrorMessage (Just "Financing variant is required")
                         |> Label.view []
                             [ Dropdown.init
-                                [ { value = Leasing, text = financingVariantToString Leasing }
-                                , { value = Rent, text = financingVariantToString Rent }
-                                , { value = Loan, text = financingVariantToString Loan }
-                                , { value = HirePurchase, text = financingVariantToString HirePurchase }
+                                [ { value = Leasing, text = financingVariantToString Leasing, group = Nothing, isDisabled = False }
+                                , { value = Rent, text = financingVariantToString Rent, group = Nothing, isDisabled = False }
+                                , { value = Loan, text = financingVariantToString Loan, group = Nothing, isDisabled = False }
+                                , { value = HirePurchase, text = financingVariantToString HirePurchase, group = Nothing, isDisabled = False }
                                 ]
                                 financingVariantToString
                                 (\_ -> NoOp)

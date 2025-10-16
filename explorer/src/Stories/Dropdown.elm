@@ -2,7 +2,7 @@ module Stories.Dropdown exposing (stories)
 
 import Config exposing (Msg(..))
 import Html.Styled.Attributes exposing (disabled)
-import Nordea.Components.Dropdown as Dropdown exposing (optionInit, optionIsDisabled)
+import Nordea.Components.Dropdown as Dropdown
 import UIExplorer exposing (UI)
 import UIExplorer.Styled exposing (styledStoriesOf)
 
@@ -37,10 +37,10 @@ stories =
         [ ( "Standard"
           , \_ ->
                 Dropdown.init
-                    [ { value = Leasing, text = financingVariantToString Leasing }
-                    , { value = Rent, text = financingVariantToString Rent }
-                    , { value = Loan, text = financingVariantToString Loan }
-                    , { value = HirePurchase, text = financingVariantToString HirePurchase }
+                    [ { value = Leasing, text = financingVariantToString Leasing, group = Nothing, isDisabled = False }
+                    , { value = Rent, text = financingVariantToString Rent, group = Nothing, isDisabled = False }
+                    , { value = Loan, text = financingVariantToString Loan, group = Nothing, isDisabled = False }
+                    , { value = HirePurchase, text = financingVariantToString HirePurchase, group = Nothing, isDisabled = False }
                     ]
                     financingVariantToString
                     (\_ -> NoOp)
@@ -51,10 +51,10 @@ stories =
         , ( "Standard Small"
           , \_ ->
                 Dropdown.init
-                    [ { value = Leasing, text = financingVariantToString Leasing }
-                    , { value = Rent, text = financingVariantToString Rent }
-                    , { value = Loan, text = financingVariantToString Loan }
-                    , { value = HirePurchase, text = financingVariantToString HirePurchase }
+                    [ { value = Leasing, text = financingVariantToString Leasing, group = Nothing, isDisabled = False }
+                    , { value = Rent, text = financingVariantToString Rent, group = Nothing, isDisabled = False }
+                    , { value = Loan, text = financingVariantToString Loan, group = Nothing, isDisabled = False }
+                    , { value = HirePurchase, text = financingVariantToString HirePurchase, group = Nothing, isDisabled = False }
                     ]
                     financingVariantToString
                     (\_ -> NoOp)
@@ -66,10 +66,10 @@ stories =
         , ( "Standard with error"
           , \_ ->
                 Dropdown.init
-                    [ { value = Leasing, text = financingVariantToString Leasing }
-                    , { value = Rent, text = financingVariantToString Rent }
-                    , { value = Loan, text = financingVariantToString Loan }
-                    , { value = HirePurchase, text = financingVariantToString HirePurchase }
+                    [ { value = Leasing, text = financingVariantToString Leasing, group = Nothing, isDisabled = False }
+                    , { value = Rent, text = financingVariantToString Rent, group = Nothing, isDisabled = False }
+                    , { value = Loan, text = financingVariantToString Loan, group = Nothing, isDisabled = False }
+                    , { value = HirePurchase, text = financingVariantToString HirePurchase, group = Nothing, isDisabled = False }
                     ]
                     financingVariantToString
                     (\_ -> NoOp)
@@ -121,10 +121,10 @@ stories =
         , ( "Disabled"
           , \_ ->
                 Dropdown.init
-                    [ { value = Leasing, text = financingVariantToString Leasing }
-                    , { value = Rent, text = financingVariantToString Rent }
-                    , { value = Loan, text = financingVariantToString Loan }
-                    , { value = HirePurchase, text = financingVariantToString HirePurchase }
+                    [ { value = Leasing, text = financingVariantToString Leasing, group = Nothing, isDisabled = False }
+                    , { value = Rent, text = financingVariantToString Rent, group = Nothing, isDisabled = False }
+                    , { value = Loan, text = financingVariantToString Loan, group = Nothing, isDisabled = False }
+                    , { value = HirePurchase, text = financingVariantToString HirePurchase, group = Nothing, isDisabled = False }
                     ]
                     financingVariantToString
                     (\_ -> NoOp)
@@ -133,17 +133,30 @@ stories =
           )
         , ( "With disabled options"
           , \_ ->
-                Dropdown.initWithOptionProperties
-                    [ optionInit { value = Leasing, text = financingVariantToString Leasing }
-                    , optionInit { value = Rent, text = financingVariantToString Rent }
-                        |> optionIsDisabled True
-                    , optionInit { value = Loan, text = financingVariantToString Loan }
-                        |> optionIsDisabled True
-                    , optionInit { value = HirePurchase, text = financingVariantToString HirePurchase }
+                Dropdown.init
+                    [ { value = Leasing, text = financingVariantToString Leasing, group = Nothing, isDisabled = False }
+                    , { value = Rent, text = financingVariantToString Rent, group = Nothing, isDisabled = True }
+                    , { value = Loan, text = financingVariantToString Loan, group = Nothing, isDisabled = False }
+                    , { value = HirePurchase, text = financingVariantToString HirePurchase, group = Nothing, isDisabled = True }
                     ]
                     financingVariantToString
                     (\_ -> NoOp)
+                    |> Dropdown.withPlaceholder "Choose financing variant"
                     |> Dropdown.view []
           , {}
           )
+          , ( "With grouped options"
+            , \_ ->
+                  Dropdown.init
+                      [ { value = Leasing, text = financingVariantToString Leasing, group = Just "Group 1", isDisabled = False }
+                      , { value = Rent, text = financingVariantToString Rent, group = Just "Group 2", isDisabled = False }
+                      , { value = Loan, text = financingVariantToString Loan, group = Just "Group 1", isDisabled = False }
+                      , { value = HirePurchase, text = financingVariantToString HirePurchase, group = Just "Group 2", isDisabled = False }
+                      ]
+                      financingVariantToString
+                      (\_ -> NoOp)
+                      |> Dropdown.withPlaceholder "Choose financing variant"
+                      |> Dropdown.view []
+            , {}
+            )
         ]
