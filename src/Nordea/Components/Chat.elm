@@ -9,17 +9,80 @@ module Nordea.Components.Chat exposing
     , view
     )
 
-import Common.Css exposing (styleIf)
-import Css exposing (alignItems, alignSelf, auto, backgroundColor, border3, borderBottom3, borderColor, borderRadius, borderRadius4, borderTop3, breakWord, center, color, column, columnReverse, cursor, display, displayFlex, ellipsis, flexDirection, flexEnd, flexGrow, fontStyle, height, hidden, hover, inlineBlock, italic, justifyContent, listStyle, listStyleType, margin, marginBottom, marginLeft, marginRight, marginTop, maxHeight, noWrap, none, num, outline, overflow, overflowWrap, padding, padding2, padding4, paddingRight, pointer, pseudoClass, rem, row, solid, textOverflow, whiteSpace, width)
+import CaseDialogue.Icons as Icons
+import Css
+    exposing
+        ( alignItems
+        , alignSelf
+        , auto
+        , backgroundColor
+        , border3
+        , borderBottom3
+        , borderColor
+        , borderRadius
+        , borderRadius4
+        , borderTop3
+        , borderWidth
+        , breakWord
+        , center
+        , color
+        , column
+        , columnReverse
+        , cursor
+        , display
+        , displayFlex
+        , ellipsis
+        , flexDirection
+        , flexEnd
+        , flexGrow
+        , fontStyle
+        , height
+        , hidden
+        , hover
+        , inlineBlock
+        , italic
+        , justifyContent
+        , listStyle
+        , listStyleType
+        , margin
+        , marginBottom
+        , marginLeft
+        , marginRight
+        , marginTop
+        , maxHeight
+        , minWidth
+        , noWrap
+        , none
+        , num
+        , outline
+        , overflow
+        , overflowWrap
+        , padding
+        , padding2
+        , padding4
+        , paddingRight
+        , pointer
+        , position
+        , pseudoClass
+        , relative
+        , rem
+        , row
+        , solid
+        , textOverflow
+        , whiteSpace
+        , width
+        )
 import Html.Styled as Html exposing (Attribute, Html)
 import Html.Styled.Attributes as Attrs exposing (attribute, css, id, tabindex)
 import Html.Styled.Events exposing (onClick)
 import List
 import Maybe.Extra as Maybe
+import Nordea.Components.Button as Button
 import Nordea.Components.Card as Card
 import Nordea.Components.Text as Text
+import Nordea.Components.Tooltip as Tooltip
 import Nordea.Css exposing (gap)
-import Nordea.Html as Html exposing (showIf)
+import Nordea.Html as Html exposing (showIf, viewMaybe)
 import Nordea.Resources.Colors as Colors
 import Nordea.Resources.I18N exposing (Translation)
 import Nordea.Resources.Illustrations as Illustrations
@@ -45,7 +108,12 @@ type alias MessageViewConfig msg =
     , readReceipt : Maybe String
     , deletedAt : Maybe String
     , editView : Maybe (Html msg)
-    , contextMenuItems : List { selected : Bool, onClick : msg, label : String }
+    , contextMenu :
+        Maybe
+            { onClickOpen : msg
+            , isOpen : Bool
+            , items : List { onClick : msg, label : String }
+            }
     }
 
 
@@ -164,7 +232,7 @@ view optionals attrs history content (Chat config) =
 
 
 chatHistoryView : List (Attribute msg) -> MessageViewConfig msg -> Html msg
-chatHistoryView attrs { translate, sentFrom, sentTo, sentAt, sender, message, isIncomingMessage, readReceipt, deletedAt, editView, contextMenuItems } =
+chatHistoryView attrs { translate, sentFrom, sentTo, sentAt, sender, message, isIncomingMessage, readReceipt, deletedAt, editView, contextMenu } =
     let
         messageStyles =
             if isIncomingMessage then
@@ -234,8 +302,34 @@ chatHistoryView attrs { translate, sentFrom, sentTo, sentAt, sender, message, is
                                 )
                             |> showIf (not isIncomingMessage)
                         ]
-                    , contextMenu [] contextMenuItems
-                        |> showIf (contextMenuItems /= [])
+                    , contextMenu
+                        |> viewMaybe
+                            (\{ onClickOpen, isOpen, items } ->
+                                Tooltip.init
+                                    |> Tooltip.withPlacement Tooltip.LeftTop
+                                    |> Tooltip.withVisibility
+                                        (if isOpen then
+                                            Tooltip.Show
+
+                                         else
+                                            Tooltip.Hidden
+                                        )
+                                    |> Tooltip.withContent (\_ -> contextMenuView [ css [ marginBottom (rem 0.25) ] ] items)
+                                    |> Tooltip.view [ css [ position relative, marginLeft auto ] ]
+                                        [ Button.circular
+                                            |> Button.withSmallSize
+                                            |> Button.view
+                                                [ onClick onClickOpen
+                                                , css
+                                                    [ alignSelf flexEnd
+                                                    , backgroundColor Colors.transparent
+                                                    , borderWidth (rem 0) |> Css.important
+                                                    , hover [ backgroundColor Colors.mediumGray |> Css.important ]
+                                                    ]
+                                                ]
+                                                [ Icons.kebab [ css [ minWidth (rem 0.2125) ] ] ]
+                                        ]
+                            )
                     ]
                 ]
             ]
@@ -270,9 +364,9 @@ darkPinkBubbleTag attrs body =
     bubbleTag (css [ backgroundColor Colors.yellow ] :: attrs) body
 
 
-contextMenu attrs menuItems =
+contextMenuView attrs menuItems =
     Html.ul
-        (Attrs.attribute "role" "listbox"
+        (Attrs.attribute "role" "menu"
             :: css
                 [ listStyle none
                 , backgroundColor Colors.white
@@ -280,6 +374,7 @@ contextMenu attrs menuItems =
                 , borderRadius (rem 0.25)
                 , marginTop (rem 0.5)
                 , width (rem 13)
+                , padding (rem 0) |> Css.important
                 ]
             :: attrs
         )
@@ -296,7 +391,6 @@ contextMenuItem item =
             , alignItems center
             , height (rem 2)
             , padding4 (rem 0) (rem 0.5) (rem 0) (rem 0.5)
-            , Themes.backgroundColor Colors.cloudBlue |> styleIf item.selected
             , pseudoClass "focus-within"
                 [ Themes.backgroundColor Colors.cloudBlue
                 , borderBottom3 (rem 0.1) solid Colors.mediumGray
@@ -307,15 +401,7 @@ contextMenuItem item =
             , hover [ backgroundColor Colors.coolGray ]
             ]
         , tabindex 0
-        , Attrs.disabled item.selected
-        , Attrs.attribute "role" "option"
-        , Attrs.attribute "aria-selected"
-            (if item.selected then
-                "true"
-
-             else
-                "false"
-            )
+        , Attrs.attribute "role" "menuitem"
         , onClick item.onClick
         ]
         [ Text.textSmallLight
