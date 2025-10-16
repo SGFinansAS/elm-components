@@ -145,18 +145,18 @@ stories =
                     |> Dropdown.view []
           , {}
           )
-          , ( "With grouped options"
-            , \_ ->
-                  Dropdown.init
-                      [ { value = Leasing, text = financingVariantToString Leasing, group = Just "Group 1", isDisabled = False }
-                      , { value = Rent, text = financingVariantToString Rent, group = Just "Group 2", isDisabled = False }
-                      , { value = Loan, text = financingVariantToString Loan, group = Just "Group 1", isDisabled = False }
-                      , { value = HirePurchase, text = financingVariantToString HirePurchase, group = Just "Group 2", isDisabled = False }
-                      ]
-                      financingVariantToString
-                      (\_ -> NoOp)
-                      |> Dropdown.withPlaceholder "Choose financing variant"
-                      |> Dropdown.view []
-            , {}
-            )
+        , ( "With grouped options"
+          , \_ ->
+                Dropdown.init
+                    [ { value = Leasing, text = financingVariantToString Leasing, group = Just "Group 1", isDisabled = False }
+                    , { value = Rent, text = financingVariantToString Rent, group = Just "Group 2", isDisabled = False }
+                    , { value = Loan, text = financingVariantToString Loan, group = Just "Group 1", isDisabled = False }
+                    , { value = HirePurchase, text = financingVariantToString HirePurchase, group = Just "Group 2", isDisabled = False }
+                    ]
+                    financingVariantToString
+                    (\_ -> NoOp)
+                    |> Dropdown.withPlaceholder "Choose financing variant"
+                    |> Dropdown.view []
+          , {}
+          )
         ]
