@@ -1,9 +1,6 @@
 module Nordea.Components.Dropdown exposing
     ( Dropdown
     , init
-    , initWithOptionProperties
-    , optionInit
-    , optionIsDisabled
     , simple
     , standard
     , view
@@ -55,6 +52,8 @@ import Html.Styled as Html exposing (Attribute, Html, div, option)
 import Html.Styled.Attributes as Attrs exposing (css, disabled, selected, value)
 import Html.Styled.Events as Events exposing (targetValue)
 import Json.Decode as Decode
+import List.Extra as List
+import Maybe.Extra as Maybe
 import Nordea.Html exposing (attrEmpty, styleIf, viewMaybe)
 import Nordea.Resources.Colors as Colors
 import Nordea.Resources.Icons as Icon
@@ -74,21 +73,9 @@ type Size
 type alias Option a =
     { value : a
     , text : String
+    , group : Maybe String
     , isDisabled : Bool
     }
-
-
-optionInit : { value : a, text : String } -> Option a
-optionInit { value, text } =
-    { value = value
-    , text = text
-    , isDisabled = False
-    }
-
-
-optionIsDisabled : Bool -> Option a -> Option a
-optionIsDisabled isDisabled option =
-    { option | isDisabled = isDisabled }
 
 
 type alias DropdownProperties a msg =
@@ -101,6 +88,7 @@ type alias DropdownProperties a msg =
     , ariaLabel : Maybe String
     , variant : Variant
     , size : Size
+    , fallbackGroupLabel : String
     }
 
 
@@ -111,8 +99,19 @@ type Dropdown a msg
 simple : List { value : a, text : String } -> (a -> String) -> (a -> msg) -> Dropdown a msg
 simple options optionToString onInput =
     let
+        ops =
+            options
+                |> List.map
+                    (\o ->
+                        { value = o.value
+                        , text = o.text
+                        , group = Nothing
+                        , isDisabled = False
+                        }
+                    )
+
         (Dropdown config) =
-            init options optionToString onInput
+            init ops optionToString onInput
     in
     Dropdown { config | variant = Simple }
 
@@ -120,19 +119,25 @@ simple options optionToString onInput =
 standard : List { value : a, text : String } -> (a -> String) -> (a -> msg) -> Dropdown a msg
 standard options optionToString onInput =
     let
+        ops =
+            options
+                |> List.map
+                    (\o ->
+                        { value = o.value
+                        , text = o.text
+                        , group = Nothing
+                        , isDisabled = False
+                        }
+                    )
+
         (Dropdown config) =
-            init options optionToString onInput
+            init ops optionToString onInput
     in
     Dropdown { config | variant = Standard }
 
 
-init : List { value : a, text : String } -> (a -> String) -> (a -> msg) -> Dropdown a msg
+init : List (Option a) -> (a -> String) -> (a -> msg) -> Dropdown a msg
 init options optionToString onInput =
-    initWithOptionProperties (List.map optionInit options) optionToString onInput
-
-
-initWithOptionProperties : List (Option a) -> (a -> String) -> (a -> msg) -> Dropdown a msg
-initWithOptionProperties options optionToString onInput =
     Dropdown
         { placeholder = Nothing
         , onInput = onInput
@@ -143,6 +148,7 @@ initWithOptionProperties options optionToString onInput =
         , variant = Standard
         , size = StandardSize
         , ariaLabel = Nothing
+        , fallbackGroupLabel = ""
         }
 
 
@@ -158,18 +164,41 @@ view attrs (Dropdown config) =
                             [ Html.text placeholderText ]
                     )
 
-        options =
-            config.options
+        optsToView opts =
+            opts
                 |> List.map
-                    (\dropDownOption ->
+                    (\o ->
                         option
-                            [ dropDownOption.value |> config.optionToString |> value
-                            , selected (config.selectedValue == Just dropDownOption.value)
-                            , disabled dropDownOption.isDisabled
+                            [ o.value |> config.optionToString |> value
+                            , selected (config.selectedValue == Just o.value)
+                            , disabled o.isDisabled
                             , css [ color Colors.black ]
                             ]
-                            [ Html.text dropDownOption.text ]
+                            [ Html.text o.text ]
                     )
+
+        anyGroups =
+            config.options |> List.any (.group >> Maybe.isJust)
+
+        options =
+            if anyGroups then
+                config.options
+                    |> List.gatherEqualsBy .group
+                    |> List.map (\( head, tail ) -> ( head.group, head :: tail ))
+                    |> List.map
+                        (\( group, elems ) ->
+                            case group of
+                                Just g ->
+                                    Html.optgroup [ Attrs.attribute "label" g ]
+                                        (optsToView elems)
+
+                                Nothing ->
+                                    Html.optgroup [ Attrs.attribute "label" config.fallbackGroupLabel ]
+                                        (optsToView elems)
+                        )
+
+            else
+                optsToView config.options
 
         optionsDict =
             config.options
