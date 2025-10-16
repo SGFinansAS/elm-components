@@ -9,7 +9,6 @@ module Nordea.Components.Chat exposing
     , view
     )
 
-import CaseDialogue.Icons as Icons
 import Css
     exposing
         ( alignItems
@@ -85,6 +84,7 @@ import Nordea.Css exposing (gap)
 import Nordea.Html as Html exposing (showIf, viewMaybe)
 import Nordea.Resources.Colors as Colors
 import Nordea.Resources.I18N exposing (Translation)
+import Nordea.Resources.Icons as Icons
 import Nordea.Resources.Illustrations as Illustrations
 import Nordea.Themes as Themes
 import Nordea.Utils.List as List
