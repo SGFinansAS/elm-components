@@ -49,7 +49,7 @@ import Css
         , marginRight
         , marginTop
         , maxHeight
-        , minWidth
+        , maxWidth
         , noWrap
         , none
         , num
@@ -327,7 +327,7 @@ chatHistoryView attrs { translate, sentFrom, sentTo, sentAt, sender, message, is
                                                     , hover [ backgroundColor Colors.mediumGray |> Css.important ]
                                                     ]
                                                 ]
-                                                [ Icons.kebab [ css [ minWidth (rem 0.2125) ] ] ]
+                                                [ Icons.kebab [ css [ maxWidth (rem 0.2125) ] ] ]
                                         ]
                             )
                     ]
