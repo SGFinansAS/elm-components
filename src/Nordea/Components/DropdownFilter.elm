@@ -10,6 +10,7 @@ module Nordea.Components.DropdownFilter exposing
     , withIsLoading
     , withOnFocus
     , withPlaceholder
+    , withRightIcon
     , withSearchIcon
     , withSmallSize
     )
@@ -114,6 +115,7 @@ type alias DropdownFilterProperties a msg =
     , showChevron : Bool
     , uniqueId : String
     , disabled : Bool
+    , hasRightIcon : Bool
     }
 
 
@@ -152,6 +154,7 @@ init { onInput, input, onSelect, items, selectedValue, uniqueId } =
         , showChevron = True
         , uniqueId = uniqueId
         , disabled = False
+        , hasRightIcon = True
         }
 
 
@@ -209,7 +212,7 @@ view attrs (DropdownFilter config) =
                         , borderBottomRightRadius (pct 0) |> Css.important |> styleIf dropdownShowing
                         , descendants
                             [ typeSelector "input"
-                                [ paddingRight (rem 2.5) ]
+                                [ paddingRight (rem 2.5) |> styleIf config.hasRightIcon ]
                             ]
                         ]
                     ]
@@ -437,7 +440,7 @@ view attrs (DropdownFilter config) =
                 ++ focusAttrs
             )
             [ textInput
-            , iconRight
+            , iconRight |> showIf config.hasRightIcon
             ]
 
 
@@ -484,3 +487,8 @@ withChevron bool (DropdownFilter config) =
 withDisabled : Bool -> DropdownFilter a msg -> DropdownFilter a msg
 withDisabled disabled (DropdownFilter config) =
     DropdownFilter { config | disabled = disabled }
+
+
+withRightIcon : Bool -> DropdownFilter a msg -> DropdownFilter a msg
+withRightIcon hasRightIcon (DropdownFilter config) =
+    DropdownFilter { config | hasRightIcon = hasRightIcon }
