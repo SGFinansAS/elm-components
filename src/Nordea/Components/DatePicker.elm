@@ -286,7 +286,7 @@ dateInput config (InternalState internalState) parser datePlaceholder showError 
                     [ fontSize (rem 0.75)
                     , height (rem 1.5)
                     , padding2 (rem 0.25) (rem 0.5)
-                    , paddingRight (rem 2)
+                    , paddingRight (rem 1.25)
                     ]
                 , Css.batch
                     [ width (rem 1.5)
