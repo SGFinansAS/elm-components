@@ -291,6 +291,7 @@ dateInput config (InternalState internalState) parser datePlaceholder showError 
                 , Css.batch
                     [ width (rem 1.5)
                     , padding (rem 0.375)
+                    , boxSizing borderBox
                     ]
                 )
 
@@ -304,6 +305,7 @@ dateInput config (InternalState internalState) parser datePlaceholder showError 
                 , Css.batch
                     [ width (rem 2.5)
                     , padding (rem 0.375)
+                    , boxSizing borderBox
                     ]
                 )
     in
