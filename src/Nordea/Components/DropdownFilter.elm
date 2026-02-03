@@ -8,6 +8,7 @@ module Nordea.Components.DropdownFilter exposing
     , withHasError
     , withHasFocus
     , withIsLoading
+    , withListAttributes
     , withOnFocus
     , withPlaceholder
     , withRightIcon
@@ -76,6 +77,7 @@ import Html.Styled.Attributes as Attrs exposing (css, tabindex)
 import Html.Styled.Events as Events
 import Json.Decode as Decode
 import Maybe.Extra as Maybe
+import Nordea.Components.Accordion exposing (Msg)
 import Nordea.Components.Spinner as Spinner
 import Nordea.Components.Text as Text
 import Nordea.Components.TextInput as TextInput
@@ -116,6 +118,7 @@ type alias DropdownFilterProperties a msg =
     , uniqueId : String
     , disabled : Bool
     , hasRightIcon : Bool
+    , listAttributes : List (Html.Attribute msg)
     }
 
 
@@ -155,6 +158,7 @@ init { onInput, input, onSelect, items, selectedValue, uniqueId } =
         , uniqueId = uniqueId
         , disabled = False
         , hasRightIcon = True
+        , listAttributes = []
         }
 
 
@@ -402,10 +406,12 @@ view attrs (DropdownFilter config) =
 
             else
                 Html.ul
-                    [ Attrs.id config.uniqueId
-                    , Attrs.attribute "role" "listbox"
-                    , css [ listStyle none, styles ]
-                    ]
+                    ([ Attrs.id config.uniqueId
+                     , Attrs.attribute "role" "listbox"
+                     , css [ listStyle none, styles ]
+                     ]
+                        ++ config.listAttributes
+                    )
                     viewSearchMatches
                     |> showIf dropdownShowing
 
@@ -492,3 +498,8 @@ withDisabled disabled (DropdownFilter config) =
 withRightIcon : Bool -> DropdownFilter a msg -> DropdownFilter a msg
 withRightIcon hasRightIcon (DropdownFilter config) =
     DropdownFilter { config | hasRightIcon = hasRightIcon }
+
+
+withListAttributes : List (Html.Attribute msg) -> DropdownFilter a msg -> DropdownFilter a msg
+withListAttributes attrs (DropdownFilter config) =
+    DropdownFilter { config | listAttributes = attrs }
