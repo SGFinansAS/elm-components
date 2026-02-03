@@ -8,6 +8,7 @@ module Nordea.Components.DropdownFilter exposing
     , withHasError
     , withHasFocus
     , withIsLoading
+    , withListAttributes
     , withOnFocus
     , withPlaceholder
     , withRightIcon
@@ -116,6 +117,7 @@ type alias DropdownFilterProperties a msg =
     , uniqueId : String
     , disabled : Bool
     , hasRightIcon : Bool
+    , listAttributes : List (Html.Attribute msg)
     }
 
 
@@ -155,6 +157,7 @@ init { onInput, input, onSelect, items, selectedValue, uniqueId } =
         , uniqueId = uniqueId
         , disabled = False
         , hasRightIcon = True
+        , listAttributes = []
         }
 
 
@@ -402,10 +405,12 @@ view attrs (DropdownFilter config) =
 
             else
                 Html.ul
-                    [ Attrs.id config.uniqueId
-                    , Attrs.attribute "role" "listbox"
-                    , css [ listStyle none, styles ]
-                    ]
+                    ([ Attrs.id config.uniqueId
+                     , Attrs.attribute "role" "listbox"
+                     , css [ listStyle none, styles ]
+                     ]
+                        ++ config.listAttributes
+                    )
                     viewSearchMatches
                     |> showIf dropdownShowing
 
@@ -492,3 +497,8 @@ withDisabled disabled (DropdownFilter config) =
 withRightIcon : Bool -> DropdownFilter a msg -> DropdownFilter a msg
 withRightIcon hasRightIcon (DropdownFilter config) =
     DropdownFilter { config | hasRightIcon = hasRightIcon }
+
+
+withListAttributes : List (Html.Attribute msg) -> DropdownFilter a msg -> DropdownFilter a msg
+withListAttributes attrs (DropdownFilter config) =
+    DropdownFilter { config | listAttributes = attrs }
