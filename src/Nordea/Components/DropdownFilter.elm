@@ -77,7 +77,6 @@ import Html.Styled.Attributes as Attrs exposing (css, tabindex)
 import Html.Styled.Events as Events
 import Json.Decode as Decode
 import Maybe.Extra as Maybe
-import Nordea.Components.Accordion exposing (Msg)
 import Nordea.Components.Spinner as Spinner
 import Nordea.Components.Text as Text
 import Nordea.Components.TextInput as TextInput
