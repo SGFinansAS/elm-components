@@ -22,4 +22,10 @@ stories =
                     |> DatePicker.view [] [ DatePicker.SmallSize ]
           , {}
           )
+        , ( "Disabled"
+          , \model ->
+                model.customModel.datePicker
+                    |> DatePicker.view [] [ DatePicker.Disabled ]
+          , {}
+          )
         ]
