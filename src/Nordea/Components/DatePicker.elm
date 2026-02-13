@@ -59,7 +59,7 @@ import Css
         )
 import Date exposing (Date)
 import Html.Styled as Html exposing (Attribute, Html, input, styled)
-import Html.Styled.Attributes exposing (css, placeholder, value)
+import Html.Styled.Attributes exposing (css, disabled, placeholder, value)
 import Html.Styled.Events as Events exposing (custom, onBlur, onClick, onInput)
 import Json.Decode as Decode
 import List.Extra exposing (groupsOf)
@@ -90,6 +90,7 @@ type InternalState
         , prevMonthHasFocus : Bool
         , nextMonthHasFocus : Bool
         , today : Date
+        , disabled : Bool
         }
 
 
@@ -105,6 +106,7 @@ type OptionalConfig msg
     | ShowError msg
     | Error Bool
     | SmallSize
+    | Disabled
 
 
 type DateResult
@@ -125,6 +127,7 @@ init today input onSelect onInternalStateChange =
                 , prevMonthHasFocus = False
                 , nextMonthHasFocus = False
                 , today = today
+                , disabled = False
                 }
         }
 
@@ -148,7 +151,7 @@ view attrs optional (DatePicker config) =
         internalState =
             internalStateValues config.internalState
 
-        { placeholder, parser, formatter, firstDayOfWeek, showError, error, smallSize } =
+        { placeholder, parser, formatter, firstDayOfWeek, showError, error, smallSize, isDisabled } =
             optional
                 |> List.foldl
                     (\e acc ->
@@ -173,6 +176,9 @@ view attrs optional (DatePicker config) =
 
                             SmallSize ->
                                 { acc | smallSize = True }
+
+                            Disabled ->
+                                { acc | isDisabled = True }
                     )
                     { placeholder = "dd.mm.yyyy"
                     , parser = defaultDateParser
@@ -181,6 +187,7 @@ view attrs optional (DatePicker config) =
                     , showError = Nothing
                     , error = False
                     , smallSize = False
+                    , isDisabled = False
                     }
 
         chosenDate =
@@ -208,7 +215,7 @@ view attrs optional (DatePicker config) =
             , isActive = internalState.hasFocus
             , eventTypes = [ OutsideEventSupport.OutsideClick ]
             }
-        , dateInput config (InternalState internalState) parser placeholder showError error smallSize
+        , dateInput config (InternalState internalState) parser placeholder showError error smallSize isDisabled
         , Html.div
             [ css
                 [ border3 (rem 0.0625) solid Colors.mediumGray
@@ -234,8 +241,8 @@ view attrs optional (DatePicker config) =
         ]
 
 
-dateInput : Config msg -> InternalState -> (String -> Result String Date) -> String -> Maybe msg -> Bool -> Bool -> Html msg
-dateInput config (InternalState internalState) parser datePlaceholder showError error smallSize =
+dateInput : Config msg -> InternalState -> (String -> Result String Date) -> String -> Maybe msg -> Bool -> Bool -> Bool -> Html msg
+dateInput config (InternalState internalState) parser datePlaceholder showError error smallSize isDisabled =
     let
         ( borderColor, calendarIconColor ) =
             if error then
@@ -252,7 +259,8 @@ dateInput config (InternalState internalState) parser datePlaceholder showError 
                 borderRadius (rem 0.25)
 
         getAttributes =
-            [ internalState.input |> value
+            [ disabled isDisabled
+            , internalState.input |> value
             , (\input ->
                 parser input
                     |> Result.map
@@ -321,6 +329,7 @@ dateInput config (InternalState internalState) parser datePlaceholder showError 
                 [ outline none
                 , Themes.borderColor Colors.nordeaBlue
                 ]
+            , Css.disabled [ backgroundColor Colors.grayWarm ]
             ]
             getAttributes
             []
@@ -556,7 +565,7 @@ defaultDateParser date =
         |> Date.fromIsoString
 
 
-internalStateValues : InternalState -> { hasFocus : Bool, input : String, selectedMonth : Maybe ( Month, Int ), prevMonthHasFocus : Bool, nextMonthHasFocus : Bool, today : Date }
+internalStateValues : InternalState -> { hasFocus : Bool, input : String, selectedMonth : Maybe ( Month, Int ), prevMonthHasFocus : Bool, nextMonthHasFocus : Bool, today : Date, disabled : Bool }
 internalStateValues (InternalState state) =
     state
 
