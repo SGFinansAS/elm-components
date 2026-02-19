@@ -58,7 +58,7 @@ type Variant
 
 
 type alias Config =
-    { variant : Variant, styles : List Style, isDisabled : Maybe Bool }
+    { variant : Variant, styles : List Style, isDisabled : Bool }
 
 
 type FlatLink
@@ -67,7 +67,7 @@ type FlatLink
 
 init : Variant -> FlatLink
 init variant =
-    FlatLink { variant = variant, styles = [], isDisabled = Nothing }
+    FlatLink { variant = variant, styles = [], isDisabled = False }
 
 
 default : FlatLink
@@ -85,9 +85,9 @@ withStyles styles (FlatLink config) =
     FlatLink { config | styles = styles }
 
 
-withDisabled : FlatLink -> FlatLink
-withDisabled (FlatLink config) =
-    FlatLink { config | isDisabled = Just True }
+withDisabled : Bool -> FlatLink -> FlatLink
+withDisabled b (FlatLink config) =
+    FlatLink { config | isDisabled = b }
 
 
 withButtonStyle : Button.Variant -> FlatLink -> FlatLink
@@ -133,7 +133,7 @@ inline attrs children =
                 , focus [ Themes.color Colors.deepBlue ]
                 , visited [ Css.color Colors.purple ]
                 ]
-            , isDisabled = Just (List.member (Html.Styled.Attributes.disabled True) attrs)
+            , isDisabled = List.member (Html.Styled.Attributes.disabled True) attrs
             , variant = Default
             }
         )
@@ -157,7 +157,7 @@ outer attrs children =
                 , focus [ Themes.color Colors.deepBlue ]
                 , visited [ Css.color Colors.purple ]
                 ]
-            , isDisabled = Just (List.member (Html.Styled.Attributes.disabled True) attrs)
+            , isDisabled = List.member (Html.Styled.Attributes.disabled True) attrs
             , variant = Default
             }
         )
@@ -182,17 +182,16 @@ baseStyle =
         ]
 
 
-disabledStyles : Maybe Bool -> Style
+disabledStyles : Bool -> Style
 disabledStyles isDisabled =
-    case isDisabled of
-        Just True ->
-            Css.batch
-                [ opacity (num 0.3)
-                , pointerEvents none
-                ]
+    if isDisabled then
+        Css.batch
+            [ opacity (num 0.3)
+            , pointerEvents none
+            ]
 
-        _ ->
-            Css.batch []
+    else
+        Css.batch []
 
 
 variantStyle : Variant -> Style
