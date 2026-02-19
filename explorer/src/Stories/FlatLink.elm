@@ -31,13 +31,13 @@ stories =
           , \_ ->
                 Html.div [ css [ children [ everything [ marginBottom (rem 1) ] ] ] ]
                     [ FlatLink.default
-                        |> FlatLink.withDisabled
+                        |> FlatLink.withDisabled True
                         |> FlatLink.view [ href "/#Default/FlatLink/Default" ] [ text "Click me" ]
                     , FlatLink.default
-                        |> FlatLink.withDisabled
+                        |> FlatLink.withDisabled True
                         |> FlatLink.view [ href "/#Default/FlatLink/Default" ] [ text "Click me", Icons.rightIcon (Icons.info []) ]
                     , FlatLink.default
-                        |> FlatLink.withDisabled
+                        |> FlatLink.withDisabled True
                         |> FlatLink.view [ href "/#Default/FlatLink/Default" ] [ Icons.leftIcon (Icons.info []), text "Click me" ]
                     ]
           , {}
