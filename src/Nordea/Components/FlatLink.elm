@@ -85,9 +85,9 @@ withStyles styles (FlatLink config) =
     FlatLink { config | styles = styles }
 
 
-withDisabled : FlatLink -> FlatLink
-withDisabled (FlatLink config) =
-    FlatLink { config | isDisabled = Just True }
+withDisabled : Bool -> FlatLink -> FlatLink
+withDisabled b (FlatLink config) =
+    FlatLink { config | isDisabled = Just b }
 
 
 withButtonStyle : Button.Variant -> FlatLink -> FlatLink
