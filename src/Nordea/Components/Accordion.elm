@@ -183,7 +183,7 @@ viewItemTitleArrow open =
 
 viewItemBody : Item -> Html Msg
 viewItemBody item =
-    Html.styled Html.p
+    Html.styled Html.div
         [ Fonts.fromSize 0.875
         , Css.paddingBottom (Css.rem 1)
         ]
