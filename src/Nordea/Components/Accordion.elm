@@ -11,7 +11,7 @@ module Nordea.Components.Accordion exposing
     )
 
 import Css exposing (rem)
-import Html.Styled as Html exposing (Html, h2)
+import Html.Styled as Html exposing (Html)
 import Html.Styled.Attributes as Attrs exposing (attribute)
 import Html.Styled.Events as Events
 import List.Extra as List
