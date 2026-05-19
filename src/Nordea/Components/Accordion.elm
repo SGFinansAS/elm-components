@@ -10,16 +10,18 @@ module Nordea.Components.Accordion exposing
     , withTitle
     )
 
-import Css
+import Css exposing (rem)
 import Html.Styled as Html exposing (Html)
-import Html.Styled.Attributes as Attrs
+import Html.Styled.Attributes as Attrs exposing (attribute)
 import Html.Styled.Events as Events
 import List.Extra as List
+import Nordea.Components.Text as Text
 import Nordea.Html as Html
 import Nordea.Resources.Colors as Colors
 import Nordea.Resources.Fonts.Fonts as Fonts
 import Nordea.Resources.Icons as Icons
 import Nordea.Themes as Themes
+import Svg.Styled.Attributes as Attributes
 
 
 
@@ -110,30 +112,25 @@ view (Accordion config) =
 
 viewTitle : String -> Html Msg
 viewTitle title =
-    Html.styled Html.div
-        [ Css.padding2 (Css.rem 1) Css.zero
-        , Fonts.fromSize 1.125
-        , Css.fontWeight (Css.int 500)
-        , Themes.color Colors.deepBlue
-        ]
-        []
-        [ Html.text title ]
+    Text.bodyTextHeavy
+        |> Text.view [ Attributes.css [ Themes.color Colors.deepBlue, Css.marginTop (rem 1) ] ]
+            [ title |> Html.text ]
 
 
 viewItems : List Item -> Html Msg
 viewItems items =
-    Html.styled Html.div
+    Html.styled Html.ul
         [ Css.listStyle Css.none
         , Css.paddingLeft Css.zero
         , Css.padding2 (Css.rem 0.5) Css.zero
         ]
         []
-        (List.map viewItem items)
+        (items |> List.map (\item -> Html.li [] [ viewItem item ]))
 
 
 viewItem : Item -> Html Msg
 viewItem item =
-    Html.styled Html.div
+    Html.styled Html.details
         [ Css.borderBottom3 (Css.rem 0.0625) Css.solid Css.transparent
         , Css.firstChild [ Css.borderTop3 (Css.rem 0.0625) Css.solid Css.transparent ]
         , Themes.borderColor Colors.haasBlue
@@ -146,7 +143,7 @@ viewItem item =
 
 viewItemTitle : Item -> Html Msg
 viewItemTitle item =
-    Html.styled Html.div
+    Html.styled Html.summary
         [ Css.displayFlex
         , Css.alignItems Css.center
         , Css.padding2 (Css.rem 1) Css.zero
@@ -180,7 +177,7 @@ viewItemTitleArrow open =
     in
     Html.styled Html.span
         [ Css.flexShrink Css.zero ]
-        []
+        [ attribute "aria-hidden" "true" ]
         [ icon ]
 
 

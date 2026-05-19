@@ -109,16 +109,16 @@ init =
     { accordion =
         Accordion.init
             |> Accordion.withTitle "FAQ"
-            |> Accordion.withItem
-                { title = "Hello"
-                , body = [ Html.text "World" ]
-                , open = False
-                }
-            |> Accordion.withItem
-                { title = "This is a question"
-                , body = [ Html.text "This is an answer" ]
-                , open = False
-                }
+            |> Accordion.withItems
+                [ { title = "Hello"
+                  , body = [ Html.p [] [ Html.text "World" ] ]
+                  , open = False
+                  }
+                , { title = "This is a question"
+                  , body = [ Html.p [] [ Html.text "This is an answer" ] ]
+                  , open = False
+                  }
+                ]
     , openAccordionTableRows = Set.empty
     , selectedAccordionTableRows = Set.empty
     , searchComponentInput = ""
