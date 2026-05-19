@@ -11,7 +11,7 @@ module Nordea.Components.Accordion exposing
     )
 
 import Css exposing (rem)
-import Html.Styled as Html exposing (Html)
+import Html.Styled as Html exposing (Html, h2)
 import Html.Styled.Attributes as Attrs exposing (attribute)
 import Html.Styled.Events as Events
 import List.Extra as List
@@ -112,14 +112,9 @@ view (Accordion config) =
 
 viewTitle : String -> Html Msg
 viewTitle title =
-    Html.styled Html.div
-        [ Css.padding2 (Css.rem 1) Css.zero
-        , Fonts.fromSize 1.125
-        , Css.fontWeight (Css.int 500)
-        , Themes.color Colors.deepBlue
-        ]
-        []
-        [ Html.text title ]
+    Text.bodyTextHeavy
+        |> Text.view [ Attributes.css [ Themes.color Colors.deepBlue, Css.marginTop (rem 1) ] ]
+            [ title |> Html.text ]
 
 
 viewItems : List Item -> Html Msg
