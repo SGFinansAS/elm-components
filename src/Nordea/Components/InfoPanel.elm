@@ -3,9 +3,8 @@ module Nordea.Components.InfoPanel exposing (InfoPanelContent, view, viewLabelIn
 import Css exposing (int, pseudoClass, rem)
 import Html.Styled as Html exposing (Html)
 import Html.Styled.Attributes as Attributes
-import Json.Decode exposing (index)
 import Nordea.Components.Text as Text
-import Nordea.Html exposing (attrIf, styleIf)
+import Nordea.Html exposing (attrIf)
 import Nordea.Resources.Colors as Colors
 
 
