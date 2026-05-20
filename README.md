@@ -2,7 +2,7 @@
 
 ## Running locally
 From project root run `(cd explorer/; npm start)`.
-
+a
 ## Integration
 
 - Take a look at https://github.com/SGFinansAS/sgfinans24beta/pull/649 and https://github.com/SGFinansAS/sgfinans24beta/pull/656
