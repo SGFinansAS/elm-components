@@ -51,7 +51,7 @@ card attrs children title collapsibleProps =
         |> Card.isCollapsible collapsibleProps
         |> Card.view
             attrs
-            [ Html.div
+            [ Html.dl
                 [ css
                     [ displayFlex
                     , flexWrap wrap
@@ -98,6 +98,7 @@ fullWidthElement attrs =
 label : List (Attribute msg) -> List (Html msg) -> Html msg
 label attrs content =
     Text.textSmallLight
+        |> Text.withHtmlTag Html.dt
         |> Text.view
             (css
                 [ lineHeight (rem 1.5) |> Css.important
@@ -110,4 +111,4 @@ label attrs content =
 
 value : List (Attribute msg) -> List (Html msg) -> Html msg
 value attrs content =
-    Text.textLight |> Text.view attrs content
+    Text.textLight |> Text.withHtmlTag Html.dd |> Text.view attrs content
