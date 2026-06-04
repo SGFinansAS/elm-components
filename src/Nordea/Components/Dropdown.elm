@@ -5,6 +5,7 @@ module Nordea.Components.Dropdown exposing
     , standard
     , view
     , withAriaLabel
+    , withAriaLabelledby
     , withHasError
     , withPlaceholder
     , withSelectedValue
@@ -86,6 +87,7 @@ type alias DropdownProperties a msg =
     , selectedValue : Maybe a
     , hasError : Bool
     , ariaLabel : Maybe String
+    , ariaLabelledby : Maybe String
     , variant : Variant
     , size : Size
     , fallbackGroupLabel : String
@@ -148,6 +150,7 @@ init options optionToString onInput =
         , variant = Standard
         , size = StandardSize
         , ariaLabel = Nothing
+        , ariaLabelledby = Nothing
         , fallbackGroupLabel = ""
         }
 
@@ -290,6 +293,12 @@ view attrs (Dropdown config) =
 
                 Nothing ->
                     attrEmpty
+            , case config.ariaLabelledby of
+                Just l ->
+                    Attrs.attribute "aria-labelledby" l
+
+                Nothing ->
+                    attrEmpty
             , css
                 ([ width (pct 100)
                  , property "appearance" "none"
@@ -343,3 +352,8 @@ withHasError hasError (Dropdown config) =
 withAriaLabel : String -> Dropdown a msg -> Dropdown a msg
 withAriaLabel label (Dropdown config) =
     Dropdown { config | ariaLabel = Just label }
+
+
+withAriaLabelledby : String -> Dropdown a msg -> Dropdown a msg
+withAriaLabelledby label (Dropdown config) =
+    Dropdown { config | ariaLabelledby = Just label }
