@@ -5,6 +5,7 @@ module Nordea.Components.Dropdown exposing
     , standard
     , view
     , withAriaLabel
+    , withAriaLabelledby
     , withHasError
     , withPlaceholder
     , withSelectedValue
