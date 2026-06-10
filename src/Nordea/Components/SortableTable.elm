@@ -275,6 +275,7 @@ textElement config =
                     [ textOverflow ellipsis
                     , overflow hidden
                     , whiteSpace noWrap
+                    , width (pct 100)
                     ]
                 ]
                 [ Html.text config.label ]
