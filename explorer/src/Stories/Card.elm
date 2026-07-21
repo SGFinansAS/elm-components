@@ -1,7 +1,7 @@
 module Stories.Card exposing (stories)
 
 import Config exposing (Config, Msg(..))
-import Css exposing (alignItems, center, displayFlex, rem, width)
+import Css exposing (alignItems, center, displayFlex, marginTop, padding, rem, width)
 import Html.Styled as Html
 import Html.Styled.Attributes exposing (css)
 import Nordea.Components.Card as Card
@@ -85,6 +85,21 @@ stories =
                                 ]
                             ]
                         ]
+          , {}
+          )
+        , ( "With custom HTML tag"
+          , \_ ->
+                Html.ul [ css [ padding (rem 0) ] ]
+                    ([ "One", "Two", "Three" ]
+                        |> List.map (Html.text >> List.singleton)
+                        |> List.map
+                            (\content ->
+                                Card.init
+                                    |> Card.withShadow
+                                    |> Card.withHtmlTag Html.li
+                                    |> Card.view [ css [ marginTop (rem 1) ] ] content
+                            )
+                    )
           , {}
           )
         ]
