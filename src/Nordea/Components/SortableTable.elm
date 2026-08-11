@@ -37,6 +37,7 @@ import Css
         , flexDirection
         , flexShrink
         , flexStart
+        , fontVariantNumeric
         , height
         , hidden
         , int
@@ -56,6 +57,7 @@ import Css
         , relative
         , rem
         , right
+        , tabularNums
         , textAlign
         , textDecoration
         , textOverflow
@@ -284,7 +286,7 @@ textElement config =
 
 numericElement : { css : List Css.Style, label : String } -> Html msg
 numericElement config =
-    textElement { css = [ textAlign right, display block ] ++ config.css, label = config.label }
+    textElement { css = [ textAlign right, display block, fontVariantNumeric tabularNums ] ++ config.css, label = config.label }
 
 
 mobileDataRow : List (Attribute msg) -> List (Html msg) -> Html msg
