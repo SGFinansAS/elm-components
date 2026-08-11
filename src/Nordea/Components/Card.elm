@@ -6,6 +6,7 @@ module Nordea.Components.Card exposing
     , isCollapsible
     , title
     , view
+    , withHtmlTag
     , withHtmlTitle
     , withShadow
     , withTitle
@@ -61,6 +62,7 @@ type alias CardProperties msg =
     , isCollapsible : Bool
     , isOpen : Bool
     , onClick : Maybe msg
+    , htmlTag : Maybe (List (Attribute msg) -> List (Html msg) -> Html msg)
     }
 
 
@@ -77,6 +79,7 @@ init =
         , isCollapsible = False
         , isOpen = False
         , onClick = Nothing
+        , htmlTag = Nothing
         }
 
 
@@ -95,6 +98,10 @@ view attrs children (Card config) =
                     |> styleIf config.hasShadow
                 ]
                 :: attrs
+
+        baseTag =
+            config.htmlTag
+                |> Maybe.withDefault Html.div
     in
     if config.isCollapsible then
         AccordionMenu.view { isOpen = config.isOpen }
@@ -106,13 +113,13 @@ view attrs children (Card config) =
                     |> viewMaybe
                         (\emphasisedText_ -> emphasisedTextWithTransition emphasisedText_)
                 ]
-            , Html.div [ css [ marginTop (rem 1.5) ] ] children
+            , baseTag [ css [ marginTop (rem 1.5) ] ] children
             ]
 
     else
         case config.title of
             Just title_ ->
-                Html.div
+                baseTag
                     (css
                         [ Css.children [ Css.everything [ firstChild [ marginBottom (rem 1.5) ] ] ] ]
                         :: baseStyle
@@ -120,7 +127,7 @@ view attrs children (Card config) =
                     (title_ :: children)
 
             Nothing ->
-                Html.div baseStyle children
+                baseTag baseStyle children
 
 
 headerCollapsible : List (Attribute msg) -> List (Html msg) -> Html msg
@@ -205,6 +212,11 @@ withHtmlTitle title_ (Card config) =
 withShadow : Card msg -> Card msg
 withShadow (Card config) =
     Card { config | hasShadow = True }
+
+
+withHtmlTag : (List (Attribute msg) -> List (Html msg) -> Html msg) -> Card msg -> Card msg
+withHtmlTag htmlTag (Card config) =
+    Card { config | htmlTag = Just htmlTag }
 
 
 isCollapsible :
