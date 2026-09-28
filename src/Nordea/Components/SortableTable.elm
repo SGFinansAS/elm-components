@@ -132,7 +132,7 @@ sortableTextHeaderStyled config =
                    else
                     marginLeft
                   )
-                    (rem 1)
+                    (rem 0.25)
                 ]
             ]
 
