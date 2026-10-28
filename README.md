@@ -1,11 +1,7 @@
 # elm-components
 
 ## Running locally
-Run `npm ci` and then `npm start` from the project root. The component explorer runs at http://localhost:3009.
-
-Run `npm run build` for a production build in `dist/`, and `npm run verify-lint` to review all Elm sources.
-
-The components, explorer, and stories share `src/` and a single root npm and Elm application configuration.
+Run `npm start` from the project root. The component explorer runs at http://localhost:3009.
 
 ## Integration
 
