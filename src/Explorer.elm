@@ -84,7 +84,7 @@ main =
         , documentTitle = Nothing
         }
         (UIExplorer.createCategories
-            |> UIExplorer.category "Tokens"
+            |> UIExplorer.category "Tokensss"
                 [ Colors.stories
                 , Text.stories
                 , Icons.stories

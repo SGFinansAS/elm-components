@@ -10,60 +10,13 @@ module Nordea.Components.Checkbox exposing
     , withOnBlur
     )
 
-import Css
-    exposing
-        ( absolute
-        , after
-        , alignItems
-        , backgroundColor
-        , block
-        , border3
-        , borderBottomLeftRadius
-        , borderBottomRightRadius
-        , borderBox
-        , borderColor
-        , borderRadius
-        , borderTopColor
-        , borderTopLeftRadius
-        , borderTopRightRadius
-        , borderWidth4
-        , boxSizing
-        , center
-        , cursor
-        , deg
-        , display
-        , displayFlex
-        , flex
-        , flexBasis
-        , height
-        , hover
-        , inlineFlex
-        , left
-        , minHeight
-        , none
-        , num
-        , opacity
-        , padding2
-        , padding4
-        , pct
-        , pointer
-        , position
-        , pseudoClass
-        , relative
-        , rem
-        , rotate
-        , solid
-        , top
-        , transforms
-        , transparent
-        , width
-        )
+import Css exposing (absolute, after, alignItems, backgroundColor, block, border3, borderBottomLeftRadius, borderBottomRightRadius, borderBox, borderColor, borderRadius, borderTopColor, borderTopLeftRadius, borderTopRightRadius, borderWidth4, boxSizing, center, color, cursor, deg, display, displayFlex, flex, flexBasis, height, hover, inlineFlex, left, minHeight, none, num, opacity, padding2, padding4, pct, pointer, position, pseudoClass, relative, rem, rotate, solid, top, transforms, transparent, width)
 import Css.Transitions exposing (transition)
 import Html.Styled as Html exposing (Attribute, Html)
 import Html.Styled.Attributes as Attrs exposing (class, css, disabled, name, type_)
 import Html.Styled.Events exposing (onCheck)
 import Nordea.Components.Text as Text
-import Nordea.Css exposing (gap)
+import Nordea.Css exposing (cssIf, gap)
 import Nordea.Html exposing (styleIf)
 import Nordea.Resources.Colors as Colors
 import Nordea.Themes as Themes
@@ -273,6 +226,7 @@ view attrs (Checkbox config) =
             , position relative
             , notDisabledSpecificStyling
             , appearanceStyle
+            , cssIf isDisabled (color Colors.gray)
             ]
             :: attrs
         )

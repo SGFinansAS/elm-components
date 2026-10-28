@@ -10,52 +10,13 @@ module Nordea.Components.RadioButton exposing
     , withOnBlur
     )
 
-import Css
-    exposing
-        ( absolute
-        , after
-        , alignItems
-        , backgroundColor
-        , block
-        , border3
-        , borderBox
-        , borderColor
-        , borderRadius
-        , borderWidth
-        , boxSizing
-        , center
-        , cursor
-        , display
-        , flex
-        , height
-        , hover
-        , inlineFlex
-        , justifyContent
-        , left
-        , minHeight
-        , none
-        , num
-        , opacity
-        , padding2
-        , pct
-        , pointer
-        , position
-        , pseudoClass
-        , relative
-        , rem
-        , solid
-        , top
-        , transform
-        , translate2
-        , transparent
-        , width
-        )
+import Css exposing (absolute, after, alignItems, backgroundColor, block, border3, borderBox, borderColor, borderRadius, borderWidth, boxSizing, center, color, cursor, display, flex, height, hover, inlineFlex, justifyContent, left, minHeight, none, num, opacity, padding2, pct, pointer, position, pseudoClass, relative, rem, solid, top, transform, translate2, transparent, width)
 import Css.Transitions exposing (transition)
 import Html.Styled as Html exposing (Attribute, Html)
 import Html.Styled.Attributes as Attrs exposing (css, disabled, name, type_)
 import Html.Styled.Events as Events
 import Nordea.Components.Text as Text
-import Nordea.Css exposing (gap)
+import Nordea.Css exposing (cssIf, gap)
 import Nordea.Html exposing (showIf, styleIf)
 import Nordea.Resources.Colors as Colors
 import Nordea.Themes as Themes
@@ -247,6 +208,7 @@ view attrs (RadioButton config) =
             , position relative
             , notDisabledSpecificStyling
             , appearanceStyle
+            , cssIf isDisabled (color Colors.gray)
             ]
             :: attrs
         )
