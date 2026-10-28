@@ -11,3 +11,7 @@ node_modules
 .DS_Store
 
 .idea/
+
+# Parcel output
+.parcel-cache/
+dist/

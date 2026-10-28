@@ -1,7 +1,7 @@
 # elm-components
 
 ## Running locally
-From project root run `(cd explorer/; npm start)`.
+Run `npm start` from the project root. The component explorer runs at http://localhost:3009.
 
 ## Integration
 
