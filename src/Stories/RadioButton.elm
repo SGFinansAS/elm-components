@@ -169,6 +169,13 @@ stories =
                         |> RadioButton.withAppearance RadioButton.Simple
                         |> RadioButton.withIsSelected (config.customModel.activeRadioButton == "second")
                         |> RadioButton.view [ disabled True ]
+                    , RadioButton.init
+                        "simple"
+                        (text "Click me - not disabled")
+                        (UpdateActiveRadioButton "third")
+                        |> RadioButton.withAppearance RadioButton.Simple
+                        |> RadioButton.withIsSelected (config.customModel.activeRadioButton == "third")
+                        |> RadioButton.view [ disabled False ]
                     ]
           , {}
           )

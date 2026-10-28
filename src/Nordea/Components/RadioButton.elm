@@ -24,6 +24,7 @@ import Css
         , borderWidth
         , boxSizing
         , center
+        , color
         , cursor
         , display
         , flex
@@ -55,7 +56,7 @@ import Html.Styled as Html exposing (Attribute, Html)
 import Html.Styled.Attributes as Attrs exposing (css, disabled, name, type_)
 import Html.Styled.Events as Events
 import Nordea.Components.Text as Text
-import Nordea.Css exposing (gap)
+import Nordea.Css exposing (cssIf, gap)
 import Nordea.Html exposing (showIf, styleIf)
 import Nordea.Resources.Colors as Colors
 import Nordea.Themes as Themes
@@ -247,6 +248,7 @@ view attrs (RadioButton config) =
             , position relative
             , notDisabledSpecificStyling
             , appearanceStyle
+            , cssIf isDisabled (color Colors.gray)
             ]
             :: attrs
         )

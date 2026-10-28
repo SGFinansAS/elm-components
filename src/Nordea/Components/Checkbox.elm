@@ -29,6 +29,7 @@ import Css
         , borderWidth4
         , boxSizing
         , center
+        , color
         , cursor
         , deg
         , display
@@ -63,7 +64,7 @@ import Html.Styled as Html exposing (Attribute, Html)
 import Html.Styled.Attributes as Attrs exposing (class, css, disabled, name, type_)
 import Html.Styled.Events exposing (onCheck)
 import Nordea.Components.Text as Text
-import Nordea.Css exposing (gap)
+import Nordea.Css exposing (cssIf, gap)
 import Nordea.Html exposing (styleIf)
 import Nordea.Resources.Colors as Colors
 import Nordea.Themes as Themes
@@ -273,6 +274,7 @@ view attrs (Checkbox config) =
             , position relative
             , notDisabledSpecificStyling
             , appearanceStyle
+            , cssIf isDisabled (color Colors.gray)
             ]
             :: attrs
         )

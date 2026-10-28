@@ -164,6 +164,13 @@ stories =
                         |> Checkbox.withAppearance Checkbox.Simple
                         |> Checkbox.withIsChecked True
                         |> Checkbox.view [ disabled True ]
+                    , Checkbox.init
+                        "simple"
+                        (text "Click me - non-disabled")
+                        (\_ -> NoOp)
+                        |> Checkbox.withAppearance Checkbox.Simple
+                        |> Checkbox.withIsChecked False
+                        |> Checkbox.view [ disabled False ]
                     ]
           , {}
           )
