@@ -10,7 +10,55 @@ module Nordea.Components.Checkbox exposing
     , withOnBlur
     )
 
-import Css exposing (absolute, after, alignItems, backgroundColor, block, border3, borderBottomLeftRadius, borderBottomRightRadius, borderBox, borderColor, borderRadius, borderTopColor, borderTopLeftRadius, borderTopRightRadius, borderWidth4, boxSizing, center, color, cursor, deg, display, displayFlex, flex, flexBasis, height, hover, inlineFlex, left, minHeight, none, num, opacity, padding2, padding4, pct, pointer, position, pseudoClass, relative, rem, rotate, solid, top, transforms, transparent, width)
+import Css
+    exposing
+        ( absolute
+        , after
+        , alignItems
+        , backgroundColor
+        , block
+        , border3
+        , borderBottomLeftRadius
+        , borderBottomRightRadius
+        , borderBox
+        , borderColor
+        , borderRadius
+        , borderTopColor
+        , borderTopLeftRadius
+        , borderTopRightRadius
+        , borderWidth4
+        , boxSizing
+        , center
+        , color
+        , cursor
+        , deg
+        , display
+        , displayFlex
+        , flex
+        , flexBasis
+        , height
+        , hover
+        , inlineFlex
+        , left
+        , minHeight
+        , none
+        , num
+        , opacity
+        , padding2
+        , padding4
+        , pct
+        , pointer
+        , position
+        , pseudoClass
+        , relative
+        , rem
+        , rotate
+        , solid
+        , top
+        , transforms
+        , transparent
+        , width
+        )
 import Css.Transitions exposing (transition)
 import Html.Styled as Html exposing (Attribute, Html)
 import Html.Styled.Attributes as Attrs exposing (class, css, disabled, name, type_)
