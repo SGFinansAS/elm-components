@@ -1,13 +1,27 @@
 {
   "name": "elm-components",
-  "license": "UNLICENSED",
   "scripts": {
+    "start": "parcel --target app -p 3009",
     "lint": "elm-review --fix",
-    "verify-lint": "elm-review"
+    "verify-lint": "elm-review",
+    "build": "parcel build --target app"
+  },
+  "targets": {
+    "app": {
+      "source": [
+        "public/index.html"
+      ],
+      "context": "browser",
+      "sourceMap": false
+    }
   },
   "devDependencies": {
+    "@parcel/transformer-elm": "^2.16.4",
     "elm": "^0.19.1-6",
-    "elm-format": "^0.8.7",
-    "elm-review": "^2.13.5"
-  }
+    "elm-format": "^0.8.8",
+    "elm-review": "^2.13.5",
+    "parcel": "^2.16.4"
+  },
+  "license": "UNLICENSED",
+  "private": true
 }

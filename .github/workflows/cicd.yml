@@ -29,7 +29,6 @@ jobs:
           node-version: 24.0.1
           cache: npm
 
-      # component library
       - name: Install dependencies
         run: npm ci
       - name: Validate Elm code formatting
@@ -37,21 +36,14 @@ jobs:
       - name: Elm review
         run: npm run verify-lint
 
-      # Explorer project
-      - name: Install dependencies (explorer)
-        run: cd explorer && npm ci
-      - name: Validate Elm code formatting (explorer)
-        run: cd explorer && npx elm-format src/ --validate
-      - name: Elm review (explorer)
-        run: cd explorer && npm run verify-lint
-      - name: Build (explorer)
-        run: cd explorer && npx parcel build --public-url /elm-components
+      - name: Build explorer
+        run: npm run build -- --public-url /elm-components
 
       - name: Upload explorer project artifacts
         if: github.ref == 'refs/heads/master'
         uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0
         with:
-          path: "./explorer/dist"
+          path: "./dist"
 
   deploy:
     needs: build
